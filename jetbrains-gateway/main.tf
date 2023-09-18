@@ -31,7 +31,7 @@ variable "gateway_ide_product_code" {
     condition = (
       length(var.gateway_ide_product_code) == 1 && var.gateway_ide_product_code[0] == "ALL" ||
       alltrue([
-        for code in var.gateway_ide_product_code : contains(["IU", "IC", "PS", "WS", "PY", "PC", "CL", "GO", "DB", "RD"], code)
+        for code in var.gateway_ide_product_code : contains(["IU", "IC", "PS", "WS", "PY", "PC", "CL", "GO", "DB", "RD", "RM"], code)
       ])
     )
     error_message = "The gateway_ide_product_code must be ['ALL'] or a list of valid product codes. https://plugins.jetbrains.com/docs/marketplace/product-codes.html"
@@ -91,6 +91,11 @@ locals {
       name  = "PhpStorm",
       value = jsonencode(["PS", "232.9559.64", "https://download.jetbrains.com/webide/PhpStorm-2023.2.1.tar.gz"])
     },
+    "RM" = {
+      icon  = "/icon/rubymine.svg",
+      name  = "RubyMine",
+      value = jsonencode(["RM", "232.9921.48", "https://download.jetbrains.com/ruby/RubyMine-2023.2.2.tar.gz"])
+    }
   }
 }
 
