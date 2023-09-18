@@ -21,7 +21,14 @@ Add the following block to your [Coder template](https://coder.com/docs/v2/lates
 
 ```hcl
 module "code-server" {
-    source = "https://github.com/coder/coder//code-server/"
-    agent = coder_agent.main.id # your agent ID
+  source     = "github.com/coder/coder//code-server"
+  agent      = coder_agent.main.id # your agent ID
+
+  # Optional variables
+  extensions = ["GitHub.vscode-codeql", "esbenp.prettier-vscode"]
+  settings   = {
+    "editor.minimap.side": "left",
+    "workbench.colorTheme": "Default Dark Modern",
+  }
 }
 ```
