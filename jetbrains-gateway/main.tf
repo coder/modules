@@ -2,7 +2,7 @@ terraform {
   required_version = ">= 1.0"
 
   required_providers {
-    aws = {
+    coder = {
       source  = "coder/coder"
       version = ">= 0.11"
     }
@@ -20,21 +20,20 @@ variable "gateway_project_directory" {
 }
 
 variable "gateway_ide_product_code" {
-  type        = string
-  description = "The IDE product codes, comma-separated. e.g. for GoLand and WebStorm: `GO,WS` and for all: `ALL`"
-
+  type        = list(string)
+  description = "The list of IDE product codes, e.g. ['GO', 'WS'] or ['ALL']"
+  default     = ["ALL"]
   validation {
     condition = (
-      lower(var.gateway_ide_product_code) == "all" ||
+      length(var.gateway_ide_product_code) == 1 && var.gateway_ide_product_code[0] == "ALL" ||
       alltrue([
-        for code in split(",", trimspace(var.gateway_ide_product_code)) :
-        contains(["IU", "IC", "PS", "WS", "PY", "PC", "CL", "GO", "DB", "RD"], trimspace(code))
+        for code in var.gateway_ide_product_code : contains(["IU", "IC", "PS", "WS", "PY", "PC", "CL", "GO", "DB", "RD"], code)
       ])
     )
-    error_message = "The gateway_ide_product_code must be ALL or a comma-separated list of valid product codes. https://plugins.jetbrains.com/docs/marketplace/product-codes.html"
+    error_message = "The gateway_ide_product_code must be ['ALL'] or a list of valid product codes. https://plugins.jetbrains.com/docs/marketplace/product-codes.html"
   }
-  default = "all"
 }
+
 
 locals {
   gateway_ides = {
@@ -100,7 +99,7 @@ data "coder_parameter" "jetbrains_ide" {
   default      = local.gateway_ides["GO"].value
 
   dynamic "option" {
-    for_each = lower(var.gateway_ide_product_code) == "all" ? local.gateway_ides : { for key, value in local.gateway_ides : key => value if key == var.gateway_ide_product_code }
+    for_each = contains(var.gateway_ide_product_code, "ALL") ? local.gateway_ides : { for key, value in local.gateway_ides : key => value if contains(var.gateway_ide_product_code, key) }
     content {
       icon  = option.value.icon
       name  = option.value.name
