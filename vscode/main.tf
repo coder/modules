@@ -2,7 +2,7 @@ terraform {
   required_version = ">= 1.0"
 
   required_providers {
-    aws = {
+    coder = {
       source  = "coder/coder"
       version = ">= 0.11"
     }
