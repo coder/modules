@@ -13,8 +13,12 @@ variable "agent_id" {
   type        = string
   description = "The ID of a Coder agent."
 }
+variable "agent_name" {
+  type        = string
+  description = "The name of a Coder agent."
+}
 
-variable "gateway_project_directory" {
+variable "project_directory" {
   type        = string
   description = "The directory to open in the IDE. e.g. /home/coder/project"
 }
@@ -113,7 +117,7 @@ resource "coder_app" "gateway" {
   agent_id     = var.agent_id
   display_name = data.coder_parameter.jetbrains_ide.option[index(data.coder_parameter.jetbrains_ide.option.*.value, data.coder_parameter.jetbrains_ide.value)].name
   slug         = "gateway"
-  url          = "jetbrains-gateway://connect#type=coder&workspace=${data.coder_workspace.me.name}&agent=dev&folder=${var.gateway_project_directory}&url=${data.coder_workspace.me.access_url}&token=${data.coder_workspace.me.owner_session_token}&ide_product_code=${jsondecode(data.coder_parameter.jetbrains_ide.value)[0]}&ide_build_number=${jsondecode(data.coder_parameter.jetbrains_ide.value)[1]}&ide_download_link=${jsondecode(data.coder_parameter.jetbrains_ide.value)[2]}"
+  url          = "jetbrains-gateway://connect#type=coder&workspace=${data.coder_workspace.me.name}&agent=${var.agent_name}&folder=${var.project_directory}&url=${data.coder_workspace.me.access_url}&token=${data.coder_workspace.me.owner_session_token}&ide_product_code=${jsondecode(data.coder_parameter.jetbrains_ide.value)[0]}&ide_build_number=${jsondecode(data.coder_parameter.jetbrains_ide.value)[1]}&ide_download_link=${jsondecode(data.coder_parameter.jetbrains_ide.value)[2]}"
   icon         = data.coder_parameter.jetbrains_ide.option[index(data.coder_parameter.jetbrains_ide.option.*.value, data.coder_parameter.jetbrains_ide.value)].icon
   external     = true
 }
