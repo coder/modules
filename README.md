@@ -1,10 +1,10 @@
 # Modules
 
-Enjoy official, community, and partner modules to extend your Coder workspace.
+Modules extend Workspaces to provide self-contained building-blocks on your development environment.
 
-- [code-server](https://registry.coder.com/modules/code-server): Run VS Code in the browser
-- [personalize](https://registry.coder.com/modules/personalize): Execute a user-specific script on start
-- [VS Code Desktop](https://registry.coder.com/modules/vscode-desktop): Display a button to launch VS Code desktop in the dashboard.
+- [code-server](https://registry.coder.com/modules/code-server): Install on start, create an app to access via the dashboard, install extensions, and pre-configure editor settings.
+- [personalize](https://registry.coder.com/modules/personalize): Run a script on workspace start that allows developers to run custom commands to personalize their workspace.
+- [VS Code Desktop](https://registry.coder.com/modules/vscode-desktop): Add a button to open any workspace in VS Code with a single click.
 
 ## Registry
 
