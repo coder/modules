@@ -9,8 +9,7 @@ tags: [helper, ide]
 
 # code-server
 
-Run [VS Code](https://github.com/Microsoft/vscode) on any machine anywhere and
-access it in the browser.
+Automatically install [code-server](https://github.com/coder/code-server) in a workspace, create an app to access it via the dashboard, install extensions, and pre-configure editor settings.
 
 ![Screenshot 1](https://github.com/coder/code-server/raw/main/docs/assets/screenshot-1.png?raw=true)
 ![Screenshot 2](https://github.com/coder/code-server/raw/main/docs/assets/screenshot-2.png?raw=true)
@@ -24,24 +23,24 @@ access it in the browser.
 
 ## Examples
 
-### Extensions
+### Pre-install Extensions
 
-Automatically install extensions from [OpenVSX](https://open-vsx.org/):
+Install the Dracula theme from [OpenVSX](https://open-vsx.org/):
 
 ```hcl
 module "code-server" {
     source = "https://registry.coder.com/modules/code-server"
     extensions = [
-        "
+        "dracula-theme.theme-dracula"
     ]
 }
 ```
 
 Enter the `<author>.<name>` into the extensions array and code-server will automatically install on start.
 
-### Settings
+### Pre-configure Settings
 
-Pre-configure code-server with settings:
+Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarted/settings#_settingsjson) file:
 
 ```hcl
 module "settings" {
