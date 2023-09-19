@@ -4,6 +4,7 @@ description: Add a one-click button to launch JetBrains Gateway IDEs in the dash
 icon: ../icons/gateway.svg
 maintainer_github: coder
 verified: true
+tags: [ide, jetbrains, gateway, goland, webstorm, intellij, pycharm, phpstorm, clion, rubymine, datagrip, rider]
 ---
 # JetBrains Gateway
 
