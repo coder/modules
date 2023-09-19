@@ -24,6 +24,7 @@ module "code-server" {
 - [code-server](https://registry.coder.com/modules/code-server): Install on start, create an app to access via the dashboard, install extensions, and pre-configure editor settings.
 - [personalize](https://registry.coder.com/modules/personalize): Run a script on workspace start that allows developers to run custom commands to personalize their workspace.
 - [VS Code Desktop](https://registry.coder.com/modules/vscode-desktop): Add a button to open any workspace in VS Code with a single click.
+- [JetBrains Gateway](https://registry.coder.com/modules/jetbrains-gateway): Display a button to launch JetBrains Gateway IDEs in the dashboard.
 
 ## Registry
 
@@ -40,7 +41,7 @@ To quickly start contributing with a new module, clone this repository and run:
 Test a module by running an instance of Coder on your local machine:
 
 ```bash
-$ coder server --in-memory
+coder server --in-memory
 ```
 
 Create a template and edit it to include your development module:
