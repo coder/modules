@@ -17,6 +17,9 @@ CODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
 
 # Install each extension...
 for extension in "$${EXTENSIONS[@]}"; do
+  if [ -z "$extension" ]; then
+    continue
+  fi
   printf "🧩 Installing extension $${CODE}$extension$${RESET}...\n"
   output=$($CODE_SERVER --install-extension "$extension")
   if [ $? -ne 0 ]; then
