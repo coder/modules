@@ -17,3 +17,22 @@ To quickly start contributing with a new module, clone this repository and run:
 ```sh
 ./new.sh
 ```
+
+Test a module by running an instance of Coder on your local machine:
+
+```bash
+$ coder server --in-memory
+```
+
+Create a template and edit it to include your development module:
+
+> *Info*
+> The Docker starter template is recommended for quick-iteration!
+
+```tf
+module "testing" {
+    source = "/home/user/coder/modules/my-new-module"
+}
+```
+
+Now create a workspace, and any resources you've created in your module should appear! 🥳
