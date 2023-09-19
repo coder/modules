@@ -1,4 +1,11 @@
-# JetBrains Gateway (jetBrains-gateway) module
+---
+display_name: JetBrains Gateway
+description: Add a one-click button to launch JetBrains Gateway IDEs in the dashboard.
+icon: ../icons/gateway.svg
+maintainer_github: coder
+verified: true
+---
+# JetBrains Gateway
 
 This module adds a JetBrains Gateway IDEs to your Coder template.
 
@@ -7,7 +14,7 @@ This module adds a JetBrains Gateway IDEs to your Coder template.
 To use this module, add the following snippet to your template manifest:
 
 ```hcl
-module "jetbrains_gatway" {
+module "jetbrains_gateway" {
   source = "git::https://github.com/coder/testing-modules.git//jetbrains-gateway"
   agent_id                 = coder_agent.main.id
   agent_name               = "main"

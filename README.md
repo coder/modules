@@ -5,6 +5,7 @@ Enjoy official, community, and partner modules to extend your Coder workspace.
 - [code-server](https://registry.coder.com/modules/code-server): Run VS Code in the browser
 - [personalize](https://registry.coder.com/modules/personalize): Execute a user-specific script on start
 - [VS Code Desktop](https://registry.coder.com/modules/vscode-desktop): Display a button to launch VS Code desktop in the dashboard.
+- [JetBrains Gateway](https://registry.coder.com/modules/jetbrains-gateway): Display a button to launch JetBrains Gateway IDEs in the dashboard.
 
 ## Registry
 
