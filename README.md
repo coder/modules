@@ -10,7 +10,7 @@ Enjoy official, community, and partner modules to extend your Coder workspace.
 
 Check out the [Coder Registry](https://registry.coder.com) for instructions to integrate modules into your template.
 
-## Adding a new module
+## Contributing a Module
 
 To quickly start contributing with a new module, clone this repository and run:
 
@@ -35,4 +35,7 @@ module "testing" {
 }
 ```
 
-Now create a workspace, and any resources you've created in your module should appear! 🥳
+Build a workspace and your module will be consumed! 🥳
+
+Open a pull-request with your module, a member of the Coder team will
+manually test it, and after-merge it will appear on the Registry.
