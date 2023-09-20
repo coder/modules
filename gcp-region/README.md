@@ -12,12 +12,21 @@ This module adds Google Cloud Platform regions to your Coder template.
 
 ## Examples
 
-To use this module, add the following snippet to your template manifest:
+1. Add only GPU zones in the US West 1 region:
 
-```hcl
-module "gcp_regions" {
-  source      = "https://registry.coder.com/modules/gcp-regions"
-  gcp_regions = ["us-west1", "us-west2", "us-west3"] # Add your desired regions here, use ["all"] for all regions
-  gpu_only    = true
-}
-```
+    ```hcl
+    module "regions" {
+      source      = "https://registry.coder.com/modules/gcp-regions"
+      default     = ["us-west1"]
+      gpu_only    = true
+    }
+    ```
+
+2. Add all zones in the Europe West region:
+
+    ```hcl
+    module "regions" {
+      source      = "https://registry.coder.com/modules/gcp-regions"
+      default     = ["europe-west"]
+    }
+    ```
