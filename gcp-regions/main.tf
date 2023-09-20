@@ -38,9 +38,9 @@ locals {
     { zone = "us-central1-f", has_gpu = true, location = "Council Bluffs, Iowa, USA", icon = "/emojis/1f1fa-1f1f8.png" },
 
     # US East
-    { zone = "us-east1-b", has_gpu = true, location = "Moncks Corner, South Carolina, USA", icon = "/emojis/1f1fa-1f1f8.png" },
-    { zone = "us-east1-c", has_gpu = true, location = "Moncks Corner, South Carolina, USA", icon = "/emojis/1f1fa-1f1f8.png" },
-    { zone = "us-east1-d", has_gpu = true, location = "Moncks Corner, South Carolina, USA", icon = "/emojis/1f1fa-1f1f8.png" },
+    { zone = "us-east1-b", has_gpu = true, location = "Moncks Corner, S. Carolina, USA", icon = "/emojis/1f1fa-1f1f8.png" },
+    { zone = "us-east1-c", has_gpu = true, location = "Moncks Corner, S. Carolina, USA", icon = "/emojis/1f1fa-1f1f8.png" },
+    { zone = "us-east1-d", has_gpu = true, location = "Moncks Corner, S. Carolina, USA", icon = "/emojis/1f1fa-1f1f8.png" },
 
     { zone = "us-east4-a", has_gpu = true, location = "Ashburn, Virginia, USA", icon = "/emojis/1f1fa-1f1f8.png" },
     { zone = "us-east4-b", has_gpu = true, location = "Ashburn, Virginia, USA", icon = "/emojis/1f1fa-1f1f8.png" },
