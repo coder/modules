@@ -700,7 +700,7 @@ data "coder_parameter" "region" {
   name         = "gcp_region"
   display_name = var.display_name
   description  = var.description
-  icon         = "/icon/gcp.svg"
+  icon         = "/icon/gcp.png"
   mutable      = var.mutable
   dynamic "option" {
     for_each = { for k, v in local.zones : k => v if(contains(var.default, k) || contains(var.default, "all")) && (!var.gpu_only || v.has_gpu) }
