@@ -2,7 +2,7 @@
 display_name: Azure Region
 description: A parameter with human region names and icons
 icon: ../icons/azure.svg
-maintainer:github: coder
+maintainer_github: coder
 verified: true
 tags: [helper, parameter, azure]
 ---

@@ -2,7 +2,7 @@
 display_name: Google Cloud Region
 description: A parameter with human region names and icons
 icon: ../icons/gcp.svg
-maintainer:github: coder
+maintainer_github: coder
 verified: true
 tags: [helper, parameter, azure]
 ---
