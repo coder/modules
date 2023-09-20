@@ -52,6 +52,9 @@ variable "exclude" {
 }
 
 locals {
+  # This is a static list because the regions don't change _that_
+  # frequently and including the `aws_regions` data source requires
+  # the provider, which requires a region.
   regions = {
     "ap-northeast-1" = {
     name = "Asia Pacific (Tokyo)"
