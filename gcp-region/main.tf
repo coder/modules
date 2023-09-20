@@ -56,641 +56,641 @@ locals {
     # US Central
     "us-central1-a" = {
       has_gpu = true
-      name    = "Council Bluffs, Iowa, USA"
+      name    = "Council Bluffs, Iowa, USA (a)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-central1-b" = {
       has_gpu = true
-      name    = "Council Bluffs, Iowa, USA"
+      name    = "Council Bluffs, Iowa, USA (b)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-central1-c" = {
       has_gpu = true
-      name    = "Council Bluffs, Iowa, USA"
+      name    = "Council Bluffs, Iowa, USA (c)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-central1-f" = {
       has_gpu = true
-      name    = "Council Bluffs, Iowa, USA"
+      name    = "Council Bluffs, Iowa, USA (f)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
 
     # US East
     "us-east1-b" = {
       has_gpu = true
-      name    = "Moncks Corner, S. Carolina, USA"
+      name    = "Moncks Corner, S. Carolina, USA (b)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-east1-c" = {
       has_gpu = true
-      name    = "Moncks Corner, S. Carolina, USA"
+      name    = "Moncks Corner, S. Carolina, USA (c)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-east1-d" = {
       has_gpu = true
-      name    = "Moncks Corner, S. Carolina, USA"
+      name    = "Moncks Corner, S. Carolina, USA (d)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
 
     "us-east4-a" = {
       has_gpu = true
-      name    = "Ashburn, Virginia, USA"
+      name    = "Ashburn, Virginia, USA (a)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-east4-b" = {
       has_gpu = true
-      name    = "Ashburn, Virginia, USA"
+      name    = "Ashburn, Virginia, USA (b)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-east4-c" = {
       has_gpu = true
-      name    = "Ashburn, Virginia, USA"
+      name    = "Ashburn, Virginia, USA (c)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
 
     "us-east5-a" = {
       has_gpu = false
-      name    = "Columbus, Ohio, USA"
+      name    = "Columbus, Ohio, USA (a)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-east5-b" = {
       has_gpu = true
-      name    = "Columbus, Ohio, USA"
+      name    = "Columbus, Ohio, USA (b)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-east5-c" = {
       has_gpu = false
-      name    = "Columbus, Ohio, USA"
+      name    = "Columbus, Ohio, USA (c)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
 
     # Us West
     "us-west1-a" = {
       has_gpu = true
-      name    = "The Dalles, Oregon, USA"
+      name    = "The Dalles, Oregon, USA (a)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-west1-b" = {
       has_gpu = true
-      name    = "The Dalles, Oregon, USA"
+      name    = "The Dalles, Oregon, USA (b)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-west1-c" = {
       has_gpu = false
-      name    = "The Dalles, Oregon, USA"
+      name    = "The Dalles, Oregon, USA (c)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
 
     "us-west2-a" = {
       has_gpu = false
-      name    = "Los Angeles, California, USA"
+      name    = "Los Angeles, California, USA (a)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-west2-b" = {
       has_gpu = true
-      name    = "Los Angeles, California, USA"
+      name    = "Los Angeles, California, USA (b)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-west2-c" = {
       has_gpu = true
-      name    = "Los Angeles, California, USA"
+      name    = "Los Angeles, California, USA (c)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
 
     "us-west3-a" = {
       has_gpu = true
-      name    = "Salt Lake City, Utah, USA"
+      name    = "Salt Lake City, Utah, USA (a)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-west3-b" = {
       has_gpu = true
-      name    = "Salt Lake City, Utah, USA"
+      name    = "Salt Lake City, Utah, USA (b)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-west3-c" = {
       has_gpu = true
-      name    = "Salt Lake City, Utah, USA"
+      name    = "Salt Lake City, Utah, USA (c)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
 
     "us-west4-a" = {
       has_gpu = true
-      name    = "Las Vegas, Nevada, USA"
+      name    = "Las Vegas, Nevada, USA (a)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-west4-b" = {
       has_gpu = true
-      name    = "Las Vegas, Nevada, USA"
+      name    = "Las Vegas, Nevada, USA (b)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-west4-c" = {
       has_gpu = true
-      name    = "Las Vegas, Nevada, USA"
+      name    = "Las Vegas, Nevada, USA (c)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
 
     # US South
     "us-south1-a" = {
       has_gpu = false
-      name    = "Dallas, Texas, USA"
+      name    = "Dallas, Texas, USA (a)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-south1-b" = {
       has_gpu = false
-      name    = "Dallas, Texas, USA"
+      name    = "Dallas, Texas, USA (b)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
     "us-south1-c" = {
       has_gpu = false
-      name    = "Dallas, Texas, USA"
+      name    = "Dallas, Texas, USA (c)"
       icon    = "/emojis/1f1fa-1f1f8.png"
     }
 
     # Canada
     "northamerica-northeast1-a" = {
       has_gpu = true
-      name    = "Montréal, Québec, Canada"
+      name    = "Montréal, Québec, Canada (a)"
       icon    = "/emojis/1f1e8-1f1f6.png"
     }
     "northamerica-northeast1-b" = {
       has_gpu = true
-      name    = "Montréal, Québec, Canada"
+      name    = "Montréal, Québec, Canada (b)"
       icon    = "/emojis/1f1e8-1f1f6.png"
     }
     "northamerica-northeast1-c" = {
       has_gpu = true
-      name    = "Montréal, Québec, Canada"
+      name    = "Montréal, Québec, Canada (c)"
       icon    = "/emojis/1f1e8-1f1f6.png"
     }
 
     "northamerica-northeast2-a" = {
       has_gpu = false
-      name    = "Toronto, Ontario, Canada"
+      name    = "Toronto, Ontario, Canada (a)"
       icon    = "/emojis/1f1e8-1f1f6.png"
     }
     "northamerica-northeast2-b" = {
       has_gpu = false
-      name    = "Toronto, Ontario, Canada"
+      name    = "Toronto, Ontario, Canada (b)"
       icon    = "/emojis/1f1e8-1f1f6.png"
     }
     "northamerica-northeast2-c" = {
       has_gpu = false
-      name    = "Toronto, Ontario, Canada"
+      name    = "Toronto, Ontario, Canada (c)"
       icon    = "/emojis/1f1e8-1f1f6.png"
     }
 
     # South America East (Brazil, Chile)
     "southamerica-east1-a" = {
       has_gpu = true
-      name    = "Osasco, São Paulo, Brazil"
+      name    = "Osasco, São Paulo, Brazil (a)"
       icon    = "/emojis/1f1e7-1f1f7.png"
     }
     "southamerica-east1-b" = {
       has_gpu = false
-      name    = "Osasco, São Paulo, Brazil"
+      name    = "Osasco, São Paulo, Brazil (b)"
       icon    = "/emojis/1f1e7-1f1f7.png"
     }
     "southamerica-east1-c" = {
       has_gpu = true
-      name    = "Osasco, São Paulo, Brazil"
+      name    = "Osasco, São Paulo, Brazil (c)"
       icon    = "/emojis/1f1e7-1f1f7.png"
     }
 
     "southamerica-west1-a" = {
       has_gpu = false
-      name    = "Santiago, Chile"
+      name    = "Santiago, Chile (a)"
       icon    = "/emojis/1f1e8-1f1f1.png"
     }
     "southamerica-west1-b" = {
       has_gpu = false
-      name    = "Santiago, Chile"
+      name    = "Santiago, Chile (b)"
       icon    = "/emojis/1f1e8-1f1f1.png"
     }
     "southamerica-west1-c" = {
       has_gpu = false
-      name    = "Santiago, Chile"
+      name    = "Santiago, Chile (c)"
       icon    = "/emojis/1f1e8-1f1f1.png"
     }
 
     # Europe North (Finland)
     "europe-north1-a" = {
       has_gpu = false
-      name    = "Hamina, Finland"
+      name    = "Hamina, Finland (a)"
       icon    = "/emojis/1f1e7-1f1ee.png"
     }
     "europe-north1-b" = {
       has_gpu = false
-      name    = "Hamina, Finland"
+      name    = "Hamina, Finland (b)"
       icon    = "/emojis/1f1e7-1f1ee.png"
     }
     "europe-north1-c" = {
       has_gpu = false
-      name    = "Hamina, Finland"
+      name    = "Hamina, Finland (c)"
       icon    = "/emojis/1f1e7-1f1ee.png"
     }
 
     # Europe Central (Poland)
     "europe-central2-a" = {
       has_gpu = false
-      name    = "Warsaw, Poland"
+      name    = "Warsaw, Poland (a)"
       icon    = "/emojis/1f1f5-1f1f1.png"
     }
     "europe-central2-b" = {
       has_gpu = true
-      name    = "Warsaw, Poland"
+      name    = "Warsaw, Poland (b)"
       icon    = "/emojis/1f1f5-1f1f1.png"
     }
     "europe-central2-c" = {
       has_gpu = true
-      name    = "Warsaw, Poland"
+      name    = "Warsaw, Poland (c)"
       icon    = "/emojis/1f1f5-1f1f1.png"
     }
 
     # Europe Southwest (Spain)
     "europe-southwest1-a" = {
       has_gpu = false
-      name    = "Madrid, Spain"
+      name    = "Madrid, Spain (a)"
       icon    = "/emojis/1f1ea-1f1f8.png"
     }
     "europe-southwest1-b" = {
       has_gpu = false
-      name    = "Madrid, Spain"
+      name    = "Madrid, Spain (b)"
       icon    = "/emojis/1f1ea-1f1f8.png"
     }
     "europe-southwest1-c" = {
       has_gpu = false
-      name    = "Madrid, Spain"
+      name    = "Madrid, Spain (c)"
       icon    = "/emojis/1f1ea-1f1f8.png"
     }
 
     # Europe West
     "europe-west1-b" = {
       has_gpu = true
-      name    = "St. Ghislain, Belgium"
+      name    = "St. Ghislain, Belgium (b)"
       icon    = "/emojis/1f1e7-1f1ea.png"
     }
     "europe-west1-c" = {
       has_gpu = true
-      name    = "St. Ghislain, Belgium"
+      name    = "St. Ghislain, Belgium (c)"
       icon    = "/emojis/1f1e7-1f1ea.png"
     }
     "europe-west1-d" = {
       has_gpu = true
-      name    = "St. Ghislain, Belgium"
+      name    = "St. Ghislain, Belgium (d)"
       icon    = "/emojis/1f1e7-1f1ea.png"
     }
 
     "europe-west2-a" = {
       has_gpu = true
-      name    = "London, England"
+      name    = "London, England (a)"
       icon    = "/emojis/1f173-1f1ff.png"
     }
     "europe-west2-b" = {
       has_gpu = true
-      name    = "London, England"
+      name    = "London, England (b)"
       icon    = "/emojis/1f173-1f1ff.png"
     }
     "europe-west2-c" = {
       has_gpu = false
-      name    = "London, England"
+      name    = "London, England (c)"
       icon    = "/emojis/1f173-1f1ff.png"
     }
 
     "europe-west3-b" = {
       has_gpu = false
-      name    = "Frankfurt, Germany"
+      name    = "Frankfurt, Germany (b)"
       icon    = "/emojis/1f1e9-1f1ea.png"
     }
     "europe-west3-c" = {
       has_gpu = true
-      name    = "Frankfurt, Germany"
+      name    = "Frankfurt, Germany (c)"
       icon    = "/emojis/1f1e9-1f1ea.png"
     }
     "europe-west3-d" = {
       has_gpu = false
-      name    = "Frankfurt, Germany"
+      name    = "Frankfurt, Germany (d)"
       icon    = "/emojis/1f1e9-1f1ea.png"
     }
 
     "europe-west4-a" = {
       has_gpu = true
-      name    = "Eemshaven, Netherlands"
+      name    = "Eemshaven, Netherlands (a)"
       icon    = "/emojis/1f1f3-1f1f1.png"
     }
     "europe-west4-b" = {
       has_gpu = true
-      name    = "Eemshaven, Netherlands"
+      name    = "Eemshaven, Netherlands (b)"
       icon    = "/emojis/1f1f3-1f1f1.png"
     }
     "europe-west4-c" = {
       has_gpu = true
-      name    = "Eemshaven, Netherlands"
+      name    = "Eemshaven, Netherlands (c)"
       icon    = "/emojis/1f1f3-1f1f1.png"
     }
 
     "europe-west6-a" = {
       has_gpu = false
-      name    = "Zurich, Switzerland"
+      name    = "Zurich, Switzerland (a)"
       icon    = "/emojis/1f1e8-1f1ed.png"
     }
     "europe-west6-b" = {
       has_gpu = false
-      name    = "Zurich, Switzerland"
+      name    = "Zurich, Switzerland (b)"
       icon    = "/emojis/1f1e8-1f1ed.png"
     }
     "europe-west6-c" = {
       has_gpu = false
-      name    = "Zurich, Switzerland"
+      name    = "Zurich, Switzerland (c)"
       icon    = "/emojis/1f1e8-1f1ed.png"
     }
 
     "europe-west8-a" = {
       has_gpu = false
-      name    = "Milan, Italy"
+      name    = "Milan, Italy (a)"
       icon    = "/emojis/1f1ee-1f1f9.png"
     }
     "europe-west8-b" = {
       has_gpu = false
-      name    = "Milan, Italy"
+      name    = "Milan, Italy (b)"
       icon    = "/emojis/1f1ee-1f1f9.png"
     }
     "europe-west8-c" = {
       has_gpu = false
-      name    = "Milan, Italy"
+      name    = "Milan, Italy (c)"
       icon    = "/emojis/1f1ee-1f1f9.png"
     }
 
     "europe-west9-a" = {
       has_gpu = false
-      name    = "Paris, France"
+      name    = "Paris, France (a)"
       icon    = "/emojis/1f1eb-1f1f7.png"
     }
     "europe-west9-b" = {
       has_gpu = false
-      name    = "Paris, France"
+      name    = "Paris, France (b)"
       icon    = "/emojis/1f1eb-1f1f7.png"
     }
     "europe-west9-c" = {
       has_gpu = false
-      name    = "Paris, France"
+      name    = "Paris, France (c)"
       icon    = "/emojis/1f1eb-1f1f7.png"
     }
 
     "europe-west10-a" = {
       has_gpu = false
-      name    = "Berlin, Germany"
+      name    = "Berlin, Germany (a)"
       icon    = "/emojis/1f1e9-1f1ea.png"
     }
     "europe-west10-b" = {
       has_gpu = false
-      name    = "Berlin, Germany"
+      name    = "Berlin, Germany (b)"
       icon    = "/emojis/1f1e9-1f1ea.png"
     }
     "europe-west10-c" = {
       has_gpu = false
-      name    = "Berlin, Germany"
+      name    = "Berlin, Germany (c)"
       icon    = "/emojis/1f1e9-1f1ea.png"
     }
 
     "europe-west12-a" = {
       has_gpu = false
-      name    = "Turin, Italy"
+      name    = "Turin, Italy (a)"
       icon    = "/emojis/1f1ee-1f1f9.png"
     }
     "europe-west12-b" = {
       has_gpu = false
-      name    = "Turin, Italy"
+      name    = "Turin, Italy (b)"
       icon    = "/emojis/1f1ee-1f1f9.png"
     }
     "europe-west12-c" = {
       has_gpu = false
-      name    = "Turin, Italy"
+      name    = "Turin, Italy (c)"
       icon    = "/emojis/1f1ee-1f1f9.png"
     }
 
     # Middleeast Central (Qatar, Saudi Arabia)
     "me-central1-a" = {
       has_gpu = false
-      name    = "Doha, Qatar"
+      name    = "Doha, Qatar (a)"
       icon    = "/emojis/1f1f6-1f1e6.png"
     }
     "me-central1-b" = {
       has_gpu = false
-      name    = "Doha, Qatar"
+      name    = "Doha, Qatar (b)"
       icon    = "/emojis/1f1f6-1f1e6.png"
     }
     "me-central1-c" = {
       has_gpu = false
-      name    = "Doha, Qatar"
+      name    = "Doha, Qatar (c)"
       icon    = "/emojis/1f1f6-1f1e6.png"
     }
 
     "me-central2-a" = {
       has_gpu = false
-      name    = "Dammam, Saudi Arabia"
+      name    = "Dammam, Saudi Arabia (a)"
       icon    = "/emojis/1f1f8-1f1e6.png"
     }
     "me-central2-b" = {
       has_gpu = false
-      name    = "Dammam, Saudi Arabia"
+      name    = "Dammam, Saudi Arabia (b)"
       icon    = "/emojis/1f1f8-1f1e6.png"
     }
     "me-central2-c" = {
       has_gpu = false
-      name    = "Dammam, Saudi Arabia"
+      name    = "Dammam, Saudi Arabia (c)"
       icon    = "/emojis/1f1f8-1f1e6.png"
     }
 
     # Middleeast West (Israel)
     "me-west1-a" = {
       has_gpu = false
-      name    = "Tel Aviv, Israel"
+      name    = "Tel Aviv, Israel (a)"
       icon    = "/emojis/1f1ee-1f1f1.png"
     }
     "me-west1-b" = {
       has_gpu = true
-      name    = "Tel Aviv, Israel"
+      name    = "Tel Aviv, Israel (b)"
       icon    = "/emojis/1f1ee-1f1f1.png"
     }
     "me-west1-c" = {
       has_gpu = true
-      name    = "Tel Aviv, Israel"
+      name    = "Tel Aviv, Israel (c)"
       icon    = "/emojis/1f1ee-1f1f1.png"
     }
 
     # Asia East (Taiwan, Hong Kong)
     "asia-east1-a" = {
       has_gpu = true
-      name    = "Changhua County, Taiwan"
+      name    = "Changhua County, Taiwan (a)"
       icon    = "/emojis/1f1f9-1f1fc.png"
     }
     "asia-east1-b" = {
       has_gpu = true
-      name    = "Changhua County, Taiwan"
+      name    = "Changhua County, Taiwan (b)"
       icon    = "/emojis/1f1f9-1f1fc.png"
     }
     "asia-east1-c" = {
       has_gpu = true
-      name    = "Changhua County, Taiwan"
+      name    = "Changhua County, Taiwan (c)"
       icon    = "/emojis/1f1f9-1f1fc.png"
     }
 
     "asia-east2-a" = {
       has_gpu = true
-      name    = "Hong Kong"
+      name    = "Hong Kong (a)"
       icon    = "/emojis/1f1ed-1f1f0.png"
     }
     "asia-east2-b" = {
       has_gpu = false
-      name    = "Hong Kong"
+      name    = "Hong Kong (b)"
       icon    = "/emojis/1f1ed-1f1f0.png"
     }
     "asia-east2-c" = {
       has_gpu = true
-      name    = "Hong Kong"
+      name    = "Hong Kong (c)"
       icon    = "/emojis/1f1ed-1f1f0.png"
     }
 
     # Asia Northeast (Japan, South Korea)
     "asia-northeast1-a" = {
       has_gpu = true
-      name    = "Tokyo, Japan"
+      name    = "Tokyo, Japan (a)"
       icon    = "/emojis/1f1ef-1f1f5.png"
     }
     "asia-northeast1-b" = {
       has_gpu = false
-      name    = "Tokyo, Japan"
+      name    = "Tokyo, Japan (b)"
       icon    = "/emojis/1f1ef-1f1f5.png"
     }
     "asia-northeast1-c" = {
       has_gpu = true
-      name    = "Tokyo, Japan"
+      name    = "Tokyo, Japan (c)"
       icon    = "/emojis/1f1ef-1f1f5.png"
     }
     "asia-northeast2-a" = {
       has_gpu = false
-      name    = "Osaka, Japan"
+      name    = "Osaka, Japan (a)"
       icon    = "/emojis/1f1ef-1f1f5.png"
     }
     "asia-northeast2-b" = {
       has_gpu = false
-      name    = "Osaka, Japan"
+      name    = "Osaka, Japan (b)"
       icon    = "/emojis/1f1ef-1f1f5.png"
     }
     "asia-northeast2-c" = {
       has_gpu = false
-      name    = "Osaka, Japan"
+      name    = "Osaka, Japan (c)"
       icon    = "/emojis/1f1ef-1f1f5.png"
     }
     "asia-northeast3-a" = {
       has_gpu = true
-      name    = "Seoul, South Korea"
+      name    = "Seoul, South Korea (a)"
       icon    = "/emojis/1f1f0-1f1f7.png"
     }
     "asia-northeast3-b" = {
       has_gpu = true
-      name    = "Seoul, South Korea"
+      name    = "Seoul, South Korea (b)"
       icon    = "/emojis/1f1f0-1f1f7.png"
     }
     "asia-northeast3-c" = {
       has_gpu = true
-      name    = "Seoul, South Korea"
+      name    = "Seoul, South Korea (c)"
       icon    = "/emojis/1f1f0-1f1f7.png"
     }
 
     # Asia South (India)
     "asia-south1-a" = {
       has_gpu = true
-      name    = "Mumbai, India"
+      name    = "Mumbai, India (a)"
       icon    = "/emojis/1f1ee-1f1f3.png"
     }
     "asia-south1-b" = {
       has_gpu = true
-      name    = "Mumbai, India"
+      name    = "Mumbai, India (b)"
       icon    = "/emojis/1f1ee-1f1f3.png"
     }
     "asia-south1-c" = {
       has_gpu = false
-      name    = "Mumbai, India"
+      name    = "Mumbai, India (c)"
       icon    = "/emojis/1f1ee-1f1f3.png"
     }
     "asia-south2-a" = {
       has_gpu = false
-      name    = "Delhi, India"
+      name    = "Delhi, India (a)"
       icon    = "/emojis/1f1ee-1f1f3.png"
     }
     "asia-south2-b" = {
       has_gpu = false
-      name    = "Delhi, India"
+      name    = "Delhi, India (b)"
       icon    = "/emojis/1f1ee-1f1f3.png"
     }
     "asia-south2-c" = {
       has_gpu = false
-      name    = "Delhi, India"
+      name    = "Delhi, India (c)"
       icon    = "/emojis/1f1ee-1f1f3.png"
     }
 
     # Asia Southeast (Singapore, Indonesia)
     "asia-southeast1-a" = {
       has_gpu = true
-      name    = "Jurong West, Singapore"
+      name    = "Jurong West, Singapore (a)"
       icon    = "/emojis/1f1f8-1f1ec.png"
     }
     "asia-southeast1-b" = {
       has_gpu = true
-      name    = "Jurong West, Singapore"
+      name    = "Jurong West, Singapore (b)"
       icon    = "/emojis/1f1f8-1f1ec.png"
     }
     "asia-southeast1-c" = {
       has_gpu = true
-      name    = "Jurong West, Singapore"
+      name    = "Jurong West, Singapore (c)"
       icon    = "/emojis/1f1f8-1f1ec.png"
     }
     "asia-southeast2-a" = {
       has_gpu = true
-      name    = "Jakarta, Indonesia"
+      name    = "Jakarta, Indonesia (a)"
       icon    = "/emojis/1f1ee-1f1e9.png"
     }
     "asia-southeast2-b" = {
       has_gpu = true
-      name    = "Jakarta, Indonesia"
+      name    = "Jakarta, Indonesia (b)"
       icon    = "/emojis/1f1ee-1f1e9.png"
     }
     "asia-southeast2-c" = {
       has_gpu = true
-      name    = "Jakarta, Indonesia"
+      name    = "Jakarta, Indonesia (c)"
       icon    = "/emojis/1f1ee-1f1e9.png"
     }
 
     # Australia (Sydney, Melbourne)
     "australia-southeast1-a" = {
       has_gpu = true
-      name    = "Sydney, Australia"
+      name    = "Sydney, Australia (a)"
       icon    = "/emojis/1f1e6-1f1fa.png"
     }
     "australia-southeast1-b" = {
       has_gpu = true
-      name    = "Sydney, Australia"
+      name    = "Sydney, Australia (b)"
       icon    = "/emojis/1f1e6-1f1fa.png"
     }
     "australia-southeast1-c" = {
       has_gpu = true
-      name    = "Sydney, Australia"
+      name    = "Sydney, Australia (c)"
       icon    = "/emojis/1f1e6-1f1fa.png"
     }
     "australia-southeast2-a" = {
       has_gpu = false
-      name    = "Melbourne, Australia"
+      name    = "Melbourne, Australia (a)"
       icon    = "/emojis/1f1e6-1f1fa.png"
     }
     "australia-southeast2-b" = {
       has_gpu = false
-      name    = "Melbourne, Australia"
+      name    = "Melbourne, Australia (b)"
       icon    = "/emojis/1f1e6-1f1fa.png"
     }
     "australia-southeast2-c" = {
       has_gpu = false
-      name    = "Melbourne, Australia"
+      name    = "Melbourne, Australia (c)"
       icon    = "/emojis/1f1e6-1f1fa.png"
     }
   }
