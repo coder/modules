@@ -25,14 +25,6 @@ variable "default" {
   description = "List of GCP regions to include."
   type        = list(string)
   default     = ["us-central1"]
-  validation {
-    condition     = length(var.default) > 0
-    error_message = "At least one region must be selected."
-  }
-  validation {
-    condition     = can(regexall("^[a-z0-9-]+$", var.default))
-    error_message = "All regions must be valid names."
-  }
 }
 
 variable "gpu_only" {
