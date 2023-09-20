@@ -1,16 +1,23 @@
 ---
-display_name: Google Cloud Region
-description: A parameter with human region names and icons
+display_name: GCP Regions
+description: Add Google Cloud Platform regions to your Coder template.
 icon: ../.icons/gcp.svg
 maintainer_github: coder
 verified: true
-tags: [helper, parameter, azure]
+tags: [gcp, regions, zones]
 ---
+# Google Cloud Platform Regions
 
-# Google Cloud Region
+This module adds Google Cloud Platform regions to your Coder template.
 
-A parameter with all Google Cloud regions. This allows developers to select the region closest to them.
+## How to use this module
 
-## Examples
+To use this module, add the following snippet to your template manifest:
 
-TODO
+```hcl
+module "gcp_regions" {
+  source      = "https://registry.coder.com/modules/gcp-regions"
+  gcp_regions = ["us-west1", "us-west2", "us-west3"] # Add your desired regions here, use ["all"] for all regions
+  gpu_only    = true
+}
+```
