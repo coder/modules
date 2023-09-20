@@ -46,3 +46,18 @@ provider "aws" {
     region = module.aws_region.value
 }
 ```
+
+### Exclude Regions
+
+Hide the `westus2` region:
+
+```hcl
+module "aws-region" {
+    source = "https://registry.coder.com/modules/aws-region"
+    exclude = [ "westus2" ]
+}
+
+provider "aws" {
+    region = module.aws_region.value
+}
+```
