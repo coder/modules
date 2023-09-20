@@ -9,7 +9,7 @@ tags: [helper, parameter, azure]
 
 # Azure Region
 
-A parameter with all Azure regions. This allows developers to select the region closest to them.
+This module adds a parameter with all Azure regions. This allows developers to select the region closest to them.
 
 ## Examples
 
