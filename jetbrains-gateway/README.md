@@ -16,10 +16,10 @@ To use this module, add the following snippet to your template manifest:
 
 ```hcl
 module "jetbrains_gateway" {
-  source = "git::https://github.com/coder/testing-modules.git//jetbrains-gateway"
+  source                   = "https://registry.coder.com/modules/jetbrains-gateway"
   agent_id                 = coder_agent.main.id
   agent_name               = "main"
-  project_directory        = "/home/coder"
+  project_directory        = "/home/coder/project"
   gateway_ide_product_code = ["GO","WS"] # A list of JetBrains product codes use ["ALL"] for all products
 }
 ```
