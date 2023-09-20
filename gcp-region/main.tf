@@ -705,7 +705,7 @@ data "coder_parameter" "region" {
   mutable      = var.mutable
 
   dynamic "option" {
-    for_each = { for k, v in local.zones : k => v if contains(var.default, k) && (!var.gpu_only || v.has_gpu) }
+    for_each = { for k, v in local.zones : k => v if(contains(var.default, k) || contains(var.var.default, "all")) && (!var.gpu_only || v.has_gpu) }
     content {
       icon        = try(var.custom_icons[option.key], option.value.icon)
       name        = try(var.custom_names[option.key], option.value.name)
