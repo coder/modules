@@ -7,7 +7,7 @@ verified: true
 tags: [helper, parameter]
 ---
 
-# AWS Regions
+# AWS Region
 
 A parameter with all AWS regions. This allows developers to select
 the region closest to them.
