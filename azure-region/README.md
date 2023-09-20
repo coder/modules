@@ -13,4 +13,36 @@ A parameter with all Azure regions. This allows developers to select the region 
 
 ## Examples
 
-TODO
+### Default region
+
+```hcl
+module "azure_region" {
+    source = "https://registry.coder.com/modules/azure-region"
+    default = "eastus"
+}
+
+provider "azure" {
+    region = module.azure_region.value
+    ...
+}
+```
+
+### Customize existing regions
+
+Change the display name for a region:
+
+```hcl
+module "azure-region" {
+    source = "https://registry.coder.com/modules/azure-region"
+    custom_names = {
+        "eastus": "Eastern United States!"
+    }
+    custom_icons = {
+        "eastus": "/icons/smiley.svg"
+    }
+}
+
+provider "aws" {
+    region = module.aws_region.value
+}
+```

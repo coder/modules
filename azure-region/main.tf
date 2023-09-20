@@ -51,7 +51,7 @@ variable "exclude" {
 }
 
 locals {
-    regions = {
+    all_regions = {
         "eastus" = {
             name = "US (Virginia)"
             icon = "/emojis/1f1fa-1f1f8.png"
@@ -166,7 +166,7 @@ data "coder_parameter" "region" {
     default = var.default
     mutable = var.mutable
     dynamic "option" {
-        for_each = { for k, v in local.regions : k => v if !(contains(var.exclude, k)) }
+        for_each = { for k, v in local.all_regions : k => v if !(contains(var.exclude, k)) }
         content {
             name = try(var.custom_names[option.key], option.value.name)
             icon = try(var.custom_icons[option.key], option.value.icon)
