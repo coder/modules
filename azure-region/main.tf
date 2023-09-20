@@ -9,7 +9,7 @@ terraform {
   }
 }
 
-varaible "display_name" {
+variable "display_name" {
     default = "Azure Region"
     description = "The display name of the Coder parameter."
     type = string
