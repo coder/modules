@@ -131,7 +131,7 @@ data "coder_parameter" "region" {
     default = var.default
     mutable = var.mutable
     dynamic "option" {
-        for_each = { for k, v in var.regions : k => v if !(contains(var.exclude, k)) }
+        for_each = { for k, v in local.regions : k => v if !(contains(var.exclude, k)) }
         content {
             name = try(var.custom_names[option.key], option.value.name)
             icon = try(var.custom_icons[option.key], option.value.icon)
