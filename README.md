@@ -5,7 +5,6 @@
 
 [Registry](https://registry.coder.com) | [Coder Docs](https://coder.com/docs) | [Why Coder](https://coder.com/why) | [Coder Enterprise](https://coder.com/docs/v2/latest/enterprise)
 
-<<<<<<< HEAD
 [![discord](https://img.shields.io/discord/747933592273027093?label=discord)](https://discord.gg/coder)
 [![license](https://img.shields.io/github/license/coder/modules)](./LICENSE)
 
@@ -25,11 +24,6 @@ module "code-server" {
 - [code-server](https://registry.coder.com/modules/code-server): Install on start, create an app to access via the dashboard, install extensions, and pre-configure editor settings.
 - [personalize](https://registry.coder.com/modules/personalize): Run a script on workspace start that allows developers to run custom commands to personalize their workspace.
 - [VS Code Desktop](https://registry.coder.com/modules/vscode-desktop): Add a button to open any workspace in VS Code with a single click.
-=======
-- [code-server](https://registry.coder.com/modules/code-server): Run VS Code in the browser
-- [personalize](https://registry.coder.com/modules/personalize): Execute a user-specific script on start
-- [VS Code Desktop](https://registry.coder.com/modules/vscode-desktop): Display a button to launch VS Code desktop in the dashboard.
->>>>>>> d4c77fc688997867a21c7a5fab2ef5fa24ad6f61
 - [JetBrains Gateway](https://registry.coder.com/modules/jetbrains-gateway): Display a button to launch JetBrains Gateway IDEs in the dashboard.
 
 ## Registry
