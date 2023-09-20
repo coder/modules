@@ -143,13 +143,13 @@ locals {
     { zone = "europe-west12-c", has_gpu = false, location = "Turin, Italy", icon = "/emojis/1f1ee-1f1f9.png" },
 
     # Middleeast Central (Qatar, Saudi Arabia)
-    { zone = "me-central1-a	", has_gpu = false, location = "Doha, Qatar", icon = "/emojis/1f1f6-1f1e6.png" },
-    { zone = "me-central1-b	", has_gpu = false, location = "Doha, Qatar", icon = "/emojis/1f1f6-1f1e6.png" },
-    { zone = "me-central1-c	", has_gpu = false, location = "Doha, Qatar", icon = "/emojis/1f1f6-1f1e6.png" },
+    { zone = "me-central1-a", has_gpu = false, location = "Doha, Qatar", icon = "/emojis/1f1f6-1f1e6.png" },
+    { zone = "me-central1-b", has_gpu = false, location = "Doha, Qatar", icon = "/emojis/1f1f6-1f1e6.png" },
+    { zone = "me-central1-c", has_gpu = false, location = "Doha, Qatar", icon = "/emojis/1f1f6-1f1e6.png" },
 
-    { zone = "me-central2-a	", has_gpu = false, location = "Dammam, Saudi Arabia", icon = "/emojis/1f1f8-1f1e6.png" },
-    { zone = "me-central2-b	", has_gpu = false, location = "Dammam, Saudi Arabia", icon = "/emojis/1f1f8-1f1e6.png" },
-    { zone = "me-central2-c	", has_gpu = false, location = "Dammam, Saudi Arabia", icon = "/emojis/1f1f8-1f1e6.png" },
+    { zone = "me-central2-a", has_gpu = false, location = "Dammam, Saudi Arabia", icon = "/emojis/1f1f8-1f1e6.png" },
+    { zone = "me-central2-b", has_gpu = false, location = "Dammam, Saudi Arabia", icon = "/emojis/1f1f8-1f1e6.png" },
+    { zone = "me-central2-c", has_gpu = false, location = "Dammam, Saudi Arabia", icon = "/emojis/1f1f8-1f1e6.png" },
 
     # Middleeast West (Israel)
     { zone = "me-west1-a", has_gpu = false, location = "Tel Aviv, Israel", icon = "/emojis/1f1ee-1f1f1.png" },
@@ -202,11 +202,11 @@ locals {
   ]
 }
 
-data "coder_parameter" "gcp-zones" {
+data "coder_parameter" "gcp_zones" {
   type         = "list(string)"
   name         = "gcp_zones"
   display_name = "GCP Zones"
-  icon         = "/icon/gcp/svg"
+  icon         = "/icon/gcp.svg"
   mutable      = true
 
   dynamic "option" {

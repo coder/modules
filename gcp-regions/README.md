@@ -18,6 +18,6 @@ To use this module, add the following snippet to your template manifest:
 module "gcp_regions" {
   source      = "https://registry.coder.com/modules/gcp-regions"
   gcp_regions = ["us-west1", "us-west2", "us-west3"] # Add your desired regions here, use ["all"] for all regions
-  gpu_only    = true  
+  gpu_only    = true
 }
 ```
