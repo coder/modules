@@ -9,8 +9,55 @@ tags: [helper, parameter, azure]
 
 # Azure Region
 
-A parameter with all Azure regions. This allows developers to select the region closest to them.
+This module adds a parameter with all Azure regions. This allows developers to select the region closest to them.
 
 ## Examples
 
-TODO
+### Default region
+
+```hcl
+module "azure_region" {
+    source = "https://registry.coder.com/modules/azure-region"
+    default = "eastus"
+}
+
+provider "azure" {
+    region = module.azure_region.value
+    ...
+}
+```
+
+### Customize existing regions
+
+Change the display name for a region:
+
+```hcl
+module "azure-region" {
+    source = "https://registry.coder.com/modules/azure-region"
+    custom_names = {
+        "eastus": "Eastern United States!"
+    }
+    custom_icons = {
+        "eastus": "/icons/smiley.svg"
+    }
+}
+
+provider "aws" {
+    region = module.aws_region.value
+}
+```
+
+### Exclude Regions
+
+Hide the `westus2` region:
+
+```hcl
+module "aws-region" {
+    source = "https://registry.coder.com/modules/aws-region"
+    exclude = [ "westus2" ]
+}
+
+provider "aws" {
+    region = module.aws_region.value
+}
+```
