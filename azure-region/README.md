@@ -9,7 +9,7 @@ tags: [helper, parameter, azure]
 
 # Azure Region
 
-This module adds a parameter with all Azure regions. This allows developers to select the region closest to them.
+This module adds a parameter with all Azure regions, allowing developers to select the region closest to them.
 
 ## Examples
 
@@ -21,9 +21,8 @@ module "azure_region" {
     default = "eastus"
 }
 
-provider "azure" {
-    region = module.azure_region.value
-    ...
+resource "azurem_resource_group" "example" {
+    location = module.azure_region.value
 }
 ```
 
@@ -42,8 +41,8 @@ module "azure-region" {
     }
 }
 
-provider "azure" {
-    region = module.azure_region.value
+resource "azurerm_resource_group" "example" {
+    location = module.azure_region.value
 }
 ```
 
@@ -57,7 +56,7 @@ module "azure-region" {
     exclude = [ "westus2" ]
 }
 
-provider "azure" {
-    region = module.azure_region.value
+resource "azurerm_resource_group" "example" {
+    location = module.azure_region.value
 }
 ```
