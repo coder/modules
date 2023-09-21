@@ -14,53 +14,32 @@ variable "agent_id" {
   description = "The ID of a Coder agent."
 }
 
-variable "extensions" {
-  type        = list(string)
-  description = "A list of extensions to install."
-  default     = []
-}
-
 variable "port" {
   type        = number
-  description = "The port to run code-server on."
-  default     = 13337
+  description = "The port to run KasmVNC on."
+  default     = 8443
 }
 
-variable "settings" {
-  type        = map(string)
-  description = "A map of settings to apply to code-server."
-  default     = {}
-}
-
-variable "folder" {
+variable "desktop_environment" {
   type        = string
-  description = "The folder to open in code-server."
-  default     = ""
+  description = "The desktop environment to for KasmVNC (xfce, lxde, mate, etc)."
+  default     = "lxde"
 }
 
-variable "install_prefix" {
+variable "version" {
   type        = string
-  description = "The prefix to install code-server to."
-  default     = "/tmp/code-server"
+  description = "Version of KasmVNC to install."
+  default     = "1.2.0"
 }
 
-variable "log_path" {
-  type        = string
-  description = "The path to log code-server to."
-  default     = "/tmp/code-server.log"
-}
-
-resource "coder_script" "code-server" {
+resource "coder_script" "kasm_vnc" {
   agent_id     = var.agent_id
-  display_name = "code-server"
-  icon         = "/icon/code.svg"
+  display_name = "KasmVNC"
+  icon         = "/icon/kasm.png"
   script = templatefile("${path.module}/run.sh", {
-    EXTENSIONS : join(",", var.extensions),
     PORT : var.port,
-    LOG_PATH : var.log_path,
-    INSTALL_PREFIX : var.install_prefix,
-    // This is necessary otherwise the quotes are stripped!
-    SETTINGS : replace(jsonencode(var.settings), "\"", "\\\""),
+    DESKTOP_ENVIRONMENT : var.desktop_environment,
+    VERSION : var.version
   })
   run_on_start = true
 }
@@ -70,13 +49,7 @@ resource "coder_app" "kasm_vnc" {
   slug         = "kasm-vnc"
   display_name = "kasmVNC"
   url          = "http://localhost:${var.port}"
-  icon         = "/icon/vnc.svg"
+  icon         = "/icon/kasm.png"
   subdomain    = false
   share        = "owner"
-
-  healthcheck {
-    url       = "http://localhost:${var.port}/healthz"
-    interval  = 5
-    threshold = 6
-  }
 }
