@@ -51,26 +51,19 @@ variable "exclude" {
 }
 
 locals {
+    # Note: Options are limited to 64 regions, some redundant regions have been removed.
     all_regions = {
-		"asia" = {
-			name = "Asia"
-			icon = "/emojis/1f30f.png"
-		}
-		"asiapacific" = {
-			name = "Asia Pacific"
-			icon = "/emojis/1f30f.png"
-		}
 		"australia" = {
 			name = "Australia"
-			icon = "/icons/1f1e6-1f1fa.svg"
+			icon = "/icons/1f1e6-1f1fa.png"
 		}
 		"australiacentral" = {
 			name = "Australia Central"
-			icon = "/icons/1f1e6-1f1fa.svg"
+			icon = "/icons/1f1e6-1f1fa.png"
 		}
 		"australiacentral2" = {
 			name = "Australia Central 2"
-			icon = "/icons/1f1e6-1f1fa.svg"
+			icon = "/icons/1f1e6-1f1fa.png"
 		}
 		"australiaeast" = {
 			name = "Australia (New South Wales)"
@@ -78,11 +71,11 @@ locals {
 		}
 		"australiasoutheast" = {
 			name = "Australia Southeast"
-			icon = "/icons/1f1e6-1f1fa.svg"
+			icon = "/icons/1f1e6-1f1fa.png"
 		}
 		"brazil" = {
 			name = "Brazil"
-			icon = "/icons/1f1e7-1f1f7.svg"
+			icon = "/icons/1f1e7-1f1f7.png"
 		}
 		"brazilsouth" = {
 			name = "Brazil (Sao Paulo)"
@@ -90,15 +83,15 @@ locals {
 		}
 		"brazilsoutheast" = {
 			name = "Brazil Southeast"
-			icon = "/icons/1f1e7-1f1f7.svg"
+			icon = "/icons/1f1e7-1f1f7.png"
 		}
 		"brazilus" = {
 			name = "Brazil US"
-			icon = "/icons/1f1e7-1f1f7.svg"
+			icon = "/icons/1f1e7-1f1f7.png"
 		}
 		"canada" = {
 			name = "Canada"
-			icon = "/icons/1f1e8-1f1e6.svg"
+			icon = "/icons/1f1e8-1f1e6.png"
 		}
 		"canadacentral" = {
 			name = "Canada (Toronto)"
@@ -106,7 +99,7 @@ locals {
 		}
 		"canadaeast" = {
 			name = "Canada East"
-			icon = "/icons/1f1e8-1f1e6.svg"
+			icon = "/icons/1f1e8-1f1e6.png"
 		}
 		"centralindia" = {
 			name = "India (Pune)"
@@ -134,7 +127,7 @@ locals {
 		}
 		"france" = {
 			name = "France"
-			icon = "/icons/1f1eb-1f1f7.svg"
+			icon = "/icons/1f1eb-1f1f7.png"
 		}
 		"francecentral" = {
 			name = "France (Paris)"
@@ -142,31 +135,27 @@ locals {
 		}
 		"francesouth" = {
 			name = "France South"
-			icon = "/icons/1f1eb-1f1f7.svg"
+			icon = "/icons/1f1eb-1f1f7.png"
 		}
 		"germany" = {
 			name = "Germany"
-			icon = "/icons/1f1e9-1f1ea.svg"
+			icon = "/icons/1f1e9-1f1ea.png"
 		}
 		"germanynorth" = {
 			name = "Germany North"
-			icon = "/icons/1f1e9-1f1ea.svg"
+			icon = "/icons/1f1e9-1f1ea.png"
 		}
 		"germanywestcentral" = {
 			name = "Germany (Frankfurt)"
 			icon = "/emojis/1f1e9-1f1ea.png"
 		}
-		"global" = {
-			name = "Global"
-			icon = "/emojis/1f310.png"
-		}
 		"india" = {
 			name = "India"
-			icon = "/icons/1f1ee-1f1f3.svg"
+			icon = "/icons/1f1ee-1f1f3.png"
 		}
 		"japan" = {
 			name = "Japan"
-			icon = "/icons/1f1ef-1f1f5.svg"
+			icon = "/icons/1f1ef-1f1f5.png"
 		}
 		"japaneast" = {
 			name = "Japan (Tokyo)"
@@ -174,19 +163,15 @@ locals {
 		}
 		"japanwest" = {
 			name = "Japan West"
-			icon = "/icons/1f1ef-1f1f5.svg"
+			icon = "/icons/1f1ef-1f1f5.png"
 		}
 		"jioindiacentral" = {
 			name = "Jio India Central"
-			icon = "/icons/1f1ee-1f1f3.svg"
+			icon = "/icons/1f1ee-1f1f3.png"
 		}
 		"jioindiawest" = {
 			name = "Jio India West"
-			icon = "/icons/1f1ee-1f1f3.svg"
-		}
-		"korea" = {
-			name = "Korea"
-			icon = "/emojis/1f1f0-1f1f7.png"
+			icon = "/icons/1f1ee-1f1f3.png"
 		}
 		"koreacentral" = {
 			name = "Korea (Seoul)"
@@ -206,7 +191,7 @@ locals {
 		}
 		"norway" = {
 			name = "Norway"
-			icon = "/icons/1f1f3-1f1f4.svg"
+			icon = "/icons/1f1f3-1f1f4.png"
 		}
 		"norwayeast" = {
 			name = "Norway (Oslo)"
@@ -214,7 +199,7 @@ locals {
 		}
 		"norwaywest" = {
 			name = "Norway West"
-			icon = "/icons/1f1f3-1f1f4.svg"
+			icon = "/icons/1f1f3-1f1f4.png"
 		}
 		"qatarcentral" = {
 			name = "Qatar (Doha)"
@@ -222,11 +207,11 @@ locals {
 		}
 		"singapore" = {
 			name = "Singapore"
-			icon = "/icons/1f1f8-1f1ec.svg"
+			icon = "/icons/1f1f8-1f1ec.png"
 		}
 		"southafrica" = {
 			name = "South Africa"
-			icon = "/icons/1f1ff-1f1e6.svg"
+			icon = "/icons/1f1ff-1f1e6.png"
 		}
 		"southafricanorth" = {
 			name = "South Africa (Johannesburg)"
@@ -234,7 +219,7 @@ locals {
 		}
 		"southafricawest" = {
 			name = "South Africa West"
-			icon = "/icons/1f1ff-1f1e6.svg"
+			icon = "/icons/1f1ff-1f1e6.png"
 		}
 		"southcentralus" = {
 			name = "US (Texas)"
@@ -246,7 +231,7 @@ locals {
 		}
 		"southindia" = {
 			name = "South India"
-			icon = "/icons/1f1ee-1f1f3.svg"
+			icon = "/icons/1f1ee-1f1f3.png"
 		}
 		"swedencentral" = {
 			name = "Sweden (Gävle)"
@@ -254,7 +239,7 @@ locals {
 		}
 		"switzerland" = {
 			name = "Switzerland"
-			icon = "/icons/1f1e8-1f1ed.svg"
+			icon = "/icons/1f1e8-1f1ed.png"
 		}
 		"switzerlandnorth" = {
 			name = "Switzerland (Zurich)"
@@ -262,15 +247,15 @@ locals {
 		}
 		"switzerlandwest" = {
 			name = "Switzerland West"
-			icon = "/icons/1f1e8-1f1ed.svg"
+			icon = "/icons/1f1e8-1f1ed.png"
 		}
 		"uae" = {
 			name = "United Arab Emirates"
-			icon = "/icons/1f1e6-1f1ea.svg"
+			icon = "/icons/1f1e6-1f1ea.png"
 		}
 		"uaecentral" = {
 			name = "UAE Central"
-			icon = "/icons/1f1e6-1f1ea.svg"
+			icon = "/icons/1f1e6-1f1ea.png"
 		}
 		"uaenorth" = {
 			name = "UAE (Dubai)"
@@ -290,7 +275,7 @@ locals {
 		}
 		"unitedstates" = {
 			name = "United States"
-			icon = "/icons/1f1fa-1f1f8.svg"
+			icon = "/icons/1f1fa-1f1f8.png"
 		}
 		"westcentralus" = {
 			name = "West Central US"
@@ -302,7 +287,7 @@ locals {
 		}
 		"westindia" = {
 			name = "West India"
-			icon = "/icons/1f1ee-1f1f3.svg"
+			icon = "/icons/1f1ee-1f1f3.png"
 		}
 		"westus" = {
 			name = "West US"
