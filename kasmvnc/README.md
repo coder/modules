@@ -13,7 +13,7 @@ Automatically install [KasmVNC](https://kasmweb.com/kasmvnc) in a workspace, and
 
 ## Examples
 
-1. Add latest version of KasmVNC with ['lxde'](https://www.lxde.org/) desktop environment:
+1. Add latest version of KasmVNC with [`lxde`](https://www.lxde.org/) desktop environment:
 
    ```hcl
    module "kasmvnc" {
@@ -23,7 +23,7 @@ Automatically install [KasmVNC](https://kasmweb.com/kasmvnc) in a workspace, and
 
    ```
 
-2. Add specific version '0.9.11' of KasmVNC with ['mate'](https://mate-desktop.org/) desktop environment and custom port:
+2. Add specific version of KasmVNC with [`mate`](https://mate-desktop.org/) desktop environment and custom port:
 
    ```hcl
    module "kasmvnc" {
