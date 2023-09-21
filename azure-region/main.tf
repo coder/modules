@@ -116,21 +116,9 @@ locals {
 			name = "US (Iowa)"
 			icon = "/emojis/1f1fa-1f1f8.png"
 		}
-		"centraluseuap" = {
-			name = "Central US EUAP"
-			icon = "/emojis/1f1fa-1f1f8.png"
-		}
-		"centralusstage" = {
-			name = "Central US (Stage)"
-			icon = "/emojis/1f1fa-1f1f8.png"
-		}
 		"eastasia" = {
 			name = "East Asia (Hong Kong)"
 			icon = "/emojis/1f1f0-1f1f7.png"
-		}
-		"eastasiastage" = {
-			name = "East Asia (Stage)"
-			icon = "/emojis/1f30f.png"
 		}
 		"eastus" = {
 			name = "US (Virginia)"
@@ -138,22 +126,6 @@ locals {
 		}
 		"eastus2" = {
 			name = "US (Virginia) 2"
-			icon = "/emojis/1f1fa-1f1f8.png"
-		}
-		"eastus2euap" = {
-			name = "East US 2 EUAP"
-			icon = "/emojis/1f1fa-1f1f8.png"
-		}
-		"eastus2stage" = {
-			name = "East US 2 (Stage)"
-			icon = "/emojis/1f1fa-1f1f8.png"
-		}
-		"eastusstage" = {
-			name = "East US (Stage)"
-			icon = "/emojis/1f1fa-1f1f8.png"
-		}
-		"eastusstg" = {
-			name = "East US STG"
 			icon = "/emojis/1f1fa-1f1f8.png"
 		}
 		"europe" = {
@@ -228,10 +200,6 @@ locals {
 			name = "North Central US"
 			icon = "/emojis/1f1fa-1f1f8.png"
 		}
-		"northcentralusstage" = {
-			name = "North Central US (Stage)"
-			icon = "/emojis/1f1fa-1f1f8.png"
-		}
 		"northeurope" = {
 			name = "Europe (Ireland)"
 			icon = "/emojis/1f1ea-1f1fa.png"
@@ -272,17 +240,9 @@ locals {
 			name = "US (Texas)"
 			icon = "/emojis/1f1fa-1f1f8.png"
 		}
-		"southcentralusstage" = {
-			name = "South Central US (Stage)"
-			icon = "/emojis/1f1fa-1f1f8.png"
-		}
 		"southeastasia" = {
 			name = "Southeast Asia (Singapore)"
 			icon = "/emojis/1f1f0-1f1f7.png"
-		}
-		"southeastasiastage" = {
-			name = "Southeast Asia (Stage)"
-			icon = "/emojis/1f30f.png"
 		}
 		"southindia" = {
 			name = "South India"
@@ -332,10 +292,6 @@ locals {
 			name = "United States"
 			icon = "/icons/1f1fa-1f1f8.svg"
 		}
-		"unitedstateseuap" = {
-			name = "United States EUAP"
-			icon = "/icons/1f1fa-1f1f8.svg"
-		}
 		"westcentralus" = {
 			name = "West Central US"
 			icon = "/emojis/1f1fa-1f1f8.png"
@@ -356,16 +312,8 @@ locals {
 			name = "US (Washington)"
 			icon = "/emojis/1f1fa-1f1f8.png"
 		}
-		"westus2stage" = {
-			name = "West US 2 (Stage)"
-			icon = "/emojis/1f1fa-1f1f8.png"
-		}
 		"westus3" = {
 			name = "US (Arizona)"
-			icon = "/emojis/1f1fa-1f1f8.png"
-		}
-		"westusstage" = {
-			name = "West US (Stage)"
 			icon = "/emojis/1f1fa-1f1f8.png"
 		}
     }
