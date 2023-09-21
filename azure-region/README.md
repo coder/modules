@@ -42,8 +42,8 @@ module "azure-region" {
     }
 }
 
-provider "aws" {
-    region = module.aws_region.value
+provider "azure" {
+    region = module.azure_region.value
 }
 ```
 
@@ -52,12 +52,12 @@ provider "aws" {
 Hide the `westus2` region:
 
 ```hcl
-module "aws-region" {
-    source = "https://registry.coder.com/modules/aws-region"
+module "azure-region" {
+    source = "https://registry.coder.com/modules/azure-region"
     exclude = [ "westus2" ]
 }
 
-provider "aws" {
-    region = module.aws_region.value
+provider "azure" {
+    region = module.azure_region.value
 }
 ```
