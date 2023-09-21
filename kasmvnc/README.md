@@ -35,3 +35,5 @@ Automatically install [KasmVNC](https://kasmweb.com/kasmvnc) in a workspace, and
    }
 
    ```
+
+![Screenshot of KasmVNC]() //TODO
