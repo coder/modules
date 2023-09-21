@@ -4,7 +4,7 @@ description: A modern open source VNC server
 icon: ../.icons/kasm.png
 maintainer_github: coder
 verified: true
-tags: [helper, ide]
+tags: [helper, ide, VNC]
 ---
 
 # KasmVNC
