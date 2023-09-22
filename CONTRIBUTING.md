@@ -1,6 +1,6 @@
 # Contributing
 
-To quickly start contributing with a new module, clone this repository and run:
+To create a new module, clone this repository and run:
 
 ```shell
 ./new.sh MOUDLE_NAME
