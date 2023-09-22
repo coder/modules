@@ -30,6 +30,6 @@ module "code-server" {
 
 Check out the [Coder Registry](https://registry.coder.com) for instructions to integrate modules into your template.
 
-# Contributing a Module
+## Contributing a Module
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for instructions on how to construct and publish a module to the [Coder Registry](https://registry.coder.com).
