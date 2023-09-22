@@ -1,4 +1,4 @@
-# Contributing a Module
+# Contributing
 
 To quickly start contributing with a new module, clone this repository and run:
 
