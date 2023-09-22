@@ -35,7 +35,7 @@ variable "version" {
 resource "coder_script" "kasm_vnc" {
   agent_id     = var.agent_id
   display_name = "KasmVNC"
-  icon         = "/icon/kasm.png"
+  icon         = "/icon/kasmvnc.svg"
   script = templatefile("${path.module}/run.sh", {
     PORT : var.port,
     DESKTOP_ENVIRONMENT : var.desktop_environment,
@@ -49,7 +49,7 @@ resource "coder_app" "kasm_vnc" {
   slug         = "kasm-vnc"
   display_name = "kasmVNC"
   url          = "http://localhost:${var.port}"
-  icon         = "/icon/kasm.png"
+  icon         = "/icon/kasmvnc.svg"
   subdomain    = false
   share        = "owner"
 }
