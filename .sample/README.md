@@ -54,7 +54,7 @@ module "MODULE_NAME" {
 
 ### Example 3
 
-Just run code-server in the background, don't fetch it from GitHub:
+Run code-server in the background, don't fetch it from GitHub:
 
 ```hcl
 module "MODULE_NAME" {
@@ -62,4 +62,3 @@ module "MODULE_NAME" {
     agent_id = coder_agent.example.id
     offline = true
 }
-```
