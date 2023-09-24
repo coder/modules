@@ -4,7 +4,7 @@ description: Describe what this module does
 icon: ../.icons/<A_RELEVANT_ICON>.svg
 maintainer_github: GITHUB_USERNAME
 verified: false
-tags: [community]
+tags: [helper]
 ---
 
 # MODULE_NAME
