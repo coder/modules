@@ -731,5 +731,11 @@ data "coder_parameter" "region" {
 }
 
 output "value" {
-  value = data.coder_parameter.region.value
+  description = "GCP zone identifier."
+  value       = data.coder_parameter.region.value
+}
+
+output "region" {
+  description = "GCP region identifier."
+  value       = substr(data.coder_parameter.region.value, 0, length(data.coder_parameter.region.value) - 2)
 }
