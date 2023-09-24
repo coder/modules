@@ -27,7 +27,19 @@ This module adds Google Cloud Platform regions to your Coder template.
 
     ```hcl
     module "regions" {
-      source      = "https://registry.coder.com/modules/gcp-regions"
-      regions     = ["europe-west"]
+      source                 = "https://registry.coder.com/modules/gcp-regions"
+      regions                = ["europe-west"]
+      single_zone_per_region = false
+    }
+    ```
+
+3. Add a single zone from each region in US and Europe that laos has GPUs
+
+    ```hcl
+    module "regions" {
+      source                 = "https://registry.coder.com/modules/gcp-regions"
+      regions                = ["us"]
+      gpu_only               = true
+      single_zone_per_region = true
     }
     ```
