@@ -11,17 +11,12 @@ if ! command -v jupyterlab &> /dev/null then
         echo "Please install pip3 and try again"
         exit 1
     fi
+    pip3 install jupyterlab
+    echo "jupyterlab installed!"
 fi
 
-
-
-"
-
 echo "Starting ${MODULE_NAME}..."
-# Start the app in here
-# 1. Use & to run it in background
-# 2. redirct stdout and stderr to log files
 
-./app >${LOG_PATH} 2>&1 &
+$HOME/.local/bin/jupyter lab --no-browser --LabApp.token='' --LabApp.password='' >${LOG_PATH} 2>&1 &
 
-echo "Sample app started!"
+echo "Started ${MODULE_NAME}!"
