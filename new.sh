@@ -11,7 +11,7 @@ if [ -z "$MODULE_NAME" ]; then
     exit 1
 fi
 
-# Create module directory and exist if it alredy exists
+# Create module directory and exit if it alredy exists
 if [ -d "$MODULE_NAME" ]; then
     echo "Module with name $MODULE_NAME already exists"
     echo "Please choose a different name"
@@ -25,7 +25,13 @@ cp -r .sample/* "${MODULE_NAME}"
 # Change to module directory
 cd "${MODULE_NAME}"
 
-# Update main.tf with module name
-sed -i "s/MODULE_NAME/${MODULE_NAME}/g" main.tf
-# Update README.md with module name
-sed -i "s/MODULE_NAME/${MODULE_NAME}/g" README.md
+# Detect OS
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS
+    sed -i '' "s/MODULE_NAME/${MODULE_NAME}/g" main.tf
+    sed -i '' "s/MODULE_NAME/${MODULE_NAME}/g" README.md
+else
+    # Linux
+    sed -i "s/MODULE_NAME/${MODULE_NAME}/g" main.tf
+    sed -i "s/MODULE_NAME/${MODULE_NAME}/g" README.md
+fi
