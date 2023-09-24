@@ -9,9 +9,9 @@ tags: [community]
 
 # MODULE_NAME
 
-<-- Describes what this module does -->
+<!-- Describes what this module does -->
 
-<-- Add a screencast or screenshot here -->
+<!-- Add a screencast or screenshot here -->
 
 ```hcl
 module "MODULE_NAME" {
@@ -62,3 +62,4 @@ module "MODULE_NAME" {
     agent_id = coder_agent.example.id
     offline = true
 }
+```
