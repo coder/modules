@@ -355,17 +355,17 @@ locals {
     "europe-west2-a" = {
       gpu  = true
       name = "London, England (a)"
-      icon = "/emojis/1f6a9.png"
+      icon = "/emojis/1f1ec-1f1e7.png"
     }
     "europe-west2-b" = {
       gpu  = true
       name = "London, England (b)"
-      icon = "/emojis/1f6a9.png"
+      icon = "/emojis/1f1ec-1f1e7.png"
     }
     "europe-west2-c" = {
       gpu  = false
       name = "London, England (c)"
-      icon = "/emojis/1f6a9.png"
+      icon = "/emojis/1f1ec-1f1e7.png"
     }
 
     "europe-west3-b" = {
