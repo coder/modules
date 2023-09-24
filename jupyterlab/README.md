@@ -11,7 +11,7 @@ tags: [jupyter, helper]
 
 A module that adds JupyterLab in your Coder template.
 
-<!-- Add a screencast or screenshot here -->
+![JupyterLab](../.images/jupyterlab.webp)
 
 ```hcl
 module "jupyterlab" {
