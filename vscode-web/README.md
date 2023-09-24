@@ -27,10 +27,10 @@ Automatically install [VS Code](https://code.visualstudio.com) in a workspace, c
 
    ```hcl
    module "vscode-web" {
-       source         = "https://registry.coder.com/modules/vscode-web"
-       agent_id       = coder_agent.example.id
-       version        = "1.82.0"
-       folder         = "/home/coder/my-projet"
-       acept_license  = true
+       source          = "https://registry.coder.com/modules/vscode-web"
+       agent_id        = coder_agent.example.id
+       version         = "1.82.0"
+       folder          = "/home/coder/my-projet"
+       accept_license  = true
    }
    ```
