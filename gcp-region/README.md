@@ -10,6 +10,8 @@ tags: [gcp, regions, zones, helper]
 
 This module adds Google Cloud Platform regions to your Coder template.
 
+![GCP Regions](../.images/gcp-regions.png)
+
 ## Examples
 
 1. Add only GPU zones in the US West 1 region:
