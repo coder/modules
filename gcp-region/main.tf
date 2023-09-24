@@ -723,7 +723,7 @@ data "coder_parameter" "region" {
     content {
       icon = try(var.custom_icons[option.key], option.value.icon)
       # if single_zone_per_region is true, remove the zone letter from the name
-      name        = try(var.custom_names[option.key], var.single_zone_per_region ? replace(option.value.name, " \\(.*\\)$", "") : option.value.name)
+      name        = try(var.custom_names[option.key], var.single_zone_per_region ? substr(option.value.name, 0, length(option.value.name) - 4) : option.value.name)
       description = option.key
       value       = option.key
     }
