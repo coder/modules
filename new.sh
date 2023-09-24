@@ -4,6 +4,7 @@
 # Run it like : ./new.sh my-module
 
 MODULE_NAME=$1
+
 # Check if module name is provided
 if [ -z "$MODULE_NAME" ]; then
     echo "Usage: ./new.sh <module_name>"
@@ -20,10 +21,11 @@ mkdir -p "${MODULE_NAME}"
 
 # Copy required files from the sample module
 cp -r .sample/* "${MODULE_NAME}"
+
+# Change to module directory
+cd "${MODULE_NAME}"
+
 # Update main.tf with module name
 sed -i "s/MODULE_NAME/${MODULE_NAME}/g" main.tf
 # Update README.md with module name
 sed -i "s/MODULE_NAME/${MODULE_NAME}/g" README.md
-
-# Change to module directory
-cd "${MODULE_NAME}"
