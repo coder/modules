@@ -57,6 +57,12 @@ variable "custom_icons" {
   type        = map(string)
 }
 
+variable "single_zone_per_region" {
+  default     = true
+  description = "Whether to only include a single zone per region."
+  type        = bool
+}
+
 locals {
   zones = {
     # US Central
@@ -712,11 +718,12 @@ data "coder_parameter" "region" {
   dynamic "option" {
     for_each = {
       for k, v in local.zones : k => v
-      if anytrue([for d in var.regions : startswith(k, d)]) && (!var.gpu_only || v.gpu)
+      if anytrue([for d in var.regions : startswith(k, d)]) && (!var.gpu_only || v.gpu) && (!var.single_zone_per_region || endswith(k, "-a"))
     }
     content {
-      icon        = try(var.custom_icons[option.key], option.value.icon)
-      name        = try(var.custom_names[option.key], option.value.name)
+      icon = try(var.custom_icons[option.key], option.value.icon)
+      # if single_zone_per_region is true, remove the zone letter from the name
+      name        = try(var.custom_names[option.key], var.single_zone_per_region ? replace(option.value.name, " \\(.*\\)", "") : option.value.name)
       description = option.key
       value       = option.key
     }
