@@ -35,3 +35,6 @@ else
     sed -i "s/MODULE_NAME/${MODULE_NAME}/g" main.tf
     sed -i "s/MODULE_NAME/${MODULE_NAME}/g" README.md
 fi
+
+# Make run.sh executable
+chmod +x run.sh
