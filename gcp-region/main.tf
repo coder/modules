@@ -22,6 +22,12 @@ variable "description" {
 }
 
 variable "default" {
+  description = "Default zone"
+  type        = string
+  default     = "us-central1-a"
+}
+
+variable "regions" {
   description = "List of GCP regions to include."
   type        = list(string)
   default     = ["us-central1"]
@@ -702,10 +708,11 @@ data "coder_parameter" "region" {
   description  = var.description
   icon         = "/icon/gcp.png"
   mutable      = var.mutable
+  default      = var.default
   dynamic "option" {
     for_each = {
       for k, v in local.zones : k => v
-      if anytrue([for d in var.default : startswith(k, d)]) && (!var.gpu_only || v.gpu)
+      if anytrue([for d in var.regions : startswith(k, d)]) && (!var.gpu_only || v.gpu)
     }
     content {
       icon        = try(var.custom_icons[option.key], option.value.icon)
