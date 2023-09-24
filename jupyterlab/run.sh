@@ -1,11 +1,21 @@
 #!/usr/bin/env sh
 
 echo "Instalalting ${MODULE_NAME}..."
-# Add code here
-# Use varibles from the templatefile function in main.tf
-# e.g. LOG_PATH, PORT, etc.
 
-echo "Installation comlete!"
+# check if jupyterlab is installed
+if ! command -v jupyterlab &> /dev/null then
+    #  install jupyterlab
+    # check if python3 pip is installed
+    if ! command -v pip3 &> /dev/null then
+        echo "pip3 is not installed"
+        echo "Please install pip3 and try again"
+        exit 1
+    fi
+fi
+
+
+
+"
 
 echo "Starting ${MODULE_NAME}..."
 # Start the app in here

@@ -1,64 +1,21 @@
 ---
-display_name: jupyterlab
-description: Describe what this module does
-icon: ../.icons/<A_RELEVANT_ICON>.svg
-maintainer_github: GITHUB_USERNAME
-verified: false
-tags: [community]
+display_name: JupyterLab
+description: A module that adds JupyterLab in your Coder template.
+icon: ../.icons/jupyter.svg
+maintainer_github: coder
+verified: true
+tags: [jupyter, helper]
 ---
 
-# jupyterlab
+# JupyterLab
 
-<-- Describes what this module does -->
+A module that adds JupyterLab in your Coder template.
 
-<-- Add a screencast or screenshot here -->
-
-```hcl
-module "jupyterlab" {
-    source = "https://registry.coder.com/modules/jupyterlab"
-}
-```
-
-## Examples
-
-### Example 1
-
-Install the Dracula theme from [OpenVSX](https://open-vsx.org/):
+<!-- Add a screencast or screenshot here -->
 
 ```hcl
 module "jupyterlab" {
     source = "https://registry.coder.com/modules/jupyterlab"
     agent_id = coder_agent.example.id
-    extensions = [
-        "dracula-theme.theme-dracula"
-    ]
 }
 ```
-
-Enter the `<author>.<name>` into the extensions array and code-server will automatically install on start.
-
-### Example 2
-
-Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarted/settings#_settingsjson) file:
-
-```hcl
-module "jupyterlab" {
-    source = "https://registry.coder.com/modules/jupyterlab"
-    agent_id = coder_agent.example.id
-    extensions = [ "dracula-theme.theme-dracula" ]
-    settings = {
-        "workbench.colorTheme" = "Dracula"
-    }
-}
-```
-
-### Example 3
-
-Run code-server in the background, don't fetch it from GitHub:
-
-```hcl
-module "jupyterlab" {
-    source = "https://registry.coder.com/modules/jupyterlab"
-    agent_id = coder_agent.example.id
-    offline = true
-}
