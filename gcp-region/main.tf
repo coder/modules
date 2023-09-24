@@ -22,9 +22,9 @@ variable "description" {
 }
 
 variable "default" {
+  default     = null
   description = "Default zone"
   type        = string
-  default     = "us-central1-a"
 }
 
 variable "regions" {
@@ -708,7 +708,7 @@ data "coder_parameter" "region" {
   description  = var.description
   icon         = "/icon/gcp.png"
   mutable      = var.mutable
-  default      = var.default
+  default      = var.default != null && var.default != "" ? var.default : null
   dynamic "option" {
     for_each = {
       for k, v in local.zones : k => v
