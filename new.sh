@@ -22,6 +22,7 @@ mkdir -p "${MODULE_NAME}"
 # Copy required files from the sample module
 cp -r .sample/* "${MODULE_NAME}"
 
+# Change to module directory
 cd "${MODULE_NAME}"
 
 # Detect OS
