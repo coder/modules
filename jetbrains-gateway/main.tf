@@ -33,7 +33,6 @@ variable "default" {
 variable "jetbrains_ides" {
   type        = list(string)
   description = "The list of IDE product codes."
-  default     = var.default != null && var.default != "" ? var.default : null
   validation {
     condition = (
       alltrue([
@@ -110,7 +109,7 @@ data "coder_parameter" "jetbrains_ide" {
   display_name = "JetBrains IDE"
   icon         = "/icon/gateway.svg"
   mutable      = true
-  default      = local.gateway_ides["GO"].value
+  default      = var.default != null && var.default != "" ? var.default : null
 
   dynamic "option" {
     for_each = { for key, value in local.gateway_ides : key => value if contains(var.jetbrains_ides, key) }
