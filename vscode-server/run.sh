@@ -11,7 +11,7 @@ HASH=$(curl -s https://update.code.visualstudio.com/api/commits/stable/server-li
 
 # Download and extract vscode-server tarball
 output=$(wget -O /tmp/vscode-server-linux-x64-web.tar.gz https://az764295.vo.msecnd.net/stable/$HASH/vscode-server-linux-x64-web.tar.gz &&
-  tar -xzf /tmp/vscode-server-linux-x64-web.tar.gz -C ${INSTALL_DIR} --strip-components=1)
+  tar -xzf /tmp/vscode-server-linux-x64-web.tar.gz -C ${INSTALL_DIR} --strip-components=1 >/dev/null 2>&1)
 
 if [ $? -ne 0 ]; then
   echo "Failed to install vscode-server: $output"
