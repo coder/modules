@@ -23,14 +23,14 @@ Automatically install [VS Code](https://code.visualstudio.com) in a workspace, c
    }
    ```
 
-2. Install VS Code Web with custom version and folder
+2. Install VS Code to a custom folder with a specific version:
 
    ```hcl
    module "vscode-web" {
      source          = "https://registry.coder.com/modules/vscode-web"
      agent_id        = coder_agent.example.id
-     custom_version  = "1.82.0"
-     folder          = "/home/coder/my-projet"
+     install_dir     = "/home/coder/.coder/apps/vscode"
+     folder          = "/home/coder"
      accept_license  = true
    }
    ```
