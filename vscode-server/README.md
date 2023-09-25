@@ -22,7 +22,7 @@ preferably with someone connected on live-share and showing GitHub Copilot sugge
 
    ```hcl
    module "vscode-web" {
-     source         = "https://registry.coder.com/modules/vscode-web"
+     source         = "https://registry.coder.com/modules/vscode-server"
      agent_id       = coder_agent.example.id
      accept_license = true
    }
@@ -32,7 +32,7 @@ preferably with someone connected on live-share and showing GitHub Copilot sugge
 
    ```hcl
    module "vscode-web" {
-     source          = "https://registry.coder.com/modules/vscode-web"
+     source          = "https://registry.coder.com/modules/vscode-server"
      agent_id        = coder_agent.example.id
      install_dir     = "/home/coder/.vscode-server"
      folder          = "/home/coder"
