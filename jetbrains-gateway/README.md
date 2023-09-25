@@ -20,7 +20,8 @@ module "jetbrains_gateway" {
   agent_id                 = coder_agent.main.id
   agent_name               = "main"
   project_directory        = "/home/coder/project"
-  gateway_ide_product_code = ["GO","WS"]
+  jetbrains_ides           = ["GO","WS"]
+  default                  = "GO"
 }
 ```
 
