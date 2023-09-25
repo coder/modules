@@ -7,7 +7,7 @@ if
   >/dev/null
 then
   printf "$${BOLD}Installing VS Code!\n"
-  output=$(curl -L "https://update.code.visualstudio.com/${VERSION}/linux-deb-x64/stable" -o /tmp/code.deb && sudo apt-get install -y /tmp/code.deb)
+  output=$(curl -L "https://update.code.visualstudio.com/${VERSION}/linux-deb-x64/stable" -o /tmp/code.deb && sudo apt-get update && sudo apt-get install -y /tmp/code.deb)
   if [ $? -ne 0 ]; then
     echo "Failed to install VS Code: $output"
     exit 1
