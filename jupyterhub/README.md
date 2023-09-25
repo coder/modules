@@ -4,7 +4,7 @@ description: A multi-user version of the notebook designed for companies, classr
 icon: ../.icons/jupyter.svg
 maintainer_github: coder
 verified: true
-tags: [helper, ide]
+tags: [helper, ide, web, jupyter]
 ---
 
 # JupyterHub
