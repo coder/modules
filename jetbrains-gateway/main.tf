@@ -109,7 +109,7 @@ data "coder_parameter" "jetbrains_ide" {
   display_name = "JetBrains IDE"
   icon         = "/icon/gateway.svg"
   mutable      = true
-  default      = var.default != null && var.default != "" ? local.jetbrains_ides[var.default] : null
+  default      = var.default != null && var.default != "" ? local.jetbrains_ides[var.default].value : null
 
   dynamic "option" {
     for_each = { for key, value in local.jetbrains_ides : key => value if contains(var.jetbrains_ides, key) }
