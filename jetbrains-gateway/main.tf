@@ -27,7 +27,6 @@ variable "project_directory" {
 variable "default" {
   type        = string
   description = "Default IDE"
-  default     = null
 }
 
 variable "jetbrains_ides" {
