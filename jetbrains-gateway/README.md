@@ -4,29 +4,32 @@ description: Add a one-click button to launch JetBrains Gateway IDEs in the dash
 icon: ../.icons/gateway.svg
 maintainer_github: coder
 verified: true
-tags: [ide, jetbrains, gateway, goland, webstorm, intellij, pycharm, phpstorm, clion, rubymine, datagrip, rider]
+tags: [ide, jetbrains, helper, parameter]
 ---
 # JetBrains Gateway
 
-This module adds a JetBrains Gateway IDEs to your Coder template.
+This module adds a JetBrains Gateway Button to open any workspace with a single click.
 
-## How to use this module
+![JetBrains Gateway IDes list](../.images/jetbrains-gateway.png)
 
-To use this module, add the following snippet to your template manifest:
+## Examples
+
+### Add GoLand and WebStorm with the default set to GoLand
 
 ```hcl
 module "jetbrains_gateway" {
   source                   = "https://registry.coder.com/modules/jetbrains-gateway"
-  agent_id                 = coder_agent.main.id
-  agent_name               = "main"
-  project_directory        = "/home/coder/project"
-  gateway_ide_product_code = ["GO","WS"] # A list of JetBrains product codes use ["ALL"] for all products
+  agent_id                 = coder_agent.example.id
+  agent_name               = "example"
+  project_directory        = "/home/coder/example"
+  jetbrains_ides           = ["GO", "WS"]
+  default                  = "GO"
 }
 ```
 
 ## Supported IDEs
 
-The following JetBrains IDEs are supported:
+This module and JetBrains Gateway support the following JetBrains IDEs:
 
 - GoLand (`GO`)
 - WebStorm (`WS`)
