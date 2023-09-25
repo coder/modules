@@ -1,5 +1,5 @@
 ---
-display_name: GCP Regions
+display_name: GCP Region
 description: Add Google Cloud Platform regions to your Coder template.
 icon: ../.icons/gcp.svg
 maintainer_github: coder
