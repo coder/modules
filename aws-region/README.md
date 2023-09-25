@@ -4,13 +4,15 @@ description: A parameter with human region names and icons
 icon: ../.icons/aws.svg
 maintainer_github: coder
 verified: true
-tags: [helper, parameter]
+tags: [helper, parameter, regions, aws]
 ---
 
 # AWS Region
 
 A parameter with all AWS regions. This allows developers to select
 the region closest to them.
+
+![AWS Regions](../.images/aws-region.png)
 
 ## Examples
 

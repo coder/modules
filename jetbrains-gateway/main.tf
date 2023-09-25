@@ -24,23 +24,26 @@ variable "project_directory" {
   description = "The directory to open in the IDE. e.g. /home/coder/project"
 }
 
-variable "gateway_ide_product_code" {
+variable "default" {
+  type        = string
+  description = "Default IDE"
+}
+
+variable "jetbrains_ides" {
   type        = list(string)
-  description = "The list of IDE product codes, e.g. ['GO', 'WS'] or ['ALL']"
-  default     = ["ALL"]
+  description = "The list of IDE product codes."
   validation {
     condition = (
-      length(var.gateway_ide_product_code) == 1 && var.gateway_ide_product_code[0] == "ALL" ||
       alltrue([
-        for code in var.gateway_ide_product_code : contains(["IU", "IC", "PS", "WS", "PY", "PC", "CL", "GO", "DB", "RD", "RM"], code)
+        for code in var.jetbrains_ides : contains(["IU", "IC", "PS", "WS", "PY", "PC", "CL", "GO", "DB", "RD", "RM"], code)
       ])
     )
-    error_message = "The gateway_ide_product_code must be ['ALL'] or a list of valid product codes. https://plugins.jetbrains.com/docs/marketplace/product-codes.html"
+    error_message = "The jetbrains_ides must be a list of valid product codes. https://plugins.jetbrains.com/docs/marketplace/product-codes.html"
   }
 }
 
 locals {
-  gateway_ides = {
+  jetbrains_ides = {
     "GO" = {
       icon  = "/icon/goland.svg",
       name  = "GoLand",
@@ -105,10 +108,10 @@ data "coder_parameter" "jetbrains_ide" {
   display_name = "JetBrains IDE"
   icon         = "/icon/gateway.svg"
   mutable      = true
-  default      = local.gateway_ides["GO"].value
+  default      = var.default != null && var.default != "" ? local.jetbrains_ides[var.default].value : null
 
   dynamic "option" {
-    for_each = contains(var.gateway_ide_product_code, "ALL") ? local.gateway_ides : { for key, value in local.gateway_ides : key => value if contains(var.gateway_ide_product_code, key) }
+    for_each = { for key, value in local.jetbrains_ides : key => value if contains(var.jetbrains_ides, key) }
     content {
       icon  = option.value.icon
       name  = option.value.name
@@ -126,4 +129,8 @@ resource "coder_app" "gateway" {
   url          = "jetbrains-gateway://connect#type=coder&workspace=${data.coder_workspace.me.name}&agent=${var.agent_name}&folder=${var.project_directory}&url=${data.coder_workspace.me.access_url}&token=${data.coder_workspace.me.owner_session_token}&ide_product_code=${jsondecode(data.coder_parameter.jetbrains_ide.value)[0]}&ide_build_number=${jsondecode(data.coder_parameter.jetbrains_ide.value)[1]}&ide_download_link=${jsondecode(data.coder_parameter.jetbrains_ide.value)[2]}"
   icon         = data.coder_parameter.jetbrains_ide.option[index(data.coder_parameter.jetbrains_ide.option.*.value, data.coder_parameter.jetbrains_ide.value)].icon
   external     = true
+}
+
+output "jetbrains_ides" {
+  value = data.coder_parameter.jetbrains_ide.value
 }
