@@ -57,12 +57,6 @@ variable "accept_license" {
   }
 }
 
-variable "custom_version" {
-  type        = string
-  description = "The version of VS Code to install."
-  default     = "latest"
-}
-
 resource "coder_script" "vscode-server" {
   agent_id     = var.agent_id
   display_name = "vscode-server"
@@ -70,8 +64,8 @@ resource "coder_script" "vscode-server" {
   script = templatefile("${path.module}/run.sh", {
     PORT : var.port,
     LOG_PATH : var.log_path,
-    VERSION : var.custom_version,
     INSTALL_DIR : var.install_dir,
+    TELEMETRY : var.telemetry,
   })
   run_on_start = true
 }
