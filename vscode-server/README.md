@@ -2,7 +2,7 @@
 display_name: vscode-server
 description: VS Code Web - Visual Studio Code in the browser
 icon: ../.icons/code.svg
-maintainer_github: matifali
+maintainer_github: coder
 verified: true
 tags: [helper, ide, vscode, web]
 ---
