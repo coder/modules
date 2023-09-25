@@ -9,7 +9,7 @@ tags: [helper, ide, vscode, web]
 
 # VS Code Web
 
-Automatically install [Visual Studio Code Server](https://code.visualstudio.com/docs/remote/vscode-server) in a workspace, create an app to access it via the dashboard.
+Automatically install [Visual Studio Code Server](https://code.visualstudio.com/docs/remote/vscode-server) in a workspace using the [VS Code CLIs](https://code.visualstudio.com/docs/editor/command-line) and create an app to access it via the dashboard.
 
 ## Examples
 
@@ -20,7 +20,6 @@ Automatically install [Visual Studio Code Server](https://code.visualstudio.com/
      source         = "https://registry.coder.com/modules/vscode-web"
      agent_id       = coder_agent.example.id
      accept_license = true
-     telemetry      = "off"
    }
    ```
 
