@@ -4,7 +4,7 @@ BOLD='\033[0;1m'
 
 # Check if VS Code is installed
 if [ ! -d "${INSTALL_DIR}" ]; then
-  printf "${BOLD}Installing VS Code!\n"
+  printf "$${BOLD} Installing VS Code!\n"
   # Download and extract VS Code tarball
   output=$(curl -L "https://update.code.visualstudio.com/latest/linux-x64/stable" -o /tmp/code.tar.gz &&
     mkdir -p ${INSTALL_DIR} &&
