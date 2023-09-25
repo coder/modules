@@ -75,7 +75,7 @@ resource "coder_app" "vscode-server" {
   agent_id     = var.agent_id
   slug         = "vscode-server"
   display_name = "VS Code Server"
-  url          = var.folder == "" ? "http://localhost:${var.port}" : "http://localhost:${var.port}/?folder=${var.folder}"
+  url          = var.folder == "" ? "http://localhost:${var.port}" : "http://localhost:${var.port}?folder=${var.folder}"
   icon         = "/icon/code.svg"
   subdomain    = true
   share        = "owner"
