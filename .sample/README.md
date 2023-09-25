@@ -11,7 +11,7 @@ tags: [helper]
 
 <!-- Describes what this module does -->
 
-<!-- Add a screencast or screenshot here -->
+<!-- Add a screencast or screenshot here  put them in .images directory -->
 
 ```hcl
 module "MODULE_NAME" {
