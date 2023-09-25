@@ -32,7 +32,7 @@ variable "default" {
 
 variable "jetbrains_ides" {
   type        = list(string)
-  description = "The list of IDE product codes, e.g. ['GO', 'WS']"
+  description = "The list of IDE product codes."
   default     = var.default != null && var.default != "" ? var.default : null
   validation {
     condition = (
