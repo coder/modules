@@ -46,11 +46,6 @@ variable "custom_version" {
   type        = string
   description = "The version of VS Code to install."
   default     = "latest"
-  # add a validation block to validate the version is greater than or equal to 1.82.0
-  validation {
-    condition     = var.custom_version >= "1.82.0"
-    error_message = "Version must be greater than or equal to 1.82.0"
-  }
 }
 
 resource "coder_script" "vscode-web" {
