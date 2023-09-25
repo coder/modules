@@ -112,7 +112,7 @@ data "coder_parameter" "jetbrains_ide" {
   default      = var.default != null && var.default != "" ? var.default : null
 
   dynamic "option" {
-    for_each = { for key, value in local.gateway_ides : key => value if contains(var.jetbrains_ides, key) }
+    for_each = { for key, value in local.jetbrains_ides : key => value if contains(var.jetbrains_ides, key) }
     content {
       icon  = option.value.icon
       name  = option.value.name
