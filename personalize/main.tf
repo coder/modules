@@ -20,6 +20,12 @@ variable "path" {
     default = "~/personalize"
 }
 
+variable "log_path" {
+  type = string
+  description = "The path to a log file that will contain the output of the personalize script."
+  default = "~/personalize.log"
+}
+
 resource "coder_script" "personalize" {
     agent_id = var.agent_id
     script = templatefile("${path.module}/run.sh", {
@@ -27,5 +33,6 @@ resource "coder_script" "personalize" {
     })
     display_name = "Personalize"
     icon = "/emojis/1f58c.png"
+    log_path = var.log_path
     run_on_start = true
 }
