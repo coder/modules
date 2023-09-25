@@ -32,6 +32,12 @@ variable "log_path" {
   default     = "/tmp/vscode-web.log"
 }
 
+variable "install_dir" {
+  type        = string
+  description = "The directory to install VS Code"
+  default     = "~/.vscodeweb"
+}
+
 variable "accept_license" {
   type        = bool
   description = "Accept the VS Code license. https://code.visualstudio.com/license"
@@ -56,6 +62,7 @@ resource "coder_script" "vscode-web" {
     PORT : var.port,
     LOG_PATH : var.log_path,
     VERSION : var.custom_version,
+    INSTALL_DIR : var.install_dir,
   })
   run_on_start = true
 }

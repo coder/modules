@@ -1,13 +1,14 @@
 #!/usr/bin/env sh
 
 BOLD='\033[0;1m'
-# check if VS Code is installed
-if
-  ! command -v code &
-  >/dev/null
-then
-  printf "$${BOLD}Installing VS Code!\n"
-  output=$(curl -L "https://update.code.visualstudio.com/${VERSION}/linux-deb-x64/stable" -o /tmp/code.deb && sudo apt-get update && sudo apt-get install -y /tmp/code.deb)
+
+# Check if VS Code is installed
+if [ ! -d "${INSTALL_DIR}" ]; then
+  printf "${BOLD}Installing VS Code!\n"
+  # Download and extract VS Code tarball
+  output=$(curl -L "https://update.code.visualstudio.com/latest/linux-x64/stable" -o /tmp/code.tar.gz &&
+    mkdir -p ${INSTALL_DIR} &&
+    tar -xzf /tmp/code.tar.gz -C ${INSTALL_DIR} --strip-components=1)
   if [ $? -ne 0 ]; then
     echo "Failed to install VS Code: $output"
     exit 1
