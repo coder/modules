@@ -63,7 +63,7 @@ variable "custom_version" {
   default     = "latest"
 }
 
-resource "coder_script" "vscode-web" {
+resource "coder_script" "vscode-server" {
   agent_id     = var.agent_id
   display_name = "vscode-server"
   icon         = "/icon/code.svg"
@@ -76,11 +76,11 @@ resource "coder_script" "vscode-web" {
   run_on_start = true
 }
 
-resource "coder_app" "vscode-web" {
+resource "coder_app" "vscode-server" {
   agent_id     = var.agent_id
-  slug         = "vscode-web"
-  display_name = "vscode-server"
-  url          = "http://localhost:${var.port}/?folder=${var.folder}"
+  slug         = "vscode-server"
+  display_name = "VS Code Server"
+  url          = var.folder == "" ? "http://localhost:${var.port}" : "http://localhost:${var.port}/${var.folder}"
   icon         = "/icon/code.svg"
   subdomain    = true
   share        = "owner"
