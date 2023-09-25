@@ -4,7 +4,7 @@ description: Add Google Cloud Platform regions to your Coder template.
 icon: ../.icons/gcp.svg
 maintainer_github: coder
 verified: true
-tags: [gcp, regions, helper]
+tags: [gcp, regions, parameter, helper]
 ---
 # Google Cloud Platform Regions
 
