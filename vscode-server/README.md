@@ -11,6 +11,11 @@ tags: [helper, ide, vscode, web]
 
 Automatically install [Visual Studio Code Server](https://code.visualstudio.com/docs/remote/vscode-server) in a workspace using the [VS Code CLIs](https://code.visualstudio.com/docs/editor/command-line) and create an app to access it via the dashboard.
 
+<!-- Add a screencast showing VS Code Web in action -->
+
+TODO: Add a screenshot or screencast showing VS Code Web in action
+preferably with someone connected on live-share and showing GitHub Copilot suggestions working.
+
 ## Examples
 
 1. Install VS Code Server with default settings:
