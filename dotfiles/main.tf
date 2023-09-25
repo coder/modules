@@ -16,6 +16,7 @@ variable "agent_id" {
 
 data "coder_parameter" "dotfiles_uri" {
   type         = "string"
+  name         = "dotfiles_uri"
   display_name = "Dotfiles URL (optional)"
   default      = ""
   description  = "Enter a URL for a [dotfiles repository](https://dotfiles.github.io) to personalize your workspace"
