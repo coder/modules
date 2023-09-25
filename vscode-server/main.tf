@@ -22,20 +22,29 @@ variable "port" {
 
 variable "folder" {
   type        = string
-  description = "The folder to open in VS Code Web."
+  description = "The folder to open in vscode-server."
   default     = ""
 }
 
 variable "log_path" {
   type        = string
   description = "The path to log."
-  default     = "/tmp/vscode-web.log"
+  default     = "/tmp/vscode-server.log"
+}
+
+variable "telemetry" {
+  type        = string
+  description = "Telemetry options for vscode-server. Valid values are 'off', 'crash', 'error' or 'all'."
+  default     = "crash"
+  validation {
+    condition = var.telemetry == "off" || var.telemetry == "crash" || var.telemetry == "error" || var.telemetry == "all"
+  }
 }
 
 variable "install_dir" {
   type        = string
-  description = "The directory to install VS Code"
-  default     = "~/.vscodeweb"
+  description = "The directory to install VS Code Server"
+  default     = "/tmp/vscode-server"
 }
 
 variable "accept_license" {
@@ -56,7 +65,7 @@ variable "custom_version" {
 
 resource "coder_script" "vscode-web" {
   agent_id     = var.agent_id
-  display_name = "VS Code Web"
+  display_name = "vscode-server"
   icon         = "/icon/code.svg"
   script = templatefile("${path.module}/run.sh", {
     PORT : var.port,
@@ -70,7 +79,7 @@ resource "coder_script" "vscode-web" {
 resource "coder_app" "vscode-web" {
   agent_id     = var.agent_id
   slug         = "vscode-web"
-  display_name = "VS Code Web"
+  display_name = "vscode-server"
   url          = "http://localhost:${var.port}/?folder=${var.folder}"
   icon         = "/icon/code.svg"
   subdomain    = true
