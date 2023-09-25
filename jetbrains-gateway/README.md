@@ -20,7 +20,7 @@ module "jetbrains_gateway" {
   agent_id                 = coder_agent.main.id
   agent_name               = "main"
   project_directory        = "/home/coder/project"
-  gateway_ide_product_code = ["GO","WS"] # A list of JetBrains product codes use ["ALL"] for all products
+  gateway_ide_product_code = ["GO","WS"]
 }
 ```
 
