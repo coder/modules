@@ -28,7 +28,7 @@ preferably with someone connected on live-share and showing GitHub Copilot sugge
    }
    ```
 
-2. Install VS Code to a custom folder with a specific version:
+2. Install VS Code Server to a custom folder:
 
    ```hcl
    module "vscode-web" {
@@ -37,6 +37,5 @@ preferably with someone connected on live-share and showing GitHub Copilot sugge
      install_dir     = "/home/coder/.vscode-server"
      folder          = "/home/coder"
      accept_license  = true
-     telemetry       = "off"
    }
    ```
