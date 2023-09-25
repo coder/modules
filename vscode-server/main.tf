@@ -34,10 +34,11 @@ variable "log_path" {
 
 variable "telemetry" {
   type        = string
-  description = "Telemetry options for vscode-server. Valid values are 'off', 'crash', 'error' or 'all'."
+  description = "Telemetry options for vscode-server."
   default     = "crash"
   validation {
-    condition = var.telemetry == "off" || var.telemetry == "crash" || var.telemetry == "error" || var.telemetry == "all"
+    condition     = var.telemetry == "off" || var.telemetry == "crash" || var.telemetry == "error" || var.telemetry == "all"
+    error_message = "Variable telemetry must be set to 'off', 'crash', 'error' or 'all'."
   }
 }
 
