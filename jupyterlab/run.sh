@@ -8,12 +8,12 @@ if ! command -v jupyterlab & >/dev/null; then
     # check if python3 pip is installed
     if ! command -v pip3 & >/dev/null; then
         echo "pip3 is not installed"
-        echo "Please install pip3 and try again"
-        exit 1
-    else
-        pip3 install jupyterlab
-        echo "jupyterlab installed!"
+        echo "Installing pip3..."
+        sudo apt-get update && sudo apt-get install python3-pip -y
     fi
+    # install jupyterlab
+    pip3 install --user -q -y jupyterlab
+    echo "jupyterlab installed."
 else
     echo "jupyterlab is already installed."
 fi
