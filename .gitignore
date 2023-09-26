@@ -1,1 +1,4 @@
 .terraform*
+node_modules
+*.tfstate
+*.tfstate.lock.info
