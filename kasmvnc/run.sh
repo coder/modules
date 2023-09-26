@@ -31,8 +31,8 @@ codename=$(lsb_release -cs)
 # Check if vncserver is installed
 if ! dpkg -s kasmvncserver &>/dev/null; then
     cd /tmp
-    wget "https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_$codename_${VERSION}_amd64.deb"
-    sudo apt-get install -y ./kasmvncserver_$codename_${VERSION}_amd64.deb
+    wget "https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_$${codename}_${VERSION}_amd64.deb"
+    sudo apt-get install -y ./kasmvncserver_$${codename}_${VERSION}_amd64.deb
     if [ $? -eq 0 ]; then
         printf "🥳 KasmVNC v${VERSION} has been successfully installed!\n\n"
     else
