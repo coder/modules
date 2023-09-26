@@ -39,13 +39,13 @@ locals {
       name = "Amsterdam, Netherlands"
       gateway = true
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1f3-1f1f1.png"
     }
     "arn" = {
       name = "Stockholm, Sweden"
       gateway = false
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1f8-1f1ea.png"
     }
     "atl" = {
       name = "Atlanta, Georgia (US)"
@@ -57,13 +57,13 @@ locals {
       name = "Bogotá, Colombia"
       gateway = false
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1e8-1f1f4.png"
     }
     "bom" = {
       name = "Mumbai, India"
       gateway = true
       paid_only = true
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1ee-1f1f3.png"
     }
     "bos" = {
       name = "Boston, Massachusetts (US)"
@@ -75,7 +75,7 @@ locals {
       name = "Paris, France"
       gateway = true
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1eb-1f1f7.png"
     }
     "den" = {
       name = "Denver, Colorado (US)"
@@ -99,37 +99,37 @@ locals {
       name = "Ezeiza, Argentina"
       gateway = false
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1e6-1f1f7.png"
     }
     "fra" = {
       name = "Frankfurt, Germany"
       gateway = true
       paid_only = true
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1e9-1f1ea.png"
     }
     "gdl" = {
       name = "Guadalajara, Mexico"
       gateway = false
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1f2-1f1fd.png"
     }
     "gig" = {
       name = "Rio de Janeiro, Brazil"
       gateway = false
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1e7-1f1f7.png"
     }
     "gru" = {
       name = "Sao Paulo, Brazil"
       gateway = false
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1e7-1f1f7.png"
     }
     "hkg" = {
       name = "Hong Kong, Hong Kong"
       gateway = true
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1ed-1f1f0.png"
     }
     "iad" = {
       name = "Ashburn, Virginia (US)"
@@ -141,7 +141,7 @@ locals {
       name = "Johannesburg, South Africa"
       gateway = false
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1ff-1f1e6.png"
     }
     "lax" = {
       name = "Los Angeles, California (US)"
@@ -153,13 +153,13 @@ locals {
       name = "London, United Kingdom"
       gateway = true
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1ec-1f1e7.png"
     }
     "mad" = {
       name = "Madrid, Spain"
       gateway = false
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1ea-1f1f8.png"
     }
     "mia" = {
       name = "Miami, Florida (US)"
@@ -171,7 +171,7 @@ locals {
       name = "Tokyo, Japan"
       gateway = true
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1ef-1f1f5.png"
     }
     "ord" = {
       name = "Chicago, Illinois (US)"
@@ -183,7 +183,7 @@ locals {
       name = "Bucharest, Romania"
       gateway = false
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1f7-1f1f4.png"
     }
     "phx" = {
       name = "Phoenix, Arizona (US)"
@@ -195,7 +195,7 @@ locals {
       name = "Querétaro, Mexico"
       gateway = false
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1f2-1f1fd.png"
     }
     "scl" = {
       name = "Santiago, Chile"
@@ -246,4 +246,20 @@ locals {
       icon = "/emojis/1f1e8-1f1e6.png"
     }
   }
+}
+
+data "coder_parameter" "region" {
+    name = "flyio_region"
+    display_name = var.display_name
+    description = var.description
+    default = var.default
+    mutable = var.mutable
+    dynamic "option" {
+        for_each = { for k, v in local.regions : k => v if !(contains(var.exclude, k)) }
+        content {
+            name = try(var.custom_names[option.key], option.value.name)
+            icon = try(var.custom_icons[option.key], option.value.icon)
+            value = option.key
+        }
+    }
 }
