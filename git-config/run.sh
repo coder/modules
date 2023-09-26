@@ -1,9 +1,6 @@
 #!/usr/bin/env sh
 
 BOLD='\033[0;1m'
-# CODE='\033[36;40;1m'
-# RESET='\033[0m'
-
 printf "$${BOLD}Checking git-config!\n"
 
 # Check if git is installed
@@ -12,7 +9,7 @@ command -v git >/dev/null 2>&1 || {
     exit 1
 }
 
-# Set git username and email if not set
+# Set git username and email if missing
 if [ -z $(git config --get user.email) ]; then
     printf "git-config: No user.email found, setting to ${CODER_EMAIL}\n"
     git config --global user.email ${CODER_EMAIL}
