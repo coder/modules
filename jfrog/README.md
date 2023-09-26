@@ -12,7 +12,7 @@ tags: [integration]
 
 Install the JF CLI and authenticate package managers with Artifactory.
 
-![JFrog](../.images/jfrog.png)]
+![JFrog](../.images/jfrog.png)
 
 ## Examples
 
