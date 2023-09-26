@@ -201,7 +201,7 @@ locals {
       name = "Santiago, Chile"
       gateway = true
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1e8-1f1f1.png"
     }
     "sea" = {
       name = "Seattle, Washington (US)"
@@ -213,7 +213,7 @@ locals {
       name = "Singapore, Singapore"
       gateway = true
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1f8-1f1ec.png"
     }
     "sjc" = {
       name = "San Jose, California (US)"
@@ -225,13 +225,13 @@ locals {
       name = "Sydney, Australia"
       gateway = true
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1e6-1f1fa.png"
     }
     "waw" = {
       name = "Warsaw, Poland"
       gateway = false
       paid_only = false
-      icon = "/emojis/TODO.png"
+      icon = "/emojis/1f1f5-1f1f1.png"
     }
     "yul" = {
       name = "Montreal, Canada"
