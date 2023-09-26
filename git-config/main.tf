@@ -24,13 +24,13 @@ variable "user_email" {
   description = "The email of the Coder workspace owner."
 }
 
-resource "coder_script" "personalize" {
+resource "coder_script" "git_config" {
     agent_id = var.agent_id
     script = templatefile("${path.module}/run.sh", {
       CODER_USERNAME = var.username,
       CODER_EMAIL = var.user_email
     }) 
     display_name = "Git Config"
-    icon = "/emojis/1f58c.png" 
+    icon = "/icon/git.svg" 
     run_on_start = true
 }

@@ -19,8 +19,8 @@ The credentials can be populated from the workspace owner's information.
 
 ```hcl
 module "git-config" {
-  source = "git::https://github.com/coder/modules.git//git-config?ref=git-config"
-  agent_id = coder_agent.main.id
+  source = "https://registry.coder.com/modules/git-config"
+  agent_id = coder_agent.example.id
   username = data.coder_workspace.me.owner
   user_email = data.coder_workspace.me.owner_email
 }
@@ -31,8 +31,8 @@ Credentials can also be set manually.
 
 ```hcl
 module "git-config" {
-  source = "git::https://github.com/coder/modules.git//git-config?ref=git-config"
-  agent_id = coder_agent.main.id
+  source = "https://registry.coder.com/modules/git-config"
+  agent_id = coder_agent.example.id
   username = "michael"
   user_email = "michael@example.com"
 }
