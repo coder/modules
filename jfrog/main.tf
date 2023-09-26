@@ -13,9 +13,9 @@ terraform {
   }
 }
 
-variable "jfrog_host" {
+variable "jfrog_url" {
   type        = string
-  description = "JFrog instance hostname. e.g. YYY.jfrog.io"
+  description = "JFrog instance URL. e.g. https://YYY.jfrog.io"
 }
 
 variable "artifactory_access_token" {
@@ -25,7 +25,7 @@ variable "artifactory_access_token" {
 
 # Configure the Artifactory provider
 provider "artifactory" {
-  url          = "https://${var.jfrog_host}/artifactory"
+  url          = join("/", [var.jfrog_url, "artifactory"])
   access_token = var.artifactory_access_token
 }
 resource "artifactory_scoped_token" "me" {
@@ -59,7 +59,7 @@ resource "coder_script" "jfrog" {
   display_name = "jfrog"
   icon         = "/icon/jfrog.svg"
   script = templatefile("${path.module}/run.sh", {
-    JFROG_HOST : var.jfrog_host,
+    JFROG_URL : var.jfrog_url,
     ARTIFACTORY_USERNAME : data.coder_workspace.me.owner_email,
     ARTIFACTORY_ACCESS_TOKEN : artifactory_scoped_token.me.access_token,
     REPOSITORY_NPM : lookup(var.package_managers, "npm", ""),
