@@ -62,6 +62,7 @@ resource "coder_script" "jfrog" {
     JFROG_HOST : var.jfrog_host,
     ARTIFACTORY_USERNAME : artifactory_scoped_token.me.username,
     ARTIFACTORY_ACCESS_TOKEN : artifactory_scoped_token.me.access_token,
+    ARTIFACTORY_EMAIL : data.coder_workspace.me.owner_email,
     REPOSITORY_NPM : lookup(var.package_managers, "npm", ""),
     REPOSITORY_GO : lookup(var.package_managers, "go", ""),
     REPOSITORY_PYPI : lookup(var.package_managers, "pypi", ""),
