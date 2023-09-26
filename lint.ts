@@ -10,6 +10,8 @@ const dirs = files.filter(
 
 let badExit = false;
 
+// error reports an error to the console and sets badExit to true
+// so that the process will exit with a non-zero exit code.
 const error = (...data: any[]) => {
     console.error(...data);
     badExit = true;
@@ -87,7 +89,6 @@ for (const dir of dirs) {
   if (!code) {
     error(dir.name, "missing example code block after paragraph");
   }
-  badExit = true;
 }
 
 if (badExit) {
