@@ -74,6 +74,12 @@ export const execContainer = async (
 };
 
 export interface TerraformState {
+  outputs: {
+    [key: string]: {
+      type: string;
+      value: any;
+    };
+  }
   resources: [
     {
       type: string;
