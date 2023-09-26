@@ -28,5 +28,7 @@ jobs:
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
-      - run: bun fmt:ci
-      - run: bun lint
+      - name: Format
+        run: bun fmt:ci
+      - name: Lint
+        run: bun install && bun lint
