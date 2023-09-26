@@ -1,0 +1,13 @@
+{
+  "name": "modules",
+  "scripts": {
+    "test": "bun test",
+    "fmt": "bun x prettier -w **/*.ts **/*.md"
+  },
+  "devDependencies": {
+    "bun-types": "^1.0.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
