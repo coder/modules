@@ -25,7 +25,9 @@ fi
 # Check if vncserver is installed
 if ! dpkg -s kasmvncserver &>/dev/null; then
     cd /tmp
-    wget https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_focal_${VERSION}_amd64.deb
+    # get distro name e.g focal, bionic, etc
+    DISTRO=$(lsb_release -cs)
+    wget https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_$DISTRO_${VERSION}_amd64.deb
     sudo apt-get install -y ./kasmvncserver_focal_${VERSION}_amd64.deb
     printf "🥳 KasmVNC v${VERSION} has been successfully installed!\n\n"
 else
@@ -33,7 +35,7 @@ else
 fi
 
 sudo addgroup $USER ssl-cert
-
+mkdir -p /etc/kasmvnc
 # Coder port-forwarding from dashboard only supports HTTP
 sudo bash -c 'cat > /etc/kasmvnc/kasmvnc.yaml <<EOF
 network:
