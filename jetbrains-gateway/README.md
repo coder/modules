@@ -6,6 +6,7 @@ maintainer_github: coder
 verified: true
 tags: [ide, jetbrains, helper, parameter]
 ---
+
 # JetBrains Gateway
 
 This module adds a JetBrains Gateway Button to open any workspace with a single click.

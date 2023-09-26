@@ -6,6 +6,7 @@ maintainer_github: coder
 verified: true
 tags: [git, helper]
 ---
+
 # Git Clone
 
 This module allows you to automatically clone a repository by URL and skip if it exists in the path provided.
