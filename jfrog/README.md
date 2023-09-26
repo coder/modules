@@ -19,11 +19,22 @@ module "jfrog" {
     source = "https://registry.coder.com/modules/jfrog"
     agent_id = coder_agent.example.id
     jfrog_host = "YYYY.jfrog.io"
-    artifactory_access_token = "XXXX" # An admin access token
+    artifactory_access_token = "var.artifactory_access_token" # An admin access token
     package_managers = {
       "npm": "npm-local",
       "go": "go-local",
       "pypi": "pypi-local"
     }
+}
+```
+
+## Authentication
+
+Get a JFrog access token from your Artifactory instance. The token must have admin permissions. It is recommended to store the token in a secret terraform variable.
+
+```hcl
+variable "artifactory_access_token" {
+    type      = string
+    sensitive = true
 }
 ```
