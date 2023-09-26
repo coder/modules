@@ -50,3 +50,5 @@ Automatically install [KasmVNC](https://kasmweb.com/kasmvnc.png) in a workspace,
      timezone            = "America/Los_Angeles"
    }
    ```
+
+   > **Note:** It is recommended to pre-install a desktop environment in your Dockerfile/VM image to speed up the startup time of your workspace.
