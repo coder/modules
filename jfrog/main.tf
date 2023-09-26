@@ -51,6 +51,9 @@ For example:
     }
 EOF
 }
+
+data "coder_workspace" "me" {}
+
 resource "coder_script" "jfrog" {
   agent_id     = var.agent_id
   display_name = "jfrog"
