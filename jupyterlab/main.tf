@@ -9,10 +9,6 @@ terraform {
   }
 }
 
-locals {
-  icon_url = "/icon/jupyter.svg"
-}
-
 # Add required variables for your modules and remove any unneeded variables
 variable "agent_id" {
   type        = string
@@ -34,7 +30,7 @@ variable "port" {
 resource "coder_script" "jupyterlab" {
   agent_id     = var.agent_id
   display_name = "jupyterlab"
-  icon         = local.icon_url
+  icon         = "/icon/jupyter.svg"
   script = templatefile("${path.module}/run.sh", {
     LOG_PATH : var.log_path,
     PORT : var.port
@@ -47,7 +43,7 @@ resource "coder_app" "jupyterlab" {
   slug         = "jupyterlab"
   display_name = "JupyterLab"
   url          = "http://localhost:${var.port}"
-  icon         = local.icon_url
+  icon         = "/icon/jupyter.svg"
   subdomain    = true
   share        = "owner"
 }
