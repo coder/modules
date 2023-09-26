@@ -18,13 +18,28 @@ echo "${ARTIFACTORY_ACCESS_TOKEN}" | jf c add --access-token-stdin --url "https:
 if [ -z "${REPOSITORY_NPM}" ]; then
   echo "🤔 REPOSITORY_NPM is not set, skipping npm configuration."
 else
-  echo "📦 Configuring npm..."
-  jf npmc --global --repo-resolve "https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}"
-  cat << EOF > ~/.npmrc
-email = ${ARTIFACTORY_USERNAME}
-registry = https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}
-EOF
-  jf rt curl /api/npm/auth >> ~/.npmrc
+  # check NPM_PACKAGE_MANAGER==npm value to set the package manager npm otherwise yarn
+  if [ "${NPM_PACKAGE_MANAGER}" = "npm" ]; then
+    echo "📦 Configuring npm..."
+    jf npmc --global --repo-resolve "https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}"
+#     cat << EOF > ~/.npmrc
+# email = ${ARTIFACTORY_USERNAME}
+# registry = https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}
+# EOF
+    jf rt curl /api/npm/auth >> ~/.npmrc
+  else
+    echo "🧶 Configuring yarn..."
+    jf yarnc --global --repo-resolve "https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}"
+#     cat << EOF > ~/.yarnrc
+
+  
+#   echo "📦 Configuring npm..."
+#   jf npmc --global --repo-resolve "https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}"
+#   cat << EOF > ~/.npmrc
+# email = ${ARTIFACTORY_USERNAME}
+# registry = https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}
+# EOF
+#   jf rt curl /api/npm/auth >> ~/.npmrc
 fi
 
 # Configure the `pip` to use the Artifactory "python" repository.

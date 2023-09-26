@@ -52,6 +52,12 @@ For example:
 EOF
 }
 
+variable "npm_package_manager" {
+  type        = string
+  description = "The name of the npm repository in Artifactory."
+  default     = "npm"
+}
+
 data "coder_workspace" "me" {}
 
 resource "coder_script" "jfrog" {
@@ -65,6 +71,7 @@ resource "coder_script" "jfrog" {
     REPOSITORY_NPM : lookup(var.package_managers, "npm", ""),
     REPOSITORY_GO : lookup(var.package_managers, "go", ""),
     REPOSITORY_PYPI : lookup(var.package_managers, "pypi", ""),
+    NPM_PACKAGE_MANAGER : var.npm_package_manager,
   })
   run_on_start = true
 }
