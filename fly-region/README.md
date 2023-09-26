@@ -9,7 +9,7 @@ tags: [helper, parameter, fly]
 
 # Fly.io Region
 
-This module adds Fly.io regions to your Coder template. Regions can be whitelisted using the `regions` argument and given custom names and custom icons with their respective map arguments (`custom_names`, `custom_icons`). 
+This module adds Fly.io regions to your Coder template. Regions can be whitelisted using the `regions` argument and given custom names and custom icons with their respective map arguments (`custom_names`, `custom_icons`).
 
 ## Examples
 
@@ -26,7 +26,6 @@ module "fly-region" {
 
 ![Fly.io Default](../.images/flyio-basic.png)
 
-
 ### Using region whitelist
 
 The regions argument can be used to display only the desired regions in the Coder parameter.
@@ -40,7 +39,6 @@ module "fly-region" {
 ```
 
 ![Fly.io Filtered Regions](../.images/flyio-filtered.png)
-
 
 ### Using custom icons and names
 
