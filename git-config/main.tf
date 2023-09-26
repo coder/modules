@@ -31,6 +31,6 @@ resource "coder_script" "personalize" {
       CODER_EMAIL = var.user_email
     }) 
     display_name = "Git Config"
-    icon = "/emojis/1f58c.png"                          # TODO: test if the local git icon works
+    icon = "/emojis/1f58c.png" 
     run_on_start = true
 }
