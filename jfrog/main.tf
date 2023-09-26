@@ -28,6 +28,11 @@ provider "artifactory" {
   url          = "https://${var.jfrog_host}/artifactory"
   access_token = var.artifactory_access_token
 }
+resource "artifactory_scoped_token" "me" {
+  # This is hacky, but on terraform plan the data source gives empty strings,
+  # which fails validation.
+  username = length(local.artifactory_username) > 0 ? local.artifactory_username : "plan"
+}
 
 variable "agent_id" {
   type        = string
@@ -46,19 +51,6 @@ For example:
     }
 EOF
 }
-
-# Configure the Artifactory provider
-provider "artifactory" {
-  url          = "https://${var.jfrog_host}/artifactory"
-  access_token = var.artifactory_access_token
-}
-
-resource "artifactory_scoped_token" "me" {
-  # This is hacky, but on terraform plan the data source gives empty strings,
-  # which fails validation.
-  username = length(local.artifactory_username) > 0 ? local.artifactory_username : "plan"
-}
-
 resource "coder_script" "jfrog" {
   agent_id     = var.agent_id
   display_name = "jfrog"
