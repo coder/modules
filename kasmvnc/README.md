@@ -29,7 +29,7 @@ Automatically install [KasmVNC](https://kasmweb.com/kasmvnc) in a workspace, and
    module "kasmvnc" {
      source              = "https://registry.coder.com/modules/kasmvnc"
      agent_id            = coder_agent.example.id
-     version             = "1.0.0"
+     custom_version      = "1.0.0"
      desktop_environment = "mate"
      port                = 6080
    }
