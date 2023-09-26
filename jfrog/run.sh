@@ -19,7 +19,7 @@ if [ -z "${REPOSITORY_NPM}" ]; then
   echo "🤔 REPOSITORY_NPM is not set, skipping npm configuration."
 else
   echo "📦 Configuring npm..."
-  jf rt npm-config set registry "https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}"
+  jf npmc --global --repo-resolve "https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}"
   cat << EOF > ~/.npmrc
 email = ${ARTIFACTORY_USERNAME}
 registry = https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}

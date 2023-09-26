@@ -13,6 +13,6 @@ describe("jfrog", async () => {
     agent_id: "some-agent-id",
     jfrog_host: "YYYY.jfrog.io",
     artifactory_access_token: "XXXX",
-    package_managers: "{}",
+    package_managers: '',
   });
 });
