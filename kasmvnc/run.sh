@@ -62,4 +62,4 @@ EOF'
 echo -e "password\npassword\n" | vncpasswd -wo -u $USER
 
 # Start the server :)
-sudo -u $USER bash -c "vncserver -select-de \"${DESKTOP_ENVIRONMENT}\" -disableBasicAuth"
+sudo -u $USER bash -c "vncserver -select-de \"${DESKTOP_ENVIRONMENT}\" -disableBasicAuth -interface 0.0.0.0"
