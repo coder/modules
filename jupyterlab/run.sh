@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-echo "Instalalting ${MODULE_NAME}..."
+echo "Installing jupyterlab..."
 
 # check if jupyterlab is installed
 if ! command -v jupyterlab &> /dev/null then
@@ -13,10 +13,14 @@ if ! command -v jupyterlab &> /dev/null then
     fi
     pip3 install jupyterlab
     echo "jupyterlab installed!"
+else
+    echo "jupyterlab is already installed."
 fi
 
-echo "Starting ${MODULE_NAME}..."
+echo "Starting jupyterlab..."
 
 $HOME/.local/bin/jupyter lab --no-browser --LabApp.token='' --LabApp.password='' >${LOG_PATH} 2>&1 &
 
-echo "Started ${MODULE_NAME}!"
+echo "jupyterlab Started!"
+
+echo "check logs at ${LOG_PATH}"
