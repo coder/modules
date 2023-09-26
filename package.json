@@ -2,7 +2,8 @@
   "name": "modules",
   "scripts": {
     "test": "bun test",
-    "fmt": "bun x prettier -w **/*.ts **/*.md"
+    "fmt": "bun x prettier -w **/*.ts **/*.md *.md",
+    "fmt:ci": "bun x prettier --check **/*.ts **/*.md *.md"
   },
   "devDependencies": {
     "bun-types": "^1.0.3"
