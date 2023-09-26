@@ -4,7 +4,7 @@ description: A parameter with human region names and icons
 icon: ../.icons/azure.svg
 maintainer_github: coder
 verified: true
-tags: [helper, parameter, azure]
+tags: [helper, parameter, azure, regions]
 ---
 
 # Azure Region

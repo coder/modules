@@ -4,6 +4,7 @@ BOLD='\033[0;1m'
 CODE='\033[36;40;1m'
 RESET='\033[0m'
 SCRIPT="${PERSONALIZE_PATH}"
+SCRIPT="$${SCRIPT/#\~/$${HOME}}"
 
 # If the personalize script doesn't exist, educate
 # the user how they can customize their environment!
@@ -23,4 +24,4 @@ if [ ! -x $SCRIPT ]; then
 fi
 
 # Run the personalize script!
-exec $SCRIPT
+$SCRIPT
