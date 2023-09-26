@@ -14,7 +14,7 @@ if ! command -v jupyterlab & >/dev/null; then
         sudo apt-get update && sudo apt-get install python3-pip -y
     fi
     # install jupyterlab
-    pip3 install --user -q -y jupyterlab
+    pip3 install --user -q --yes jupyterlab
     echo "🥳 jupyterlab has been installed\n\n"
 else
     echo "🥳 jupyterlab is already installed\n\n"
