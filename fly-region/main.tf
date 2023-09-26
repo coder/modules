@@ -248,7 +248,7 @@ locals {
   }
 }
 
-data "coder_parameter" "region" {
+data "coder_parameter" "fly_region" {
     name = "flyio_region"
     display_name = var.display_name
     description = var.description
