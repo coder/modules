@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
+# Set non-interactive and configure timezone
+export DEBIAN_FRONTEND=noninteractive
+if [[ ! -f /etc/timezone ]]; then
+    echo "Etc/UTC" | sudo tee /etc/timezone
+    sudo dpkg-reconfigure -f noninteractive tzdata
+fi
+
 # Check if desktop environment is installed
 if ! dpkg -s ${DESKTOP_ENVIRONMENT} &>/dev/null; then
-    if [[ ! -f /etc/timezone ]] && [[ -z "$TZ" ]]; then
-        echo "tzdata tzdata/Areas select Etc" | sudo debconf-set-selections
-        echo "tzdata tzdata/Zones/Etc select UTC" | sudo debconf-set-selections
-    fi
     sudo apt-get update
     DEBIAN_FRONTEND=noninteractive sudo apt-get install -y ${DESKTOP_ENVIRONMENT}
 else
