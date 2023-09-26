@@ -22,12 +22,23 @@ else
     echo "${DESKTOP_ENVIRONMENT} is already installed."
 fi
 
+# Make sure lsb-release is installed
+sudo apt-get install -y lsb-release
+
+# Fetch Ubuntu distribution codename
+codename=$(lsb_release -cs)
+
 # Check if vncserver is installed
 if ! dpkg -s kasmvncserver &>/dev/null; then
     cd /tmp
-    wget https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_jammy_${VERSION}_amd64.deb
-    sudo apt-get install -y ./kasmvncserver_focal_${VERSION}_amd64.deb
-    printf "🥳 KasmVNC v${VERSION} has been successfully installed!\n\n"
+    wget "https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_${codename}_${VERSION}_amd64.deb"
+    sudo apt-get install -y ./kasmvncserver_$codename_${VERSION}_amd64.deb
+    if [ $? -eq 0 ]; then
+        printf "🥳 KasmVNC v${VERSION} has been successfully installed!\n\n"
+    else
+        echo "Failed to install KasmVNC."
+        exit 1
+    fi
 else
     echo "KasmVNC is already installed."
 fi
