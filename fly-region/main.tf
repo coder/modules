@@ -10,27 +10,27 @@ terraform {
 }
 
 variable "display_name" {
-    default = "Fly.io Region"
-    description = "The display name of the parameter."
-    type = string
+  default     = "Fly.io Region"
+  description = "The display name of the parameter."
+  type        = string
 }
 
 variable "description" {
-    default = "The region to deploy workspace infrastructure."
-    description = "The description of the parameter."
-    type = string
+  default     = "The region to deploy workspace infrastructure."
+  description = "The description of the parameter."
+  type        = string
 }
 
 variable "default" {
-    default = null
-    description = "The default region to use if no region is specified."
-    type = string
+  default     = null
+  description = "The default region to use if no region is specified."
+  type        = string
 }
 
 variable "mutable" {
-    default = false
-    description = "Whether the parameter can be changed after creation."
-    type = bool
+  default     = false
+  description = "Whether the parameter can be changed after creation."
+  type        = bool
 }
 
 variable "custom_names" {
@@ -46,242 +46,242 @@ variable "custom_icons" {
 }
 
 variable "regions" {
-  default = []
+  default     = []
   description = "List of regions to include for region selection."
-  type = list(string)
+  type        = list(string)
 }
 
 locals {
-  regions = { 
+  regions = {
     "ams" = {
-      name = "Amsterdam, Netherlands"
-      gateway = true
+      name      = "Amsterdam, Netherlands"
+      gateway   = true
       paid_only = false
-      icon = "/emojis/1f1f3-1f1f1.png"
+      icon      = "/emojis/1f1f3-1f1f1.png"
     }
     "arn" = {
-      name = "Stockholm, Sweden"
-      gateway = false
+      name      = "Stockholm, Sweden"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1f8-1f1ea.png"
+      icon      = "/emojis/1f1f8-1f1ea.png"
     }
     "atl" = {
-      name = "Atlanta, Georgia (US)"
-      gateway = false
+      name      = "Atlanta, Georgia (US)"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1fa-1f1f8.png"
+      icon      = "/emojis/1f1fa-1f1f8.png"
     }
     "bog" = {
-      name = "Bogotá, Colombia"
-      gateway = false
+      name      = "Bogotá, Colombia"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1e8-1f1f4.png"
+      icon      = "/emojis/1f1e8-1f1f4.png"
     }
     "bom" = {
-      name = "Mumbai, India"
-      gateway = true
+      name      = "Mumbai, India"
+      gateway   = true
       paid_only = true
-      icon = "/emojis/1f1ee-1f1f3.png"
+      icon      = "/emojis/1f1ee-1f1f3.png"
     }
     "bos" = {
-      name = "Boston, Massachusetts (US)"
-      gateway = false
+      name      = "Boston, Massachusetts (US)"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1fa-1f1f8.png"
+      icon      = "/emojis/1f1fa-1f1f8.png"
     }
     "cdg" = {
-      name = "Paris, France"
-      gateway = true
+      name      = "Paris, France"
+      gateway   = true
       paid_only = false
-      icon = "/emojis/1f1eb-1f1f7.png"
+      icon      = "/emojis/1f1eb-1f1f7.png"
     }
     "den" = {
-      name = "Denver, Colorado (US)"
-      gateway = false
+      name      = "Denver, Colorado (US)"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1fa-1f1f8.png"
+      icon      = "/emojis/1f1fa-1f1f8.png"
     }
     "dfw" = {
-      name = "Dallas, Texas (US)"
-      gateway = true
+      name      = "Dallas, Texas (US)"
+      gateway   = true
       paid_only = false
-      icon = "/emojis/1f1fa-1f1f8.png"
+      icon      = "/emojis/1f1fa-1f1f8.png"
     }
     "ewr" = {
-      name = "Secaucus, NJ (US)"
-      gateway = false
+      name      = "Secaucus, NJ (US)"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1fa-1f1f8.png"
+      icon      = "/emojis/1f1fa-1f1f8.png"
     }
     "eze" = {
-      name = "Ezeiza, Argentina"
-      gateway = false
+      name      = "Ezeiza, Argentina"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1e6-1f1f7.png"
+      icon      = "/emojis/1f1e6-1f1f7.png"
     }
     "fra" = {
-      name = "Frankfurt, Germany"
-      gateway = true
+      name      = "Frankfurt, Germany"
+      gateway   = true
       paid_only = true
-      icon = "/emojis/1f1e9-1f1ea.png"
+      icon      = "/emojis/1f1e9-1f1ea.png"
     }
     "gdl" = {
-      name = "Guadalajara, Mexico"
-      gateway = false
+      name      = "Guadalajara, Mexico"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1f2-1f1fd.png"
+      icon      = "/emojis/1f1f2-1f1fd.png"
     }
     "gig" = {
-      name = "Rio de Janeiro, Brazil"
-      gateway = false
+      name      = "Rio de Janeiro, Brazil"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1e7-1f1f7.png"
+      icon      = "/emojis/1f1e7-1f1f7.png"
     }
     "gru" = {
-      name = "Sao Paulo, Brazil"
-      gateway = false
+      name      = "Sao Paulo, Brazil"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1e7-1f1f7.png"
+      icon      = "/emojis/1f1e7-1f1f7.png"
     }
     "hkg" = {
-      name = "Hong Kong, Hong Kong"
-      gateway = true
+      name      = "Hong Kong, Hong Kong"
+      gateway   = true
       paid_only = false
-      icon = "/emojis/1f1ed-1f1f0.png"
+      icon      = "/emojis/1f1ed-1f1f0.png"
     }
     "iad" = {
-      name = "Ashburn, Virginia (US)"
-      gateway = true
+      name      = "Ashburn, Virginia (US)"
+      gateway   = true
       paid_only = false
-      icon = "/emojis/1f1fa-1f1f8.png"
+      icon      = "/emojis/1f1fa-1f1f8.png"
     }
     "jnb" = {
-      name = "Johannesburg, South Africa"
-      gateway = false
+      name      = "Johannesburg, South Africa"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1ff-1f1e6.png"
+      icon      = "/emojis/1f1ff-1f1e6.png"
     }
     "lax" = {
-      name = "Los Angeles, California (US)"
-      gateway = true
+      name      = "Los Angeles, California (US)"
+      gateway   = true
       paid_only = false
-      icon = "/emojis/1f1fa-1f1f8.png"
+      icon      = "/emojis/1f1fa-1f1f8.png"
     }
     "lhr" = {
-      name = "London, United Kingdom"
-      gateway = true
+      name      = "London, United Kingdom"
+      gateway   = true
       paid_only = false
-      icon = "/emojis/1f1ec-1f1e7.png"
+      icon      = "/emojis/1f1ec-1f1e7.png"
     }
     "mad" = {
-      name = "Madrid, Spain"
-      gateway = false
+      name      = "Madrid, Spain"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1ea-1f1f8.png"
+      icon      = "/emojis/1f1ea-1f1f8.png"
     }
     "mia" = {
-      name = "Miami, Florida (US)"
-      gateway = false
+      name      = "Miami, Florida (US)"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1fa-1f1f8.png"
+      icon      = "/emojis/1f1fa-1f1f8.png"
     }
     "nrt" = {
-      name = "Tokyo, Japan"
-      gateway = true
+      name      = "Tokyo, Japan"
+      gateway   = true
       paid_only = false
-      icon = "/emojis/1f1ef-1f1f5.png"
+      icon      = "/emojis/1f1ef-1f1f5.png"
     }
     "ord" = {
-      name = "Chicago, Illinois (US)"
-      gateway = true
+      name      = "Chicago, Illinois (US)"
+      gateway   = true
       paid_only = false
-      icon = "/emojis/1f1fa-1f1f8.png"
+      icon      = "/emojis/1f1fa-1f1f8.png"
     }
     "otp" = {
-      name = "Bucharest, Romania"
-      gateway = false
+      name      = "Bucharest, Romania"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1f7-1f1f4.png"
+      icon      = "/emojis/1f1f7-1f1f4.png"
     }
     "phx" = {
-      name = "Phoenix, Arizona (US)"
-      gateway = false
+      name      = "Phoenix, Arizona (US)"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1fa-1f1f8.png"
+      icon      = "/emojis/1f1fa-1f1f8.png"
     }
     "qro" = {
-      name = "Querétaro, Mexico"
-      gateway = false
+      name      = "Querétaro, Mexico"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1f2-1f1fd.png"
+      icon      = "/emojis/1f1f2-1f1fd.png"
     }
     "scl" = {
-      name = "Santiago, Chile"
-      gateway = true
+      name      = "Santiago, Chile"
+      gateway   = true
       paid_only = false
-      icon = "/emojis/1f1e8-1f1f1.png"
+      icon      = "/emojis/1f1e8-1f1f1.png"
     }
     "sea" = {
-      name = "Seattle, Washington (US)"
-      gateway = true
+      name      = "Seattle, Washington (US)"
+      gateway   = true
       paid_only = false
-      icon = "/emojis/1f1fa-1f1f8.png"
+      icon      = "/emojis/1f1fa-1f1f8.png"
     }
     "sin" = {
-      name = "Singapore, Singapore"
-      gateway = true
+      name      = "Singapore, Singapore"
+      gateway   = true
       paid_only = false
-      icon = "/emojis/1f1f8-1f1ec.png"
+      icon      = "/emojis/1f1f8-1f1ec.png"
     }
     "sjc" = {
-      name = "San Jose, California (US)"
-      gateway = true
+      name      = "San Jose, California (US)"
+      gateway   = true
       paid_only = false
-      icon = "/emojis/1f1fa-1f1f8.png"
+      icon      = "/emojis/1f1fa-1f1f8.png"
     }
     "syd" = {
-      name = "Sydney, Australia"
-      gateway = true
+      name      = "Sydney, Australia"
+      gateway   = true
       paid_only = false
-      icon = "/emojis/1f1e6-1f1fa.png"
+      icon      = "/emojis/1f1e6-1f1fa.png"
     }
     "waw" = {
-      name = "Warsaw, Poland"
-      gateway = false
+      name      = "Warsaw, Poland"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1f5-1f1f1.png"
+      icon      = "/emojis/1f1f5-1f1f1.png"
     }
     "yul" = {
-      name = "Montreal, Canada"
-      gateway = false
+      name      = "Montreal, Canada"
+      gateway   = false
       paid_only = false
-      icon = "/emojis/1f1e8-1f1e6.png"
+      icon      = "/emojis/1f1e8-1f1e6.png"
     }
     "yyz" = {
-      name = "Toronto, Canada"
-      gateway = true
+      name      = "Toronto, Canada"
+      gateway   = true
       paid_only = false
-      icon = "/emojis/1f1e8-1f1e6.png"
+      icon      = "/emojis/1f1e8-1f1e6.png"
     }
   }
 }
 
 data "coder_parameter" "fly_region" {
-    name = "flyio_region"
-    display_name = var.display_name
-    description = var.description
-    default = (var.default != null && var.default != "") && ((var.default != null ? contains(var.regions, var.default) : false)  || length(var.regions) == 0) ? var.default : null  
-    mutable = var.mutable
-    dynamic "option" { 
-        for_each = { for k, v in local.regions : k => v if anytrue([for d in var.regions : k == d ]) || length(var.regions) == 0 }
-        content {
-            name = try(var.custom_names[option.key], option.value.name)
-            icon = try(var.custom_icons[option.key], option.value.icon)
-            value = option.key
-        }
+  name         = "flyio_region"
+  display_name = var.display_name
+  description  = var.description
+  default      = (var.default != null && var.default != "") && ((var.default != null ? contains(var.regions, var.default) : false) || length(var.regions) == 0) ? var.default : null
+  mutable      = var.mutable
+  dynamic "option" {
+    for_each = { for k, v in local.regions : k => v if anytrue([for d in var.regions : k == d]) || length(var.regions) == 0 }
+    content {
+      name  = try(var.custom_names[option.key], option.value.name)
+      icon  = try(var.custom_icons[option.key], option.value.icon)
+      value = option.key
     }
+  }
 }
 
 output "value" {
-    value = data.coder_parameter.fly_region.value
+  value = data.coder_parameter.fly_region.value
 }
