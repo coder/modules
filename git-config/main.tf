@@ -45,8 +45,8 @@ data "coder_parameter" "username" {
 resource "coder_script" "git_config" {
     agent_id = var.agent_id
     script = templatefile("${path.module}/run.sh", {
-      CODER_USERNAME = data.coder_parameter.username.value != "" ? data.coder_parameter.username.value : var.username,
-      CODER_EMAIL = data.coder_parameter.user_email.value != "" ? data.coder_parameter.user_email.value : var.user_email
+      CODER_USERNAME = data.coder_parameter.username.value != "" ? data.coder_parameter.username.value : var.default_username,
+      CODER_EMAIL = data.coder_parameter.user_email.value != "" ? data.coder_parameter.user_email.value : var.default_user_email
     }) 
     display_name = "Git Config"
     icon = "/icon/git.svg" 
