@@ -62,6 +62,4 @@ EOF'
 echo -e "password\npassword\n" | vncpasswd -wo -u $USER
 
 # Start the server :)
-sudo -u $USER bash -c "vncserver -kill $DISPLAY &> ${LOG_PATH} || sudo rm -rfv /tmp/.X*-lock /tmp/.X11-unix" \
-    || echo "no locks present"
-sudo -u $USER bash -c "vncserver -select-de \"${DESKTOP_ENVIRONMENT}\" -disableBasicAuth -interface 0.0.0.0 >${LOG_PATH} 2>&1 &"
+sudo -u $USER bash -c "vncserver -select-de \"${DESKTOP_ENVIRONMENT}\" -disableBasicAuth >${LOG_PATH} 2>&1 &"
