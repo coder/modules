@@ -11,7 +11,7 @@ tags: [jupyter, helper, ide, web]
 
 A module that adds JupyterLab in your Coder template.
 
-![JupyterLab](../.images/jupyterlab.webp)
+![JupyterLab](../.images/jupyterlab.png)
 
 ```hcl
 module "jupyterlab" {

@@ -32,7 +32,7 @@ resource "coder_script" "personalize" {
     PERSONALIZE_PATH : var.path,
   })
   display_name = "Personalize"
-  icon         = "/emojis/1f58c.png"
+  icon         = "/icon/personalize.svg"
   log_path     = var.log_path
   run_on_start = true
 }
