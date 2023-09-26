@@ -12,12 +12,12 @@ command -v git >/dev/null 2>&1 || {
 # Set git username and email if missing
 if [ -z $(git config --get user.email) ]; then
     printf "git-config: No user.email found, setting to ${CODER_EMAIL}\n"
-    git config --global user.email ${CODER_EMAIL}
+    git config --global user.email "${CODER_EMAIL}"
 fi
 
 if [ -z $(git config --get user.name) ]; then
     printf "git-config: No user.name found, setting to ${CODER_USERNAME}\n"
-    git config --global user.name ${CODER_USERNAME}
+    git config --global user.name "${CODER_USERNAME}"
 fi
 
 printf "\n$${BOLD}git-config: using username: $(git config --get user.name)\n"
