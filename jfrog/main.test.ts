@@ -1,18 +1,41 @@
-import { describe, expect, it } from "bun:test";
+import { serve } from "bun";
+import { describe } from "bun:test";
 import {
-  executeScriptInContainer,
-  runTerraformApply,
+  createJSONResponse,
   runTerraformInit,
-  testRequiredVariables,
+  testRequiredVariables
 } from "../test";
 
 describe("jfrog", async () => {
   await runTerraformInit(import.meta.dir);
 
+  // Run a fake JFrog server so the provider can initialize
+  // correctly. This saves us from having to make remote requests!
+  const fakeFrogHost = serve({
+    fetch: (req) => {
+      const url = new URL(req.url);
+      // See https://jfrog.com/help/r/jfrog-rest-apis/license-information
+      if (url.pathname === "/artifactory/api/system/license")
+        return createJSONResponse({
+          type: "Commercial",
+          licensedTo: "JFrog inc.",
+          validThrough: "May 15, 2036",
+        });
+      if (url.pathname === "/access/api/v1/tokens")
+        return createJSONResponse({
+          token_id: "xxx",
+          access_token: "xxx",
+          scope: "any",
+        });
+      return createJSONResponse({});
+    },
+    port: 0,
+  });
+
   testRequiredVariables(import.meta.dir, {
     agent_id: "some-agent-id",
-    jfrog_host: "YYYY.jfrog.io",
+    jfrog_url: "http://" + fakeFrogHost.hostname + ":" + fakeFrogHost.port,
     artifactory_access_token: "XXXX",
-    package_managers: '',
+    package_managers: "{}",
   });
 });

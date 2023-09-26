@@ -12,34 +12,19 @@ sudo chmod 755 /usr/local/bin/jf
 export CI=true
 # Authenticate with the JFrog CLI.
 jf c rm 0 || true
-echo "${ARTIFACTORY_ACCESS_TOKEN}" | jf c add --access-token-stdin --url "https://${JFROG_HOST}" 0
+echo "${ARTIFACTORY_ACCESS_TOKEN}" | jf c add --access-token-stdin --url "${JFROG_URL}" 0
 
 # Configure the `npm` CLI to use the Artifactory "npm" repository.
 if [ -z "${REPOSITORY_NPM}" ]; then
   echo "🤔 REPOSITORY_NPM is not set, skipping npm configuration."
 else
-  # check NPM_PACKAGE_MANAGER==npm value to set the package manager npm otherwise yarn
-  if [ "${NPM_PACKAGE_MANAGER}" = "npm" ]; then
-    echo "📦 Configuring npm..."
-    jf npmc --global --repo-resolve "https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}"
-#     cat << EOF > ~/.npmrc
-# email = ${ARTIFACTORY_USERNAME}
-# registry = https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}
-# EOF
-    jf rt curl /api/npm/auth >> ~/.npmrc
-  else
-    echo "🧶 Configuring yarn..."
-    jf yarnc --global --repo-resolve "https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}"
-#     cat << EOF > ~/.yarnrc
-
-  
-#   echo "📦 Configuring npm..."
-#   jf npmc --global --repo-resolve "https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}"
-#   cat << EOF > ~/.npmrc
-# email = ${ARTIFACTORY_USERNAME}
-# registry = https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}
-# EOF
-#   jf rt curl /api/npm/auth >> ~/.npmrc
+  echo "📦 Configuring npm..."
+  jf npmc --global --repo-resolve "${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}"
+  cat << EOF > ~/.npmrc
+email = ${ARTIFACTORY_USERNAME}
+registry = ${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
+EOF
+  jf rt curl /api/npm/auth >> ~/.npmrc
 fi
 
 # Configure the `pip` to use the Artifactory "python" repository.
@@ -50,7 +35,7 @@ else
   mkdir -p ~/.pip
   cat << EOF > ~/.pip/pip.conf
 [global]
-index-url = https://${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}@${JFROG_HOST}/artifactory/api/pypi/${REPOSITORY_PYPI}/simple
+index-url = https://${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}@${JFROG_URL}/artifactory/api/pypi/${REPOSITORY_PYPI}/simple
 EOF
 fi
 
@@ -59,6 +44,6 @@ if [ -z "${REPOSITORY_GO}" ]; then
   echo "🤔 REPOSITORY_GO is not set, skipping go configuration."
 else
   echo "🐹 Configuring go..."
-  export GOPROXY="https://${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}@${JFROG_HOST}/artifactory/api/go/${REPOSITORY_GO}"
+  export GOPROXY="https://${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}@${JFROG_URL}/artifactory/api/go/${REPOSITORY_GO}"
 fi
 echo "🥳 Configuration complete!"

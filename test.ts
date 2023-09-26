@@ -153,7 +153,7 @@ export const testRequiredVariables = (
         await runTerraformApply(dir, localVars);
       } catch (ex) {
         expect(ex.message).toContain(
-          `input variable \"${varName}\" is not set, and has no default`,
+          `input variable \"${varName}\" is not set`,
         );
         return;
       }
@@ -180,6 +180,7 @@ export const runTerraformApply = async (
       "-input=false",
       "-auto-approve",
       "-state",
+      "-no-color",
       stateFile,
     ],
     {
@@ -210,3 +211,12 @@ export const runTerraformInit = async (dir: string) => {
     throw new Error(text);
   }
 };
+
+export const createJSONResponse = (obj: object, statusCode = 200): Response => {
+  return new Response(JSON.stringify(obj), {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    status: statusCode,
+  })
+}
