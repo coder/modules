@@ -11,3 +11,8 @@ To create a new module, clone this repository and run:
 A suite of test-helpers exists to run `terraform apply` on modules with variables, and test script output against containers.
 
 Reference existing `*.test.ts` files for implementation.
+
+```sh
+# Run tests for a specific module!
+$ bun test -t '<module>'
+```
