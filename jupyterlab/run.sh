@@ -10,11 +10,11 @@ if ! command -v jupyterlab & >/dev/null; then
     # check if python3 pip is installed
     if ! command -v pip3 & >/dev/null; then
         echo "pip3 is not installed"
-        echo "Installing pip3..."
-        sudo apt-get update && sudo apt-get install python3-pip -y
+        echo "Please install pip3 in your Dockerfile/VM image before running this script"
+        exit 1
     fi
     # install jupyterlab
-    pip3 install --user -q --yes jupyterlab
+    pip3 install --upgrade --no-cache-dir jupyterlab
     echo "🥳 jupyterlab has been installed\n\n"
 else
     echo "🥳 jupyterlab is already installed\n\n"
