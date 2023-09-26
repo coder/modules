@@ -14,7 +14,6 @@ variable "agent_id" {
     description = "The ID of a Coder agent."
 }
 
-# TODO: Check if agent ID can provide workspace username and email
 variable "username" {
   type = string
   description = "The username of the Coder workspace owner."
