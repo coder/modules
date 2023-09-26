@@ -9,7 +9,9 @@ tags: [helper, VNC, web]
 
 # KasmVNC
 
-Automatically install [KasmVNC](https://kasmweb.com/kasmvnc) in a workspace, and create an app to access it via the dashboard.
+Automatically install [KasmVNC](https://kasmweb.com/kasmvnc.png) in a workspace, and create an app to access it via the dashboard.
+
+![KasmVNC](../.images/kasmvnc.png)
 
 ## Examples
 
@@ -35,5 +37,3 @@ Automatically install [KasmVNC](https://kasmweb.com/kasmvnc) in a workspace, and
    }
 
    ```
-
-![Screenshot of KasmVNC]() //TODO
