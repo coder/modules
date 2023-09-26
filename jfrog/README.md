@@ -32,21 +32,6 @@ module "jfrog" {
 }
 ```
 
-### Configure npm to use Artifactory with yarn
-
-```hcl
-module "jfrog" {
-    source = "https://registry.coder.com/modules/jfrog"
-    agent_id = coder_agent.example.id
-    jfrog_host = "YYYY.jfrog.io"
-    artifactory_access_token = var.artifactory_access_token # An admin access token
-    package_managers = {
-      "npm": "npm-local",
-    }
-    npm_package_manager = "yarn"
-}
-
-
 ## Authentication
 
 Get a JFrog access token from your Artifactory instance. The token must have admin permissions. It is recommended to store the token in a secret terraform variable.
