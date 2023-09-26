@@ -12,6 +12,8 @@ tags: [integration]
 
 Install the JF CLI and authenticate package managers with Artifactory.
 
+![JFrog](../.images/jfrog.png)]
+
 ```hcl
 module "jfrog" {
     source = "https://registry.coder.com/modules/jfrog"
