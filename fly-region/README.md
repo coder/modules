@@ -63,4 +63,3 @@ module "fly-region" {
 ## Associated template
 
 For a pre-configured Fly.io template, see the Coder template registry.
-
