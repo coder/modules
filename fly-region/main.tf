@@ -272,7 +272,7 @@ data "coder_parameter" "fly_region" {
     description = var.description
     default = var.default
     mutable = var.mutable
-    dynamic "option" {  # TODO: maybe set var.regions to all possible regions to avoid unessecary checks
+    dynamic "option" { 
         for_each = { for k, v in local.regions : k => v if anytrue([for d in var.regions : k == d ]) || length(var.regions) == 0 }
         content {
             name = try(var.custom_names[option.key], option.value.name)
