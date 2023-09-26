@@ -4,7 +4,7 @@ BOLD='\033[0;1m'
 echo "$${BOLD}Installing JFrog CLI..."
 
 # Install the JFrog CLI.
-curl -fL https://getcli.jfrog.io | sudo sh
+curl -fL https://install-cli.jfrog.io | sudo sh
 sudo chmod 755 /usr/local/bin/jf
 
 # The jf CLI checks $CI when determining whether to use interactive
