@@ -10,3 +10,10 @@ tags: [helper]
 # Personalize
 
 Run a script on workspace start that allows developers to run custom commands to personalize their workspace.
+
+```hcl
+module "personalize" {
+  source = "https://registry.coder.com/modules/personalize"
+  agent_id = coder_agent.example.id
+}
+```

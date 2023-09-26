@@ -13,6 +13,7 @@ This module adds Fly.io regions to your Coder template. Regions can be whitelist
 
 ## Examples
 
+
 ### Using default settings
 
 We can use the simplest format here, only adding a default selection as the `atl` region.
@@ -62,3 +63,4 @@ module "fly-region" {
 ## Associated template
 
 For a pre-configured Fly.io template, see the Coder template registry.
+
