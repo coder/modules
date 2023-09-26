@@ -40,7 +40,6 @@ resource "coder_script" "jupyterlab" {
     PORT : var.port
   })
   run_on_start = true
-  run_on_stopt = false
 }
 
 resource "coder_app" "jupyterlab" {
