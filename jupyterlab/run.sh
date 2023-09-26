@@ -3,16 +3,17 @@
 echo "Installing jupyterlab..."
 
 # check if jupyterlab is installed
-if ! command -v jupyterlab &> /dev/null then
-    #  install jupyterlab
+if ! command -v jupyterlab & >/dev/null; then
+    # install jupyterlab
     # check if python3 pip is installed
-    if ! command -v pip3 &> /dev/null then
+    if ! command -v pip3 & >/dev/null; then
         echo "pip3 is not installed"
         echo "Please install pip3 and try again"
         exit 1
+    else
+        pip3 install jupyterlab
+        echo "jupyterlab installed!"
     fi
-    pip3 install jupyterlab
-    echo "jupyterlab installed!"
 else
     echo "jupyterlab is already installed."
 fi
