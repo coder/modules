@@ -49,7 +49,7 @@ sudo mkdir -p /etc/kasmvnc
 sudo bash -c 'cat > /etc/kasmvnc/kasmvnc.yaml <<EOF
 network:
   protocol: http
-  websocekt_port: ${PORT}
+  websocket_port: ${PORT}
   ssl:
     require_ssl: false
   udp:
