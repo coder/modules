@@ -33,6 +33,12 @@ variable "mutable" {
     type = bool
 }
 
+variable "regions" {
+  default = []
+  description = "List of regions to include for region selection."
+  type = list(string)
+}
+
 locals {
   regions = { 
     "ams" = {
@@ -254,8 +260,8 @@ data "coder_parameter" "fly_region" {
     description = var.description
     default = var.default
     mutable = var.mutable
-    dynamic "option" {
-        for_each = { for k, v in local.regions : k => v if !(contains(var.exclude, k)) }
+    dynamic "option" {  # TODO: maybe set var.regions to all possible regions to avoid unessecary checks
+        for_each = { for k, v in local.regions : k => v if anytrue([for d in var.regions : k == d ]) || length(var.regions) == 0 }
         content {
             name = try(var.custom_names[option.key], option.value.name)
             icon = try(var.custom_icons[option.key], option.value.icon)
