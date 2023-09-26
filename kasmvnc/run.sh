@@ -44,7 +44,7 @@ else
 fi
 
 sudo addgroup $USER ssl-cert
-mkdir -p /etc/kasmvnc
+sudo mkdir -p /etc/kasmvnc
 # Coder port-forwarding from dashboard only supports HTTP
 sudo bash -c 'cat > /etc/kasmvnc/kasmvnc.yaml <<EOF
 network:
