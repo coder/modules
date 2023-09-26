@@ -25,9 +25,7 @@ fi
 # Check if vncserver is installed
 if ! dpkg -s kasmvncserver &>/dev/null; then
     cd /tmp
-    # get distro name e.g focal, bionic, etc
-    DISTRO=$(lsb_release -cs)
-    wget https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_$DISTRO_${VERSION}_amd64.deb
+    wget https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_jammy_${VERSION}_amd64.deb
     sudo apt-get install -y ./kasmvncserver_focal_${VERSION}_amd64.deb
     printf "🥳 KasmVNC v${VERSION} has been successfully installed!\n\n"
 else
