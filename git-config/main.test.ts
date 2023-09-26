@@ -11,15 +11,19 @@ describe("git-config", async () => {
 
   testRequiredVariables(import.meta.dir, {
     agent_id: "foo",
+    default_user_email: 's@example.tld',
+    default_username: 'example username',
   });
 
   it("fails without git", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
+      default_user_email: 's@example.tld',
+      default_username: 'example username',
     });
     const output = await executeScriptInContainer(state, "alpine");
     expect(output.exitCode).toBe(1);
-    expect(output.stdout).toEqual(["Git is not installed!"]);
+    expect(output.stdout).toEqual(["\u001B[0;1mChecking git-config!", "Git is not installed!"]);
   });
 
 //   it("runs with git", async () => {
