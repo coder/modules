@@ -27,6 +27,7 @@ variable "default_user_email" {
 
 
 data "coder_parameter" "user_email" {
+  name = "user_email"
   type = "string"
   description = "Email to store in git-config for this workspace. Leave empty to populate with workspace owner email."
   display_name = "Git config user.email"
@@ -34,6 +35,7 @@ data "coder_parameter" "user_email" {
 }
 
 data "coder_parameter" "username" {
+  name = "username"
   type = "string"
   description = "Username to store in git-config for this workspace. Leave empty to populate with workspace owner name."
   display_name = "Git config user.name"
