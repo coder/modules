@@ -9,12 +9,12 @@ tags: [helper, git]
 
 # git-config
 
-Runs a script that checks for stored Git credentials `user.name` and `user.email`, populating them with workspace owner's credentials when missing. 
-
+Runs a script that checks for stored Git credentials `user.name` and `user.email`, populating them with workspace owner's credentials when missing.
 
 ## Examples
 
 ### Using workspace owner
+
 The credentials can be populated from the workspace owner's information.
 
 ```hcl
@@ -27,6 +27,7 @@ module "git-config" {
 ```
 
 ### Custom credentials
+
 Credentials can also be set manually.
 
 ```hcl
@@ -37,4 +38,3 @@ module "git-config" {
   user_email = "michael@example.com"
 }
 ```
-
