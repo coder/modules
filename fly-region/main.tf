@@ -281,3 +281,7 @@ data "coder_parameter" "fly_region" {
         }
     }
 }
+
+output "value" {
+    value = data.coder_parameter.region.value
+}

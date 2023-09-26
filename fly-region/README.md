@@ -15,13 +15,16 @@ This module adds Fly.io regions to your Coder template. Regions can be whitelist
 
 ### Using default settings
 
+We can use the simplest format here, only adding a default selection as the `atl` region.
+
 ```hcl
 module "fly-region" {
     source = "https://registry.coder.com/modules/fly-region"
+    default = "atl"
 }
 ```
 
-[]()
+![Fly.io Default](../.images/flyio-basic.png)
 
 
 ### Using region whitelist
@@ -36,7 +39,7 @@ module "fly-region" {
 }
 ```
 
- TODO: Add screenshot filtered_flyio.png
+![Fly.io Filtered Regions](../.images/flyio-filtered.png)
 
 
 ### Using custom icons and names
@@ -55,3 +58,9 @@ module "fly-region" {
     }
 }
 ```
+
+![Fly.io custom icon and name](../.images/flyio-custom.png)
+
+## Associated template
+
+For a pre-configured Fly.io template, see the Coder template registry.
