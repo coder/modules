@@ -1,16 +1,23 @@
 #!/usr/bin/env bash
 
-# Set non-interactive and configure timezone
-export DEBIAN_FRONTEND=noninteractive
+# Update package list first
+sudo apt-get update
 
-echo "tzdata tzdata/Areas select Etc" | sudo debconf-set-selections
-echo "tzdata tzdata/Zones/Etc select UTC" | sudo debconf-set-selections
-sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
+# Pre-configure selections for tzdata
+if [[ ! -f /etc/timezone ]]; then
+    echo "tzdata tzdata/Areas select Etc" | sudo debconf-set-selections
+    echo "tzdata tzdata/Zones/Etc select ${TIMEZONE}" | sudo debconf-set-selections
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
+fi
+
+# Pre-configure locales
+echo "locales locales/default_environment_locale select ${LOCALE}" | sudo debconf-set-selections
+echo "locales locales/locales_to_be_generated multiselect ${LOCALE} UTF-8" | sudo debconf-set-selections
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y locales
 
 # Check if desktop environment is installed
 if ! dpkg -s ${DESKTOP_ENVIRONMENT} &>/dev/null; then
-    sudo apt-get update
-    DEBIAN_FRONTEND=noninteractive sudo apt-get install -y ${DESKTOP_ENVIRONMENT}
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ${DESKTOP_ENVIRONMENT}
 else
     echo "${DESKTOP_ENVIRONMENT} is already installed."
 fi

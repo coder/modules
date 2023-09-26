@@ -32,6 +32,18 @@ variable "custom_version" {
   default     = "1.2.0"
 }
 
+variable "locale" {
+  type        = string
+  description = "Locale to use for KasmVNC."
+  default     = "en_US.UTF-8"
+}
+
+variable "timezone" {
+  type        = string
+  description = "Timezone to use for KasmVNC."
+  default     = "Etc/UTC"
+}
+
 resource "coder_script" "kasm_vnc" {
   agent_id     = var.agent_id
   display_name = "KasmVNC"
@@ -39,7 +51,9 @@ resource "coder_script" "kasm_vnc" {
   script = templatefile("${path.module}/run.sh", {
     PORT : var.port,
     DESKTOP_ENVIRONMENT : var.desktop_environment,
-    VERSION : var.custom_version
+    VERSION : var.custom_version,
+    LOCALE : var.locale,
+    TIMEZONE : var.timezone
   })
   run_on_start = true
 }
