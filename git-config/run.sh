@@ -24,4 +24,4 @@ if [ -z $(git config --get user.name) ]; then
 fi
 
 printf "\n$${BOLD}git-config: using username: $(git config --get user.name)\n"
-printf "$${BOLD}git-config: using email: $(git config --get user.email)\n"
+printf "$${BOLD}git-config: using email: $(git config --get user.email)\n\n"
