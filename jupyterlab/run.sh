@@ -14,7 +14,7 @@ if ! command -v jupyterlab > /dev/null 2>&1; then
         exit 1
     fi
     # install jupyterlab
-    pip3 install --upgrade --no-cache-dir --no-warn-script-location jupyterlab
+    pip3 install --upgrade --no-cache-dir --no-warn-script-location --upgrade 'jupyter-server<2.0.0' jupyterlab
     echo "🥳 jupyterlab has been installed\n\n"
 else
     echo "🥳 jupyterlab is already installed\n\n"
