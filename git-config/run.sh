@@ -5,7 +5,7 @@ printf "$${BOLD}Checking git-config!\n"
 
 # Check if git is installed
 command -v git >/dev/null 2>&1 || {
-    echo "git is not installed! Install git to sync username and email.\n"
+    echo "Git is not installed!"
     exit 1
 }
 
