@@ -22,4 +22,5 @@ You can test a module locally by updating the source as follows
 ```hcl
 source = "git::https://github.com/<USERNAME>/<REPO>.git//<MODULE-NAME>?ref=<BRANCH-NAME>"
 ```
+
 > **Note:** This is the responsibility of the module author to implement tests for their module. and test the module locally before submitting a PR.
