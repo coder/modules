@@ -5,7 +5,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 echo "tzdata tzdata/Areas select Etc" | sudo debconf-set-selections
 echo "tzdata tzdata/Zones/Etc select UTC" | sudo debconf-set-selections
-sudo DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
+sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
 
 # Check if desktop environment is installed
 if ! dpkg -s ${DESKTOP_ENVIRONMENT} &>/dev/null; then
