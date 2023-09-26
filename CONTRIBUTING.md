@@ -6,37 +6,21 @@ To create a new module, clone this repository and run:
 ./new.sh MOUDLE_NAME
 ```
 
-Test a module by running an instance of Coder on your local machine:
-
-```shell
-coder server --in-memory
-```
-
-This will create a new module in the modules directory with the given name and scaffolding.
-Edit the files, adding your module's implementation, documentation and screenshots.
-
 ## Testing a Module
 
-Create a template and edit it to include your development module:
+A suite of test-helpers exists to run `terraform apply` on modules with variables, and test script output against containers.
 
-> [!NOTE]
-> The Docker starter template is recommended for quick-iteration!
+Reference existing `*.test.ts` files for implementation.
 
-```hcl
-module "MOUDLE_NAME" {
-    source = "/home/user/coder/modules/MOUDLE_NAME"
-}
+```shell
+# Run tests for a specific module!
+$ bun test -t '<module>'
 ```
 
-You can also test your module by specifying the source as a git repository:
+You can test a module locally by updating the source as follows
 
 ```hcl
-module "MOUDLE_NAME" {
-    source = "git::https://github.com/<USERNAME>/<REPO>.git//<FOLDER>?ref=<BRANCH>"
-}
+source = "git::https://github.com/<USERNAME>/<REPO>.git//<MODULE-NAME>?ref=<BRANCH-NAME>"
 ```
 
-Build a workspace and your module will be consumed! 🥳
-
-Open a pull-request with your module, a member of the Coder team will
-manually test it, and after-merge it will appear on the Registry.
+> **Note:** This is the responsibility of the module author to implement tests for their module. and test the module locally before submitting a PR.
