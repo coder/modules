@@ -59,7 +59,7 @@ EOF'
 # This password is not used since we start the server without auth.
 # The server is protected via the Coder session token / tunnel
 # and does not listen publicly on the VM
-echo -e "password\npassword\n" | vncpasswd -wo -u $USER
+echo -e "password\npassword\n" | vncpasswd -wo -u $$USER
 
 # Start the server :)
-sudo su -u $USER bash -c 'vncserver -select-de "${DESKTOP_ENVIRONMENT}" -disableBasicAuth'
+sudo su -u $$USER bash -c 'vncserver -select-de "${DESKTOP_ENVIRONMENT}" -disableBasicAuth'
