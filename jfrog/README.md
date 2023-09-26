@@ -22,7 +22,7 @@ Install the JF CLI and authenticate package managers with Artifactory.
 module "jfrog" {
     source = "https://registry.coder.com/modules/jfrog"
     agent_id = coder_agent.example.id
-    jfrog_host = "YYYY.jfrog.io"
+    jfrog_url = "https://YYYY.jfrog.io"
     artifactory_access_token = var.artifactory_access_token # An admin access token
     package_managers = {
       "npm": "npm-local",
