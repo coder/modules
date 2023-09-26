@@ -33,6 +33,18 @@ variable "mutable" {
     type = bool
 }
 
+variable "custom_names" {
+  default     = {}
+  description = "A map of custom display names for region IDs."
+  type        = map(string)
+}
+
+variable "custom_icons" {
+  default     = {}
+  description = "A map of custom icons for region IDs."
+  type        = map(string)
+}
+
 variable "regions" {
   default = []
   description = "List of regions to include for region selection."
