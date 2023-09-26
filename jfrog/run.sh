@@ -35,7 +35,7 @@ else
   mkdir -p ~/.pip
   cat << EOF > ~/.pip/pip.conf
 [global]
-index-url = https://${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}@${JFROG_URL#https://}/artifactory/api/pypi/${REPOSITORY_PYPI}/simple
+index-url = https://${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}@${JFROG_HOST}/artifactory/api/pypi/${REPOSITORY_PYPI}/simple
 EOF
 fi
 
@@ -44,6 +44,6 @@ if [ -z "${REPOSITORY_GO}" ]; then
   echo "🤔 REPOSITORY_GO is not set, skipping go configuration."
 else
   echo "🐹 Configuring go..."
-  export GOPROXY="https://${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}@${JFROG_URL#https://}/artifactory/api/go/${REPOSITORY_GO}"
+  export GOPROXY="https://${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}@${JFROG_HOST}/artifactory/api/go/${REPOSITORY_GO}"
 fi
 echo "🥳 Configuration complete!"

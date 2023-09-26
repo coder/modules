@@ -60,6 +60,7 @@ resource "coder_script" "jfrog" {
   icon         = "/icon/jfrog.svg"
   script = templatefile("${path.module}/run.sh", {
     JFROG_URL : var.jfrog_url,
+    JFROG_HOST : replace(var.jfrog_url, "https://", ""),
     ARTIFACTORY_USERNAME : data.coder_workspace.me.owner_email,
     ARTIFACTORY_ACCESS_TOKEN : artifactory_scoped_token.me.access_token,
     REPOSITORY_NPM : lookup(var.package_managers, "npm", ""),
