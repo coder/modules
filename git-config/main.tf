@@ -29,8 +29,8 @@ variable "default_user_email" {
 data "coder_parameter" "user_email" {
   name = "user_email"
   type = "string"
-  default = var.default_user_email
-  description = "Email to store in git-config for this workspace. Leave empty to populate with workspace owner email."
+  default = "default"
+  description = "Email to store in git-config for this workspace. Leave as \"default\" to populate with workspace owner email or admin preset."
   display_name = "Git config user.email"
   mutable = false
 }
@@ -38,8 +38,8 @@ data "coder_parameter" "user_email" {
 data "coder_parameter" "username" {
   name = "username"
   type = "string"
-  default = var.default_username
-  description = "Username to store in git-config for this workspace. Leave empty to populate with workspace owner name."
+  default = "default"
+  description = "Username to store in git-config for this workspace. Leave as \"default\" to populate with workspace owner name or admin preset."
   display_name = "Git config user.name"
   mutable = false
 }
@@ -47,8 +47,8 @@ data "coder_parameter" "username" {
 resource "coder_script" "git_config" {
     agent_id = var.agent_id
     script = templatefile("${path.module}/run.sh", {
-      CODER_USERNAME = data.coder_parameter.username.value != "" ? data.coder_parameter.username.value : var.default_username,
-      CODER_EMAIL = data.coder_parameter.user_email.value != "" ? data.coder_parameter.user_email.value : var.default_user_email
+      CODER_USERNAME = data.coder_parameter.username.value != "default" ? data.coder_parameter.username.value : var.default_username,
+      CODER_EMAIL = data.coder_parameter.user_email.value != "default" ? data.coder_parameter.user_email.value : var.default_user_email
     }) 
     display_name = "Git Config"
     icon = "/icon/git.svg" 
