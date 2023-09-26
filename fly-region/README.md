@@ -62,4 +62,4 @@ module "fly-region" {
 
 ## Associated template
 
-For a pre-configured Fly.io template, see the Coder template registry.
+Also see the Coder template registry for a [Fly.io template](https://registry.coder.com/templates/fly-docker-image) that provisions workspaces as Fly.io machines.
