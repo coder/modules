@@ -10,8 +10,8 @@ terraform {
 }
 
 variable "url" {
-    description = "The URL of the Git repository."
-    type        = string
+  description = "The URL of the Git repository."
+  type        = string
 }
 
 variable "path" {
@@ -21,17 +21,17 @@ variable "path" {
 }
 
 variable "agent_id" {
-    description = "The ID of a Coder agent."
-    type        = string
+  description = "The ID of a Coder agent."
+  type        = string
 }
 
 resource "coder_script" "git_clone" {
-    agent_id = var.agent_id
-    display_name = "Git Clone"
-    icon = "/icons/git.svg"
-    script = templatefile("${path.module}/run.sh", {
-      CLONE_PATH: var.path != "" ? var.path : join("/", ["~", basename(var.url)]),
-      REPO_URL: var.url,
-    })
-    run_on_start = true
+  agent_id     = var.agent_id
+  display_name = "Git Clone"
+  icon         = "/icons/git.svg"
+  script = templatefile("${path.module}/run.sh", {
+    CLONE_PATH : var.path != "" ? var.path : join("/", ["~", basename(var.url)]),
+    REPO_URL : var.url,
+  })
+  run_on_start = true
 }

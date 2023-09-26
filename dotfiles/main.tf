@@ -21,7 +21,7 @@ data "coder_parameter" "dotfiles_uri" {
   default      = ""
   description  = "Enter a URL for a [dotfiles repository](https://dotfiles.github.io) to personalize your workspace"
   mutable      = true
-  icon         = "https://raw.githubusercontent.com/jglovier/dotfiles-logo/main/dotfiles-logo-icon.svg"
+  icon         = "/icon/dotfiles.svg"
 }
 
 resource "coder_script" "personalize" {
@@ -33,6 +33,6 @@ resource "coder_script" "personalize" {
     fi
     EOT
   display_name = "Dotfiles"
-  icon         = "https://raw.githubusercontent.com/jglovier/dotfiles-logo/main/dotfiles-logo-icon.svg"
+  icon         = "/icon/dotfiles.svg"
   run_on_start = true
 }

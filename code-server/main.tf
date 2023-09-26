@@ -10,59 +10,59 @@ terraform {
 }
 
 variable "agent_id" {
-    type = string
-    description = "The ID of a Coder agent."
+  type        = string
+  description = "The ID of a Coder agent."
 }
 
 variable "extensions" {
-    type = list(string)
-    description = "A list of extensions to install."
-    default = [ ]
+  type        = list(string)
+  description = "A list of extensions to install."
+  default     = []
 }
 
 variable "port" {
-    type = number
-    description = "The port to run code-server on."
-    default = 13337
+  type        = number
+  description = "The port to run code-server on."
+  default     = 13337
 }
 
 variable "settings" {
-    type = map(string)
-    description = "A map of settings to apply to code-server."
-    default = {}
+  type        = map(string)
+  description = "A map of settings to apply to code-server."
+  default     = {}
 }
 
 variable "folder" {
-    type = string
-    description = "The folder to open in code-server."
-    default = ""
+  type        = string
+  description = "The folder to open in code-server."
+  default     = ""
 }
 
 variable "install_prefix" {
-    type = string
-    description = "The prefix to install code-server to."
-    default = "/tmp/code-server"
+  type        = string
+  description = "The prefix to install code-server to."
+  default     = "/tmp/code-server"
 }
 
 variable "log_path" {
-    type = string
-    description = "The path to log code-server to."
-    default = "/tmp/code-server.log"
+  type        = string
+  description = "The path to log code-server to."
+  default     = "/tmp/code-server.log"
 }
 
 resource "coder_script" "code-server" {
-    agent_id = var.agent_id
-    display_name = "code-server"
-    icon = "/icon/code.svg"
-    script = templatefile("${path.module}/run.sh", {
-      EXTENSIONS: join(",", var.extensions),
-      PORT: var.port,
-      LOG_PATH: var.log_path,
-      INSTALL_PREFIX: var.install_prefix,
-      // This is necessary otherwise the quotes are stripped!
-      SETTINGS: replace(jsonencode(var.settings), "\"", "\\\""),
-    })
-    run_on_start = true
+  agent_id     = var.agent_id
+  display_name = "code-server"
+  icon         = "/icon/code.svg"
+  script = templatefile("${path.module}/run.sh", {
+    EXTENSIONS : join(",", var.extensions),
+    PORT : var.port,
+    LOG_PATH : var.log_path,
+    INSTALL_PREFIX : var.install_prefix,
+    // This is necessary otherwise the quotes are stripped!
+    SETTINGS : replace(jsonencode(var.settings), "\"", "\\\""),
+  })
+  run_on_start = true
 }
 
 resource "coder_app" "code-server" {
