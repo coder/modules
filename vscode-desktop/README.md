@@ -12,3 +12,10 @@ tags: [ide, vscode, helper]
 Add a button to open any workspace with a single click.
 
 Uses the [Coder Remote VS Code Extension](https://github.com/coder/vscode-coder).
+
+```hcl
+module "vscode" {
+  source = "https://registry.coder.com/modules/vscode"
+  agent_id = coder_agent.example.id
+}
+```
