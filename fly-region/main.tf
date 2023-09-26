@@ -22,7 +22,7 @@ variable "description" {
 }
 
 variable "default" {
-    default = "ams"
+    default = null
     description = "The default region to use if no region is specified."
     type = string
 }
