@@ -20,12 +20,12 @@ git_useremail=$(git config --get user.email)
 # Set git username and email if not set
 if [ -z $(git config --get user.name) ]; then
     echo "git-config: No user.email found, setting to ${CODER_EMAIL}"
-    git config --global user.email ${CODER_EMAIL}
+    git config --global user.email "${CODER_EMAIL}"
 fi
 
 if [ -z $(git config --get user.email) ]; then
     echo "git-config: No user.name found, setting to ${CODER_USERNAME}"
-    git config --global user.name ${CODER_USERNAME}
+    git config --global user.name "${CODER_USERNAME}"
 fi
 
 echo "git-config: using username: {$(git config --get user.name)}"
