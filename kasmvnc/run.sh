@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
-# Check if desktop enivronment is installed
+# Check if desktop environment is installed
 if ! dpkg -s ${DESKTOP_ENVIRONMENT} &>/dev/null; then
+    if [[ ! -f /etc/timezone ]] && [[ -z "$TZ" ]]; then
+        echo "tzdata tzdata/Areas select Etc" | sudo debconf-set-selections
+        echo "tzdata tzdata/Zones/Etc select UTC" | sudo debconf-set-selections
+    fi
     sudo apt-get update
     DEBIAN_FRONTEND=noninteractive sudo apt-get install -y ${DESKTOP_ENVIRONMENT}
 else
@@ -12,7 +16,7 @@ fi
 if ! dpkg -s kasmvncserver &>/dev/null; then
     cd /tmp
     wget https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_focal_${VERSION}_amd64.deb
-    sudo apt install -y ./kasmvncserver_focal_${VERSION}_amd64.deb
+    sudo apt-get install -y ./kasmvncserver_focal_${VERSION}_amd64.deb
     printf "🥳 KasmVNC v${VERSION} has been successfully installed!\n\n"
 else
     echo "KasmVNC is already installed."
