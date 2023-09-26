@@ -44,6 +44,12 @@ variable "timezone" {
   default     = "Etc/UTC"
 }
 
+variable "log_path" {
+  type        = string
+  description = "Path to store KasmVNC logs."
+  default     = "~/.kasmvnc/kasmvnc.log"
+}
+
 resource "coder_script" "kasm_vnc" {
   agent_id     = var.agent_id
   display_name = "KasmVNC"
@@ -52,6 +58,7 @@ resource "coder_script" "kasm_vnc" {
     PORT : var.port,
     DESKTOP_ENVIRONMENT : var.desktop_environment,
     VERSION : var.custom_version,
+    LOG_PATH : var.log_path,
     LOCALE : var.locale,
     TIMEZONE : var.timezone
   })
