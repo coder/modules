@@ -270,7 +270,7 @@ data "coder_parameter" "fly_region" {
     name = "flyio_region"
     display_name = var.display_name
     description = var.description
-    default = (var.default != null && var.default != "") && (contains(var.regions, var.default) || length(var.regions) == 0) ? var.default : null  
+    default = (var.default != null && var.default != "") && ((var.default != null ? contains(var.regions, var.default) : false)  || length(var.regions) == 0) ? var.default : null  
     mutable = var.mutable
     dynamic "option" { 
         for_each = { for k, v in local.regions : k => v if anytrue([for d in var.regions : k == d ]) || length(var.regions) == 0 }

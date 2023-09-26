@@ -6,14 +6,14 @@ import {
   testRequiredVariables,
 } from "../test";
 
-describe("azure-region", async () => {
+describe("fly-region", async () => {
   await runTerraformInit(import.meta.dir);
 
   testRequiredVariables(import.meta.dir, {});
 
   it("default output", async () => {
     const state = await runTerraformApply(import.meta.dir, {});
-    expect(state.outputs.value.value).toBe("ams");
+    expect(state.outputs.value.value).toBe("");
   });
 
   it("customized default", async () => {
