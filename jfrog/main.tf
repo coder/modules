@@ -31,7 +31,7 @@ provider "artifactory" {
 resource "artifactory_scoped_token" "me" {
   # This is hacky, but on terraform plan the data source gives empty strings,
   # which fails validation.
-  username = length(local.artifactory_username) > 0 ? local.artifactory_username : "plan"
+  username = length(data.coder_workspace.me.owner_email) > 0 ? data.coder_workspace.me.owner_email : "plan"
 }
 
 variable "agent_id" {
