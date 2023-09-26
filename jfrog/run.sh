@@ -17,7 +17,7 @@ else
   echo "📦 Configuring npm..."
   jf rt npm-config set registry https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}
   cat << EOF > ~/.npmrc
-  email = ${ARTIFACTORY_EMAIL}
+  email = ${ARTIFACTORY_USERNAME}
   registry = https://${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}
   EOF
   jf rt curl /api/npm/auth >> .npmrc
