@@ -14,7 +14,7 @@ Runs a script that checks for stored Git credentials `user.name` and `user.email
 
 ## Examples
 
-### Using Workspace owner
+### Using workspace owner
 The credentials can be populated from the workspace owner's information.
 
 ```hcl
