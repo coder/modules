@@ -33,7 +33,7 @@ data "coder_parameter" "user_email" {
   count        = var.allow_email_change ? 1 : 0
   name         = "user_email"
   type         = "string"
-  default      = data.coder_workspace.me.owner_email
+  default      = "" 
   description  = "Git user.email to be used for commits. Leave empty to default to Coder username."
   display_name = "Git config user.email"
   mutable      = true
@@ -52,8 +52,8 @@ data "coder_parameter" "username" {
 resource "coder_script" "git_config" {
   agent_id = var.agent_id
   script = templatefile("${path.module}/run.sh", {
-    GIT_USERNAME = data.coder_parameter.username[0].value == "" ? data.coder_workspace.me.owner : data.coder_parameter.username[0].value
-    GIT_EMAIL    = data.coder_parameter.user_email[0].value == "" ? data.coder_workspace.me.owner_email : data.coder_parameter.user_email[0].value
+    GIT_USERNAME = try(data.coder_parameter.username[0].value, "") == "" ? data.coder_workspace.me.owner : try(data.coder_parameter.username[0].value, "")
+    GIT_EMAIL    = try(data.coder_parameter.user_email[0].value, "") == "" ? data.coder_workspace.me.owner_email : try(data.coder_parameter.user_email[0].value, "")
   })
   display_name = "Git Config"
   icon         = "/icon/git.svg"
