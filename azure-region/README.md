@@ -22,6 +22,8 @@ resource "azurem_resource_group" "example" {
 }
 ```
 
+![Azure Region Default](../.images/azure-default.png)
+
 ## Examples
 
 ### Customize existing regions
@@ -32,10 +34,10 @@ Change the display name for a region:
 module "azure-region" {
     source = "https://registry.coder.com/modules/azure-region"
     custom_names = {
-        "eastus": "Eastern United States!"
+        "australia": "Go Australia!"
     }
     custom_icons = {
-        "eastus": "/icons/smiley.svg"
+        "australia": "/icons/smiley.svg"
     }
 }
 
@@ -43,6 +45,8 @@ resource "azurerm_resource_group" "example" {
     location = module.azure_region.value
 }
 ```
+
+![Azure Region Custom](../.images/azure-custom.png)
 
 ### Exclude Regions
 
