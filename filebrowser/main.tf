@@ -29,13 +29,13 @@ variable "port" {
 
 variable "folder" {
   type        = string
-  description = "The folder to serve."
+  description = "--root value for filebrowser."
   default     = "~"
 }
 
 resource "coder_script" "filebrowser" {
   agent_id     = var.agent_id
-  display_name = "filebrowser"
+  display_name = "File Browser"
   icon         = "https://raw.githubusercontent.com/filebrowser/logo/master/icon_raw.svg"
   script = templatefile("${path.module}/run.sh", {
     LOG_PATH : var.log_path,
@@ -49,16 +49,9 @@ resource "coder_script" "filebrowser" {
 resource "coder_app" "filebrowser" {
   agent_id     = var.agent_id
   slug         = "filebrowser"
-  display_name = "filebrowser"
+  display_name = "File Browser"
   url          = "http://localhost:${var.port}"
   icon         = "https://raw.githubusercontent.com/filebrowser/logo/master/icon_raw.svg"
   subdomain    = false
   share        = "owner"
-
-  # Remove if the app does not have a healthcheck endpoint
-  healthcheck {
-    url       = "http://localhost:${var.port}/healthz"
-    interval  = 5
-    threshold = 6
-  }
 }
