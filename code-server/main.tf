@@ -76,7 +76,7 @@ resource "coder_app" "code-server" {
   agent_id     = var.agent_id
   slug         = "code-server"
   display_name = "code-server"
-  url          = "http://localhost:${var.port}/?folder=${var.folder}"
+  url          = "http://localhost:${var.port}/${var.folder != "" ? "?folder=${var.folder}" : ""}"
   icon         = "/icon/code.svg"
   subdomain    = false
   share        = "owner"
