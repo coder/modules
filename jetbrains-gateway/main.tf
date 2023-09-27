@@ -25,6 +25,7 @@ variable "project_directory" {
 }
 
 variable "default" {
+  default     = null
   type        = string
   description = "Default IDE"
 }
@@ -39,6 +40,16 @@ variable "jetbrains_ides" {
       ])
     )
     error_message = "The jetbrains_ides must be a list of valid product codes. https://plugins.jetbrains.com/docs/marketplace/product-codes.html"
+  }
+  # check if the list is empty
+  validation {
+    condition     = length(var.jetbrains_ides) > 0
+    error_message = "The jetbrains_ides must not be empty."
+  }
+  #ccheck if the list contains duplicates
+  validation {
+    condition     = length(var.jetbrains_ides) == length(set(var.jetbrains_ides))
+    error_message = "The jetbrains_ides must not contain duplicates."
   }
 }
 
@@ -108,7 +119,8 @@ data "coder_parameter" "jetbrains_ide" {
   display_name = "JetBrains IDE"
   icon         = "/icon/gateway.svg"
   mutable      = true
-  default      = var.default != null && var.default != "" ? local.jetbrains_ides[var.default].value : null
+  # check if default is in the jet_brains_ides list and if it is not empty or null otherwise set it to null
+  default = contains(var.jetbrains_ides.keys, var.default) && var.default != null && var.default != "" ? var.default : null
 
   dynamic "option" {
     for_each = { for key, value in local.jetbrains_ides : key => value if contains(var.jetbrains_ides, key) }
