@@ -25,6 +25,7 @@ variable "project_directory" {
 }
 
 variable "default" {
+  default     = null
   type        = string
   description = "Default IDE"
 }
@@ -38,7 +39,17 @@ variable "jetbrains_ides" {
         for code in var.jetbrains_ides : contains(["IU", "IC", "PS", "WS", "PY", "PC", "CL", "GO", "DB", "RD", "RM"], code)
       ])
     )
-    error_message = "The jetbrains_ides must be a list of valid product codes. https://plugins.jetbrains.com/docs/marketplace/product-codes.html"
+    error_message = "The jetbrains_ides must be a list of valid product codes. Valid product codes are: IU, IC, PS, WS, PY, PC, CL, GO, DB, RD, RM."
+  }
+  # check if the list is empty
+  validation {
+    condition     = length(var.jetbrains_ides) > 0
+    error_message = "The jetbrains_ides must not be empty."
+  }
+  #ccheck if the list contains duplicates
+  validation {
+    condition     = length(var.jetbrains_ides) == length(toset(var.jetbrains_ides))
+    error_message = "The jetbrains_ides must not contain duplicates."
   }
 }
 
@@ -108,7 +119,8 @@ data "coder_parameter" "jetbrains_ide" {
   display_name = "JetBrains IDE"
   icon         = "/icon/gateway.svg"
   mutable      = true
-  default      = var.default != null && var.default != "" ? local.jetbrains_ides[var.default].value : null
+  # check if default is in the jet_brains_ides list and if it is not empty or null otherwise set it to null
+  default = var.default != null && var.default != "" && contains(var.jetbrains_ides, var.default) ? local.jetbrains_ides[var.default].value : null
 
   dynamic "option" {
     for_each = { for key, value in local.jetbrains_ides : key => value if contains(var.jetbrains_ides, key) }
@@ -126,9 +138,26 @@ resource "coder_app" "gateway" {
   agent_id     = var.agent_id
   display_name = data.coder_parameter.jetbrains_ide.option[index(data.coder_parameter.jetbrains_ide.option.*.value, data.coder_parameter.jetbrains_ide.value)].name
   slug         = "gateway"
-  url          = "jetbrains-gateway://connect#type=coder&workspace=${data.coder_workspace.me.name}&agent=${var.agent_name}&folder=${var.project_directory}&url=${data.coder_workspace.me.access_url}&token=${data.coder_workspace.me.owner_session_token}&ide_product_code=${jsondecode(data.coder_parameter.jetbrains_ide.value)[0]}&ide_build_number=${jsondecode(data.coder_parameter.jetbrains_ide.value)[1]}&ide_download_link=${jsondecode(data.coder_parameter.jetbrains_ide.value)[2]}"
   icon         = data.coder_parameter.jetbrains_ide.option[index(data.coder_parameter.jetbrains_ide.option.*.value, data.coder_parameter.jetbrains_ide.value)].icon
   external     = true
+  url = join("", [
+    "jetbrains-gateway://connect#type=coder&workspace=",
+    data.coder_workspace.me.name,
+    "&agent=",
+    var.agent_name,
+    "&folder=",
+    var.project_directory,
+    "&url=",
+    data.coder_workspace.me.access_url,
+    "&token=",
+    "$SESSION_TOKEN",
+    "&ide_product_code=",
+    jsondecode(data.coder_parameter.jetbrains_ide.value)[0],
+    "&ide_build_number=",
+    jsondecode(data.coder_parameter.jetbrains_ide.value)[1],
+    "&ide_download_link=",
+    jsondecode(data.coder_parameter.jetbrains_ide.value)[2]
+  ])
 }
 
 output "jetbrains_ides" {

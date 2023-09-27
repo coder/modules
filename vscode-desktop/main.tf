@@ -27,7 +27,6 @@ resource "coder_app" "vscode" {
     data.coder_workspace.me.owner,
     "&workspace=",
     data.coder_workspace.me.name,
-    "&token=",
-    data.coder_workspace.me.owner_session_token,
+    "&token=$SESSION_TOKEN",
   ])
 }

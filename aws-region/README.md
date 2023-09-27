@@ -12,12 +12,6 @@ tags: [helper, parameter, regions, aws]
 A parameter with all AWS regions. This allows developers to select
 the region closest to them.
 
-![AWS Regions](../.images/aws-region.png)
-
-## Examples
-
-### Default Region
-
 Customize the preselected parameter value:
 
 ```hcl
@@ -30,6 +24,10 @@ provider "aws" {
     region = module.aws_region.value
 }
 ```
+
+![AWS Regions](../.images/aws-regions.png)
+
+## Examples
 
 ### Customize Regions
 

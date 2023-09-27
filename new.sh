@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # This scripts creates a new sample moduledir with requried files
 # Run it like : ./new.sh my-module

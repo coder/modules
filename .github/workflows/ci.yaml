@@ -21,11 +21,14 @@ jobs:
         with:
           bun-version: latest
       - run: bun test
-  fmt:
+  pretty:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
-      - run: bun fmt:ci
+      - name: Format
+        run: bun fmt:ci
+      - name: Lint
+        run: bun install && bun lint
