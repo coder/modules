@@ -11,6 +11,16 @@ tags: [ide, jetbrains, helper, parameter]
 
 This module adds a JetBrains Gateway Button to open any workspace with a single click.
 
+```hcl
+module "jetbrains_gateway" {
+  source                   = "https://registry.coder.com/modules/jetbrains-gateway"
+  agent_id                 = coder_agent.example.id
+  agent_name               = "example"
+  project_directory        = "/home/coder/example"
+  jetbrains_ides           = ["GO", "WS", "IU", "IC", "PY", "PC", "PS", "CL", "RM", "DB", "RD"]
+}
+```
+
 ![JetBrains Gateway IDes list](../.images/jetbrains-gateway.png)
 
 ## Examples
