@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 BOLD='\033[0;1m'
-echo "$${BOLD}Installing MODULE_NAME..."
+printf "$${BOLD}Installing MODULE_NAME..."
 # Add code here
 # Use varibles from the templatefile function in main.tf
 # e.g. LOG_PATH, PORT, etc.

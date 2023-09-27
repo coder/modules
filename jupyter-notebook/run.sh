@@ -2,7 +2,7 @@
 
 BOLD='\033[0;1m'
 
-echo "$${BOLD}Installing jupyter-notebook!\n"
+printf "$${BOLD}Installing jupyter-notebook!\n"
 
 # check if jupyter-notebook is installed
 if ! command -v jupyter-notebook >/dev/null 2>&1; then
