@@ -20,5 +20,5 @@ if [ -z $(git config --get user.name) ]; then
     git config --global user.name "${CODER_USERNAME}"
 fi
 
-printf "\n$${BOLD}git-config: using username: $(git config --get user.name)\n"
-printf "$${BOLD}git-config: using email: $(git config --get user.email)\n\n"
+printf "$${BOLD}git-config: using email: $(git config --get user.email)\n"
+printf "\n$${BOLD}git-config: using username: $(git config --get user.name)\n\n"

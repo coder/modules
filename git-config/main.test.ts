@@ -11,31 +11,35 @@ describe("git-config", async () => {
 
   testRequiredVariables(import.meta.dir, {
     agent_id: "foo",
-    allow_username_change: true,
-    allow_email_change: false,
   });
 
   it("fails without git", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
-      allow_username_change: true,
+      allow_username_change: false,
       allow_email_change: false,
     });
     const output = await executeScriptInContainer(state, "alpine");
     expect(output.exitCode).toBe(1);
-    expect(output.stdout).toEqual(["\u001B[0;1mChecking git-config!", "Git is not installed!"]);
+    expect(output.stdout).toEqual([
+      "\u001B[0;1mChecking git-config!",
+      "Git is not installed!",
+    ]);
   });
 
-//   it("runs with git", async () => {
-//     const state = await runTerraformApply(import.meta.dir, {
-//       agent_id: "foo",
-//       url: "fake-url",
-//     });
-//     const output = await executeScriptInContainer(state, "alpine/git");
-//     expect(output.exitCode).toBe(128);
-//     expect(output.stdout).toEqual([
-//       "Creating directory ~/fake-url...",
-//       "Cloning fake-url to ~/fake-url...",
-//     ]);
-//   });
+  it("runs with git", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+    });
+    const output = await executeScriptInContainer(state, "alpine/git");
+    expect(output.exitCode).toBe(0);
+    expect(output.stdout).toEqual([
+      "\u001B[0;1mChecking git-config!",
+      "git-config: No user.email found, setting to ",
+      "git-config: No user.name found, setting to default",
+      "\u001B[0;1mgit-config: using email: ",
+      "",
+      "\u001B[0;1mgit-config: using username: default",
+    ]);
+  });
 });
