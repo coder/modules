@@ -9,7 +9,8 @@ echo "🥳 Installation comlete!"
 
 echo "👷 Starting filebrowser in background..."
 
-FOLDER=${FOLDER/\~/$HOME}
+ROOT_DIR=${FOLDER}
+ROOT_DIR=${ROOT_DIR/\~/$HOME}
 
 filebrowser --noauth --root $FOLDER --port ${PORT} >${LOG_PATH} 2>&1 &
 
