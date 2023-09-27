@@ -11,13 +11,13 @@ tags: [helper]
 
 <!-- Describes what this module does -->
 
-<!-- Add a screencast or screenshot here  put them in .images directory -->
-
 ```hcl
 module "MODULE_NAME" {
     source = "https://registry.coder.com/modules/MODULE_NAME"
 }
 ```
+
+<!-- Add a screencast or screenshot here  put them in .images directory -->
 
 ## Examples
 
