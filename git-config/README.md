@@ -9,38 +9,40 @@ tags: [helper, git]
 
 # git-config
 
-Runs a script that checks for stored Git credentials `user.name` and `user.email`, populating them with workspace owner's credentials when missing.
+Runs a script that updates git credentials in the workspace to match the user's Coder credentials, optionally allowing to the developer to override the defaults.
+
+```hcl
+module "git-config" {
+  source = "https://registry.coder.com/modules/git-config"
+  agent_id = coder_agent.example.id
+}
+```
+
+TODO: Add screenshot
 
 ## Examples
 
-### Using workspace owner
-
-The default credentials can be populated from the workspace owner's information.
+### Allow users to override both username and email
 
 ```hcl
 module "git-config" {
   source = "https://registry.coder.com/modules/git-config"
   agent_id = coder_agent.example.id
-  default_username = data.coder_workspace.me.owner
-  default_user_email = data.coder_workspace.me.owner_email
+  allow_email_change = true
 }
 ```
 
-### Custom credentials
+TODO: Add screenshot
 
-Credentials can also be set manually by the template admin.
+## Disallowing users from overriding both username and email
 
 ```hcl
 module "git-config" {
   source = "https://registry.coder.com/modules/git-config"
   agent_id = coder_agent.example.id
-  default_username = "michael"
-  user_email = "michael@example.com"
+  allow_username_change = false
+  allow_email_change = false
 }
 ```
 
-## Coder parameter usage
-
-With the defaults set, users still have the opportunity to override the template admin's settings with the coder parameter interface. The workspace owner can manually add their credentials during workspace creation or leave them as "default".
-
-![Coder Parameter Example](../.images/git-config-params.png)
+TODO: Add screenshot
