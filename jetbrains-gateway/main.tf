@@ -39,7 +39,7 @@ variable "jetbrains_ides" {
         for code in var.jetbrains_ides : contains(["IU", "IC", "PS", "WS", "PY", "PC", "CL", "GO", "DB", "RD", "RM"], code)
       ])
     )
-    error_message = "The jetbrains_ides must be a list of valid product codes. https://plugins.jetbrains.com/docs/marketplace/product-codes.html"
+    error_message = "The jetbrains_ides must be a list of valid product codes. Valid product codes are: IU, IC, PS, WS, PY, PC, CL, GO, DB, RD, RM."
   }
   # check if the list is empty
   validation {
