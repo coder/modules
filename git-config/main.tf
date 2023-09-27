@@ -58,3 +58,15 @@ resource "coder_script" "git_config" {
   icon         = "/icon/git.svg"
   run_on_start = true
 }
+
+resource "coder_metadata" "git_config" {
+  agent_id = var.agent_id
+  item {
+    key   = "username"
+    value = data.coder_workspace.git_config.owner
+  }
+  item {
+    key   = "user_email"
+    value = data.coder_workspace.git_config.owner_email
+  }
+}
