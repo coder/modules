@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 EXTENSIONS=("${EXTENSIONS}")
 BOLD='\033[0;1m'
@@ -6,7 +6,16 @@ CODE='\033[36;40;1m'
 RESET='\033[0m'
 
 printf "$${BOLD}Installing code-server!\n"
-output=$(curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone --prefix=${INSTALL_PREFIX})
+
+ARGS=(
+  "--method=standalone"
+  "--prefix=${INSTALL_PREFIX}"
+)
+if [ -n "${VERSION}" ]; then
+  args+=("--version=${VERSION}")
+fi
+
+output=$(curl -fsSL https://code-server.dev/install.sh | sh -s -- "$${ARGS[@]}")
 if [ $? -ne 0 ]; then
   echo "Failed to install code-server: $output"
   exit 1
