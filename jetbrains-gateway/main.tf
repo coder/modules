@@ -48,7 +48,7 @@ variable "jetbrains_ides" {
   }
   #ccheck if the list contains duplicates
   validation {
-    condition     = length(var.jetbrains_ides) == length(set(var.jetbrains_ides))
+    condition     = length(var.jetbrains_ides) == length(toset(var.jetbrains_ides))
     error_message = "The jetbrains_ides must not contain duplicates."
   }
 }
@@ -120,7 +120,7 @@ data "coder_parameter" "jetbrains_ide" {
   icon         = "/icon/gateway.svg"
   mutable      = true
   # check if default is in the jet_brains_ides list and if it is not empty or null otherwise set it to null
-  default = contains(var.jetbrains_ides.keys, var.default) && var.default != null && var.default != "" ? var.default : null
+  default = var.default != null && var.default != "" && contains(var.jetbrains_ides, var.default) ? var.default : null
 
   dynamic "option" {
     for_each = { for key, value in local.jetbrains_ides : key => value if contains(var.jetbrains_ides, key) }
