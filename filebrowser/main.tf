@@ -41,6 +41,7 @@ resource "coder_script" "filebrowser" {
     LOG_PATH : var.log_path,
     PORT : var.port,
     FOLDER : var.folder,
+    LOG_PATH : var.log_path,
   })
   run_on_start = true
 }
