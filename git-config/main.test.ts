@@ -11,8 +11,6 @@ describe("git-config", async () => {
 
   testRequiredVariables(import.meta.dir, {
     agent_id: "foo",
-    default_user_email: 's@example.tld',
-    default_username: 'example username',
   });
 
   it("fails without git", async () => {
