@@ -39,7 +39,7 @@ variable "jetbrains_ides" {
         for code in var.jetbrains_ides : contains(["IU", "IC", "PS", "WS", "PY", "PC", "CL", "GO", "DB", "RD", "RM"], code)
       ])
     )
-    error_message = "The jetbrains_ides must be a list of valid product codes. https://plugins.jetbrains.com/docs/marketplace/product-codes.html"
+    error_message = "The jetbrains_ides must be a list of valid product codes. Valid product codes are: IU, IC, PS, WS, PY, PC, CL, GO, DB, RD, RM."
   }
   # check if the list is empty
   validation {
@@ -48,7 +48,7 @@ variable "jetbrains_ides" {
   }
   #ccheck if the list contains duplicates
   validation {
-    condition     = length(var.jetbrains_ides) == length(set(var.jetbrains_ides))
+    condition     = length(var.jetbrains_ides) == length(toset(var.jetbrains_ides))
     error_message = "The jetbrains_ides must not contain duplicates."
   }
 }
@@ -120,7 +120,7 @@ data "coder_parameter" "jetbrains_ide" {
   icon         = "/icon/gateway.svg"
   mutable      = true
   # check if default is in the jet_brains_ides list and if it is not empty or null otherwise set it to null
-  default = contains(var.jetbrains_ides.keys, var.default) && var.default != null && var.default != "" ? var.default : null
+  default = var.default != null && var.default != "" && contains(var.jetbrains_ides, var.default) ? local.jetbrains_ides[var.default].value : null
 
   dynamic "option" {
     for_each = { for key, value in local.jetbrains_ides : key => value if contains(var.jetbrains_ides, key) }
