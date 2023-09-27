@@ -126,9 +126,26 @@ resource "coder_app" "gateway" {
   agent_id     = var.agent_id
   display_name = data.coder_parameter.jetbrains_ide.option[index(data.coder_parameter.jetbrains_ide.option.*.value, data.coder_parameter.jetbrains_ide.value)].name
   slug         = "gateway"
-  url          = "jetbrains-gateway://connect#type=coder&workspace=${data.coder_workspace.me.name}&agent=${var.agent_name}&folder=${var.project_directory}&url=${data.coder_workspace.me.access_url}&token=$SESSION_TOKEN&ide_product_code=${jsondecode(data.coder_parameter.jetbrains_ide.value)[0]}&ide_build_number=${jsondecode(data.coder_parameter.jetbrains_ide.value)[1]}&ide_download_link=${jsondecode(data.coder_parameter.jetbrains_ide.value)[2]}"
   icon         = data.coder_parameter.jetbrains_ide.option[index(data.coder_parameter.jetbrains_ide.option.*.value, data.coder_parameter.jetbrains_ide.value)].icon
   external     = true
+  url = join("", [
+    "jetbrains-gateway://connect#type=coder&workspace=",
+    data.coder_workspace.me.name,
+    "&agent=",
+    var.agent_name,
+    "&folder=",
+    var.project_directory,
+    "&url=",
+    data.coder_workspace.me.access_url,
+    "&token=",
+    "$SESSION_TOKEN",
+    "&ide_product_code=",
+    jsondecode(data.coder_parameter.jetbrains_ide.value)[0],
+    "&ide_build_number=",
+    jsondecode(data.coder_parameter.jetbrains_ide.value)[1],
+    "&ide_download_link=",
+    jsondecode(data.coder_parameter.jetbrains_ide.value)[2]
+  ])
 }
 
 output "jetbrains_ides" {
