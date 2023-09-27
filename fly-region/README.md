@@ -11,10 +11,6 @@ tags: [helper, parameter, fly.io, regions]
 
 This module adds Fly.io regions to your Coder template. Regions can be whitelisted using the `regions` argument and given custom names and custom icons with their respective map arguments (`custom_names`, `custom_icons`).
 
-## Examples
-
-### Using default settings
-
 We can use the simplest format here, only adding a default selection as the `atl` region.
 
 ```hcl
@@ -25,6 +21,8 @@ module "fly-region" {
 ```
 
 ![Fly.io Default](../.images/flyio-basic.png)
+
+## Examples
 
 ### Using region whitelist
 
