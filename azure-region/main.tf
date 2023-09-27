@@ -310,7 +310,7 @@ data "coder_parameter" "region" {
   description  = var.description
   default      = var.default
   mutable      = var.mutable
-  icon         = "../.icons/azure.svg"
+  icon         = "/icon/azure.png"
   dynamic "option" {
     for_each = { for k, v in local.all_regions : k => v if !(contains(var.exclude, k)) }
     content {
