@@ -51,8 +51,8 @@ data "coder_workspace" "me" {}
 resource "coder_script" "git_config" {
   agent_id = var.agent_id
   script = templatefile("${path.module}/run.sh", {
-    CODER_USERNAME = try(data.coder_parameter.username.value, data.coder_workspace.me.owner)
-    CODER_EMAIL    = try(data.coder_parameter.user_email.value, data.coder_workspace.me.owner_email)
+    CODER_USERNAME = try(data.coder_parameter.username[0].value, data.coder_workspace.me.owner)
+    CODER_EMAIL    = try(data.coder_parameter.user_email[0].value, data.coder_workspace.me.owner_email)
   })
   display_name = "Git Config"
   icon         = "/icon/git.svg"
