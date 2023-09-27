@@ -26,7 +26,7 @@ variable "allow_email_change" {
   default     = false
 }
 
-data "coder_workspace" "me" {}
+data "coder_workspace" "git_config" {}
 
 data "coder_parameter" "user_email" {
   count        = var.allow_email_change ? 1 : 0
