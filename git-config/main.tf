@@ -60,7 +60,7 @@ resource "coder_script" "git_config" {
 }
 
 resource "coder_metadata" "git_config" {
-  agent_id = var.agent_id
+  resource_id = data.coder_workspace.git_config.id
   item {
     key   = "username"
     value = data.coder_workspace.git_config.owner
