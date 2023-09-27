@@ -3,7 +3,7 @@ import { describe } from "bun:test";
 import {
   createJSONResponse,
   runTerraformInit,
-  testRequiredVariables
+  testRequiredVariables,
 } from "../test";
 
 describe("jfrog", async () => {
