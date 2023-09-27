@@ -52,19 +52,10 @@ data "coder_parameter" "username" {
 resource "coder_script" "git_config" {
   agent_id = var.agent_id
   script = templatefile("${path.module}/run.sh", {
-    GIT_USERNAME = data.coder_parameter.username.value == "" ? data.coder_workspace.me.owner : data.coder_parameter.username.value
-    GIT_EMAIL    = data.coder_parameter.user_email.value == "" ? data.coder_workspace.me.owner_email : data.coder_parameter.user_email.value
+    GIT_USERNAME = data.coder_parameter.username[0].value == "" ? data.coder_workspace.me.owner : data.coder_parameter.username[0].value
+    GIT_EMAIL    = data.coder_parameter.user_email[0].value == "" ? data.coder_workspace.me.owner_email : data.coder_parameter.user_email[0].value
   })
   display_name = "Git Config"
   icon         = "/icon/git.svg"
   run_on_start = true
 }
-
-
-# last implementation
-#     GIT_USERNAME = try(data.coder_parameter.username[0].value, var.default_username_source)
-#     GIT_EMAIL    = try(data.coder_parameter.user_email[0].value, var.default_email_source)
-
-# Old implementation, saving for testing
-    # GIT_USERNAME = try(data.coder_parameter.username[0].value, data.coder_workspace.git_config.owner)
-    # GIT_EMAIL    = try(data.coder_parameter.user_email[0].value, data.coder_workspace.git_config.owner_email)
