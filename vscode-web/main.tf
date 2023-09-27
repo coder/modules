@@ -22,14 +22,14 @@ variable "port" {
 
 variable "folder" {
   type        = string
-  description = "The folder to open in vscode-server."
+  description = "The folder to open in vscode-web."
   default     = ""
 }
 
 variable "log_path" {
   type        = string
   description = "The path to log."
-  default     = "/tmp/vscode-server.log"
+  default     = "/tmp/vscode-web.log"
 }
 
 variable "install_dir" {
@@ -48,7 +48,7 @@ variable "accept_license" {
   }
 }
 
-resource "coder_script" "vscode-server" {
+resource "coder_script" "vscode-web" {
   agent_id     = var.agent_id
   display_name = "VS Code Web"
   icon         = "/icon/code.svg"
@@ -60,9 +60,9 @@ resource "coder_script" "vscode-server" {
   run_on_start = true
 }
 
-resource "coder_app" "vscode-server" {
+resource "coder_app" "vscode-web" {
   agent_id     = var.agent_id
-  slug         = "vscode-server"
+  slug         = "vscode-web"
   display_name = "VS Code Web"
   url          = var.folder == "" ? "http://localhost:${var.port}" : "http://localhost:${var.port}?folder=${var.folder}"
   icon         = "/icon/code.svg"

@@ -14,10 +14,6 @@ the region closest to them.
 
 ![AWS Regions](../.images/aws-region.png)
 
-## Examples
-
-### Default Region
-
 Customize the preselected parameter value:
 
 ```hcl
@@ -30,6 +26,8 @@ provider "aws" {
     region = module.aws_region.value
 }
 ```
+
+## Examples
 
 ### Customize Regions
 

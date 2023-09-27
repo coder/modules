@@ -11,10 +11,6 @@ tags: [helper, parameter, azure, regions]
 
 This module adds a parameter with all Azure regions, allowing developers to select the region closest to them.
 
-## Examples
-
-### Default region
-
 ```hcl
 module "azure_region" {
     source = "https://registry.coder.com/modules/azure-region"
@@ -25,6 +21,8 @@ resource "azurem_resource_group" "example" {
     location = module.azure_region.value
 }
 ```
+
+## Examples
 
 ### Customize existing regions
 
