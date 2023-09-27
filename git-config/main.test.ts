@@ -16,8 +16,6 @@ describe("git-config", async () => {
   it("fails without git", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
-      default_user_email: 's@example.tld',
-      default_username: 'example username',
     });
     const output = await executeScriptInContainer(state, "alpine");
     expect(output.exitCode).toBe(1);
