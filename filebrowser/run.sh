@@ -12,6 +12,6 @@ echo "👷 Starting filebrowser in background..."
 # if FOLDER is ~ then use $HOME
 dir="${FOLDER}"
 dir="$${dir/#~\//$HOME\/}"
-filebrowser --noauth --root $FOLDER --port ${PORT} >/tmp/filebrowser.log >${LOG_PATH} 2>&1 &
+filebrowser --noauth --root $FOLDER --port "${PORT}" >/tmp/filebrowser.log >${LOG_PATH} 2>&1 &
 
 echo "check logs at ${LOG_PATH}"
