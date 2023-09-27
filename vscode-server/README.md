@@ -1,5 +1,5 @@
 ---
-display_name: vscode-server
+display_name: VS Code Web
 description: VS Code Web - Visual Studio Code in the browser
 icon: ../.icons/code.svg
 maintainer_github: coder
@@ -9,7 +9,7 @@ tags: [helper, ide, vscode, web]
 
 # VS Code Web
 
-Automatically install [Visual Studio Code Server](https://code.visualstudio.com/docs/remote/vscode-server) in a workspace using the [VS Code CLIs](https://code.visualstudio.com/docs/editor/command-line) and create an app to access it via the dashboard.
+Automatically install [Visual Studio Code Server](https://code.visualstudio.com/docs/remote/vscode-server) in a workspace using the [VS Code CLI](https://code.visualstudio.com/docs/editor/command-line) and create an app to access it via the dashboard.
 
 ![VS Code Server with GitHub Copilot and live-share](../.images/vscode-server.gif)
 
