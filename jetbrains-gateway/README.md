@@ -19,6 +19,7 @@ module "jetbrains_gateway" {
   project_directory        = "/home/coder/example"
   jetbrains_ides           = ["GO", "WS", "IU", "IC", "PY", "PC", "PS", "CL", "RM", "DB", "RD"]
 }
+```
 
 ![JetBrains Gateway IDes list](../.images/jetbrains-gateway.png)
 
