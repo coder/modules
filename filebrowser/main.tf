@@ -24,7 +24,7 @@ variable "log_path" {
 variable "port" {
   type        = number
   description = "The port to run filebrowser on."
-  default     = 19999
+  default     = 13339
 }
 
 variable "folder" {
