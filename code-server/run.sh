@@ -12,7 +12,7 @@ ARGS=(
   "--prefix=${INSTALL_PREFIX}"
 )
 if [ -n "${VERSION}" ]; then
-  args+=("--version=${VERSION}")
+  ARGS+=("--version=${VERSION}")
 fi
 
 output=$(curl -fsSL https://code-server.dev/install.sh | sh -s -- "$${ARGS[@]}")
