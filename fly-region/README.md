@@ -4,7 +4,7 @@ description: A parameter with human region names and icons
 icon: ../.icons/fly.svg
 maintainer_github: coder
 verified: true
-tags: [helper, parameter, fly]
+tags: [helper, parameter, fly.io, regions]
 ---
 
 # Fly.io Region
