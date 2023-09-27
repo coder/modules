@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 EXTENSIONS=("${EXTENSIONS}")
 BOLD='\033[0;1m'
@@ -6,7 +6,16 @@ CODE='\033[36;40;1m'
 RESET='\033[0m'
 
 printf "$${BOLD}Installing code-server!\n"
-output=$(curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone --prefix=${INSTALL_PREFIX})
+
+ARGS=(
+  "--method=standalone"
+  "--prefix=${INSTALL_PREFIX}"
+)
+if [ -n "${VERSION}" ]; then
+  ARGS+=("--version=${VERSION}")
+fi
+
+output=$(curl -fsSL https://code-server.dev/install.sh | sh -s -- "$${ARGS[@]}")
 if [ $? -ne 0 ]; then
   echo "Failed to install code-server: $output"
   exit 1
@@ -29,10 +38,10 @@ for extension in "$${EXTENSIONS[@]}"; do
 done
 
 # Check if the settings file exists...
-if [ ! -f ~/.local/share/code-server/User/settings.json ]; then
+if [ ! -f ~/.local/share/code-server/Machine/settings.json ]; then
   echo "⚙️ Creating settings file..."
-  mkdir -p ~/.local/share/code-server/User
-  echo "${SETTINGS}" > ~/.local/share/code-server/User/settings.json
+  mkdir -p ~/.local/share/code-server/Machine
+  echo "${SETTINGS}" > ~/.local/share/code-server/Machine/settings.json
 fi
 
 echo "👷 Running code-server in the background..."

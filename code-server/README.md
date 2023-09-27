@@ -22,6 +22,16 @@ module "code-server" {
 
 ## Examples
 
+### Pin Versions
+
+```hcl
+module "code-server" {
+  source          = "https://registry.coder.com/modules/code-server"
+  agent_id        = coder_agent.example.id
+  install_version = "4.8.3"
+}
+```
+
 ### Pre-install Extensions
 
 Install the Dracula theme from [OpenVSX](https://open-vsx.org/):

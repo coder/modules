@@ -50,11 +50,18 @@ variable "log_path" {
   default     = "/tmp/code-server.log"
 }
 
+variable "install_version" {
+  type        = string
+  description = "The version of code-server to install."
+  default     = ""
+}
+
 resource "coder_script" "code-server" {
   agent_id     = var.agent_id
   display_name = "code-server"
   icon         = "/icon/code.svg"
   script = templatefile("${path.module}/run.sh", {
+    VERSION : var.install_version,
     EXTENSIONS : join(",", var.extensions),
     PORT : var.port,
     LOG_PATH : var.log_path,
@@ -69,7 +76,7 @@ resource "coder_app" "code-server" {
   agent_id     = var.agent_id
   slug         = "code-server"
   display_name = "code-server"
-  url          = "http://localhost:${var.port}/?folder=${var.folder}"
+  url          = "http://localhost:${var.port}/${var.folder != "" ? "?folder=${urlencode(var.folder)}" : ""}"
   icon         = "/icon/code.svg"
   subdomain    = false
   share        = "owner"

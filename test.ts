@@ -32,6 +32,7 @@ export const runContainer = async (
 export const executeScriptInContainer = async (
   state: TerraformState,
   image: string,
+  shell: string = "sh",
 ): Promise<{
   exitCode: number;
   stdout: string[];
@@ -39,7 +40,7 @@ export const executeScriptInContainer = async (
 }> => {
   const instance = findResourceInstance(state, "coder_script");
   const id = await runContainer(image);
-  const resp = await execContainer(id, ["sh", "-c", instance.script]);
+  const resp = await execContainer(id, [shell, "-c", instance.script]);
   const stdout = resp.stdout.trim().split("\n");
   const stderr = resp.stderr.trim().split("\n");
   return {
@@ -153,7 +154,7 @@ export const testRequiredVariables = (
         await runTerraformApply(dir, localVars);
       } catch (ex) {
         expect(ex.message).toContain(
-          `input variable \"${varName}\" is not set, and has no default`,
+          `input variable \"${varName}\" is not set`,
         );
         return;
       }
@@ -180,6 +181,7 @@ export const runTerraformApply = async (
       "-input=false",
       "-auto-approve",
       "-state",
+      "-no-color",
       stateFile,
     ],
     {
@@ -210,3 +212,12 @@ export const runTerraformInit = async (dir: string) => {
     throw new Error(text);
   }
 };
+
+export const createJSONResponse = (obj: object, statusCode = 200): Response => {
+  return new Response(JSON.stringify(obj), {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    status: statusCode,
+  })
+}
