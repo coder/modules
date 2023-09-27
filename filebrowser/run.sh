@@ -12,6 +12,9 @@ echo "👷 Starting filebrowser in background..."
 ROOT_DIR=${FOLDER}
 ROOT_DIR=$${ROOT_DIR/\~/$HOME}
 
+echo "📂 Serving $${ROOT_DIR} at http://localhost:${PORT}"
+
+echo "Running 'filebrowser --noauth --root $ROOT_DIR --port ${PORT}'"
 filebrowser --noauth --root $ROOT_DIR --port ${PORT} >${LOG_PATH} 2>&1 &
 
-echo "check logs at ${LOG_PATH}"
+echo "📝 Logs at ${LOG_PATH}"
