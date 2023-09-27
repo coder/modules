@@ -32,7 +32,7 @@ data "coder_parameter" "user_email" {
   count        = var.allow_email_change ? 1 : 0
   name         = "user_email"
   type         = "string"
-  default      = data.coder_workspace.me.owner_email
+  default      = data.coder_workspace.git_config.owner_email
   description  = "Git user.email to be used for commits"
   display_name = "Git config user.email"
   mutable      = true
@@ -42,7 +42,7 @@ data "coder_parameter" "username" {
   count        = var.allow_username_change ? 1 : 0
   name         = "username"
   type         = "string"
-  default      = data.coder_workspace.me.owner
+  default      = data.coder_workspace.git_config.owner
   description  = "Git user.name to be used for commits"
   display_name = "Git config user.name"
   mutable      = true
