@@ -17,7 +17,7 @@ variable "agent_id" {
 variable "allow_username_change" {
   type        = bool
   description = "Allow developers to change their git username."
-  default     = false
+  default     = true
 }
 
 variable "allow_email_change" {
@@ -33,8 +33,8 @@ data "coder_parameter" "user_email" {
   count        = var.allow_email_change ? 1 : 0
   name         = "user_email"
   type         = "string"
-  default      = "" #var.default_email_source
-  description  = "Git user.email to be used for commits"
+  default      = ""
+  description  = "Git user.email to be used for commits. Leave empty to default to Coder username."
   display_name = "Git config user.email"
   mutable      = true
 }
@@ -44,7 +44,7 @@ data "coder_parameter" "username" {
   name         = "username"
   type         = "string"
   default      = ""
-  description  = "Git user.name to be used for commits"
+  description  = "Git user.name to be used for commits. Leave empty to default to Coder username."
   display_name = "Git config user.name"
   mutable      = true
 }

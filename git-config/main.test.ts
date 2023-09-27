@@ -11,13 +11,15 @@ describe("git-config", async () => {
 
   testRequiredVariables(import.meta.dir, {
     agent_id: "foo",
+    allow_username_change: true,
+    allow_email_change: true,
   });
 
   it("fails without git", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
-      allow_username_change: false,
-      allow_email_change: false,
+      allow_username_change: true,
+      allow_email_change: true,
     });
     const output = await executeScriptInContainer(state, "alpine");
     expect(output.exitCode).toBe(1);
@@ -30,6 +32,8 @@ describe("git-config", async () => {
   it("runs with git", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
+      allow_username_change: true,
+      allow_email_change: true,
     });
     const output = await executeScriptInContainer(state, "alpine/git");
     expect(output.exitCode).toBe(0);
