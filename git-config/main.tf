@@ -26,6 +26,8 @@ variable "allow_email_change" {
   default     = false
 }
 
+data "coder_workspace" "me" {}
+
 data "coder_parameter" "user_email" {
   count        = var.allow_email_change ? 1 : 0
   name         = "user_email"
@@ -45,8 +47,6 @@ data "coder_parameter" "username" {
   display_name = "Git config user.name"
   mutable      = true
 }
-
-data "coder_workspace" "me" {}
 
 resource "coder_script" "git_config" {
   agent_id = var.agent_id
