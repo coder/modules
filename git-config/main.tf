@@ -27,12 +27,12 @@ variable "allow_email_change" {
 }
 
 variable "default_username_source" {
-  string      = string
+  type        = string
   description = "Default source to use for git-config user.name."
 }
 
 variable "default_email_source" {
-  string      = string
+  type        = string
   description = "Default source to use for git-config user.email."
 }
 
