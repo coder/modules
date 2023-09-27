@@ -33,7 +33,7 @@ data "coder_parameter" "user_email" {
   count        = var.allow_email_change ? 1 : 0
   name         = "user_email"
   type         = "string"
-  default      = "" 
+  default      = ""
   description  = "Git user.email to be used for commits. Leave empty to default to Coder username."
   display_name = "Git config user.email"
   mutable      = true
