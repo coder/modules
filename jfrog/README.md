@@ -10,4 +10,35 @@ tags: [integration]
 
 # JFrog
 
-TODO
+Install the JF CLI and authenticate package managers with Artifactory.
+
+![JFrog](../.images/jfrog.png)
+
+## Examples
+
+### Configure npm, go, and pypi to use Artifactory
+
+```hcl
+module "jfrog" {
+    source = "https://registry.coder.com/modules/jfrog"
+    agent_id = coder_agent.example.id
+    jfrog_url = "https://YYYY.jfrog.io"
+    artifactory_access_token = var.artifactory_access_token # An admin access token
+    package_managers = {
+      "npm": "npm-local",
+      "go": "go-local",
+      "pypi": "pypi-local"
+    }
+}
+```
+
+## Authentication
+
+Get a JFrog access token from your Artifactory instance. The token must have admin permissions. It is recommended to store the token in a secret terraform variable.
+
+```hcl
+variable "artifactory_access_token" {
+    type      = string
+    sensitive = true
+}
+```

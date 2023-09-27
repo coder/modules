@@ -61,7 +61,7 @@ resource "coder_script" "MODULE_NAME" {
     LOG_PATH : var.log_path,
   })
   run_on_start = true
-  run_on_stopt = false
+  run_on_stop  = false
 }
 
 resource "coder_app" "MODULE_NAME" {
