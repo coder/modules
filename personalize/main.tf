@@ -31,8 +31,9 @@ resource "coder_script" "personalize" {
   script = templatefile("${path.module}/run.sh", {
     PERSONALIZE_PATH : var.path,
   })
-  display_name = "Personalize"
-  icon         = "/icon/personalize.svg"
-  log_path     = var.log_path
-  run_on_start = true
+  display_name       = "Personalize"
+  icon               = "/icon/personalize.svg"
+  log_path           = var.log_path
+  run_on_start       = true
+  start_blocks_login = true
 }
