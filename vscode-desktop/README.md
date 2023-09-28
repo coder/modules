@@ -19,3 +19,15 @@ module "vscode" {
   agent_id = coder_agent.example.id
 }
 ```
+
+## Examples
+
+### Open in a specific directory
+
+```hcl
+module "vscode" {
+  source = "https://registry.coder.com/modules/vscode-desktop"
+  agent_id = coder_agent.example.id
+  folder = "/home/coder/project"
+}
+```

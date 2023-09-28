@@ -14,6 +14,12 @@ variable "agent_id" {
   description = "The ID of a Coder agent."
 }
 
+variable "folder" {
+  type        = string
+  description = "The folder to opne in VS Code."
+  default     = ""
+}
+
 data "coder_workspace" "me" {}
 
 resource "coder_app" "vscode" {
@@ -22,7 +28,15 @@ resource "coder_app" "vscode" {
   icon         = "/icon/code.svg"
   slug         = "vscode"
   display_name = "VS Code Desktop"
-  url = join("", [
+  url = var.folder != "" ? join("", [
+    "vscode://coder.coder-remote/open?owner=",
+    data.coder_workspace.me.owner,
+    "&workspace=",
+    data.coder_workspace.me.name,
+    "&folder=",
+    var.folder,
+    "&token=$SESSION_TOKEN",
+    ]) : join("", [
     "vscode://coder.coder-remote/open?owner=",
     data.coder_workspace.me.owner,
     "&workspace=",
