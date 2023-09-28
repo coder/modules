@@ -2,6 +2,8 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "nodenext",
     "types": ["bun-types"]
   }
 }

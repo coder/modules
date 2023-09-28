@@ -41,7 +41,7 @@ done
 if [ ! -f ~/.local/share/code-server/Machine/settings.json ]; then
   echo "⚙️ Creating settings file..."
   mkdir -p ~/.local/share/code-server/Machine
-  echo "${SETTINGS}" > ~/.local/share/code-server/Machine/settings.json
+  echo "${SETTINGS}" >~/.local/share/code-server/Machine/settings.json
 fi
 
 echo "👷 Running code-server in the background..."
