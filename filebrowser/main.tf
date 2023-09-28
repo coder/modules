@@ -47,11 +47,12 @@ resource "coder_script" "filebrowser" {
 }
 
 resource "coder_app" "filebrowser" {
-  agent_id     = var.agent_id
-  slug         = "filebrowser"
-  display_name = "File Browser"
-  url          = "http://localhost:${var.port}"
-  icon         = "https://raw.githubusercontent.com/filebrowser/logo/master/icon_raw.svg"
-  subdomain    = true
-  share        = "owner"
+  agent_id           = var.agent_id
+  slug               = "filebrowser"
+  display_name       = "File Browser"
+  url                = "http://localhost:${var.port}"
+  icon               = "https://raw.githubusercontent.com/filebrowser/logo/master/icon_raw.svg"
+  subdomain          = true
+  share              = "owner"
+  start_blocks_login = true
 }
