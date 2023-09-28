@@ -18,7 +18,6 @@ module "filebrowser" {
 }
 ```
 
-
 ![Filebrowsing Example](../.images/filebrowser.png)
 
 ## Examples
