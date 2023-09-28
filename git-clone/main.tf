@@ -26,12 +26,13 @@ variable "agent_id" {
 }
 
 resource "coder_script" "git_clone" {
-  agent_id     = var.agent_id
-  display_name = "Git Clone"
-  icon         = "/icons/git.svg"
+  agent_id = var.agent_id
   script = templatefile("${path.module}/run.sh", {
     CLONE_PATH : var.path != "" ? var.path : join("/", ["~", basename(var.url)]),
     REPO_URL : var.url,
   })
-  run_on_start = true
+  display_name       = "Git Clone"
+  icon               = "/icons/git.svg"
+  run_on_start       = true
+  start_blocks_login = true
 }
