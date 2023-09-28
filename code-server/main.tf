@@ -26,6 +26,12 @@ variable "port" {
   default     = 13337
 }
 
+variable "display_name" {
+  type        = string
+  description = "The display name for the code-server application."
+  default     = "code-server"
+}
+
 variable "settings" {
   type        = map(string)
   description = "A map of settings to apply to code-server."
@@ -75,7 +81,7 @@ resource "coder_script" "code-server" {
 resource "coder_app" "code-server" {
   agent_id     = var.agent_id
   slug         = "code-server"
-  display_name = "code-server"
+  display_name = var.display_name
   url          = "http://localhost:${var.port}/${var.folder != "" ? "?folder=${urlencode(var.folder)}" : ""}"
   icon         = "/icon/code.svg"
   subdomain    = false
