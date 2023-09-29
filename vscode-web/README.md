@@ -13,13 +13,13 @@ Automatically install [Visual Studio Code Server](https://code.visualstudio.com/
 
 ```hcl
 module "vscode-web" {
-  source         = "https://registry.coder.com/modules/vscode-server"
+  source         = "https://registry.coder.com/modules/vscode-web"
   agent_id       = coder_agent.example.id
   accept_license = true
 }
 ```
 
-![VS Code Server with GitHub Copilot and live-share](../.images/vscode-server.gif)
+![VS Code Server with GitHub Copilot and live-share](../.images/vscode-web.gif)
 
 ## Examples
 
@@ -27,9 +27,9 @@ module "vscode-web" {
 
 ```hcl
 module "vscode-web" {
-  source          = "https://registry.coder.com/modules/vscode-server"
+  source          = "https://registry.coder.com/modules/vscode-web"
   agent_id        = coder_agent.example.id
-  install_dir     = "/home/coder/.vscode-server"
+  install_dir     = "/home/coder/.vscode-web"
   folder          = "/home/coder"
   accept_license  = true
 }
