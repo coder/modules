@@ -16,3 +16,5 @@ module "coder-login" {
     agent_id = coder_agent.example.id
 }
 ```
+
+![Coder Login Logs](../.images/coder-login.png)
