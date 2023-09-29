@@ -23,7 +23,7 @@ resource "coder_script" "coder-login" {
     CODER_DEPLOYMENT_URL : data.coder_workspace.me.access_url
   })
   display_name       = "Coder Login"
-  icon               = "/favicons/favicon.svg"
+  icon               = "../.icons/coder-white.svg"
   run_on_start       = true
   start_blocks_login = true
 }

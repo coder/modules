@@ -1,7 +1,7 @@
 ---
 display_name: Coder Login
 description: Automatically logs the user into Coder on their workspace
-icon: /emojis/1f511.png
+icon: ../.icons/coder-white.svg
 maintainer_github: coder
 verified: true
 tags: [helper]
