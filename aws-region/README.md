@@ -29,18 +29,19 @@ provider "aws" {
 
 ## Examples
 
-### Customize Regions
+### Customize regions
 
-Change the display name and icon for a region:
+Change the display name and icon for a region using the corresponding maps:
 
 ```hcl
 module "aws-region" {
     source = "https://registry.coder.com/modules/aws-region"
+    default = "ap-south-1"
     custom_names = {
-        "fra": "Awesome Germany!"
+        "ap-south-1": "Awesome Mumbai!"
     }
     custom_icons = {
-        "fra": "/icons/smiley.svg"
+        "ap-south-1": "/emojis/1f33a.png"
     }
 }
 
@@ -49,17 +50,28 @@ provider "aws" {
 }
 ```
 
-### Exclude Regions
+![AWS Custom](../.images/aws-custom.png)
 
-Hide the `fra` region:
+### Exclude regions
+
+Hide the Asia Pacific regions Seoul and Osaka:
 
 ```hcl
 module "aws-region" {
     source = "https://registry.coder.com/modules/aws-region"
-    exclude = [ "fra" ]
+    exclude = [ "ap-northeast-2", "ap-northeast-3" ]
 }
 
 provider "aws" {
     region = module.aws_region.value
 }
 ```
+
+![AWS Exclude](../.images/aws-exclude.png)
+
+## Related templates
+
+For a complete AWS EC2 template, see the following examples in the [Coder Registry](https://registry.coder.com/).
+
+- [AWS EC2 (Linux)](https://registry.coder.com/templates/aws-linux)
+- [AWS EC2 (Windows)](https://registry.coder.com/templates/aws-windows)

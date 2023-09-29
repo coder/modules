@@ -22,20 +22,22 @@ resource "azurem_resource_group" "example" {
 }
 ```
 
+![Azure Region Default](../.images/azure-default.png)
+
 ## Examples
 
 ### Customize existing regions
 
-Change the display name for a region:
+Change the display name and icon for a region using the corresponding maps:
 
 ```hcl
 module "azure-region" {
     source = "https://registry.coder.com/modules/azure-region"
     custom_names = {
-        "eastus": "Eastern United States!"
+        "australia": "Go Australia!"
     }
     custom_icons = {
-        "eastus": "/icons/smiley.svg"
+        "australia": "/icons/smiley.svg"
     }
 }
 
@@ -44,17 +46,33 @@ resource "azurerm_resource_group" "example" {
 }
 ```
 
+![Azure Region Custom](../.images/azure-custom.png)
+
 ### Exclude Regions
 
-Hide the `westus2` region:
+Hide all regions in Australia except australiacentral:
 
 ```hcl
 module "azure-region" {
     source = "https://registry.coder.com/modules/azure-region"
-    exclude = [ "westus2" ]
+    exclude = [
+        "australia",
+        "australiacentral2",
+        "australiaeast",
+        "australiasoutheast"
+    ]
 }
 
 resource "azurerm_resource_group" "example" {
     location = module.azure_region.value
 }
 ```
+
+![Azure Exclude](../.images/azure-exclude.png)
+
+## Related templates
+
+For a complete Azure template, see the following examples in the [Coder Registry](https://registry.coder.com/).
+
+- [Azure VM (Linux)](https://registry.coder.com/templates/azure-linux)
+- [Azure VM (Windows)](https://registry.coder.com/templates/azure-windows)

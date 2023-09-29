@@ -19,3 +19,5 @@ module "vscode" {
   agent_id = coder_agent.example.id
 }
 ```
+
+![VSCode Desktop Button](../.images/vscode-desktop.png)
