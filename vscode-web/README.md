@@ -19,11 +19,11 @@ module "vscode-web" {
 }
 ```
 
-![VS Code Server with GitHub Copilot and live-share](../.images/vscode-web.gif)
+![VS Code Web with GitHub Copilot and live-share](../.images/vscode-web.gif)
 
 ## Examples
 
-### Install VS Code Server to a custom folder
+### Install VS Code Web to a custom folder
 
 ```hcl
 module "vscode-web" {
