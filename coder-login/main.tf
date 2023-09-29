@@ -22,9 +22,8 @@ resource "coder_script" "coder-login" {
     CODER_USER_TOKEN : data.coder_workspace.me.owner_session_token,
     CODER_DEPLOYMENT_URL : data.coder_workspace.me.access_url
   })
-  display_name       = "Personalize"
+  display_name       = "Coder Login"
   icon               = "/emojis/1f511.png"
-  log_path           = var.log_path
   run_on_start       = true
   start_blocks_login = true
 }
