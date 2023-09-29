@@ -27,3 +27,4 @@ resource "coder_script" "coder-login" {
   run_on_start       = true
   start_blocks_login = true
 }
+
