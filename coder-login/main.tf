@@ -24,15 +24,14 @@ variable "coder_deployment_url" {
   description = "Coder Deployment URL,"
 }
 
-
-resource "coder_script" "personalize" {
+resource "coder_script" "coder-login" {
   agent_id = var.agent_id
   script = templatefile("${path.module}/run.sh", {
     CODER_USER_TOKEN : var.coder_user_token,
     CODER_DEPLOYMENT_URL : var.coder_deployment_url
   })
   display_name       = "Personalize"
-  icon               = "/icon/personalize.svg"
+  icon               = "/emojis/1f511.png"
   log_path           = var.log_path
   run_on_start       = true
   start_blocks_login = true
