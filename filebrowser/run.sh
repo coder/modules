@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 BOLD='\033[0;1m'
-echo "$${BOLD}Installing filebrowser \n\n"
+printf "$${BOLD}Installing filebrowser \n\n"
 
 curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 BOLD='\033[0;1m'
-echo "$${BOLD}Installing JFrog CLI..."
+printf "$${BOLD}Installing JFrog CLI..."
 
 # Install the JFrog CLI.
 curl -fL https://install-cli.jfrog.io | sudo sh
@@ -20,11 +20,11 @@ if [ -z "${REPOSITORY_NPM}" ]; then
 else
   echo "📦 Configuring npm..."
   jf npmc --global --repo-resolve "${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}"
-  cat << EOF > ~/.npmrc
+  cat <<EOF >~/.npmrc
 email = ${ARTIFACTORY_USERNAME}
 registry = ${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
 EOF
-  jf rt curl /api/npm/auth >> ~/.npmrc
+  jf rt curl /api/npm/auth >>~/.npmrc
 fi
 
 # Configure the `pip` to use the Artifactory "python" repository.
@@ -33,7 +33,7 @@ if [ -z "${REPOSITORY_PYPI}" ]; then
 else
   echo "🐍 Configuring pip..."
   mkdir -p ~/.pip
-  cat << EOF > ~/.pip/pip.conf
+  cat <<EOF >~/.pip/pip.conf
 [global]
 index-url = https://${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}@${JFROG_HOST}/artifactory/api/pypi/${REPOSITORY_PYPI}/simple
 EOF
