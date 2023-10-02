@@ -22,7 +22,6 @@ variable "description" {
 }
 
 variable "default" {
-  default     = "us-east-1"
   description = "The default region to use if no region is specified."
   type        = string
 }
@@ -131,7 +130,7 @@ data "coder_parameter" "region" {
   name         = "aws_region"
   display_name = var.display_name
   description  = var.description
-  default      = var.default
+  default      = var.default == "" ? null : var.default
   mutable      = var.mutable
   dynamic "option" {
     for_each = { for k, v in local.regions : k => v if !(contains(var.exclude, k)) }
