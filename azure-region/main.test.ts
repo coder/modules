@@ -13,7 +13,7 @@ describe("azure-region", async () => {
 
   it("default output", async () => {
     const state = await runTerraformApply(import.meta.dir, {});
-    expect(state.outputs.value.value).toBe("eastus");
+    expect(state.outputs.value.value).toBe("");
   });
 
   it("customized default", async () => {
