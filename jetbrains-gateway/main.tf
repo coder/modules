@@ -25,7 +25,7 @@ variable "project_directory" {
 }
 
 variable "default" {
-  default     = null
+  default     = ""
   type        = string
   description = "Default IDE"
 }
@@ -120,7 +120,7 @@ data "coder_parameter" "jetbrains_ide" {
   icon         = "/icon/gateway.svg"
   mutable      = true
   # check if default is in the jet_brains_ides list and if it is not empty or null otherwise set it to null
-  default = var.default != null && var.default != "" && contains(var.jetbrains_ides, var.default) ? local.jetbrains_ides[var.default].value : null
+  default = var.default != null && var.default != "" && contains(var.jetbrains_ides, var.default) ? local.jetbrains_ides[var.default].value : local.jetbrains_ides[var.jetbrains_ides[0]].value
 
   dynamic "option" {
     for_each = { for key, value in local.jetbrains_ides : key => value if contains(var.jetbrains_ides, key) }
@@ -156,7 +156,7 @@ resource "coder_app" "gateway" {
     "&ide_build_number=",
     jsondecode(data.coder_parameter.jetbrains_ide.value)[1],
     "&ide_download_link=",
-    jsondecode(data.coder_parameter.jetbrains_ide.value)[2]
+    jsondecode(data.coder_parameter.jetbrains_ide.value)[2],
   ])
 }
 
