@@ -308,7 +308,7 @@ data "coder_parameter" "region" {
   name         = "azure_region"
   display_name = var.display_name
   description  = var.description
-  default      = var.default == "" ? null : var.default
+  default      = null # var.default == "" ? null : var.default
   mutable      = var.mutable
   dynamic "option" {
     for_each = { for k, v in local.all_regions : k => v if !(contains(var.exclude, k)) }
