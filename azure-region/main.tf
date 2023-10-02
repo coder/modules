@@ -319,7 +319,8 @@ data "coder_parameter" "region" {
     }
   }
   validation {
-    regex = "^.+$"
+    # Functions as an error message for when the coder parameter is not selected
+    regex = "^(?!\\s*$).+"
     error = "Azure region must be selected."
   }
 }
