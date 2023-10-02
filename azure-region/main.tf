@@ -308,7 +308,7 @@ data "coder_parameter" "region" {
   name         = "azure_region"
   display_name = var.display_name
   description  = var.description
-  default      = null # var.default == "" ? null : var.default
+  default      = var.default == "" ? null : var.default
   mutable      = var.mutable
   dynamic "option" {
     for_each = { for k, v in local.all_regions : k => v if !(contains(var.exclude, k)) }
@@ -317,6 +317,10 @@ data "coder_parameter" "region" {
       icon  = try(var.custom_icons[option.key], option.value.icon)
       value = option.key
     }
+  }
+  validation {
+    regex = "^.+$"
+    error = "Azure region must be selected."
   }
 }
 

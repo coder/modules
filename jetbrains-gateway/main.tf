@@ -46,7 +46,7 @@ variable "jetbrains_ides" {
     condition     = length(var.jetbrains_ides) > 0
     error_message = "The jetbrains_ides must not be empty."
   }
-  #ccheck if the list contains duplicates
+  # check if the list contains duplicates
   validation {
     condition     = length(var.jetbrains_ides) == length(toset(var.jetbrains_ides))
     error_message = "The jetbrains_ides must not contain duplicates."
