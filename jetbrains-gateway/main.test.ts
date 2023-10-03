@@ -1,7 +1,5 @@
-import { describe, expect, it } from "bun:test";
+import { describe } from "bun:test";
 import {
-  executeScriptInContainer,
-  runTerraformApply,
   runTerraformInit,
   testRequiredVariables,
 } from "../test";
@@ -12,7 +10,7 @@ describe("jetbrains-gateway`", async () => {
   await testRequiredVariables(import.meta.dir, {
     agent_id: "foo",
     agent_name: "bar",
-    project_directory: "/baz/",
+    folder: "/baz/",
     jetbrains_ides: '["IU", "IC", "PY"]',
   });
 });

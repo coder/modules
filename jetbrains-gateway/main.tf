@@ -19,7 +19,7 @@ variable "agent_name" {
   description = "The name of a Coder agent."
 }
 
-variable "project_directory" {
+variable "folder" {
   type        = string
   description = "The directory to open in the IDE. e.g. /home/coder/project"
 }
@@ -146,7 +146,7 @@ resource "coder_app" "gateway" {
     "&agent=",
     var.agent_name,
     "&folder=",
-    var.project_directory,
+    var.folder,
     "&url=",
     data.coder_workspace.me.access_url,
     "&token=",
