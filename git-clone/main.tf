@@ -32,7 +32,7 @@ resource "coder_script" "git_clone" {
     REPO_URL : var.url,
   })
   display_name       = "Git Clone"
-  icon               = "/icons/git.svg"
+  icon               = "/icon/git.svg"
   run_on_start       = true
   start_blocks_login = true
 }
