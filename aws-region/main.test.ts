@@ -13,7 +13,7 @@ describe("aws-region", async () => {
 
   it("default output", async () => {
     const state = await runTerraformApply(import.meta.dir, {});
-    expect(state.outputs.value.value).toBe("us-east-1");
+    expect(state.outputs.value.value).toBe("");
   });
 
   it("customized default", async () => {

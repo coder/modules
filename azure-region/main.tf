@@ -21,7 +21,7 @@ variable "description" {
 }
 
 variable "default" {
-  default     = "eastus"
+  default     = ""
   description = "The default region to use if no region is specified."
   type        = string
 }
@@ -308,7 +308,7 @@ data "coder_parameter" "region" {
   name         = "azure_region"
   display_name = var.display_name
   description  = var.description
-  default      = var.default
+  default      = var.default == "" ? null : var.default
   mutable      = var.mutable
   icon         = "/icon/azure.png"
   dynamic "option" {
