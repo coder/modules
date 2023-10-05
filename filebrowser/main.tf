@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.3"
+  required_version = ">= 1.0"
 
   required_providers {
     coder = {
@@ -20,8 +20,8 @@ variable "database_path" {
   description = "The path to the filebrowser database."
   default     = "filebrowser.db"
   validation {
-    condition     = endswith(var.database_path, "filebrowser.db")
-    # condition     = can(regex(".*filebrowser\\.db$", var.database_path))
+    # condition     = endswith(var.database_path, "filebrowser.db")
+    condition     = can(regex(".*filebrowser\\.db$", var.database_path))
     error_message = "The database_path must end with 'filebrowser.db'."
   }
 }
