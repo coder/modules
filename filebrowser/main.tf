@@ -20,7 +20,7 @@ variable "database_path" {
   description = "The path to the filebrowser database."
   default     = "filebrowser.db"
   validation {
-    condition     = ends_with(var.database_path, "filebrowser.db")
+    condition     = endswith(var.database_path, "filebrowser.db")
     error_message = "The database_path must end with 'filebrowser.db'."
   }
 }
