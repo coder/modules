@@ -18,7 +18,7 @@ variable "agent_id" {
 variable "db_path" {
   type        = string
   description = "The path to the filebrowser database."
-  default     = "~/filebrowser.db"
+  default     = null
 }
 
 variable "log_path" {
