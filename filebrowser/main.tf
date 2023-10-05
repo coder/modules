@@ -15,6 +15,12 @@ variable "agent_id" {
   description = "The ID of a Coder agent."
 }
 
+variable "db_path" {
+  type        = string
+  description = "The path to the filebrowser database."
+  default     = "~/filebrowser.db"
+}
+
 variable "log_path" {
   type        = string
   description = "The path to log filebrowser to."
@@ -42,6 +48,7 @@ resource "coder_script" "filebrowser" {
     PORT : var.port,
     FOLDER : var.folder,
     LOG_PATH : var.log_path,
+    DB_PATH : var.db_path,
   })
   run_on_start = true
 }

@@ -14,8 +14,8 @@ ROOT_DIR=$${ROOT_DIR/\~/$HOME}
 
 printf "📂 Serving $${ROOT_DIR} at http://localhost:${PORT} \n\n"
 
-printf "Running 'filebrowser --noauth --root $ROOT_DIR --port ${PORT}' \n\n"
+printf "Running 'filebrowser --noauth --root $ROOT_DIR --port ${PORT} -d ${DB_PATH}' \n\n"
 
-filebrowser --noauth --root $ROOT_DIR --port ${PORT} >${LOG_PATH} 2>&1 &
+filebrowser --noauth --root $ROOT_DIR --port ${PORT} -d ${DB_PATH} >${LOG_PATH} 2>&1 &
 
 printf "📝 Logs at ${LOG_PATH} \n\n"
