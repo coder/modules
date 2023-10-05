@@ -31,3 +31,13 @@ module "filebrowser" {
     folder = "/home/coder/project"
 }
 ```
+
+### Specify location of `filebrowser.db`
+
+```hcl
+module "filebrowser" {
+    source = "https://registry.coder.com/modules/filebrowser"
+    agent_id = coder_agent.example.id
+    database_path = ".config/filebrowser.db"
+}
+```
