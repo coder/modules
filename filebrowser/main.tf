@@ -9,7 +9,6 @@ terraform {
   }
 }
 
-# Add required variables for your modules and remove any unneeded variables
 variable "agent_id" {
   type        = string
   description = "The ID of a Coder agent."
@@ -20,7 +19,7 @@ variable "database_path" {
   description = "The path to the filebrowser database."
   default     = "filebrowser.db"
   validation {
-    # condition     = endswith(var.database_path, "filebrowser.db")
+    # Ensures path leads to */filebrowser.db
     condition     = can(regex(".*filebrowser\\.db$", var.database_path))
     error_message = "The database_path must end with 'filebrowser.db'."
   }
