@@ -18,7 +18,11 @@ variable "agent_id" {
 variable "db_path" {
   type        = string
   description = "The path to the filebrowser database."
-  default     = ""
+  default     = "filebrowser.db"
+  validation {
+    condition     = ends_with(var.database_path, "filebrowser.db")
+    error_message = "The database_path must end with 'filebrowser.db'."
+  }
 }
 
 variable "log_path" {

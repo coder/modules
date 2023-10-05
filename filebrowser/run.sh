@@ -14,9 +14,8 @@ ROOT_DIR=$${ROOT_DIR/\~/$HOME}
 
 # Set the database flag if DB_PATH is set
 DB_FLAG=""
-if [ -z "${DB_PATH}" ]; then
-  echo "DB_PATH is empty"
-else
+if [ "${DB_PATH}" != "filebrowser.db" ]; then
+  echo ">>> flag set!"
   DB_FLAG="-d ${DB_PATH}"
 fi
 
@@ -24,6 +23,6 @@ printf "📂 Serving $${ROOT_DIR} at http://localhost:${PORT} \n\n"
 
 printf "Running 'filebrowser --noauth --root $ROOT_DIR --port ${PORT}$${DB_FLAG}' \n\n" #  -d ${DB_PATH}
 
-filebrowser --noauth --root $ROOT_DIR --port ${PORT} >${LOG_PATH}$${DB_FLAG} 2>&1 & #  -d ${DB_PATH} 
+filebrowser --noauth --root $ROOT_DIR --port ${PORT}${DB_FLAG} >${LOG_PATH} 2>&1 & #  -d ${DB_PATH} 
 
 printf "📝 Logs at ${LOG_PATH} \n\n"
