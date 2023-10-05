@@ -19,8 +19,8 @@ fi
 
 printf "📂 Serving $${ROOT_DIR} at http://localhost:${PORT} \n\n"
 
-printf "Running 'filebrowser --noauth --root $ROOT_DIR --port ${PORT}$${DB_FLAG}' \n\n" #  -d ${DB_PATH}
+printf "Running 'filebrowser --noauth --root $ROOT_DIR --port ${PORT}$${DB_FLAG}' \n\n"
 
-filebrowser --noauth --root $ROOT_DIR --port ${PORT}$${DB_FLAG} >${LOG_PATH} 2>&1 & #  -d ${DB_PATH} 
+filebrowser --noauth --root $ROOT_DIR --port ${PORT}$${DB_FLAG} >${LOG_PATH} 2>&1 & 
 
 printf "📝 Logs at ${LOG_PATH} \n\n"
