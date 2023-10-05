@@ -14,7 +14,7 @@ ROOT_DIR=$${ROOT_DIR/\~/$HOME}
 
 DB_FLAG=""
 if [ "${DB_PATH}" != "filebrowser.db" ]; then
-  DB_FLAG="-d ${DB_PATH}"
+  DB_FLAG=" -d ${DB_PATH}"
 fi
 
 printf "📂 Serving $${ROOT_DIR} at http://localhost:${PORT} \n\n"
