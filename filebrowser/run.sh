@@ -12,20 +12,15 @@ printf "👷 Starting filebrowser in background... \n\n"
 ROOT_DIR=${FOLDER}
 ROOT_DIR=$${ROOT_DIR/\~/$HOME}
 
-DB_COMMAND=""
-
 if [ -z "${DB_PATH}" ]; then
-  echo "DB_PATH not set, skipping flag"
-else
-  echo "DB_PATH is set!"
-  DB_COMMAND="-d ${DB_PATH}"
-  echo "Command: $${DB_COMMAND}"
+  echo "DB_PATH is empty"
+#   DB_PATH=$${ROOT_DIR}/filebrowser.db
 fi
 
 printf "📂 Serving $${ROOT_DIR} at http://localhost:${PORT} \n\n"
 
-printf "Running 'filebrowser --noauth --root $ROOT_DIR --port ${PORT}$${DB_COMMAND}' \n\n"
+printf "Running 'filebrowser --noauth --root $ROOT_DIR --port ${PORT}' \n\n" #  -d ${DB_PATH}
 
-filebrowser --noauth --root $ROOT_DIR --port ${PORT} $${DB_COMMAND} >${LOG_PATH} 2>&1 &
+filebrowser --noauth --root $ROOT_DIR --port ${PORT} >${LOG_PATH} 2>&1 & #  -d ${DB_PATH} 
 
 printf "📝 Logs at ${LOG_PATH} \n\n"

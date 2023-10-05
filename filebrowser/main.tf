@@ -18,7 +18,7 @@ variable "agent_id" {
 variable "db_path" {
   type        = string
   description = "The path to the filebrowser database."
-  default     = "~/filebrowser.db"
+  default     = ""
 }
 
 variable "log_path" {
@@ -48,7 +48,7 @@ resource "coder_script" "filebrowser" {
     PORT : var.port,
     FOLDER : var.folder,
     LOG_PATH : var.log_path,
-    DB_PATH : var.db_path,
+    DB_PATH : var.db_path
   })
   run_on_start = true
 }
