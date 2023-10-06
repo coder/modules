@@ -9,10 +9,20 @@ terraform {
   }
 }
 
-# Add required variables for your modules and remove any unneeded variables
 variable "agent_id" {
   type        = string
   description = "The ID of a Coder agent."
+}
+
+variable "database_path" {
+  type        = string
+  description = "The path to the filebrowser database."
+  default     = "filebrowser.db"
+  validation {
+    # Ensures path leads to */filebrowser.db
+    condition     = can(regex(".*filebrowser\\.db$", var.database_path))
+    error_message = "The database_path must end with 'filebrowser.db'."
+  }
 }
 
 variable "log_path" {
@@ -42,6 +52,7 @@ resource "coder_script" "filebrowser" {
     PORT : var.port,
     FOLDER : var.folder,
     LOG_PATH : var.log_path,
+    DB_PATH : var.database_path
   })
   run_on_start = true
 }
