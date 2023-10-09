@@ -23,16 +23,19 @@ if ! command -v git >/dev/null; then
   exit 1
 fi
 
-# Check if the directory exists...
+# Check if the directory for the cloning exists
+# and if not, create it
 if [ ! -d "$CLONE_PATH" ]; then
   echo "Creating directory $CLONE_PATH..."
   mkdir -p "$CLONE_PATH"
-else
-  echo "$CLONE_PATH already exists, skipping clone!"
-  exit 0
 fi
 
-# Clone the repository...
-echo "Cloning $REPO_URL to $CLONE_PATH..."
-git clone "$REPO_URL" "$CLONE_PATH"
-
+# Check if the directory is empty
+# and if it is, clone the repo, otherwise skip cloning
+if [ -z "$(ls -A "$CLONE_PATH")" ]; then
+  echo "Cloning $REPO_URL to $CLONE_PATH..."
+  git clone "$REPO_URL" "$CLONE_PATH"
+else
+  echo "$CLONE_PATH already exists and isn't empty, skipping clone!"
+  exit 0
+fi
