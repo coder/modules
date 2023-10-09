@@ -69,20 +69,18 @@ if [ "${SECRETS}" = "{}" ]; then
     exit 0
 fi
 
-# Replace :: back to / in the SECRETS string
-SECRETS=$(echo "${SECRETS}" | sed 's/::/\//g')
-
-# Now process the SECRETS string as before...
 printf "🔍 Fetching secrets ...\n\n"
-for key in $(echo "$${SECRETS}" | jq -r "keys[]" ); do
-    secrets=$(echo "$${SECRETS}" | jq -r ".$key.secrets[]")
-    file=$(echo "$${SECRETS}" | jq -r ".$key.file")
-    printf "Fetching secrets from $${key} ...\n"
+for key in $(echo "${SECRETS}" | jq -r "keys[]" ); do
+    formatted_key=$(echo "${key}" | tr '_' '/')
+    secrets=$(echo "${SECRETS}" | jq -r ".$key.secrets[]")
+    file=$(echo "${SECRETS}" | jq -r ".$key.file")
+    printf "Fetching secrets from $${formatted_key} ...\n"
     for secret in $${secrets}; do
-        value=$(vault kv get -format=json $${key} | jq -r ".data.data.$${secret}")
+        value=$(vault kv get -format=json $${formatted_key} | jq -r ".data.data.$${secret}")
         # create directory if it doesn't exist
         mkdir -p $(dirname $${file})
         printf "$${secret}=$${value}\n" >> $${file}
     done
     printf "\n"
 done
+
