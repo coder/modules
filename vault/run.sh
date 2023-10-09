@@ -54,7 +54,7 @@ if ! command -v jq >/dev/null; then
 fi
 
 # Decode the JSON string to a temporary file
-echo "$SECRETS" | jq '.' > temp.json
+echo "${SECRETS}" | jq '.' > temp.json
 
 # Iterate through the keys and values in the JSON file
 for key in $(jq -r 'keys[]' temp.json); do
@@ -66,7 +66,7 @@ for key in $(jq -r 'keys[]' temp.json); do
     # Convert the list of environment variables to an array
     IFS=', ' read -r -a sceret_array <<< "$sceret_names"
     # Set the environment variables with the secret values
-    for secret_name in "${sceret_array[@]}"; do
+    for secret_name in "$${sceret_array[@]}"; do
         # Remove quotes from the variable name
         secret_name=$(echo $secret_name | tr -d \")
         # Assuming the secrets are stored in a key named 'data' in Vault
