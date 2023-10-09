@@ -41,7 +41,6 @@ vault status
 
 # Skip fetching secrets if SECRETS is {}
 if [ "${SECRETS}" = "{}" ]; then
-    printf "\n🔑 No secrets to fetch.\n\n"
     exit 0
 fi
 
@@ -50,7 +49,9 @@ printf "\n🔑 Fetching secrets ...\n\n"
 # Check if jq is installed
 if ! command -v jq >/dev/null; then
     echo "jq is not installed. Please install jq to automatically set the secrets."
-    exit 0 # exit with 0 to prevent failure (this is not a hard requirement, a user can still set the secrets manually)
+    echo "You can manually set the secrets by using the following command in your workspace:"
+    echo "vault kv get <path>"
+    exit 0 
 fi
 
 # Decode the JSON string to a temporary file
@@ -69,7 +70,6 @@ for key in $(jq -r 'keys[]' temp.json); do
     for secret_name in "$${sceret_array[@]}"; do
         # Remove quotes from the variable name
         secret_name=$(echo $secret_name | tr -d \")
-        # Assuming the secrets are stored in a key named 'data' in Vault
         secret_value=$(echo $secrets | jq -r ".data.data.$secret_name")
         export $secret_name=$secret_value
     done
