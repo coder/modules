@@ -61,26 +61,3 @@ if [[ -f ~/.config/fish/config.fish ]] && ! grep -q "VAULT_ADDR" ~/.config/fish/
     printf "\nAdding VAULT_ADDR to ~/.config/fish/config.fish ...\n"
     echo "set -x VAULT_ADDR ${VAULT_ADDR}" >> ~/.config/fish/config.fish
 fi
-
-
-
-# Skip fetching secrets if SECRETS is {}
-if [ "${SECRETS}" = "{}" ]; then
-    exit 0
-fi
-
-printf "🔍 Fetching secrets ...\n\n"
-for key in $(echo "${SECRETS}" | jq -r "keys[]" ); do
-    formatted_key=$(echo "$${key}" | tr '_' '/')
-    secrets=$(echo "${SECRETS}" | jq -r ".$${key}.secrets[]")
-    file=$(echo "${SECRETS}" | jq -r ".$${key}.file")
-    printf "Fetching secrets from $${formatted_key} ...\n"
-    for secret in $${secrets}; do
-        value=$(vault kv get -format=json $${formatted_key} | jq -r ".data.data.$${secret}")
-        # create directory if it doesn't exist
-        mkdir -p $(dirname $${file})
-        printf "$${secret}=$${value}\n" >> $${file}
-    done
-    printf "\n"
-done
-

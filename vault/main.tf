@@ -26,25 +26,6 @@ variable "vault_auth_id" {
   default     = "vault"
 }
 
-variable "secrets" {
-  type        = map(object({ secrets = list(string), file = string }))
-  description = <<EOF
-  description = "A map of secret paths, secret names, and destination files."
-  e.g,
-  {
-    "secret/data/my-secret-1" = {
-      "secrets" = ["username", "password"]
-      "file" = "secrets.env"
-    },
-    "secret/data/my-secret-2" = {
-      "secrets" = ["username", "password"]
-      "file" = "secrets2.env"
-    }
-  }
-  EOF 
-  default     = {}
-}
-
 variable "vault_cli_version" {
   type        = string
   description = "The version of Vault to install."
@@ -64,7 +45,6 @@ resource "coder_script" "vault" {
     VAULT_ADDR : var.vault_addr,
     VAULT_TOKEN : data.coder_git_auth.vault.access_token,
     VERSION : var.vault_cli_version,
-    SECRETS : replace(replace(jsonencode(var.secrets), "\"", "\\\""), "/", "_")
   })
   run_on_start = true
 }

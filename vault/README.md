@@ -36,24 +36,6 @@ module "vault" {
 }
 ```
 
-### Configure Vault integration and automatically fetch secrets from Vault
-
-Configure Vault integration and automatically fetch secrets from Vault and inject them into the workspace environment. This works by specifying the `secrets` variable with a list of secrets paths and keys to fetch from Vault. Multiple secrets can be specified by using a map of secret paths to a list of keys to fetch from each secret. For more information, see the [Vault documentation](https://www.vaultproject.io/api-docs/secret/kv/kv-v2#read-secret-version).
-
-````hcl
-For more information, see the [Vault documentation](https://www.vaultproject.io/docs/secrets/kv/kv-v2).
-
-```hcl
-module "vault" {
-    source     = "https://registry.coder.com/modules/vault"
-    vault_addr = "https://vault.example.com"
-    secrets    = {
-        "secret/data/foo" = ["FOO", "BAR"]
-        "secret/data/bar" = ["BAZ"]
-    }
-}
-````
-
 ### Configure Vault integration and install a specific version of the Vault CLI
 
 ```hcl
