@@ -1,7 +1,7 @@
 import { describe } from "bun:test";
 import { runTerraformInit, testRequiredVariables } from "../test";
 
-describe("jetbrains-gateway`", async () => {
+describe("jetbrains-gateway", async () => {
   await runTerraformInit(import.meta.dir);
 
   await testRequiredVariables(import.meta.dir, {
