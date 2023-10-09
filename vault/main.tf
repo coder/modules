@@ -64,7 +64,7 @@ resource "coder_script" "vault" {
     VAULT_ADDR : var.vault_addr,
     VAULT_TOKEN : data.coder_git_auth.vault.access_token,
     VERSION : var.vault_cli_version,
-    SECRETS : replace(jsonencode(var.secrets), "\"", "\\\"")
+    SECRETS : replace(replace(jsonencode(var.secrets), "\"", "\\\""), "/", "::")
   })
   run_on_start = true
 }

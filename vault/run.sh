@@ -69,16 +69,14 @@ if [ "${SECRETS}" = "{}" ]; then
     exit 0
 fi
 
-# DEBUG
-printf "\n\n🐛 DEBUG: Printing secrets ...\n\n"
-echo "${SECRETS}" > /tmp/debug_secrets.txt
-echo "${SECRETS}"
-echo "${SECRETS}" | jq
+# Replace :: back to / in the SECRETS string
+SECRETS=$(echo "${SECRETS}" | sed 's/::/\//g')
 
+# Now process the SECRETS string as before...
 printf "🔍 Fetching secrets ...\n\n"
-for key in $(echo "${SECRETS}" | jq -r "keys[]" ); do
-    secrets=$(echo "${SECRETS}" | jq -r ".$key.secrets[]")
-    file=$(echo "${SECRETS}" | jq -r ".$key.file")
+for key in $(echo "$${SECRETS}" | jq -r "keys[]" ); do
+    secrets=$(echo "$${SECRETS}" | jq -r ".$key.secrets[]")
+    file=$(echo "$${SECRETS}" | jq -r ".$key.file")
     printf "Fetching secrets from $${key} ...\n"
     for secret in $${secrets}; do
         value=$(vault kv get -format=json $${key} | jq -r ".data.data.$${secret}")
