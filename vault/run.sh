@@ -71,9 +71,9 @@ fi
 
 printf "🔍 Fetching secrets ...\n\n"
 for key in $(echo "${SECRETS}" | jq -r "keys[]" ); do
-    formatted_key=$(echo "${key}" | tr '_' '/')
-    secrets=$(echo "${SECRETS}" | jq -r ".$key.secrets[]")
-    file=$(echo "${SECRETS}" | jq -r ".$key.file")
+    formatted_key=$(echo "$${key}" | tr '_' '/')
+    secrets=$(echo "${SECRETS}" | jq -r ".$${key}.secrets[]")
+    file=$(echo "${SECRETS}" | jq -r ".$${key}.file")
     printf "Fetching secrets from $${formatted_key} ...\n"
     for secret in $${secrets}; do
         value=$(vault kv get -format=json $${formatted_key} | jq -r ".data.data.$${secret}")
