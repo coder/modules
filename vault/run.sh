@@ -35,6 +35,13 @@ printf "🥳 Installation comlete!\n\n"
 export VAULT_ADDR=${VAULT_ADDR}
 export VAULT_TOKEN=${VAULT_TOKEN}
 
+# login to Vault
+printf "🔑 Logging in to Vault ...\n\n"
+vault login -address=${VAULT_ADDR} -no-print ${VAULT_TOKEN}
+
+# Add VAULT_ADDR to /ect/environment file to persist the environment variable
+echo "VAULT_ADDR=${VAULT_ADDR}" | sudo tee -a /etc/environment
+
 # Verify Vault address and token
 printf "🔎 Verifying Vault address and token ...\n\n"
 vault status
@@ -54,6 +61,7 @@ if ! command -v jq >/dev/null; then
     exit 0 
 fi
 
+echo "${SECRETS}"
 # Decode the JSON string to a temporary file
 echo "${SECRETS}" | jq '.' > temp.json
 
