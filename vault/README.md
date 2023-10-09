@@ -10,6 +10,7 @@ tags: [helper, integration, vault]
 # Hashicorp Vault
 
 This module authenticates with Vault and injects secrets into the environment.
+
 > **Note:** This module does not cover setting up and configuring Vault. For that, see the [Vault documentation](https://www.vaultproject.io/docs).
 
 ```hcl
@@ -19,7 +20,7 @@ module "vault" {
 }
 ```
 
-![Vault login](./.images/vault-login.png)
+![Vault login](../.images/vault-login.png)
 
 ## Examples
 
@@ -39,7 +40,7 @@ module "vault" {
 
 Configure Vault integration and automatically fetch secrets from Vault and inject them into the workspace environment. This works by specifying the `secrets` variable with a list of secrets paths and keys to fetch from Vault. Multiple secrets can be specified by using a map of secret paths to a list of keys to fetch from each secret. For more information, see the [Vault documentation](https://www.vaultproject.io/api-docs/secret/kv/kv-v2#read-secret-version).
 
-```hcl
+````hcl
 For more information, see the [Vault documentation](https://www.vaultproject.io/docs/secrets/kv/kv-v2).
 
 ```hcl
@@ -51,7 +52,7 @@ module "vault" {
         "secret/data/bar" = ["BAZ"]
     }
 }
-```
+````
 
 ### Configure Vault integration and install a specific version of the Vault CLI
 
