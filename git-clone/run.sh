@@ -23,7 +23,7 @@ if ! command -v git >/dev/null; then
   exit 1
 fi
 
-# Check if the director for the cloning exists
+# Check if the directory for the cloning exists
 # and if not, create it
 if [ ! -d "$CLONE_PATH" ]; then
   echo "Creating directory $CLONE_PATH..."
