@@ -23,7 +23,7 @@ if ! command -v vault &> /dev/null; then
     fi
 
     # download vault
-    wget -O vault.zip https://releases.hashicorp.com/vault/$${INSTALL_VERSION}/vault_$${INSTALL_VERSION}_linux_amd64.zip
+    wget -q -O vault.zip https://releases.hashicorp.com/vault/$${INSTALL_VERSION}/vault_$${INSTALL_VERSION}_linux_amd64.zip
     unzip vault.zip
     sudo mv vault /usr/local/bin
     rm vault.zip
