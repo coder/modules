@@ -27,7 +27,11 @@ variable "vault_auth_id" {
 }
 
 variable "secrets" {
-  type        = map(map(string))
+  type = map(object({
+    path    = string
+    secrets = list(string)
+    file    = string
+  }))
   description = <<EOF
   A map of secrets to write to the workspace. The key is the path of the secret in vault and the value is a map of the list of secrets and the file to write them to.
   e.g,
