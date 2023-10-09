@@ -27,7 +27,7 @@ variable "vault_auth_id" {
 }
 
 variable "secrets" {
-  type        = map(list)
+  type        = map(list(string))
   description = "A map of secret lists to set as environment variables. Each secret list is a list of paths to secrets to set as environment variables."
   default     = {}
 }
