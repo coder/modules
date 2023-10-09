@@ -1,3 +1,4 @@
+import { readableStreamToText, spawn } from "bun";
 import { describe, expect, it } from "bun:test";
 import {
   executeScriptInContainer,
@@ -30,5 +31,21 @@ describe("personalize", async () => {
     ]);
   });
 
-
+//   it("runs with personalize script", async () => {
+//     const state = await runTerraformApply(import.meta.dir, {
+//       agent_id: "foo",
+//     });
+//     const instance = findResourceInstance(state, "coder_script");
+//     const id = await runContainer("alpine");
+//     const resp = await execContainer(id, ["sh", "-c", "touch ~/personalize && echo \"echo test\" > ~/personalize && chmod +x ~/personalize &&" + instance.script]);
+//     const stdout = resp.stdout.trim().split("\n");
+//     console.log("====== resp ==== stdout (", resp.exitCode, "):");
+//     console.log(resp.stdout);
+//     console.log("====== resp ==== stderr:");
+//     console.log(resp.stderr);
+//     console.log("======");
+//     // const stderr = resp.stderr.trim().split("\n");
+//     expect(resp.exitCode).toBe(0);
+//     expect(stdout).toEqual([""]);
+//   });
 });
