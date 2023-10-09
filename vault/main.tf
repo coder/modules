@@ -27,8 +27,21 @@ variable "vault_auth_id" {
 }
 
 variable "secrets" {
-  type        = map(list(string))
-  description = "A map of secret lists to set as environment variables. Each secret list is a list of paths to secrets to set as environment variables."
+  type        = map(map(string))
+  description = <<EOF
+  A map of secrets to write to the workspace. The key is the path of the secret in vault and the value is a map of the list of secrets and the file to write them to.
+  e.g,
+  {
+    "secret/data/my-secret-1" = {
+      "secrets" = ["username", "password"]
+      "file" = "secrets.env"
+    },
+    "secret/data/my-secret-2" = {
+      "secrets" = ["username", "password"]
+      "file" = "secrets2.env"
+    }
+  }
+  EOF 
   default     = {}
 }
 
@@ -51,7 +64,7 @@ resource "coder_script" "vault" {
     VAULT_ADDR : var.vault_addr,
     VAULT_TOKEN : data.coder_git_auth.vault.access_token,
     VERSION : var.vault_cli_version,
-    SECRETS : jsonencode(var.secrets),
+    SECRETS : jsonencode(var.secrets)
   })
   run_on_start = true
 }
