@@ -55,6 +55,8 @@ for key in $(echo "${SECRETS}" | jq -r "keys[]" ); do
     printf "Fetching secrets from $${key} ...\n"
     for secret in $${secrets}; do
         value=$(vault kv get -format=json $${key} | jq -r ".data.data.$${secret}")
+        # create directory if it doesn't exist
+        mkdir -p $(dirname $${file})
         printf "$${secret}=$${value}\n" >> $${file}
     done
     printf "\n"
