@@ -69,6 +69,10 @@ if [ "${SECRETS}" = "{}" ]; then
     exit 0
 fi
 
+# DEBUG
+printf "\n\n🐛 DEBUG: Printing secrets ...\n\n"
+echo "${SECRETS}" | jq
+
 printf "🔍 Fetching secrets ...\n\n"
 for key in $(echo "${SECRETS}" | jq -r "keys[]" ); do
     secrets=$(echo "${SECRETS}" | jq -r ".$key.secrets[]")
