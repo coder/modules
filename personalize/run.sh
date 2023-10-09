@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 BOLD='\033[0;1m'
 CODE='\033[36;40;1m'

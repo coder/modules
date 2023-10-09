@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 REPO_URL="${REPO_URL}"
 CLONE_PATH="${CLONE_PATH}"
