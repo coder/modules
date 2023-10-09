@@ -45,17 +45,19 @@ echo "${VAULT_TOKEN}" > ~/.vault-token
 
 # Add VAULT_ADDR to shell login scripts if not already present e.g. .bashrc, .zshrc
 # bash
-if ! grep -q "VAULT_ADDR" ~/.bashrc; then
+if [[ -f ~/.bashrc ]] && ! grep -q "VAULT_ADDR" ~/.bashrc; then
     printf "\nAdding VAULT_ADDR to ~/.bashrc ...\n"
     echo "export VAULT_ADDR=${VAULT_ADDR}" >> ~/.bashrc
 fi
+
 # zsh
-if ! grep -q "VAULT_ADDR" ~/.zshrc; then
+if [[ -f ~/.zshrc ]] && ! grep -q "VAULT_ADDR" ~/.zshrc; then
     printf "\nAdding VAULT_ADDR to ~/.zshrc ...\n"
     echo "export VAULT_ADDR=${VAULT_ADDR}" >> ~/.zshrc
 fi
+
 # fish
-if ! grep -q "VAULT_ADDR" ~/.config/fish/config.fish; then
+if [[ -f ~/.config/fish/config.fish ]] && ! grep -q "VAULT_ADDR" ~/.config/fish/config.fish; then
     printf "\nAdding VAULT_ADDR to ~/.config/fish/config.fish ...\n"
     echo "set -x VAULT_ADDR ${VAULT_ADDR}" >> ~/.config/fish/config.fish
 fi
