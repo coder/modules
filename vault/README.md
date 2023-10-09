@@ -1,6 +1,6 @@
 ---
 display_name: vault
-description: Authenticates with Vault and injects secrets into the environment.
+description: Authenticates with Vault
 icon: ../.icons/vault.svg
 maintainer_github: coder
 verified: true
@@ -9,7 +9,7 @@ tags: [helper, integration, vault]
 
 # Hashicorp Vault
 
-This module authenticates with Vault and injects secrets into the environment.
+This module lets you authenticate with [Hashicorp Vault](https://www.vaultproject.io/) in your Coder workspaces.
 
 > **Note:** This module does not cover setting up and configuring Vault. For that, see the [Vault documentation](https://www.vaultproject.io/docs).
 
