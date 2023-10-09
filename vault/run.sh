@@ -39,9 +39,9 @@ export VAULT_TOKEN=${VAULT_TOKEN}
 printf "🔎 Verifying Vault address and token ...\n\n"
 vault status
 
-# Set secrets if $SECRETS is set
-if [ -z "${SECRETS}" ]; then
-    printf "\n🔑 No secrets to set ...\n\n"
+# Skip fetching secrets if SECRETS is {}
+if [ "${SECRETS}" = "{}" ]; then
+    printf "\n🔑 No secrets to fetch.\n\n"
     exit 0
 fi
 
