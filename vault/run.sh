@@ -71,6 +71,7 @@ fi
 
 # DEBUG
 printf "\n\n🐛 DEBUG: Printing secrets ...\n\n"
+echo "${SECRETS}"
 echo "${SECRETS}" | jq
 
 printf "🔍 Fetching secrets ...\n\n"
