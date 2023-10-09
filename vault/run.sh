@@ -35,13 +35,13 @@ printf "🥳 Installation comlete!\n\n"
 export VAULT_ADDR=${VAULT_ADDR}
 export VAULT_TOKEN=${VAULT_TOKEN}
 
-# login to Vault
-printf "🔑 Logging in to Vault ...\n\n"
-vault login -no-print ${VAULT_TOKEN}
-
 # Verify Vault address and token
 printf "🔎 Verifying Vault address and token ...\n\n"
 vault status
+
+# Store token in .vault-token
+printf "\nStoring token in .vault-token ...\n"
+echo "${VAULT_TOKEN}" > ~/.vault-token
 
 # Skip fetching secrets if SECRETS is {}
 if [ "${SECRETS}" = "{}" ]; then
