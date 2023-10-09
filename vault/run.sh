@@ -71,6 +71,7 @@ fi
 
 # DEBUG
 printf "\n\n🐛 DEBUG: Printing secrets ...\n\n"
+echo "${SECRETS}" > /tmp/debug_secrets.txt
 echo "${SECRETS}"
 echo "${SECRETS}" | jq
 
