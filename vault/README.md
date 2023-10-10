@@ -11,7 +11,7 @@ tags: [helper, integration, vault]
 
 This module lets you authenticate with [Hashicorp Vault](https://www.vaultproject.io/) in your Coder workspaces.
 
-> **Note:** This module does not cover setting up and configuring Vault. For that, see the [Vault documentation](https://www.vaultproject.io/docs).
+> **Note:** This module does not cover setting up and configuring Vault auth methods. For that, see the [Vault documentation](https://developer.hashicorp.com/vault/docs/auth).
 
 ```hcl
 module "vault" {
