@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 BOLD='\033[0;1m'
 printf "$${BOLD}Installing MODULE_NAME ...\n\n"
