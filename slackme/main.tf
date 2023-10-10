@@ -14,9 +14,9 @@ variable "agent_id" {
   description = "The ID of a Coder agent."
 }
 
-variable "external_provider_id" {
+variable "auth_provider_id" {
     type        = string
-    description = "The ID of an external provider."
+    description = "The ID of an external auth provider."
 }
 
 resource "coder_script" "install_slackme" {
@@ -28,7 +28,7 @@ resource "coder_script" "install_slackme" {
     CODER_DIR=$(dirname $(which coder))
     cat > $CODER_DIR/slackme <<EOF
     ${templatefile("${path.module}/slackme.sh", {
-        PROVIDER_ID: var.external_provider_id
+        PROVIDER_ID: var.auth_provider_id
     })}
     \EOF
     chmod +x $CODER_DIR/slackme
