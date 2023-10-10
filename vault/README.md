@@ -23,7 +23,7 @@ module "vault" {
 Then you can use the Vault CLI in your workspaces to fetch secrets from Vault:
 
 ```shell
-vault kv get secret/my-secret
+vault kv get -mount=secret my-secret
 ```
 
 or using the Vault API:
