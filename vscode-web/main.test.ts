@@ -9,7 +9,8 @@ describe("vscode-web", async () => {
   await runTerraformInit(import.meta.dir);
 
 
-  // replaces testRequiredVariables due to license var
+  // replaces testRequiredVariables due to license variable
+  // may add a testRequiredVariablesWithLicense function later
   it("missing agent_id", async () => {
     try {
       await runTerraformApply(import.meta.dir, {

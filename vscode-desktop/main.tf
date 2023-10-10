@@ -44,3 +44,8 @@ resource "coder_app" "vscode" {
     "&token=$SESSION_TOKEN",
   ])
 }
+
+output "vscode_url" {
+  value = coder_app.vscode.url
+  description = "VS Code Desktop URL."
+}
