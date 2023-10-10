@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import {
-    createJSONResponse,
+  createJSONResponse,
   execContainer,
   executeScriptInContainer,
   findResourceInstance,
@@ -55,7 +55,7 @@ describe("slackme", async () => {
     expect(exec.exitCode).toBe(0);
     exec = await execContainer(id, ["sh", "-c", "slackme"]);
     expect(exec.stdout.trim()).toStartWith(
-      "slackme — Send a Slack notification when a command finishes"
+      "slackme — Send a Slack notification when a command finishes",
     );
   });
 
@@ -69,7 +69,7 @@ describe("slackme", async () => {
   });
 
   it("curls url when authenticated", async () => {
-    let url: URL
+    let url: URL;
     const fakeSlackHost = serve({
       fetch: (req) => {
         url = new URL(req.url);
@@ -86,7 +86,11 @@ describe("slackme", async () => {
     await writeCoder(id, "echo 'token'");
     let exec = await execContainer(id, ["sh", "-c", instance.script]);
     expect(exec.exitCode).toBe(0);
-    exec = await execContainer(id, ["sh", "-c", `SLACK_URL="http://${fakeSlackHost.hostname}:${fakeSlackHost.port}" slackme echo test`]);
+    exec = await execContainer(id, [
+      "sh",
+      "-c",
+      `SLACK_URL="http://${fakeSlackHost.hostname}:${fakeSlackHost.port}" slackme echo test`,
+    ]);
     expect(exec.stdout.trim()).toEndWith("test");
     expect(url.pathname).toEqual("/api/chat.postMessage");
     expect(url.searchParams.get("channel")).toEqual("token");

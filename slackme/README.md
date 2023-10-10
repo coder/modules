@@ -12,7 +12,7 @@ tags: [helper]
 Add the `slackme` command to your workspace that DMs you on Slack when your command finishes running.
 
 ```bash
-$ slackme npm run long-build 
+$ slackme npm run long-build
 ```
 
 ## Setup
