@@ -40,9 +40,8 @@ To configure the Vault module, you must setup a Vault [OIDC Provider](https://de
 
 ### OIDC Provider in Vault
 
-1. Create a Vault OIDC Application with name `coder` and set the Redirect URI to `https://coder.example.com/external-auth/vault/callback`.
-
-2. MAke note of the Vault OIDC Provider's Client ID and Client Secret.
+1. Create a [Vault OIDC Application](https://developer.hashicorp.com/vault/tutorials/auth-methods/oidc-identity-provider) with name `coder` and set the Redirect URI to `https://coder.example.com/external-auth/vault/callback`.
+2. Make note of the `Client ID` and `Client Secret`.
 3. Add a provider to OIDC application with name `coder` and set the "Issuer URL" to `$VAULT_ADDR`.
 
 ### Coder configuration
@@ -62,7 +61,7 @@ CODER_EXTERNAL_AUTH_0_TOKEN_URL: "$VAULT_ADDR/v1/identity/oidc/provider/coder/to
 CODER_EXTERNAL_AUTH_0_SCOPES: "openid"
 ```
 
-> **Note:** Replace `$VAULT_ADDR` with your Vault address.
+> **Note:** Replace `$VAULT_ADDR` with your Vault address. e.g. `https://vault.example.com`.
 
 ## Examples
 
