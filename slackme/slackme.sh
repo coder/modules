@@ -2,7 +2,7 @@
 
 PROVIDER_ID=${PROVIDER_ID}
 
-BOT_TOKEN=$(coder external-auth access-token $PROVIDER_ID)
+BOT_TOKEN=\$(coder external-auth access-token $PROVIDER_ID)
 
 if [ $? -ne 0 ]; then
   echo "Authenticate to run commands in the background:"
@@ -11,7 +11,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-USER_ID=$(coder external-auth access-token $PROVIDER_ID --extra "authed_user.id")
+USER_ID=\$(coder external-auth access-token $PROVIDER_ID --extra "authed_user.id")
 
 if [ $? -ne 0 ]; then
   echo "Failed to get authenticated user ID:"
