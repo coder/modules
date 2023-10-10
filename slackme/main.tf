@@ -22,6 +22,7 @@ variable "auth_provider_id" {
 resource "coder_script" "install_slackme" {
     agent_id = var.agent_id
     display_name     = "install_slackme"
+    run_on_start = true
     script = <<EOF
     #!/usr/bin/env bash
 
