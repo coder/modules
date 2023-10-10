@@ -30,7 +30,6 @@ variable "vault_cli_version" {
   type        = string
   description = "The version of Vault to install."
   default     = "latest"
-  # validate the version is in the format x.y.z or latest
   validation {
     condition     = can(regex("^(latest|[0-9]+\\.[0-9]+\\.[0-9]+)$", var.vault_cli_version))
     error_message = "Vault version must be in the format 0.0.0 or latest"
@@ -52,4 +51,3 @@ resource "coder_script" "vault" {
 data "coder_external_auth" "vault" {
   id = var.vault_auth_id
 }
-ß
