@@ -22,4 +22,12 @@ describe("fly-region", async () => {
     });
     expect(state.outputs.value.value).toBe("atl");
   });
+
+  it("region filter", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      default: "atl",
+      regions: '["arn", "ams", "bos"]'
+    });
+    expect(state.outputs.value.value).toBe("");
+  });
 });
