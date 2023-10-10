@@ -36,3 +36,8 @@ resource "coder_script" "personalize" {
   icon         = "/icon/dotfiles.svg"
   run_on_start = true
 }
+
+output "dotfiles_uri" {
+  description = "Dotfiles URI"
+  value       = data.coder_parameter.dotfiles_uri.value
+}
