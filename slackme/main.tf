@@ -23,15 +23,15 @@ resource "coder_script" "install_slackme" {
     agent_id = var.agent_id
     display_name     = "install_slackme"
     run_on_start = true
-    script = <<EOF
+    script = <<OUTER
     #!/usr/bin/env bash
 
     CODER_DIR=$(dirname $(which coder))
-    cat > $CODER_DIR/slackme <<EOF
+    cat > $CODER_DIR/slackme <<INNER
     ${templatefile("${path.module}/slackme.sh", {
         PROVIDER_ID: var.auth_provider_id
     })}
-    \EOF
+    INNER
     chmod +x $CODER_DIR/slackme
-    EOF 
+    OUTER 
 }
