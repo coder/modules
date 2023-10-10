@@ -30,5 +30,4 @@ describe("personalize", async () => {
       "It will run every time your workspace starts. Use it to install personal packages!",
     ]);
   });
-
 });

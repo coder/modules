@@ -10,7 +10,6 @@ import {
   execContainer,
 } from "../test";
 
-
 // executes the coder script after installing pip
 const executeScriptInContainerWithPip = async (
   state: TerraformState,
@@ -23,7 +22,7 @@ const executeScriptInContainerWithPip = async (
 }> => {
   const instance = findResourceInstance(state, "coder_script");
   const id = await runContainer(image);
-  const respPip = await execContainer(id, [shell, "-c", "apk add py3-pip"]);  
+  const respPip = await execContainer(id, [shell, "-c", "apk add py3-pip"]);
   const resp = await execContainer(id, [shell, "-c", instance.script]);
   const stdout = resp.stdout.trim().split("\n");
   const stderr = resp.stderr.trim().split("\n");
@@ -54,12 +53,11 @@ describe("jupyterlab", async () => {
     ]);
   });
 
-  // TODO: Add faster test to run with pip3. 
+  // TODO: Add faster test to run with pip3.
   // currently times out.
   // it("runs with pip3", async () => {
   //   ...
   //   const output = await executeScriptInContainerWithPip(state, "alpine");
   //   ...
   // });
-
 });

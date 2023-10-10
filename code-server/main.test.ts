@@ -1,10 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import {
-  executeScriptInContainer,
-  runTerraformApply,
-  runTerraformInit,
-  testRequiredVariables,
-} from "../test";
+import { runTerraformInit, testRequiredVariables } from "../test";
 
 describe("code-server", async () => {
   await runTerraformInit(import.meta.dir);
@@ -12,4 +7,6 @@ describe("code-server", async () => {
   testRequiredVariables(import.meta.dir, {
     agent_id: "foo",
   });
+
+  // More tests depend on shebang refactors
 });
