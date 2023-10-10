@@ -3,15 +3,15 @@
 BOLD='\033[0;1m'
 
 # Check if vault is installed
-if ! command -v vault &> /dev/null; then
+if ! command -v vault &>/dev/null; then
     printf "$${BOLD}Installing vault CLI ...\n\n"
     # check if wget is installed
-    if ! command -v wget &> /dev/null; then
+    if ! command -v wget &>/dev/null; then
         printf "wget is not installed. Please install wget in your image.\n"
         exit 1
     fi
     # check if unzip is installed
-    if ! command -v unzip &> /dev/null; then
+    if ! command -v unzip &>/dev/null; then
         printf "unzip is not installed. Please install unzip in your image.\n"
         exit 1
     fi
@@ -41,23 +41,24 @@ vault status
 
 # Store token in .vault-token
 printf "\nStoring token in .vault-token ...\n"
-echo "${VAULT_TOKEN}" > ~/.vault-token
+echo "${VAULT_TOKEN}" >~/.vault-token
 
 # Add VAULT_ADDR to shell login scripts if not already present e.g. .bashrc, .zshrc
+# This is a temporary fix and will be replaced with https://github.com/coder/coder/issues/10166
 # bash
 if [[ -f ~/.bashrc ]] && ! grep -q "VAULT_ADDR" ~/.bashrc; then
     printf "\nAdding VAULT_ADDR to ~/.bashrc ...\n"
-    echo "export VAULT_ADDR=${VAULT_ADDR}" >> ~/.bashrc
+    echo "export VAULT_ADDR=${VAULT_ADDR}" >>~/.bashrc
 fi
 
 # zsh
 if [[ -f ~/.zshrc ]] && ! grep -q "VAULT_ADDR" ~/.zshrc; then
     printf "\nAdding VAULT_ADDR to ~/.zshrc ...\n"
-    echo "export VAULT_ADDR=${VAULT_ADDR}" >> ~/.zshrc
+    echo "export VAULT_ADDR=${VAULT_ADDR}" >>~/.zshrc
 fi
 
 # fish
 if [[ -f ~/.config/fish/config.fish ]] && ! grep -q "VAULT_ADDR" ~/.config/fish/config.fish; then
     printf "\nAdding VAULT_ADDR to ~/.config/fish/config.fish ...\n"
-    echo "set -x VAULT_ADDR ${VAULT_ADDR}" >> ~/.config/fish/config.fish
+    echo "set -x VAULT_ADDR ${VAULT_ADDR}" >>~/.config/fish/config.fish
 fi
