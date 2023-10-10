@@ -1,28 +1,38 @@
-#!/usr/bin/env node
+#!/usr/bin/env sh
 
 PROVIDER_ID=${PROVIDER_ID}
+SLACK_MESSAGE="${SLACK_MESSAGE}"
+SLACK_URL=$${SLACK_URL:-https://slack.com}
 
-BOT_TOKEN=\$(coder external-auth access-token $PROVIDER_ID)
+usage() {
+  cat <<EOF
+slackme — Send a Slack notification when a command finishes
+Usage: slackme <command>
 
+Example: slackme npm run long-build
+EOF
+}
+
+if [ $# -eq 0 ]; then
+    usage
+    exit 1
+fi
+
+BOT_TOKEN=$(coder external-auth access-token $PROVIDER_ID)
 if [ $? -ne 0 ]; then
-  echo "Authenticate to run commands in the background:"
-  # The output contains the URL if failed.
-  echo $BOT_TOKEN
+  printf "Authenticate with Slack to be notified when a command finishes:\n$BOT_TOKEN\n"
   exit 1
 fi
 
-USER_ID=\$(coder external-auth access-token $PROVIDER_ID --extra "authed_user.id")
-
+USER_ID=$(coder external-auth access-token $PROVIDER_ID --extra "authed_user.id")
 if [ $? -ne 0 ]; then
-  echo "Failed to get authenticated user ID:"
-  echo $USER_ID
+  printf "Failed to get authenticated user ID:\n$USER_ID\n"
   exit 1
 fi
-
-echo "We'll notify you when done!"
 
 # Run all arguments as a command
 $@
 
+set -e
 curl --silent -o /dev/null --header "Authorization: Bearer $BOT_TOKEN" \
-    "https://slack.com/api/chat.postMessage?channel=$USER_ID&text=Your%20command%20finished!&pretty=1"
+    "$SLACK_URL/api/chat.postMessage?channel=$USER_ID&text=$SLACK_MESSAGE&pretty=1"
