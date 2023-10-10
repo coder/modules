@@ -16,7 +16,7 @@ variable "agent_id" {
 
 variable "folder" {
   type        = string
-  description = "The folder to opne in VS Code."
+  description = "The folder to open in VS Code."
   default     = ""
 }
 
