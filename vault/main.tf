@@ -43,13 +43,13 @@ resource "coder_script" "vault" {
   icon         = "/icon/vault.svg"
   script = templatefile("${path.module}/run.sh", {
     VAULT_ADDR : var.vault_addr,
-    VAULT_TOKEN : data.coder_git_auth.vault.access_token,
+    VAULT_TOKEN : data.coder_external_auth.vault.access_token,
     VERSION : var.vault_cli_version,
   })
   run_on_start = true
 }
 
-# TODO replace with a "coder_external_auth" data source once https://github.com/coder/coder/issues/10122 is resolved
-data "coder_git_auth" "vault" {
+data "coder_external_auth" "vault" {
   id = var.vault_auth_id
 }
+ß
