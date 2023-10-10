@@ -46,6 +46,6 @@ resource "coder_app" "vscode" {
 }
 
 output "vscode_url" {
-  value = coder_app.vscode.url
+  value       = coder_app.vscode.url
   description = "VS Code Desktop URL."
 }

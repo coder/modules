@@ -8,7 +8,6 @@ import {
 describe("vscode-web", async () => {
   await runTerraformInit(import.meta.dir);
 
-
   // replaces testRequiredVariables due to license variable
   // may add a testRequiredVariablesWithLicense function later
   it("missing agent_id", async () => {
@@ -17,21 +16,18 @@ describe("vscode-web", async () => {
         accept_license: "true",
       });
     } catch (ex) {
-      expect(ex.message).toContain(
-        'input variable "agent_id" is not set'
-      );
+      expect(ex.message).toContain('input variable "agent_id" is not set');
     }
   });
 
   it("invalid license_agreement", async () => {
-    
     try {
       await runTerraformApply(import.meta.dir, {
         agent_id: "foo",
       });
     } catch (ex) {
       expect(ex.message).toContain(
-        'You must accept the VS Code license agreement by setting accept_license=true'
+        "You must accept the VS Code license agreement by setting accept_license=true",
       );
     }
   });
@@ -61,8 +57,7 @@ describe("vscode-web", async () => {
       "🥳 vscode-cli has been installed.",
       "",
       "👷 Running /tmp/vscode-cli/bin/code serve-web --port 13338 --without-connection-token --accept-server-license-terms in the background...",
-      "Check logs at /tmp/vscode-web.log!"
+      "Check logs at /tmp/vscode-web.log!",
     ]);
   });
-
 });
