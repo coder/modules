@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -x
 BOLD='\033[0;1m'
 PROVIDER_ID=${PROVIDER_ID}
 VAULT_ADDR=${VAULT_ADDR}
@@ -32,7 +32,7 @@ if ! command -v vault &>/dev/null; then
     rm vault.zip
 fi
 
-printf "🥳 Installation comlete!\n\n"
+printf "🥳 Installation complete!\n\n"
 
 # Set up Vault token
 printf "🔑 Authenticating with Vault ...\n\n"
@@ -48,10 +48,7 @@ export VAULT_ADDR=$VAULT_ADDR
 # Verify Vault address and token
 printf "🔎 Verifying Vault address and token ...\n\n"
 vault status
-
-# Store token in .vault-token
-printf "\nStoring token in .vault-token ...\n"
-echo "$VAULT_TOKEN" >~/.vault-token
+vault login $VAULT_TOKEN
 
 # Add VAULT_ADDR to shell login scripts if not already present e.g. .bashrc, .zshrc
 # This is a temporary fix and will be replaced with https://github.com/coder/coder/issues/10166
