@@ -47,3 +47,7 @@ resource "coder_script" "vault" {
   })
   run_on_start = true
 }
+
+data "coder_external_auth" "vault" {
+  id = var.auth_provider_id
+}
