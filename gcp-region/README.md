@@ -28,6 +28,8 @@ resource "google_compute_instance" "example" {
 
 ### Add only GPU zones in the US West 1 region
 
+Note: setting `gpu_only = true` and using a default region without GPU support, the default will be set to `null`.
+
 ```hcl
 module "gcp_region" {
     source   = "https://registry.coder.com/modules/gcp-region"

@@ -714,7 +714,7 @@ data "coder_parameter" "region" {
   description  = var.description
   icon         = "/icon/gcp.png"
   mutable      = var.mutable
-  default      = var.default != null && var.default != "" ? var.default : null
+  default      = var.default != null && var.default != "" && (!var.gpu_only || try(local.zones[var.default].gpu, false)) ? var.default : null
   dynamic "option" {
     for_each = {
       for k, v in local.zones : k => v
