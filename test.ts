@@ -13,6 +13,8 @@ export const runContainer = async (
     "-d",
     "--label",
     "modules-test=true",
+    "--network",
+    "host",
     "--entrypoint",
     "sh",
     image,
