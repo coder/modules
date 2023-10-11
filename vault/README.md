@@ -69,9 +69,9 @@ CODER_EXTERNAL_AUTH_0_SCOPES: "openid"
 
 ```hcl
 module "vault" {
-    source = "https://registry.coder.com/modules/vault"
-    vault_addr = "https://vault.example.com"
-    vault_auth_id = "my-auth-id"
+    source           = "https://registry.coder.com/modules/vault"
+    vault_addr       = "https://vault.example.com"
+    auth_provider_id = "my-auth-id"
 }
 ```
 
@@ -79,8 +79,8 @@ module "vault" {
 
 ```hcl
 module "vault" {
-    source = "https://registry.coder.com/modules/vault"
-    vault_addr = "https://vault.example.com"
+    source            = "https://registry.coder.com/modules/vault"
+    vault_addr        = "https://vault.example.com"
     vault_cli_version = "1.15.0"
 }
 ```
