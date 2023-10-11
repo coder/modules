@@ -35,7 +35,7 @@ describe("slackme", async () => {
     expect(exec.exitCode).toBe(0);
     exec = await execContainer(id, ["sh", "-c", "slackme"]);
     expect(exec.stdout.trim()).toStartWith(
-      "slackme — Send a Slack notification when a command finishes"
+      "slackme — Send a Slack notification when a command finishes",
     );
   });
 
@@ -107,7 +107,7 @@ executed`,
 
 const setupContainer = async (
   image = "alpine",
-  vars: Record<string, string> = {}
+  vars: Record<string, string> = {},
 ) => {
   const state = await runTerraformApply(import.meta.dir, {
     agent_id: "foo",
@@ -150,7 +150,7 @@ const assertSlackMessage = async (opts: {
     "alpine/curl",
     opts.format && {
       slack_message: opts.format,
-    }
+    },
   );
   await writeCoder(id, "echo 'token'");
   let exec = await execContainer(id, ["sh", "-c", instance.script]);
