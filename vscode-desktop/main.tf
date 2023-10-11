@@ -16,7 +16,7 @@ variable "agent_id" {
 
 variable "folder" {
   type        = string
-  description = "The folder to opne in VS Code."
+  description = "The folder to open in VS Code."
   default     = ""
 }
 
@@ -43,4 +43,9 @@ resource "coder_app" "vscode" {
     data.coder_workspace.me.name,
     "&token=$SESSION_TOKEN",
   ])
+}
+
+output "vscode_url" {
+  value       = coder_app.vscode.url
+  description = "VS Code Desktop URL."
 }

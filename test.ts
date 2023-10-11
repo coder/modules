@@ -13,6 +13,8 @@ export const runContainer = async (
     "-d",
     "--label",
     "modules-test=true",
+    "--network",
+    "host",
     "--entrypoint",
     "sh",
     image,
@@ -129,7 +131,7 @@ export const findResourceInstance = <T extends "coder_script" | string>(
   return resource.instances[0].attributes as any;
 };
 
-// assertRequiredVariables creates a test-case
+// testRequiredVariables creates a test-case
 // for each variable provided and ensures that
 // the apply fails without it.
 export const testRequiredVariables = (
