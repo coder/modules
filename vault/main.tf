@@ -20,7 +20,7 @@ variable "vault_addr" {
   description = "The address of the Vault server."
 }
 
-variable "vault_auth_id" {
+variable "auth_provider_id" {
   type        = string
   description = "The ID of the Vault auth method to use."
   default     = "vault"
@@ -42,12 +42,8 @@ resource "coder_script" "vault" {
   icon         = "/icon/vault.svg"
   script = templatefile("${path.module}/run.sh", {
     VAULT_ADDR : var.vault_addr,
-    VAULT_TOKEN : data.coder_external_auth.vault.access_token,
+    PROVIDER_ID : var.auth_provider_id,
     VERSION : var.vault_cli_version,
   })
   run_on_start = true
-}
-
-data "coder_external_auth" "vault" {
-  id = var.vault_auth_id
 }
