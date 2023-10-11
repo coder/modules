@@ -72,7 +72,8 @@ fi
 
 START=$(date +%s%N)
 # Run all arguments as a command
-$@
+"$@"
+CODE=$?
 END=$(date +%s%N)
 DURATION_MS=$${DURATION_MS:-$(( (END - START) / 1000000 ))}
 PRETTY_DURATION=$(pretty_duration $DURATION_MS)
@@ -85,3 +86,5 @@ SLACK_MESSAGE=$(echo "$SLACK_MESSAGE" | sed "s|\\$DURATION|$PRETTY_DURATION|g")
 curl --silent -o /dev/null --header "Authorization: Bearer $BOT_TOKEN" \
     -G --data-urlencode "text=$${SLACK_MESSAGE}" \
     "$SLACK_URL/api/chat.postMessage?channel=$USER_ID&pretty=1"
+
+exit $CODE
