@@ -61,3 +61,21 @@ $ slackme npm run long-build
      auth_provider_id = "slack"
    }
    ```
+
+## Examples
+
+### Custom Slack Message
+
+- `$COMMAND` is replaced with the command the user executed.
+- `$DURATION` is replaced with a human-readable duration the command took to execute.
+
+```hcl
+module "slackme" {
+  source = "https://registry.coder.com/modules/slackme"
+  agent_id = coder_agent.example.id
+  auth_provider_id = "slack"
+  slack_message = <<EOF
+👋 Hey there from Coder! $COMMAND took $DURATION to execute!
+EOF
+}
+```

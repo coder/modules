@@ -22,7 +22,7 @@ variable "auth_provider_id" {
 variable "slack_message" {
   type        = string
   description = "The message to send to Slack."
-  default     = "Your command completed!"
+  default     = "👨‍💻 `$COMMAND` completed in $DURATION"
 }
 
 resource "coder_script" "install_slackme" {
@@ -37,7 +37,7 @@ resource "coder_script" "install_slackme" {
     cat > $CODER_DIR/slackme <<INNER
     ${replace(templatefile("${path.module}/slackme.sh", {
   PROVIDER_ID : var.auth_provider_id,
-  SLACK_MESSAGE : urlencode(var.slack_message),
+  SLACK_MESSAGE : replace(var.slack_message, "`", "\\`"),
 }), "$", "\\$")}
 INNER
 
