@@ -35,6 +35,8 @@ fi
 printf "🥳 Installation comlete!\n\n"
 
 # Set up Vault token
+printf "🔑 Authenticating with Vault ...\n\n"
+echo "PROVIDER_ID: $PROVIDER_ID"
 VAULT_TOKEN=$(coder external-auth access-token $PROVIDER_ID)
 if [ $? -ne 0 ]; then
     printf "Authenticate with Vault:\n$VAULT_TOKEN\n"
