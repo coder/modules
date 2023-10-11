@@ -15,7 +15,8 @@ This module lets you authenticate with [Hashicorp Vault](https://www.vaultprojec
 
 ```hcl
 module "vault" {
-    source = "https://registry.coder.com/modules/vault"
+    source     = "https://registry.coder.com/modules/vault"
+    agent_id   = coder_agent.example.id
     vault_addr = "https://vault.example.com"
 }
 ```
@@ -70,6 +71,7 @@ CODER_EXTERNAL_AUTH_0_SCOPES: "openid"
 ```hcl
 module "vault" {
     source           = "https://registry.coder.com/modules/vault"
+    agent_id         = coder_agent.example.id
     vault_addr       = "https://vault.example.com"
     auth_provider_id = "my-auth-id"
 }
@@ -80,6 +82,7 @@ module "vault" {
 ```hcl
 module "vault" {
     source            = "https://registry.coder.com/modules/vault"
+    agent_id          = coder_agent.example.id
     vault_addr        = "https://vault.example.com"
     vault_cli_version = "1.15.0"
 }
