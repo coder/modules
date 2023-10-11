@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -x
+
 BOLD='\033[0;1m'
 PROVIDER_ID=${PROVIDER_ID}
 VAULT_ADDR=${VAULT_ADDR}
