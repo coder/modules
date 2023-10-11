@@ -35,7 +35,7 @@ resource "coder_script" "install_slackme" {
 
     CODER_DIR=$(dirname $(which coder))
     cat > $CODER_DIR/slackme <<INNER
-    ${replace(templatefile("${path.module}/slackme.sh", {
+${replace(templatefile("${path.module}/slackme.sh", {
   PROVIDER_ID : var.auth_provider_id,
   SLACK_MESSAGE : replace(var.slack_message, "`", "\\`"),
 }), "$", "\\$")}
