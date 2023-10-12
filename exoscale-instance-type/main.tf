@@ -23,7 +23,7 @@ variable "description" {
 
 variable "default" {
   default     = ""
-  description = "The default instance type to use if no type is specified."
+  description = "The default instance type to use if no type is specified. One of [\"standard.micro\", \"standard.tiny\", \"standard.small\", \"standard.medium\", \"standard.large\", \"standard.extra\", \"standard.huge\", \"standard.mega\", \"standard.titan\", \"standard.jumbo\", \"standard.colossus\", \"cpu.extra\", \"cpu.huge\", \"cpu.mega\", \"cpu.titan\", \"memory.extra\", \"memory.huge\", \"memory.mega\", \"memory.titan\", \"storage.extra\", \"storage.huge\", \"storage.mega\", \"storage.titan\", \"storage.jumbo\", \"gpu.small\", \"gpu.medium\", \"gpu.large\", \"gpu.huge\", \"gpu2.small\", \"gpu2.medium\", \"gpu2.large\", \"gpu2.huge\", \"gpu3.small\", \"gpu3.medium\", \"gpu3.large\", \"gpu3.huge\"]"
   type        = string
 }
 
@@ -47,7 +47,7 @@ variable "type_category" {
 
 variable "exclude" {
   default     = []
-  description = "A list of instance type IDs to exclude."
+  description = "A list of instance type IDs to exclude. One of [\"standard.micro\", \"standard.tiny\", \"standard.small\", \"standard.medium\", \"standard.large\", \"standard.extra\", \"standard.huge\", \"standard.mega\", \"standard.titan\", \"standard.jumbo\", \"standard.colossus\", \"cpu.extra\", \"cpu.huge\", \"cpu.mega\", \"cpu.titan\", \"memory.extra\", \"memory.huge\", \"memory.mega\", \"memory.titan\", \"storage.extra\", \"storage.huge\", \"storage.mega\", \"storage.titan\", \"storage.jumbo\", \"gpu.small\", \"gpu.medium\", \"gpu.large\", \"gpu.huge\", \"gpu2.small\", \"gpu2.medium\", \"gpu2.large\", \"gpu2.huge\", \"gpu3.small\", \"gpu3.medium\", \"gpu3.large\", \"gpu3.huge\"]"
   type        = list(string)
 }
 
@@ -197,4 +197,7 @@ data "coder_parameter" "instance_type" {
 
 output "value" {
   value = data.coder_parameter.instance_type.value
+}
+output "name" {
+  value = data.coder_parameter.instance_type.name
 }
