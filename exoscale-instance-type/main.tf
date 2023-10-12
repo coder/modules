@@ -277,6 +277,3 @@ data "coder_parameter" "instance_type" {
 output "value" {
   value = data.coder_parameter.instance_type.value
 }
-output "name" {
-  value = data.coder_parameter.instance_type.name
-}
