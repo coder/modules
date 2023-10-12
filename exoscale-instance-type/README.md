@@ -48,6 +48,9 @@ module "exoscale-instance-type" {
     custom_names = {
         "standard.medium": "Mittlere Instanz" # German translation
     }
+    custom_descriptions = {
+        "standard.medium": "4 GB Arbeitsspeicher, 2 Kerne, 10 - 400 GB Festplatte" # German translation
+    }
 }
 
 resource "exoscale_compute_instance" "instance" {
@@ -72,6 +75,7 @@ Show only gpu1 types
 ```hcl
 module "exoscale-instance-type" {
     source        = "https://registry.coder.com/modules/exoscale-instance-type"
+    default       = "gpu.large"
     type_category = ["gpu"]
     exclude       = [ 
         "gpu2.small",
