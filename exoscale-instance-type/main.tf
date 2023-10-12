@@ -45,7 +45,7 @@ variable "custom_descriptions" {
 }
 
 variable "type_category" {
-  default     = ["standard", "gpu"]
+  default     = ["standard"]
   description = "A list of instance type categories the user is allowed to choose. One of [\"standard\", \"cpu\", \"memory\", \"storage\", \"gpu\"]"
   type        = list(string)
 }
