@@ -18,57 +18,87 @@ Customize the preselected parameter value:
 module "exoscale-instance-type" {
     source = "https://registry.coder.com/modules/exoscale-instance-type"
     default = "standard.medium"
-    
 }
 
-provider "aws" {
-    region = module.aws_region.value
+resource "exoscale_compute_instance" "instance" {
+  type        = module.exoscale-instance-type.value
+  ...
+}
+
+resource "coder_metadata" "workspace_info" {
+  item {
+    key   = "instance type"
+    value = module.exoscale-instance-type.name
+  }
 }
 ```
 
-![AWS Regions](../.images/exoscale-instance-types.png)
+![Exoscale instance types](../.images/exoscale-instance-types.png)
 
 ## Examples
 
-### Customize regions
+### Customize type
 
-Change the display name and icon for a region using the corresponding maps:
+Change the display name a type using the corresponding maps:
 
 ```hcl
 module "exoscale-instance-type" {
     source = "https://registry.coder.com/modules/exoscale-instance-type"
-    default = "ap-south-1"
+    default = "standard.medium"
     custom_names = {
-        "ap-south-1": "Awesome Mumbai!"
-    }
-    custom_icons = {
-        "ap-south-1": "/emojis/1f33a.png"
+        "standard.medium": "Mittlere Instanz" # German translation
     }
 }
 
-provider "aws" {
-    region = module.aws_region.value
+resource "exoscale_compute_instance" "instance" {
+  type        = module.exoscale-instance-type.value
+  ...
+}
+
+resource "coder_metadata" "workspace_info" {
+  item {
+    key   = "instance type"
+    value = module.exoscale-instance-type.name
+  }
 }
 ```
 
-![AWS Custom](../.images/exoscale-instance-custom.png)
+![Exoscale instance types Custom](../.images/exoscale-instance-custom.png)
 
-### Exclude regions
+### Use category and exlude type
 
-Hide the Asia Pacific regions Seoul and Osaka:
+Show only gpu1 types
 
 ```hcl
 module "exoscale-instance-type" {
-    source = "https://registry.coder.com/modules/exoscale-instance-type"
-    exclude = [ "ap-northeast-2", "ap-northeast-3" ]
+    source        = "https://registry.coder.com/modules/exoscale-instance-type"
+    type_category = ["gpu"]
+    exclude       = [ 
+        "gpu2.small",
+        "gpu2.medium",
+        "gpu2.large",
+        "gpu2.huge",
+        "gpu3.small",
+        "gpu3.medium",
+        "gpu3.large",
+        "gpu3.huge"
+    ]
 }
 
-provider "aws" {
-    region = module.aws_region.value
+resource "exoscale_compute_instance" "instance" {
+  type        = module.exoscale-instance-type.value
+  ...
+}
+
+resource "coder_metadata" "workspace_info" {
+  item {
+    key   = "instance type"
+    value = module.exoscale-instance-type.name
+  }
 }
 ```
 
-![AWS Exclude](../.images/exoscale-instance-exclude.png)
+![Exoscale instance types category and exclude](../.images/exoscale-instance-exclude.png)
 
 ## Related templates
 
