@@ -268,7 +268,7 @@ data "coder_parameter" "instance_type" {
                             ) : v if !(contains(var.exclude, v.value)) ]
     content {
       name  = try(var.custom_names[option.value.value], option.value.name)
-      description = try(var.custom_names[option.value.value], option.value.description)
+      description = try(var.custom_descriptions[option.value.value], option.value.description)
       value = option.value.value
     }
   }
