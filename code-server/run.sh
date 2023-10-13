@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-EXTENSIONS=("${EXTENSIONS}")
+# EXTENSIONS=("${EXTENSIONS}")
+EXTENSIONS=',' read -ra arr <<< "${EXTENSIONS}"
 BOLD='\033[0;1m'
 CODE='\033[36;40;1m'
 RESET='\033[0m'
