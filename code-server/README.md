@@ -63,6 +63,18 @@ module "settings" {
 }
 ```
 
+### Install multiple extensions
+
+Just run code-server in the background, don't fetch it from GitHub:
+
+```hcl
+module "settings" {
+    source = "https://registry.coder.com/modules/code-server"
+    agent_id = coder_agent.example.id
+    extensions = [ "dracula-theme.theme-dracula", "ms-azuretools.vscode-docker" ]
+}
+```
+
 ### Offline Mode
 
 Just run code-server in the background, don't fetch it from GitHub:

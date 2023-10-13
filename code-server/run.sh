@@ -25,7 +25,8 @@ printf "🥳 code-server has been installed in ${INSTALL_PREFIX}\n\n"
 CODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
 
 # Install each extension...
-for extension in "$${EXTENSIONS[@]}"; do
+IFS=',' read -r -a EXTENSIONLIST <<< "$${EXTENSIONS}"
+for extension in "$${EXTENSIONLIST[@]}"; do
   if [ -z "$extension" ]; then
     continue
   fi
