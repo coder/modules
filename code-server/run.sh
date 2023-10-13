@@ -8,6 +8,8 @@ RESET='\033[0m'
 
 printf "$${BOLD}Installing code-server!\n"
 
+printf "$${BOLD}extensions: $${EXTENSIONS}!\n"
+
 ARGS=(
   "--method=standalone"
   "--prefix=${INSTALL_PREFIX}"
