@@ -66,7 +66,6 @@ resource "coder_script" "code-server" {
   agent_id     = var.agent_id
   display_name = "code-server"
   icon         = "/icon/code.svg"
-  shell        = "bash"
   script = templatefile("${path.module}/run.sh", {
     VERSION : var.install_version,
     EXTENSIONS : join(",", var.extensions),
