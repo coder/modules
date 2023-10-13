@@ -5,14 +5,6 @@ BOLD='\033[0;1m'
 CODE='\033[36;40;1m'
 RESET='\033[0m'
 
-printf "ext string$${EXTENSIONS}"
-
-IFS=',' read -r -a extArr <<< "$${EXTENSIONS}"
-
-for i in "$${extArr[@]}"; do
-    echo " h: $i"
-done
-
 printf "$${BOLD}Installing code-server!\n"
 
 ARGS=(
@@ -33,7 +25,8 @@ printf "🥳 code-server has been installed in ${INSTALL_PREFIX}\n\n"
 CODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
 
 # Install each extension...
-for extension in "$${EXTENSIONS[@]}"; do
+IFS=',' read -r -a EXTENSIONLIST <<< "$${EXTENSIONS}"
+for extension in "$${EXTENSIONLIST[@]}"; do
   if [ -z "$extension" ]; then
     continue
   fi
