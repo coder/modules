@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 
 # EXTENSIONS=("${EXTENSIONS}")
-EXTENSIONS=',' read -ra arr <<< "${EXTENSIONS}"
+EXTENSIONS=',' read -ra arr <<< "$EXTENSIONS"
 BOLD='\033[0;1m'
 CODE='\033[36;40;1m'
 RESET='\033[0m'
 
 printf "$${BOLD}Installing code-server!\n"
 
-printf "$${BOLD}extensions: $${EXTENSIONS}!\n"
+# printf "$${BOLD}extensions: $${EXTENSIONS}\n"
+
+for ext in "$${EXTENSIONS[@]}"; do
+  printf "$${BOLD}extension: $${ext}\n"
+done
 
 ARGS=(
   "--method=standalone"
