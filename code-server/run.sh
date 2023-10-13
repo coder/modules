@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 EXTENSIONS=("${EXTENSIONS}")
-IFS=',' read -ra arr <<< "$${EXTENSIONS}"
+IFS=',' read -ra EXTENSIONS <<< "$${EXTENSIONS}"
 BOLD='\033[0;1m'
 CODE='\033[36;40;1m'
 RESET='\033[0m'
@@ -10,7 +10,7 @@ printf "$${BOLD}Installing code-server!\n"
 
 # printf "$${BOLD}extensions: $${EXTENSIONS}\n"
 
-for ext in "$${EXTENSIONS[@]}"; do
+for ext in "${EXTENSIONS[@]}"; do
   printf "$${BOLD}extension: $${ext}\n"
 done
 
