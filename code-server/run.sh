@@ -5,6 +5,12 @@ BOLD='\033[0;1m'
 CODE='\033[36;40;1m'
 RESET='\033[0m'
 
+IFS=',' read -ra arr <<< "$names"
+
+for i in "${arr[@]}"; do
+    echo " h: $i"
+done
+
 printf "$${BOLD}Installing code-server!\n"
 
 ARGS=(
