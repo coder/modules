@@ -8,11 +8,9 @@ RESET='\033[0m'
 
 printf "$${BOLD}Installing code-server!\n"
 
-# printf "$${BOLD}extensions: $${EXTENSIONS}\n"
-
-for ext in "${exts[@]}"; do
-  printf "$${BOLD}extension: $${ext}\n"
-done
+# for ext in "${exts[@]}"; do
+#   printf "$${BOLD}extension: $${ext}\n"
+# done
 
 ARGS=(
   "--method=standalone"
