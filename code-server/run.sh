@@ -5,7 +5,9 @@ BOLD='\033[0;1m'
 CODE='\033[36;40;1m'
 RESET='\033[0m'
 
-IFS=',' read -r -a extArr <<< "$EXTENSIONS"
+printf "ext string$${EXTENSIONS}"
+
+IFS=',' read -r -a extArr <<< "$${EXTENSIONS}"
 
 for i in "${extArr[@]}"; do
     echo " h: $i"
