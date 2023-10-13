@@ -9,7 +9,7 @@ printf "ext string$${EXTENSIONS}"
 
 IFS=',' read -r -a extArr <<< "$${EXTENSIONS}"
 
-for i in "${extArr[@]}"; do
+for i in "$${extArr[@]}"; do
     echo " h: $i"
 done
 
