@@ -77,7 +77,7 @@ module "exoscale-instance-type" {
     source        = "https://registry.coder.com/modules/exoscale-instance-type"
     default       = "gpu.large"
     type_category = ["gpu"]
-    exclude       = [ 
+    exclude       = [
         "gpu2.small",
         "gpu2.medium",
         "gpu2.large",

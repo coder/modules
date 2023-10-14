@@ -61,192 +61,192 @@ locals {
 
   standard_instances = [
     {
-      value = "standard.micro",
-      name = "Standard Micro",
+      value       = "standard.micro",
+      name        = "Standard Micro",
       description = "512 MB RAM, 1 Core, 10 - 200 GB  Disk"
     },
     {
-      value = "standard.tiny",
-      name = "Standard Tiny",
+      value       = "standard.tiny",
+      name        = "Standard Tiny",
       description = "1 GB RAM, 1 Core, 10 - 400 GB  Disk"
     },
     {
-      value = "standard.small",
-      name = "Standard Small",
+      value       = "standard.small",
+      name        = "Standard Small",
       description = "2 GB RAM, 2 Cores, 10 - 400 GB  Disk"
     },
     {
-      value = "standard.medium",
-      name = "Standard Medium",
+      value       = "standard.medium",
+      name        = "Standard Medium",
       description = "4 GB RAM, 2 Cores, 10 - 400 GB  Disk"
     },
     {
-      value = "standard.large",
-      name = "Standard Large",
+      value       = "standard.large",
+      name        = "Standard Large",
       description = "8 GB RAM, 4 Cores, 10 - 400 GB  Disk"
     },
     {
-      value = "standard.extra",
-      name = "Standard Extra",
+      value       = "standard.extra",
+      name        = "Standard Extra",
       description = "rge",
       description = "16 GB RAM, 4 Cores, 10 - 800 GB  Disk"
     },
     {
-      value = "standard.huge",
-      name = "Standard Huge",
+      value       = "standard.huge",
+      name        = "Standard Huge",
       description = "32 GB RAM, 8 Cores, 10 - 800 GB  Disk"
     },
     {
-      value = "standard.mega",
-      name = "Standard Mega",
+      value       = "standard.mega",
+      name        = "Standard Mega",
       description = "64 GB RAM, 12 Cores, 10 - 800 GB  Disk"
     },
     {
-      value = "standard.titan",
-      name = "Standard Titan",
+      value       = "standard.titan",
+      name        = "Standard Titan",
       description = "128 GB RAM, 16 Cores, 10 - 1.6 TB  Disk"
     },
     {
-      value = "standard.jumbo",
-      name = "Standard Jumbo",
+      value       = "standard.jumbo",
+      name        = "Standard Jumbo",
       description = "256 GB RAM, 24 Cores, 10 - 1.6 TB  Disk"
     },
     {
-      value = "standard.colossus",
-      name = "Standard Colossus",
+      value       = "standard.colossus",
+      name        = "Standard Colossus",
       description = "320 GB RAM, 40 Cores, 10 - 1.6 TB  Disk"
     }
   ]
   cpu_instances = [
     {
-      value = "cpu.extra",
-      name = "CPU Extra-Large",
+      value       = "cpu.extra",
+      name        = "CPU Extra-Large",
       description = "16 GB RAM, 8 Cores, 10 - 800 GB  Disk"
     },
     {
-      value = "cpu.huge",
-      name = "CPU Huge",
+      value       = "cpu.huge",
+      name        = "CPU Huge",
       description = "32 GB RAM, 16 Cores, 10 - 800 GB  Disk"
     },
     {
-      value = "cpu.mega",
-      name = "CPU Mega",
+      value       = "cpu.mega",
+      name        = "CPU Mega",
       description = "64 GB RAM, 32 Cores, 10 - 800 GB  Disk"
     },
     {
-      value = "cpu.titan",
-      name = "CPU Titan",
+      value       = "cpu.titan",
+      name        = "CPU Titan",
       description = "128 GB RAM, 40 Cores, 0.1 - 1.6 TB  Disk"
     }
   ]
   memory_instances = [
     {
-      value = "memory.extra",
-      name = "Memory Extra-Large",
+      value       = "memory.extra",
+      name        = "Memory Extra-Large",
       description = "16 GB RAM, 2 Cores, 10 - 800 GB  Disk"
     },
     {
-      value = "memory.huge",
-      name = "Memory Huge",
+      value       = "memory.huge",
+      name        = "Memory Huge",
       description = "32 GB RAM, 4 Cores, 10 - 800 GB  Disk"
     },
     {
-      value = "memory.mega",
-      name = "Memory Mega",
+      value       = "memory.mega",
+      name        = "Memory Mega",
       description = "64 GB RAM, 8 Cores, 10 - 800 GB  Disk"
     },
     {
-      value = "memory.titan",
-      name = "Memory Titan",
+      value       = "memory.titan",
+      name        = "Memory Titan",
       description = "128 GB RAM, 12 Cores, 0.1 - 1.6 TB  Disk"
     }
   ]
   storage_instances = [
     {
-      value = "storage.extra",
-      name = "Storage Extra-Large",
+      value       = "storage.extra",
+      name        = "Storage Extra-Large",
       description = "16 GB RAM, 4 Cores, 1 - 2 TB  Disk"
     },
     {
-      value = "storage.huge",
-      name = "Storage Huge",
+      value       = "storage.huge",
+      name        = "Storage Huge",
       description = "32 GB RAM, 8 Cores, 2 - 3 TB  Disk"
     },
     {
-      value = "storage.mega",
-      name = "Storage Mega",
+      value       = "storage.mega",
+      name        = "Storage Mega",
       description = "64 GB RAM, 12 Cores, 3 - 5 TB  Disk"
     },
     {
-      value = "storage.titan",
-      name = "Storage Titan",
+      value       = "storage.titan",
+      name        = "Storage Titan",
       description = "128 GB RAM, 16 Cores, 5 - 10 TB  Disk"
     },
     {
-      value = "storage.jumbo",
-      name = "Storage Jumbo",
+      value       = "storage.jumbo",
+      name        = "Storage Jumbo",
       description = "225 GB RAM, 24 Cores, 10 - 15 TB  Disk"
     }
   ]
   gpu_instances = [
     {
-      value = "gpu.small",
-      name = "GPU1 Small",
+      value       = "gpu.small",
+      name        = "GPU1 Small",
       description = "56 GB RAM, 12 Cores, 1 GPU, 100 - 800 GB  Disk"
     },
     {
-      value = "gpu.medium",
-      name = "GPU1 Medium",
+      value       = "gpu.medium",
+      name        = "GPU1 Medium",
       description = "90 GB RAM, 16 Cores, 2 GPU, 0.1 - 1.2 TB Disk"
     },
     {
-      value = "gpu.large",
-      name = "GPU1 Large",
+      value       = "gpu.large",
+      name        = "GPU1 Large",
       description = "120 GB RAM, 24 Cores, 3 GPU, 0.1 - 1.6 TB  Disk"
     },
     {
-      value = "gpu.huge",
-      name = "GPU1 Huge",
+      value       = "gpu.huge",
+      name        = "GPU1 Huge",
       description = "225 GB RAM, 48 Cores, 4 GPU, 0.1 - 1.6 TB  Disk"
     },
     {
-      value = "gpu2.small",
-      name = "GPU2 Small",
+      value       = "gpu2.small",
+      name        = "GPU2 Small",
       description = "56 GB RAM, 12 Cores, 1 GPU, 100 - 800 GB  Disk"
     },
     {
-      value = "gpu2.medium",
-      name = "GPU2 Medium",
+      value       = "gpu2.medium",
+      name        = "GPU2 Medium",
       description = "90 GB RAM, 16 Cores, 2 GPU, 0.1 - 1.2 TB Disk"
     },
     {
-      value = "gpu2.large",
-      name = "GPU2 Large",
+      value       = "gpu2.large",
+      name        = "GPU2 Large",
       description = "120 GB RAM, 24 Cores, 3 GPU, 0.1 - 1.6 TB  Disk"
     },
     {
-      value = "gpu2.huge",
-      name = "GPU2 Huge",
+      value       = "gpu2.huge",
+      name        = "GPU2 Huge",
       description = "225 GB RAM, 48 Cores, 4 GPU, 0.1 - 1.6 TB  Disk"
     },
     {
-      value = "gpu3.small",
-      name = "GPU3 Small",
+      value       = "gpu3.small",
+      name        = "GPU3 Small",
       description = "56 GB RAM, 12 Cores, 1 GPU, 100 - 800 GB  Disk"
     },
     {
-      value = "gpu3.medium",
-      name = "GPU3 Medium",
+      value       = "gpu3.medium",
+      name        = "GPU3 Medium",
       description = "120 GB RAM, 24 Cores, 2 GPU, 0.1 - 1.2 TB Disk"
     },
     {
-      value = "gpu3.large",
-      name = "GPU3 Large",
+      value       = "gpu3.large",
+      name        = "GPU3 Large",
       description = "224 GB RAM, 48 Cores, 4 GPU, 0.1 - 1.6 TB  Disk"
     },
     {
-      value = "gpu3.huge",
-      name = "GPU3 Huge",
+      value       = "gpu3.huge",
+      name        = "GPU3 Huge",
       description = "448 GB RAM, 96 Cores, 8 GPU, 0.1 - 1.6 TB  Disk"
     }
   ]
@@ -260,16 +260,16 @@ data "coder_parameter" "instance_type" {
   mutable      = var.mutable
   dynamic "option" {
     for_each = [for k, v in concat(
-                              contains(var.type_category, "standard") ? local.standard_instances : [],
-                              contains(var.type_category, "cpu") ? local.cpu_instances : [],
-                              contains(var.type_category, "memory") ? local.memory_instances : [],
-                              contains(var.type_category, "storage") ? local.storage_instances : [],
-                              contains(var.type_category, "gpu") ? local.gpu_instances : []
-                            ) : v if !(contains(var.exclude, v.value)) ]
+      contains(var.type_category, "standard") ? local.standard_instances : [],
+      contains(var.type_category, "cpu") ? local.cpu_instances : [],
+      contains(var.type_category, "memory") ? local.memory_instances : [],
+      contains(var.type_category, "storage") ? local.storage_instances : [],
+      contains(var.type_category, "gpu") ? local.gpu_instances : []
+    ) : v if !(contains(var.exclude, v.value))]
     content {
-      name  = try(var.custom_names[option.value.value], option.value.name)
+      name        = try(var.custom_names[option.value.value], option.value.name)
       description = try(var.custom_descriptions[option.value.value], option.value.description)
-      value = option.value.value
+      value       = option.value.value
     }
   }
 }
