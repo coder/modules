@@ -43,6 +43,15 @@ variable "folder" {
   default     = "~"
 }
 
+variable "share" {
+  type    = string
+  default = "owner"
+  validation {
+    condition     = var.share == "owner" || var.share == "authenticated" || var.share == "public"
+    error_message = "Incorrect value. Please set either 'owner', 'authenticated', or 'public'."
+  }
+}
+
 resource "coder_script" "filebrowser" {
   agent_id     = var.agent_id
   display_name = "File Browser"
@@ -64,5 +73,5 @@ resource "coder_app" "filebrowser" {
   url          = "http://localhost:${var.port}"
   icon         = "https://raw.githubusercontent.com/filebrowser/logo/master/icon_raw.svg"
   subdomain    = true
-  share        = "owner"
+  share        = var.share
 }
