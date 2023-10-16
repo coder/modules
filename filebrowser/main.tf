@@ -47,7 +47,6 @@ variable "share" {
   type    = string
   default = "owner"
   validation {
-
     condition     = var.share == "owner" || var.share == "authenticated" || var.share == "public"
     error_message = "Incorrect value. Please set either 'owner', 'authenticated', or 'public'."
   }
