@@ -63,7 +63,7 @@ variable "install_version" {
 }
 
 variable "share" {
-  type = string
+  type    = string
   default = "owner"
   validation {
 

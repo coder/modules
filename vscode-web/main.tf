@@ -27,7 +27,7 @@ variable "folder" {
 }
 
 variable "share" {
-  type = string
+  type    = string
   default = "owner"
   validation {
 
