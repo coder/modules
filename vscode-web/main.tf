@@ -26,6 +26,16 @@ variable "folder" {
   default     = ""
 }
 
+variable "share" {
+  type = string
+  default = "owner"
+  validation {
+
+    condition     = var.share == "owner" || var.share == "authenticated" || var.share == "public"
+    error_message = "Incorrect value. Please set either 'owner', 'authenticated', or 'public'."
+  }
+}
+
 variable "log_path" {
   type        = string
   description = "The path to log."
@@ -67,7 +77,7 @@ resource "coder_app" "vscode-web" {
   url          = var.folder == "" ? "http://localhost:${var.port}" : "http://localhost:${var.port}?folder=${var.folder}"
   icon         = "/icon/code.svg"
   subdomain    = true
-  share        = "owner"
+  share        = var.share
 
   healthcheck {
     url       = "http://localhost:${var.port}/healthz"

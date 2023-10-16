@@ -62,6 +62,16 @@ variable "install_version" {
   default     = ""
 }
 
+variable "share" {
+  type = string
+  default = "owner"
+  validation {
+
+    condition     = var.share == "owner" || var.share == "authenticated" || var.share == "public"
+    error_message = "Incorrect value. Please set either 'owner', 'authenticated', or 'public'."
+  }
+}
+
 resource "coder_script" "code-server" {
   agent_id     = var.agent_id
   display_name = "code-server"
@@ -85,7 +95,7 @@ resource "coder_app" "code-server" {
   url          = "http://localhost:${var.port}/${var.folder != "" ? "?folder=${urlencode(var.folder)}" : ""}"
   icon         = "/icon/code.svg"
   subdomain    = false
-  share        = "owner"
+  share        = var.share
 
   healthcheck {
     url       = "http://localhost:${var.port}/healthz"
