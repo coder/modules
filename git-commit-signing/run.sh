@@ -1,5 +1,15 @@
 #!/usr/bin/env sh
 
+if ! command -v git > /dev/null; then
+        echo "git is not installed"
+        exit 1
+fi
+
+if ! command -v jq > /dev/null; then
+        echo "jq is not installed"
+        exit 1
+fi
+
 mkdir -p ~/.ssh
 
 echo "Downloading SSH key"
