@@ -9,10 +9,6 @@ terraform {
   }
 }
 
-locals {
-  icon_url = "https://raw.githubusercontent.com/coder/modules/main/.icons/git.svg"
-}
-
 variable "agent_id" {
   type        = string
   description = "The ID of a Coder agent."
@@ -20,7 +16,7 @@ variable "agent_id" {
 
 resource "coder_script" "git-commit-signing" {
   display_name = "Git commit signing"
-  icon         = local.icon_url
+  icon         = "https://raw.githubusercontent.com/coder/modules/main/.icons/git.svg"
 
   script       = file("${path.module}/run.sh")
   run_on_start = true
