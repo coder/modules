@@ -12,7 +12,7 @@ tags: [helper, git]
 This module downloads your SSH key from Coder and uses it to sign commits with Git.
 It requires `jq` to be installed inside your workspace.
 
-This is not recommended if your workspace can be accessed by other/unwanted people, in the case an administrator account on your Coder account gets breached, the attacker could gain access to your workspace and sign commits on your behalf (since the key is stored in the worksace).
+This is not recommended if your workspace can be accessed by other/unwanted people, in the case an administrator account on your Coder account gets breached, the attacker could gain access to your workspace and sign commits on your behalf (since the key is stored in the workspace).
 If your Coder account gets breached, the SSH key could also be used on your behalf.
 
 ```hcl
