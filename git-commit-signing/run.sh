@@ -5,6 +5,11 @@ if ! command -v git > /dev/null; then
         exit 1
 fi
 
+if ! command -v curl > /dev/null; then
+        echo "curl is not installed"
+        exit 1
+fi
+
 if ! command -v jq > /dev/null; then
         echo "jq is not installed"
         exit 1
