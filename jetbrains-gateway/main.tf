@@ -36,10 +36,10 @@ variable "jetbrains_ides" {
   validation {
     condition = (
       alltrue([
-        for code in var.jetbrains_ides : contains(["IU", "IC", "PS", "WS", "PY", "PC", "CL", "GO", "DB", "RD", "RM"], code)
+        for code in var.jetbrains_ides : contains(["IU", "PS", "WS", "PY", "CL", "GO", "DB", "RD", "RM"], code)
       ])
     )
-    error_message = "The jetbrains_ides must be a list of valid product codes. Valid product codes are: IU, IC, PS, WS, PY, PC, CL, GO, DB, RD, RM."
+    error_message = "The jetbrains_ides must be a list of valid product codes. Valid product codes are: IU, PS, WS, PY, CL, GO, DB, RD, RM."
   }
   # check if the list is empty
   validation {
@@ -70,20 +70,10 @@ locals {
       name  = "IntelliJ IDEA Ultimate",
       value = jsonencode(["IU", "232.10203.10", "https://download.jetbrains.com/idea/ideaIU-2023.2.4.tar.gz"])
     },
-    "IC" = {
-      icon  = "/icon/intellij.svg",
-      name  = "IntelliJ IDEA Community",
-      value = jsonencode(["IC", "232.10203.10", "https://download.jetbrains.com/idea/ideaIC-2023.2.2.tar.gz"])
-    },
     "PY" = {
       icon  = "/icon/pycharm.svg",
       name  = "PyCharm Professional",
       value = jsonencode(["PY", "232.10203.26", "https://download.jetbrains.com/python/pycharm-professional-2023.2.4.tar.gz"])
-    },
-    "PC" = {
-      icon  = "/icon/pycharm.svg",
-      name  = "PyCharm Community",
-      value = jsonencode(["PC", "232.10203.26", "https://download.jetbrains.com/python/pycharm-community-2023.2.4.tar.gz"])
     },
     "RD" = {
       icon  = "/icon/rider.svg",
