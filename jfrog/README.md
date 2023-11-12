@@ -50,7 +50,7 @@ variable "artifactory_access_token" {
 
 ### Using OAuth
 
-You can use OAuth to authenticate with Artifactory. This is the recommended approach. To use OAuth, you must have the Coder [`external-auth`](https://coder.com/docs/v2/latest/admin/external-auth#jfrog) configured with Artifactory.
+You can use OAuth to authenticate with Artifactory. This is the recommended approach. To use OAuth, you must have the Coder [`external-auth`](https://coder.com/docs/v2/latest/admin/external-auth) configured with Artifactory.
 
 ![JFrog OAuth](../.images/jfrog-oauth.png)
 
