@@ -8,7 +8,7 @@ terraform {
     }
     artifactory = {
       source  = "registry.terraform.io/jfrog/artifactory"
-      version = "~> 8.4.0"
+      version = "~> 9.8.0"
     }
   }
 }
@@ -58,9 +58,9 @@ locals {
 
 # Configure the Artifactory provider
 provider "artifactory" {
-  url           = join("/", [var.jfrog_url, "artifactory"])
-  access_token  = var.artifactory_access_token == "" ? "default" : var.artifactory_access_token
-  check_license = false
+  url = join("/", [var.jfrog_url, "artifactory"])
+  # Use the OAuth token if auth_method is 'oauth', else use the admin-level token
+  access_token = var.auth_method == "oauth" ? data.coder_external_auth.jfrog.access_token : var.artifactory_access_token
 }
 
 resource "artifactory_scoped_token" "me" {
