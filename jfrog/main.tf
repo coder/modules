@@ -52,14 +52,14 @@ variable "external_auth_id" {
 
 locals {
   # The username field to use for artifactory
-  username     = var.username_field == "email" ? data.coder_workspace.me.owner_email : data.coder_workspace.me.owner
+  username                 = var.username_field == "email" ? data.coder_workspace.me.owner_email : data.coder_workspace.me.owner
   artifactory_access_token = var.auth_method == "access_token" ? artifactory_scoped_token.me[0].access_token : data.coder_external_auth.jfrog.access_token
 }
 
 # Configure the Artifactory provider
 provider "artifactory" {
   url          = join("/", [var.jfrog_url, "artifactory"])
-  access_token = var.artifactory_access_token == "" ? null : var.artifactory_access_token
+  access_token = var.artifactory_access_token == "" ? "default" : var.artifactory_access_token
 }
 
 resource "artifactory_scoped_token" "me" {
