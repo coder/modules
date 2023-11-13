@@ -32,3 +32,27 @@ module "jfrog" {
 ## Prerequisites
 
 - Coder [`external-auth`](https://docs.coder.com/docs/admin/external-auth/) configured with Artifactory. This requires a [custom integration](https://jfrog.com/help/r/jfrog-installation-setup-documentation/enable-new-integrations) in Artifactory with **Callback URL** set to `https://<your-coder-url>/external-auth/jfrog/callback`.
+
+## Examples
+
+Configure the Python pip package manager to fetch packages from Artifactory while mapping the Coder email to the Artifactory username.
+
+```hcl
+module "jfrog" {
+  source = "https://registry.coder.com/modules/jfrog-oauth"
+  agent_id = coder_agent.example.id
+  jfrog_url = "https://jfrog.example.com"
+  auth_method = "oauth"
+  username_field = "email"
+  package_managers = {
+    "pypi": "pypi"
+  }
+}
+```
+
+You should now be able to install packages from Artifactory using both the `jf pip` and `pip` command.
+
+```shell
+jf pip install requests
+pip install requests
+```

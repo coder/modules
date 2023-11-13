@@ -19,9 +19,9 @@ module "jfrog" {
     jfrog_url = "https://YYYY.jfrog.io"
     artifactory_access_token = var.artifactory_access_token # An admin access token
     package_managers = {
-      "npm": "npm-remote",
-      "go": "go-remote",
-      "pypi": "pypi-remote"
+      "npm": "npm",
+      "go": "go",
+      "pypi": "pypi"
     }
 }
 ```
@@ -53,4 +53,15 @@ module "jfrog" {
       "pypi": "pypi-local"
     }
 }
+```
+
+You should now be able to install packages from Artifactory using both the `jf npm`, `jf go`, `jf pip` and `npm`, `go`, `pip` command.
+
+```shell
+jf npm install prettier
+jf go get github.com/golang/example/hello
+jf pip install requests
+npm install prettier
+go get github.com/golang/example/hello
+pip install requests
 ```
