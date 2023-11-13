@@ -53,7 +53,7 @@ variable "external_auth_id" {
 locals {
   # The username field to use for artifactory
   username     = var.username_field == "email" ? data.coder_workspace.me.owner_email : data.coder_workspace.me.owner
-  access_token = var.auth_method == "access_token" ? artifactory_scoped_token.me[0].access_token : data.coder_external_auth.jfrog.access_token
+  artifactory_access_token = var.auth_method == "access_token" ? artifactory_scoped_token.me[0].access_token : data.coder_external_auth.jfrog.access_token
 }
 
 # Configure the Artifactory provider
@@ -103,7 +103,7 @@ resource "coder_script" "jfrog" {
     JFROG_URL : var.jfrog_url,
     JFROG_HOST : replace(var.jfrog_url, "https://", ""),
     ARTIFACTORY_USERNAME : local.username,
-    ARTIFACTORY_ACCESS_TOKEN : local.access_token,
+    ARTIFACTORY_ACCESS_TOKEN : local.artifactory_access_token,
     REPOSITORY_NPM : lookup(var.package_managers, "npm", ""),
     REPOSITORY_GO : lookup(var.package_managers, "go", ""),
     REPOSITORY_PYPI : lookup(var.package_managers, "pypi", ""),
