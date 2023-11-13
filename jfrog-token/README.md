@@ -10,7 +10,7 @@ tags: [integration, jfrog]
 
 # JFrog
 
-Install the JF CLI and authenticate package managers with Artifactory.
+Install the JF CLI and authenticate package managers with Artifactory using Artifactory terraform provider.
 
 ```hcl
 module "jfrog" {
