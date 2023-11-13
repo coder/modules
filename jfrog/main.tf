@@ -58,8 +58,9 @@ locals {
 
 # Configure the Artifactory provider
 provider "artifactory" {
-  url          = join("/", [var.jfrog_url, "artifactory"])
-  access_token = var.artifactory_access_token == "" ? "default" : var.artifactory_access_token
+  url           = join("/", [var.jfrog_url, "artifactory"])
+  access_token  = var.artifactory_access_token == "" ? "default" : var.artifactory_access_token
+  check_license = false
 }
 
 resource "artifactory_scoped_token" "me" {
