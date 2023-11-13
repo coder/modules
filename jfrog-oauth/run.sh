@@ -24,7 +24,7 @@ if [ -z "${REPOSITORY_NPM}" ]; then
   echo "🤔 REPOSITORY_NPM is not set, skipping npm configuration."
 else
   echo "📦 Configuring npm..."
-  jf npmc --global --repo-resolve "${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}"
+  jf npmc --global --repo-resolve "${REPOSITORY_NPM}"
   cat <<EOF >~/.npmrc
 email = ${ARTIFACTORY_USERNAME}
 registry = ${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
@@ -37,7 +37,7 @@ if [ -z "${REPOSITORY_PYPI}" ]; then
   echo "🤔 REPOSITORY_PYPI is not set, skipping pip configuration."
 else
   echo "🐍 Configuring pip..."
-  jf pipc --global --repo-resolve ${JFROG_URL}/artifactory/api/pypi/${REPOSITORY_PYPI}
+  jf pipc --global --repo-resolve "${REPOSITORY_PYPI}"
   mkdir -p ~/.pip
   cat <<EOF >~/.pip/pip.conf
 [global]
@@ -50,7 +50,7 @@ if [ -z "${REPOSITORY_GO}" ]; then
   echo "🤔 REPOSITORY_GO is not set, skipping go configuration."
 else
   echo "🐹 Configuring go..."
-  jf go-config --global --repo-resolve ${JFROG_URL}/artifactory/api/go/${REPOSITORY_GO}
+  jf go-config --global --repo-resolve "${REPOSITORY_GO}"
   export GOPROXY="https://${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}@${JFROG_HOST}/artifactory/api/go/${REPOSITORY_GO}"
 fi
 echo "🥳 Configuration complete!"
