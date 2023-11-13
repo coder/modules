@@ -6,7 +6,7 @@ import {
   testRequiredVariables,
 } from "../test";
 
-describe("jfrog-oauth", async () => {
+describe("jfrog-token", async () => {
   await runTerraformInit(import.meta.dir);
 
   // Run a fake JFrog server so the provider can initialize
@@ -35,6 +35,7 @@ describe("jfrog-oauth", async () => {
   testRequiredVariables(import.meta.dir, {
     agent_id: "some-agent-id",
     jfrog_url: "http://" + fakeFrogHost.hostname + ":" + fakeFrogHost.port,
+    artifactory_access_token: "XXXX",
     package_managers: "{}",
   });
 });

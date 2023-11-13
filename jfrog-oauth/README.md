@@ -5,20 +5,20 @@ icon: ../.icons/jfrog.svg
 maintainer_github: coder
 partner_github: jfrog
 verified: true
-tags: [integration]
+tags: [integration, jfrog]
 ---
 
 # JFrog
 
-Install the JF CLI and authenticate package managers with Artifactory using OAuth configured via Coder [`external-auth`](https://docs.coder.com/docs/admin/external-auth/) feature.
+Install the JF CLI and authenticate package managers with Artifactory using OAuth configured via the Coder `external-auth` feature.
 
 ![JFrog OAuth](../.images/jfrog-oauth.png)
 
 ```hcl
 module "jfrog" {
-  source = "https://registry.coder.com/modules/jfrog"
+  source = "https://registry.coder.com/modules/jfrog-oauth"
   agent_id = coder_agent.example.id
-  jfrog_url = "https://YYYY.jfrog.io"
+  jfrog_url = "https://jfrog.example.com"
   auth_method = "oauth"
   username_field = "username" # If you are using GitHub to login to both Coder and Artifactory, use username_field = "username"
   package_managers = {
