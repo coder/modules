@@ -51,7 +51,7 @@ variable "external_auth_id" {
 }
 locals {
   # The username field to use for artifactory
-  username     = var.username_field == "email" ? data.coder_workspace.me.owner_email : data.coder_workspace.me.username
+  username     = var.username_field == "email" ? data.coder_workspace.me.owner_email : data.coder_workspace.me.owner
   access_token = var.auth_method == "access_token" ? artifactory_scoped_token.me.access_token : data.coder_external_auth.jfrog.access_token
 }
 # Configure the Artifactory provider
