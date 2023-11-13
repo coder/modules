@@ -25,7 +25,7 @@ describe("jfrog-token", async () => {
         return createJSONResponse({
           token_id: "xxx",
           access_token: "xxx",
-          scope: "any",
+          scopes: "any",
         });
       return createJSONResponse({});
     },
