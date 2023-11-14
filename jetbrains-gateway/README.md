@@ -17,8 +17,7 @@ module "jetbrains_gateway" {
   agent_id       = coder_agent.example.id
   agent_name     = "example"
   folder         = "/home/coder/example"
-  jetbrains_ides = ["GO", "WS", "IU", "PY", "PS", "CL", "RM", "DB", "RD"]
-  default        = "PY"
+  jetbrains_ides = ["GO", "WS", "IU", "IC", "PY", "PC", "PS", "CL", "RM", "DB", "RD"]
 }
 ```
 
@@ -46,7 +45,9 @@ This module and JetBrains Gateway support the following JetBrains IDEs:
 - GoLand (`GO`)
 - WebStorm (`WS`)
 - IntelliJ IDEA Ultimate (`IU`)
+- IntelliJ IDEA Community (`IC`)
 - PyCharm Professional (`PY`)
+- PyCharm Community (`PC`)
 - PhpStorm (`PS`)
 - CLion (`CL`)
 - RubyMine (`RM`)
