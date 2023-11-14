@@ -36,10 +36,10 @@ variable "jetbrains_ides" {
   validation {
     condition = (
       alltrue([
-        for code in var.jetbrains_ides : contains(["IU", "PS", "WS", "PY", "CL", "GO", "DB", "RD", "RM"], code)
+        for code in var.jetbrains_ides : contains(["IU", "IC", "PS", "WS", "PY", "PC", "CL", "GO", "DB", "RD", "RM"], code)
       ])
     )
-    error_message = "The jetbrains_ides must be a list of valid product codes. Valid product codes are: IU, PS, WS, PY, CL, GO, DB, RD, RM."
+    error_message = "The jetbrains_ides must be a list of valid product codes. Valid product codes are: IU, IC, PS, WS, PY, PC, CL, GO, DB, RD, RM."
   }
   # check if the list is empty
   validation {
@@ -58,27 +58,37 @@ locals {
     "GO" = {
       icon  = "/icon/goland.svg",
       name  = "GoLand",
-      value = jsonencode(["GO", "232.10203.20", "https://download.jetbrains.com/go/goland-2023.2.4.tar.gz"])
+      value = jsonencode(["GO", "232.9921.53", "https://download.jetbrains.com/go/goland-2023.2.2.tar.gz"])
     },
     "WS" = {
       icon  = "/icon/webstorm.svg",
       name  = "WebStorm",
-      value = jsonencode(["WS", "232.10203.14", "https://download.jetbrains.com/webstorm/WebStorm-2023.2.4.tar.gz"])
+      value = jsonencode(["WS", "232.9921.42", "https://download.jetbrains.com/webstorm/WebStorm-2023.2.2.tar.gz"])
     },
     "IU" = {
       icon  = "/icon/intellij.svg",
       name  = "IntelliJ IDEA Ultimate",
-      value = jsonencode(["IU", "232.10203.10", "https://download.jetbrains.com/idea/ideaIU-2023.2.4.tar.gz"])
+      value = jsonencode(["IU", "232.9921.47", "https://download.jetbrains.com/idea/ideaIU-2023.2.2.tar.gz"])
+    },
+    "IC" = {
+      icon  = "/icon/intellij.svg",
+      name  = "IntelliJ IDEA Community",
+      value = jsonencode(["IC", "232.9921.47", "https://download.jetbrains.com/idea/ideaIC-2023.2.2.tar.gz"])
     },
     "PY" = {
       icon  = "/icon/pycharm.svg",
       name  = "PyCharm Professional",
-      value = jsonencode(["PY", "232.10203.26", "https://download.jetbrains.com/python/pycharm-professional-2023.2.4.tar.gz"])
+      value = jsonencode(["PY", "232.9559.58", "https://download.jetbrains.com/python/pycharm-professional-2023.2.1.tar.gz"])
+    },
+    "PC" = {
+      icon  = "/icon/pycharm.svg",
+      name  = "PyCharm Community",
+      value = jsonencode(["PC", "232.9559.58", "https://download.jetbrains.com/python/pycharm-community-2023.2.1.tar.gz"])
     },
     "RD" = {
       icon  = "/icon/rider.svg",
       name  = "Rider",
-      value = jsonencode(["RD", "232.10203.29", "https://download.jetbrains.com/rider/JetBrains.Rider-2023.2.3.tar.gz"])
+      value = jsonencode(["RD", "232.9559.61", "https://download.jetbrains.com/rider/JetBrains.Rider-2023.2.1.tar.gz"])
     }
     "CL" = {
       icon  = "/icon/clion.svg",
@@ -88,17 +98,17 @@ locals {
     "DB" = {
       icon  = "/icon/datagrip.svg",
       name  = "DataGrip",
-      value = jsonencode(["DB", "232.10203.8", "https://download.jetbrains.com/datagrip/datagrip-2023.2.3.tar.gz"])
+      value = jsonencode(["DB", "232.9559.28", "https://download.jetbrains.com/datagrip/datagrip-2023.2.1.tar.gz"])
     },
     "PS" = {
       icon  = "/icon/phpstorm.svg",
       name  = "PhpStorm",
-      value = jsonencode(["PS", "232.10072.32", "https://download.jetbrains.com/webide/PhpStorm-2023.2.3.tar.gz"])
+      value = jsonencode(["PS", "232.9559.64", "https://download.jetbrains.com/webide/PhpStorm-2023.2.1.tar.gz"])
     },
     "RM" = {
       icon  = "/icon/rubymine.svg",
       name  = "RubyMine",
-      value = jsonencode(["RM", "232.10203.15", "https://download.jetbrains.com/ruby/RubyMine-2023.2.4.tar.gz"])
+      value = jsonencode(["RM", "232.9921.48", "https://download.jetbrains.com/ruby/RubyMine-2023.2.2.tar.gz"])
     }
   }
 }
