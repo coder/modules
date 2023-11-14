@@ -30,7 +30,7 @@ else
   # check if yarn is installed and configure it to use the Artifactory "npm" repository.
   if command -v yarn >/dev/null 2>&1; then
     echo "📦 Configuring yarn..."
-    jf yarn --global --repo-resolve "${REPOSITORY_NPM}"
+    jf yarnc --global --repo-resolve "${REPOSITORY_NPM}"
   fi
   cat <<EOF >~/.npmrc
 email = ${ARTIFACTORY_EMAIL}
