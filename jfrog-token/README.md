@@ -55,12 +55,15 @@ module "jfrog" {
 }
 ```
 
-You should now be able to install packages from Artifactory using both the `jf npm`, `jf go`, `jf pip` and `npm`, `go`, `pip` command.
+You should now be able to install packages from Artifactory using both the `jf npm`, `jf go`, `jf pip` and `npm`, `go`, `pip` commands.
 
 ```shell
 jf npm install prettier
 jf go get github.com/golang/example/hello
 jf pip install requests
+```
+
+```shell
 npm install prettier
 go get github.com/golang/example/hello
 pip install requests

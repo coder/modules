@@ -54,5 +54,8 @@ You should now be able to install packages from Artifactory using both the `jf p
 
 ```shell
 jf pip install requests
+```
+
+```shell
 pip install requests
 ```
