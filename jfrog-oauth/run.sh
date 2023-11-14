@@ -19,12 +19,19 @@ export CI=true
 jf c rm 0 || true
 echo "${ARTIFACTORY_ACCESS_TOKEN}" | jf c add --access-token-stdin --url "${JFROG_URL}" 0
 
-# Configure the `npm` CLI to use the Artifactory "npm" repository.
 if [ -z "${REPOSITORY_NPM}" ]; then
   echo "🤔 REPOSITORY_NPM is not set, skipping npm configuration."
 else
-  echo "📦 Configuring npm..."
-  jf npmc --global --repo-resolve "${REPOSITORY_NPM}"
+  # check if npm is installed and configure it to use the Artifactory "npm" repository.
+  if command -v npm >/dev/null 2>&1; then
+    echo "📦 Configuring npm..."
+    jf npmc --global --repo-resolve "${REPOSITORY_NPM}"
+  fi
+  # check if yarn is installed and configure it to use the Artifactory "npm" repository.
+  if command -v yarn >/dev/null 2>&1; then
+    echo "📦 Configuring yarn..."
+    jf yarn --global --repo-resolve "${REPOSITORY_NPM}"
+  fi
   cat <<EOF >~/.npmrc
 email = ${ARTIFACTORY_EMAIL}
 registry = ${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
