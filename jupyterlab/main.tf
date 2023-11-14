@@ -27,6 +27,15 @@ variable "port" {
   default     = 19999
 }
 
+variable "share" {
+  type    = string
+  default = "owner"
+  validation {
+    condition     = var.share == "owner" || var.share == "authenticated" || var.share == "public"
+    error_message = "Incorrect value. Please set either 'owner', 'authenticated', or 'public'."
+  }
+}
+
 resource "coder_script" "jupyterlab" {
   agent_id     = var.agent_id
   display_name = "jupyterlab"
@@ -45,5 +54,5 @@ resource "coder_app" "jupyterlab" {
   url          = "http://localhost:${var.port}"
   icon         = "/icon/jupyter.svg"
   subdomain    = true
-  share        = "owner"
+  share        = var.share
 }
