@@ -8,7 +8,7 @@ terraform {
     }
     artifactory = {
       source  = "registry.terraform.io/jfrog/artifactory"
-      version = "~> 8.4.0"
+      version = "~> 9.8.0"
     }
   }
 }
@@ -23,15 +23,14 @@ variable "artifactory_access_token" {
   description = "The admin-level access token to use for JFrog."
 }
 
-# Configure the Artifactory provider
-provider "artifactory" {
-  url          = join("/", [var.jfrog_url, "artifactory"])
-  access_token = var.artifactory_access_token
-}
-resource "artifactory_scoped_token" "me" {
-  # This is hacky, but on terraform plan the data source gives empty strings,
-  # which fails validation.
-  username = length(data.coder_workspace.me.owner_email) > 0 ? data.coder_workspace.me.owner_email : "plan"
+variable "username_field" {
+  type        = string
+  description = "The field to use for the artifactory username. i.e. Coder username or email."
+  default     = "email"
+  validation {
+    condition     = can(regex("^(email|username)$", var.username_field))
+    error_message = "username_field must be either 'email' or 'username'"
+  }
 }
 
 variable "agent_id" {
@@ -52,6 +51,25 @@ For example:
 EOF
 }
 
+locals {
+  # The username field to use for artifactory
+  username = var.username_field == "email" ? data.coder_workspace.me.owner_email : data.coder_workspace.me.owner
+}
+
+# Configure the Artifactory provider
+provider "artifactory" {
+  url          = join("/", [var.jfrog_url, "artifactory"])
+  access_token = var.artifactory_access_token
+}
+
+resource "artifactory_scoped_token" "me" {
+  # This is hacky, but on terraform plan the data source gives empty strings,
+  # which fails validation.
+  username    = length(local.username) > 0 ? local.username : "dummy"
+  scopes      = ["applied-permissions/user"]
+  refreshable = true
+}
+
 data "coder_workspace" "me" {}
 
 resource "coder_script" "jfrog" {
@@ -61,7 +79,8 @@ resource "coder_script" "jfrog" {
   script = templatefile("${path.module}/run.sh", {
     JFROG_URL : var.jfrog_url,
     JFROG_HOST : replace(var.jfrog_url, "https://", ""),
-    ARTIFACTORY_USERNAME : data.coder_workspace.me.owner_email,
+    ARTIFACTORY_USERNAME : local.username,
+    ARTIFACTORY_EMAIL : data.coder_workspace.me.owner_email,
     ARTIFACTORY_ACCESS_TOKEN : artifactory_scoped_token.me.access_token,
     REPOSITORY_NPM : lookup(var.package_managers, "npm", ""),
     REPOSITORY_GO : lookup(var.package_managers, "go", ""),

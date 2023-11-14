@@ -1,27 +1,27 @@
 ---
-display_name: JFrog
-description: Install the JF CLI and authenticate with Artifactory
+display_name: JFrog (Token)
+description: Install the JF CLI and authenticate with Artifactory using Artifactory terraform provider.
 icon: ../.icons/jfrog.svg
 maintainer_github: coder
 partner_github: jfrog
 verified: true
-tags: [integration]
+tags: [integration, jfrog]
 ---
 
 # JFrog
 
-Install the JF CLI and authenticate package managers with Artifactory.
+Install the JF CLI and authenticate package managers with Artifactory using Artifactory terraform provider.
 
 ```hcl
 module "jfrog" {
-    source = "https://registry.coder.com/modules/jfrog"
+    source = "https://registry.coder.com/modules/jfrog-token"
     agent_id = coder_agent.example.id
     jfrog_url = "https://YYYY.jfrog.io"
     artifactory_access_token = var.artifactory_access_token # An admin access token
     package_managers = {
-      "npm": "npm-remote",
-      "go": "go-remote",
-      "pypi": "pypi-remote"
+      "npm": "npm",
+      "go": "go",
+      "pypi": "pypi"
     }
 }
 ```
@@ -43,7 +43,7 @@ variable "artifactory_access_token" {
 
 ```hcl
 module "jfrog" {
-    source = "https://registry.coder.com/modules/jfrog"
+    source = "https://registry.coder.com/modules/jfrog-token"
     agent_id = coder_agent.example.id
     jfrog_url = "https://YYYY.jfrog.io"
     artifactory_access_token = var.artifactory_access_token # An admin access token
@@ -53,4 +53,18 @@ module "jfrog" {
       "pypi": "pypi-local"
     }
 }
+```
+
+You should now be able to install packages from Artifactory using both the `jf npm`, `jf go`, `jf pip` and `npm`, `go`, `pip` commands.
+
+```shell
+jf npm install prettier
+jf go get github.com/golang/example/hello
+jf pip install requests
+```
+
+```shell
+npm install prettier
+go get github.com/golang/example/hello
+pip install requests
 ```

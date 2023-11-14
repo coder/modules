@@ -6,7 +6,7 @@ import {
   testRequiredVariables,
 } from "../test";
 
-describe("jfrog", async () => {
+describe("jfrog-token", async () => {
   await runTerraformInit(import.meta.dir);
 
   // Run a fake JFrog server so the provider can initialize
@@ -25,7 +25,7 @@ describe("jfrog", async () => {
         return createJSONResponse({
           token_id: "xxx",
           access_token: "xxx",
-          scope: "any",
+          scopes: "any",
         });
       return createJSONResponse({});
     },
