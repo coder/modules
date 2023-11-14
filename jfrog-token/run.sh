@@ -26,7 +26,7 @@ else
   echo "📦 Configuring npm..."
   jf npmc --global --repo-resolve "${REPOSITORY_NPM}"
   cat <<EOF >~/.npmrc
-email = ${ARTIFACTORY_USERNAME}
+email = ${ARTIFACTORY_EMAIL}
 registry = ${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
 EOF
   jf rt curl /api/npm/auth >>~/.npmrc

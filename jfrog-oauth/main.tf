@@ -67,6 +67,7 @@ resource "coder_script" "jfrog" {
     JFROG_URL : var.jfrog_url,
     JFROG_HOST : replace(var.jfrog_url, "https://", ""),
     ARTIFACTORY_USERNAME : local.username,
+    ARTIFACTORY_EMAIL : data.coder_workspace.me.owner_email,
     ARTIFACTORY_ACCESS_TOKEN : data.coder_external_auth.jfrog.access_token,
     REPOSITORY_NPM : lookup(var.package_managers, "npm", ""),
     REPOSITORY_GO : lookup(var.package_managers, "go", ""),

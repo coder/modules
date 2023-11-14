@@ -79,7 +79,8 @@ resource "coder_script" "jfrog" {
   script = templatefile("${path.module}/run.sh", {
     JFROG_URL : var.jfrog_url,
     JFROG_HOST : replace(var.jfrog_url, "https://", ""),
-    ARTIFACTORY_USERNAME : data.coder_workspace.me.owner_email,
+    ARTIFACTORY_USERNAME : local.username,
+    ARTIFACTORY_EMAIL : data.coder_workspace.me.owner_email,
     ARTIFACTORY_ACCESS_TOKEN : artifactory_scoped_token.me.access_token,
     REPOSITORY_NPM : lookup(var.package_managers, "npm", ""),
     REPOSITORY_GO : lookup(var.package_managers, "go", ""),
