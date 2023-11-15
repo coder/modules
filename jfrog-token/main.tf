@@ -43,8 +43,8 @@ variable "expires_in" {
 
 variable "username_field" {
   type        = string
-  description = "The field to use for the artifactory username. i.e. Coder username or email."
-  default     = "email"
+  description = "The field to use for the artifactory username. Default `username`."
+  default     = "username"
   validation {
     condition     = can(regex("^(email|username)$", var.username_field))
     error_message = "username_field must be either 'email' or 'username'"
