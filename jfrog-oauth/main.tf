@@ -75,3 +75,8 @@ resource "coder_script" "jfrog" {
   })
   run_on_start = true
 }
+
+output "access_token" {
+  description = "value of the JFrog access token"
+  value       = data.coder_external_auth.jfrog.access_token
+}
