@@ -113,3 +113,8 @@ output "access_token" {
   description = "value of the JFrog access token"
   value       = artifactory_scoped_token.me.access_token
 }
+
+output "username" {
+  description = "value of the JFrog username"
+  value       = local.username
+}

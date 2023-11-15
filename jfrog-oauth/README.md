@@ -59,3 +59,19 @@ jf pip install requests
 ```shell
 pip install requests
 ```
+
+### Using the access token in other terraform resources
+
+JFrog Access token is also available as a terraform output. You can use it in other terraform resources. For example, you can use it to configure an Artifactory docker registry with the [docker terraform provider](https://registry.terraform.io/providers/kreuzwerker/docker/latest/docs).
+
+```hcl
+
+provider "docker" {
+  ...
+  registry_auth {
+    address = "https://YYYY.jfrog.io/artifactory/api/docker/REPO-KEY"
+    username = module.jfrog.username
+    password = module.jfrog.access_token
+  }
+}
+```
