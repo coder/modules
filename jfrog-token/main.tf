@@ -36,7 +36,7 @@ variable "refreshable" {
 }
 
 variable "expires_in" {
-  type        = bool
+  type        = number
   description = "The amount of time, in seconds, it would take for the token to expire."
   default     = null
 }
