@@ -26,7 +26,7 @@ variable "artifactory_access_token" {
 variable "check_license" {
   type        = bool
   description = "If your usage doesn't require a license, you can set `check_license` attribute to `false` to skip this check."
-  deafult     = false
+  deafult     = true
 }
 
 variable "username_field" {
