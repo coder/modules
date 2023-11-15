@@ -23,6 +23,12 @@ variable "artifactory_access_token" {
   description = "The admin-level access token to use for JFrog."
 }
 
+variable "check_license" {
+  type        = bool
+  description = "If your usage doesn't require a license, you can set `check_license` attribute to `false` to skip this check."
+  deafult     = false
+}
+
 variable "username_field" {
   type        = string
   description = "The field to use for the artifactory username. i.e. Coder username or email."
@@ -58,8 +64,9 @@ locals {
 
 # Configure the Artifactory provider
 provider "artifactory" {
-  url          = join("/", [var.jfrog_url, "artifactory"])
-  access_token = var.artifactory_access_token
+  url           = join("/", [var.jfrog_url, "artifactory"])
+  access_token  = var.artifactory_access_token
+  check_license = var.check_license
 }
 
 resource "artifactory_scoped_token" "me" {
