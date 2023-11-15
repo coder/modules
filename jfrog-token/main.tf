@@ -108,3 +108,14 @@ resource "coder_script" "jfrog" {
   })
   run_on_start = true
 }
+
+output "access_token" {
+  description = "value of the JFrog access token"
+  value       = artifactory_scoped_token.me.access_token
+  sensitive   = true
+}
+
+output "username" {
+  description = "value of the JFrog username"
+  value       = local.username
+}
