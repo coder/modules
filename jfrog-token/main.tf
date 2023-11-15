@@ -29,6 +29,18 @@ variable "check_license" {
   default     = true
 }
 
+variable "refreshable" {
+  type        = bool
+  description = "Is this token refreshable? Default is `false`."
+  default     = false
+}
+
+variable "expires_in" {
+  type        = bool
+  description = "The amount of time, in seconds, it would take for the token to expire."
+  default     = null
+}
+
 variable "username_field" {
   type        = string
   description = "The field to use for the artifactory username. i.e. Coder username or email."
@@ -74,7 +86,8 @@ resource "artifactory_scoped_token" "me" {
   # which fails validation.
   username    = length(local.username) > 0 ? local.username : "dummy"
   scopes      = ["applied-permissions/user"]
-  refreshable = true
+  refreshable = var.refreshable
+  expires_in  = var.expires_in
 }
 
 data "coder_workspace" "me" {}
