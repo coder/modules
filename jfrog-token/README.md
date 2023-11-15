@@ -16,8 +16,8 @@ Install the JF CLI and authenticate package managers with Artifactory using Arti
 module "jfrog" {
     source = "https://registry.coder.com/modules/jfrog-token"
     agent_id = coder_agent.example.id
-    jfrog_url = "https://YYYY.jfrog.io"
-    artifactory_access_token = var.artifactory_access_token # An admin access token
+    jfrog_url = "https://XXXX.jfrog.io"
+    artifactory_access_token = var.artifactory_access_token
     package_managers = {
       "npm": "npm",
       "go": "go",
@@ -26,7 +26,7 @@ module "jfrog" {
 }
 ```
 
-Get a JFrog access token from your Artifactory instance. The token must have admin permissions. It is recommended to store the token in a secret terraform variable.
+Get a JFrog access token from your Artifactory instance. The token must be an [admin token](https://registry.terraform.io/providers/jfrog/artifactory/latest/docs#access-token). It is recommended to store the token in a secret terraform variable.
 
 ```hcl
 variable "artifactory_access_token" {
