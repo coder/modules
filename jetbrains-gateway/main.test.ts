@@ -2,7 +2,6 @@ import { it, expect, describe } from "bun:test";
 import {
   runTerraformInit,
   testRequiredVariables,
-  executeScriptInContainer,
   runTerraformApply,
 } from "../test";
 
@@ -11,7 +10,6 @@ describe("jetbrains-gateway", async () => {
 
   await testRequiredVariables(import.meta.dir, {
     agent_id: "foo",
-    agent_name: "bar",
     folder: "/baz/",
     jetbrains_ides: '["IU", "GO", "PY"]',
   });
@@ -19,7 +17,6 @@ describe("jetbrains-gateway", async () => {
   it("default to first ide", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
-      agent_name: "bar",
       folder: "/baz/",
       jetbrains_ides: '["IU", "GO", "PY"]',
     });
