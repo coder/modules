@@ -53,7 +53,7 @@ vault status
 
 # Login to Vault to using GitHub token
 printf "🔑 Logging in to Vault ...\n\n"
-vault login -method=github token=$GITHUB_TOKEN -path=/$AUTH_PATH
+vault login -no-print -method=github -path=/$AUTH_PATH token=$GITHUB_TOKEN
 
 # Add VAULT_ADDR to shell login scripts if not already present e.g. .bashrc, .zshrc
 # This is a temporary fix and will be replaced with https://github.com/coder/coder/issues/10166
