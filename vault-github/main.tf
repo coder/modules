@@ -20,10 +20,16 @@ variable "vault_addr" {
   description = "The address of the Vault server."
 }
 
-variable "auth_provider_id" {
+variable "coder_github_auth_id" {
   type        = string
-  description = "The ID of the Vault auth method to use."
-  default     = "vault"
+  description = "The ID of the GitHub external auth."
+  default     = "github"
+}
+
+variable "vault_github_auth_path" {
+  type        = string
+  description = "The path to the GitHub auth method."
+  default     = "github"
 }
 
 variable "vault_cli_version" {
@@ -42,12 +48,13 @@ resource "coder_script" "vault" {
   icon         = "/icon/vault.svg"
   script = templatefile("${path.module}/run.sh", {
     VAULT_ADDR : var.vault_addr,
-    PROVIDER_ID : var.auth_provider_id,
+    AUTH_PATH : var.vault_github_auth_path,
+    GITHUB_EXTERNAL_AUTH_ID : data.coder_external_auth.github.id,
     VERSION : var.vault_cli_version,
   })
   run_on_start = true
 }
 
-data "coder_external_auth" "vault" {
-  id = var.auth_provider_id
+data "coder_external_auth" "github" {
+  id = var.coder_github_auth_id
 }

@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 BOLD='\033[0;1m'
-PROVIDER_ID=${PROVIDER_ID}
 VAULT_ADDR=${VAULT_ADDR}
 VERSION=${VERSION}
+AUTH_PATH=${AUTH_PATH}
+GITHUB_EXTERNAL_AUTH_ID=${GITHUB_EXTERNAL_AUTH_ID}
 
 # Check if vault is installed
 if ! command -v vault &>/dev/null; then
@@ -36,19 +37,23 @@ printf "🥳 Installation complete!\n\n"
 
 # Set up Vault token
 printf "🔑 Authenticating with Vault ...\n\n"
-echo "PROVIDER_ID: $PROVIDER_ID"
-VAULT_TOKEN=$(coder external-auth access-token $PROVIDER_ID)
+echo "AUTH_PATH: $AUTH_PATH"
+echo "GITHUB_EXTERNAL_AUTH_ID: $GITHUB_EXTERNAL_AUTH_ID"
+GITHUB_TOKEN=$(coder external-auth access-token $GITHUB_EXTERNAL_AUTH_ID)
 if [ $? -ne 0 ]; then
-    printf "Authenticate with Vault:\n$VAULT_TOKEN\n"
+    printf "Authentication with Vault failed. Please check your credentials.\n"
     exit 1
 fi
 
 export VAULT_ADDR=$VAULT_ADDR
 
-# Verify Vault address and token
-printf "🔎 Verifying Vault address and token ...\n\n"
+# Verify Vault address
+printf "🔎 Verifying Vault address...\n\n"
 vault status
-vault login $VAULT_TOKEN
+
+# Login to Vault to using GitHub token
+printf "🔑 Logging in to Vault ...\n\n"
+vault login -method=github token=$GITHUB_TOKEN -path=/$AUTH_PATH
 
 # Add VAULT_ADDR to shell login scripts if not already present e.g. .bashrc, .zshrc
 # This is a temporary fix and will be replaced with https://github.com/coder/coder/issues/10166
@@ -69,3 +74,6 @@ if [[ -f ~/.config/fish/config.fish ]] && ! grep -q "VAULT_ADDR" ~/.config/fish/
     printf "\nAdding VAULT_ADDR to ~/.config/fish/config.fish ...\n"
     echo "set -x VAULT_ADDR $VAULT_ADDR" >>~/.config/fish/config.fish
 fi
+
+printf "\n🥳 Vault authentication complete!\n\n"
+printf "You can now use Vault CLI to access secrets.\n"
