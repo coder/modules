@@ -6,15 +6,35 @@ VERSION=${VERSION}
 AUTH_PATH=${AUTH_PATH}
 GITHUB_EXTERNAL_AUTH_ID=${GITHUB_EXTERNAL_AUTH_ID}
 
-# Check if vault is installed
-if ! command -v vault &>/dev/null; then
-    printf "$${BOLD}Installing vault CLI ...\n\n"
-    # check if curl is installed
+# Fetch latest version of Vault if VERSION is 'latest'
+if [ "${VERSION}" = "latest" ]; then
+    LATEST_VERSION=$(curl -s https://releases.hashicorp.com/vault/ | grep -oP 'vault/\K[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -n 1)
+    if [ -z "$LATEST_VERSION" ]; then
+        printf "Failed to determine the latest Vault version.\n"
+        exit 1
+    fi
+    VERSION=$LATEST_VERSION
+fi
+
+# Check if vault is installed and has the correct version
+installation_needed=1
+if command -v vault &>/dev/null; then
+    CURRENT_VERSION=$(vault version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+    if [ "$CURRENT_VERSION" = "$VERSION" ]; then
+        printf "${BOLD}Vault version $CURRENT_VERSION is already installed and up-to-date.\n\n"
+        installation_needed=0
+    fi
+fi
+
+if [ $installation_needed -eq 1 ]; then
+    printf "${BOLD}Installing or updating Vault CLI ...\n\n"
+
+    # Check if curl is installed
     if ! command -v curl &>/dev/null; then
         printf "curl is not installed. Please install curl in your image.\n"
         exit 1
     fi
-    
+
     # Check if unzip is installed
     if ! command -v unzip &>/dev/null; then
         # Check if busybox is installed and can provide unzip
@@ -27,21 +47,19 @@ if ! command -v vault &>/dev/null; then
         fi
     fi
 
-    # check if VERSION is latest
-    if [ "${VERSION}" = "latest" ]; then
-        INSTALL_VERSION=$(curl -s https://releases.hashicorp.com/vault/ | grep -oP '[0-9]+\.[0-9]+\.[0-9]' | tr -d '<>' | head -1)
-    else
-        INSTALL_VERSION=$VERSION
-    fi
-
-    # download vault
-    curl -sLo vault.zip https://releases.hashicorp.com/vault/${INSTALL_VERSION}/vault_${INSTALL_VERSION}_linux_amd64.zip
+    # Download and install Vault
+    curl -sLo vault.zip https://releases.hashicorp.com/vault/${VERSION}/vault_${VERSION}_linux_amd64.zip
     unzip vault.zip
-    sudo mv vault /usr/local/bin
-    rm vault.zip
+    # Try to move vault to /usr/local/bin with sudo if possible otherwise to .local/bin and add to PATH
+    if sudo mv vault /usr/local/bin/vault 2>/dev/null; then
+        printf "🥳 Vault installed successfully!\n\n"
+    else
+        mkdir -p ~/.local/bin
+        mv vault ~/.local/bin/vault
+        printf "🥳 Vault installed successfully!\n\n"
+        printf "Please add ~/.local/bin to your PATH to use vault CLI.\n"
+    fi
 fi
-
-printf "🥳 Installation complete!\n\n"
 
 # Set up Vault token
 printf "🔑 Authenticating with Vault ...\n\n"
