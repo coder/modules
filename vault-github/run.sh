@@ -9,16 +9,24 @@ GITHUB_EXTERNAL_AUTH_ID=${GITHUB_EXTERNAL_AUTH_ID}
 # Check if vault is installed
 if ! command -v vault &>/dev/null; then
     printf "$${BOLD}Installing vault CLI ...\n\n"
-    # check if wget is installed
-    if ! command -v wget &>/dev/null; then
-        printf "wget is not installed. Please install wget in your image.\n"
+    # check if curl is installed
+    if ! command -v curl &>/dev/null; then
+        printf "curl is not installed. Please install curl in your image.\n"
         exit 1
     fi
-    # check if unzip is installed
+    
+    # Check if unzip is installed
     if ! command -v unzip &>/dev/null; then
-        printf "unzip is not installed. Please install unzip in your image.\n"
-        exit 1
+        # Check if busybox is installed and can provide unzip
+        if command -v busybox &>/dev/null && busybox --list | grep -q '^unzip$'; then
+            alias unzip='busybox unzip'
+            printf "Using busybox unzip.\n"
+        else
+            printf "unzip is not installed and busybox unzip is not available. Please install unzip in your image.\n"
+            exit 1
+        fi
     fi
+
     # check if VERSION is latest
     if [ "${VERSION}" = "latest" ]; then
         INSTALL_VERSION=$(curl -s https://releases.hashicorp.com/vault/ | grep -oP '[0-9]+\.[0-9]+\.[0-9]' | tr -d '<>' | head -1)
@@ -27,7 +35,7 @@ if ! command -v vault &>/dev/null; then
     fi
 
     # download vault
-    wget -q -O vault.zip https://releases.hashicorp.com/vault/$${INSTALL_VERSION}/vault_$${INSTALL_VERSION}_linux_amd64.zip
+    curl -sLo vault.zip https://releases.hashicorp.com/vault/${INSTALL_VERSION}/vault_${INSTALL_VERSION}_linux_amd64.zip
     unzip vault.zip
     sudo mv vault /usr/local/bin
     rm vault.zip

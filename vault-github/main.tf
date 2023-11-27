@@ -52,7 +52,8 @@ resource "coder_script" "vault" {
     GITHUB_EXTERNAL_AUTH_ID : data.coder_external_auth.github.id,
     VERSION : var.vault_cli_version,
   })
-  run_on_start = true
+  run_on_start       = true
+  start_blocks_login = true
 }
 
 data "coder_external_auth" "github" {
