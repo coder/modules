@@ -21,13 +21,13 @@ installation_needed=1
 if command -v vault &>/dev/null; then
     CURRENT_VERSION=$(vault version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
     if [ "$CURRENT_VERSION" = "$VERSION" ]; then
-        printf "${BOLD}Vault version $CURRENT_VERSION is already installed and up-to-date.\n\n"
+        printf "$${BOLD}Vault version $CURRENT_VERSION is already installed and up-to-date.\n\n"
         installation_needed=0
     fi
 fi
 
 if [ $installation_needed -eq 1 ]; then
-    printf "${BOLD}Installing or updating Vault CLI ...\n\n"
+    printf "$${BOLD}Installing or updating Vault CLI ...\n\n"
 
     # Check if curl is installed
     if ! command -v curl &>/dev/null; then
