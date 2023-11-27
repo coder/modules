@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-BOLD='\033[0;1m'
 VAULT_ADDR=${VAULT_ADDR}
 VERSION=${VERSION}
 AUTH_PATH=${AUTH_PATH}
@@ -21,13 +20,13 @@ installation_needed=1
 if command -v vault &>/dev/null; then
     CURRENT_VERSION=$(vault version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
     if [ "$CURRENT_VERSION" = "$VERSION" ]; then
-        printf "$${BOLD}Vault version $CURRENT_VERSION is already installed and up-to-date.\n\n"
+        printf "Vault version $CURRENT_VERSION is already installed and up-to-date.\n\n"
         installation_needed=0
     fi
 fi
 
 if [ $installation_needed -eq 1 ]; then
-    printf "$${BOLD}Installing or updating Vault CLI ...\n\n"
+    printf "Installing or updating Vault CLI ...\n\n"
 
     # Check if curl is installed
     if ! command -v curl &>/dev/null; then
