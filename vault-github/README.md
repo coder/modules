@@ -9,7 +9,7 @@ tags: [helper, integration, vault, github]
 
 # Hashicorp Vault Integration (GitHub)
 
-This module lets you authenticate with [Hashicorp Vault](https://www.vaultproject.io/) in your Coder workspaces using GitHub [external auth](https://coder.com/docs/v2/latest/admin/external-auth).
+This module lets you authenticate with [Hashicorp Vault](https://www.vaultproject.io/) in your Coder workspaces using [external auth](https://coder.com/docs/v2/latest/admin/external-auth) for GitHub.
 
 ```hcl
 module "vault" {
@@ -28,7 +28,7 @@ vault kv get -mount=secret my-secret
 or using the Vault API:
 
 ```shell
-curl -H "X-Vault-Token: $VAULT_TOKEN" -X GET $VAULT_ADDR/v1/secret/data/my-secret
+curl -H "X-Vault-Token: ${VAULT_TOKEN}" -X GET "${VAULT_ADDR}/v1/secret/data/my-secret"
 ```
 
 ![Vault login](../.images/vault-login.png)
