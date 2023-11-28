@@ -45,7 +45,7 @@ if [ $installation_needed -eq 1 ]; then
 
     # Download and install Vault
     printf "Installing or updating Vault CLI ...\n\n"
-    curl -sLo vault.zip "https://releases.hashicorp.com/vault/${VERSION}/vault_${VERSION}_linux_amd64.zip"
+    curl -Lo vault.zip "https://releases.hashicorp.com/vault/${VERSION}/vault_${VERSION}_linux_amd64.zip"
     if [ ! -f vault.zip ]; then
         printf "Failed to download Vault.\n"
         exit 1
