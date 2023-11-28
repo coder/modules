@@ -9,11 +9,11 @@ fetch() {
   dest="$1"
   url="$2"
   if command -v curl; then
-    curl -sSL --fail "$url" -o "$dest"
+    curl -sSL --fail "$${url}" -o "$${dest}"
   elif command -v wget; then
-    wget -O "$dest" "$url"
+    wget -O "$${dest}" "$${url}"
   elif command -v busybox; then
-    busybox wget -O "$dest" "$url"
+    busybox wget -O "$${dest}" "$${url}"
   else
     printf "curl, wget, or busybox is not installed. Please install curl or wget in your image.\n"
     exit 1
