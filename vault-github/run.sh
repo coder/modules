@@ -5,11 +5,11 @@ set -e
 fetch() {
   dest="$1"
   url="$2"
-  if command -v curl >/dev/null 2>&1; then
+  if command -v curl > /dev/null 2>&1; then
     curl -sSL --fail "$${url}" -o "$${dest}"
-  elif command -v wget >/dev/null 2>&1; then
+  elif command -v wget > /dev/null 2>&1; then
     wget -O "$${dest}" "$${url}"
-  elif command -v busybox >/dev/null 2>&1; then
+  elif command -v busybox > /dev/null 2>&1; then
     busybox wget -O "$${dest}" "$${url}"
   else
     printf "curl, wget, or busybox is not installed. Please install curl or wget in your image.\n"
@@ -18,9 +18,9 @@ fetch() {
 }
 
 unzip() {
-  if command -v unzip >/dev/null 2>&1; then
+  if command -v unzip > /dev/null 2>&1; then
     command unzip "$@"
-  elif command -v busybox >/dev/null 2>&1; then
+  elif command -v busybox > /dev/null 2>&1; then
     busybox unzip "$@"
   else
     printf "unzip or busybox is not installed. Please install unzip in your image.\n"
@@ -41,7 +41,7 @@ fi
 
 # Check if vault is installed and has the correct version
 installation_needed=1
-if command -v vault >/dev/null 2>&1; then
+if command -v vault > /dev/null 2>&1; then
   CURRENT_VERSION=$(vault version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
   if [ "$${CURRENT_VERSION}" = "${INSTALL_VERSION}" ]; then
     printf "Vault version %s is already installed and up-to-date.\n\n" "$${CURRENT_VERSION}"
@@ -82,7 +82,7 @@ fi
 
 # Authenticate with Vault
 printf "🔑 Authenticating with Vault ...\n\n"
-GITHUB_TOKEN=$(coder external-auth access-token "${GITHUB_EXTERNAL_AUTH_ID})"
+GITHUB_TOKEN=$(coder external-auth access-token "${GITHUB_EXTERNAL_AUTH_ID}")
 if [ $? -ne 0 ]; then
   printf "Authentication with Vault failed. Please check your credentials.\n"
   exit 1
