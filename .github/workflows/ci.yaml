@@ -20,6 +20,8 @@ jobs:
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
+      - name: Setup
+        run: bun install
       - run: bun test
   pretty:
     runs-on: ubuntu-latest
@@ -28,6 +30,8 @@ jobs:
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
+      - name: Setup
+        run: bun install
       - name: Format
         run: bun fmt:ci
       - name: Lint
