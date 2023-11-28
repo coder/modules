@@ -42,7 +42,9 @@ variable "vault_cli_version" {
   }
 }
 
+data "coder_workspace" "me" {}
 resource "coder_script" "vault" {
+  count        = data.coder_workspace.me.start_count
   agent_id     = var.agent_id
   display_name = "vault"
   icon         = "/icon/vault.svg"
