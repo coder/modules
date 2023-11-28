@@ -1,15 +1,35 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 VAULT_ADDR=${VAULT_ADDR}
 VERSION=${VERSION}
 AUTH_PATH=${AUTH_PATH}
 GITHUB_EXTERNAL_AUTH_ID=${GITHUB_EXTERNAL_AUTH_ID}
 
-# Ensure curl is installed
-if ! command -v curl &>/dev/null; then
-    printf "curl is not installed. Please install curl in your image.\n"
-    exit 1
-fi
+fetch() {  
+    dest="$1"  
+    url="$2"  
+    if command -v curl; then  
+        curl -sSL --fail "${url}" -o "${dest}"  
+    elif command -v wget; then  
+        wget -O "${dest}" "${url}"  
+    elif command -v busybox; then  
+        busybox wget -O "${dest}" "${url}"  
+    else  
+        printf "curl, wget, or busybox is not installed. Please install curl or wget in your image.\n"  
+        exit 1  
+    fi  
+}  
+
+unzip() {  
+    if command -v unzip; then  
+        command unzip "$@"  
+    elif command -v busybox; then  
+        busybox unzip "$@"  
+    else  
+        printf "unzip or busybox is not installed. Please install unzip in your image.\n"  
+        exit 1  
+    fi  
+}  
 
 # Fetch latest version of Vault if VERSION is 'latest'
 if [ "${VERSION}" = "latest" ]; then
@@ -26,35 +46,17 @@ installation_needed=1
 if command -v vault &>/dev/null; then
     CURRENT_VERSION=$(vault version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
     if [ "$CURRENT_VERSION" = "$VERSION" ]; then
-        printf "Vault version $CURRENT_VERSION is already installed and up-to-date.\n\n"
+        printf "Vault version %s is already installed and up-to-date.\n\n" "$CURRENT_VERSION"  
         installation_needed=0
     fi
 fi
 
 if [ $installation_needed -eq 1 ]; then
-    # Check if unzip or busybox is installed
-    if ! command -v unzip &>/dev/null; then
-        if command -v busybox &>/dev/null && busybox --list | grep -q '^unzip$'; then
-            alias unzip='busybox unzip'
-            printf "Using busybox unzip.\n"
-        else
-            printf "unzip is not installed and busybox unzip is not available. Please install unzip in your image.\n"
-            exit 1
-        fi
-    fi
-
     # Download and install Vault
     printf "Installing or updating Vault CLI ...\n\n"
-    curl -Lo vault.zip "https://releases.hashicorp.com/vault/${VERSION}/vault_${VERSION}_linux_amd64.zip"
-    if [ ! -f vault.zip ]; then
-        printf "Failed to download Vault.\n"
-        exit 1
-    fi
-    unzip -o vault.zip
-    if [ ! -f vault ]; then
-        printf "Failed to unzip Vault.\n"
-        exit 1
-    fi
+    fetch vault.zip "https://releases.hashicorp.com/vault/${VERSION}/vault_${VERSION}_linux_amd64.zip"
+    unzip vault.zip
+    rm vault.zip
     if sudo mv vault /usr/local/bin/vault 2>/dev/null; then
         printf "Vault installed successfully!\n\n"
     else
