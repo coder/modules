@@ -31,8 +31,8 @@ unzip() {
   fi
 }
 
-# Fetch latest version of Vault if VERSION is 'latest'
-if [ "$${INSTALL_VERSION}" == "latest" ]; then
+# Fetch latest version of Vault if INSTALL_VERSION is 'latest'
+if [ "$${INSTALL_VERSION}" = "latest" ]; then
   LATEST_VERSION=$(curl -s https://releases.hashicorp.com/vault/ | grep -oP 'vault/\K[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -n 1)
   printf "Latest version of Vault is %s.\n\n" "$${LATEST_VERSION}"
   if [ -z "$${LATEST_VERSION}" ]; then
