@@ -18,7 +18,7 @@ module "vault" {
     vault_addr = "https://vault.example.com"
 }
 
-# A workaround until we have https://github.com/coder/terraform-provider-coder/issues/170 
+# A workaround until we have https://github.com/coder/terraform-provider-coder/issues/170
 resource "coder_agent" "example" {
     ...
     env = {
