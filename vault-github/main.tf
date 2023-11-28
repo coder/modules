@@ -44,9 +44,8 @@ variable "vault_cli_version" {
 
 data "coder_workspace" "me" {}
 resource "coder_script" "vault" {
-  count        = data.coder_workspace.me.start_count
   agent_id     = var.agent_id
-  display_name = "vault"
+  display_name = "Vault (GitHub)"
   icon         = "/icon/vault.svg"
   script = templatefile("${path.module}/run.sh", {
     VAULT_ADDR : var.vault_addr,
