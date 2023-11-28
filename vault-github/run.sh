@@ -46,14 +46,26 @@ if [ $installation_needed -eq 1 ]; then
     # Download and install Vault
     printf "Installing or updating Vault CLI ...\n\n"
     curl -sLo vault.zip "https://releases.hashicorp.com/vault/${VERSION}/vault_${VERSION}_linux_amd64.zip"
+    if [ ! -f vault.zip ]; then
+        printf "Failed to download Vault.\n"
+        exit 1
+    fi
     unzip -o vault.zip
-    sudo mv vault /usr/local/bin/vault || {
+    if [ ! -f vault ]; then
+        printf "Failed to unzip Vault.\n"
+        exit 1
+    fi
+    if sudo mv vault /usr/local/bin/vault 2>/dev/null; then
+        printf "Vault installed successfully!\n\n"
+    else
         mkdir -p ~/.local/bin
         mv vault ~/.local/bin/vault
+        if [ ! -f ~/.local/bin/vault ]; then
+            printf "Failed to move Vault to local bin.\n"
+            exit 1
+        fi
         printf "Please add ~/.local/bin to your PATH to use vault CLI.\n"
-    }
-    rm vault.zip
-    printf "🥳 Vault installed successfully!\n\n"
+    fi
 fi
 
 # Authenticate with Vault
@@ -69,25 +81,5 @@ export VAULT_ADDR=$VAULT_ADDR
 # Login to Vault using GitHub token
 printf "🔑 Logging in to Vault ...\n\n"
 vault login -no-print -method=github -path=/$AUTH_PATH token=$GITHUB_TOKEN
-
-# Add VAULT_ADDR to shell login scripts if not already present
-# bash
-if [[ -f ~/.bashrc ]] && ! grep -q "VAULT_ADDR" ~/.bashrc; then
-    printf "\nAdding VAULT_ADDR to ~/.bashrc ...\n"
-    echo "export VAULT_ADDR=$VAULT_ADDR" >>~/.bashrc
-fi
-
-# zsh
-if [[ -f ~/.zshrc ]] && ! grep -q "VAULT_ADDR" ~/.zshrc; then
-    printf "\nAdding VAULT_ADDR to ~/.zshrc ...\n"
-    echo "export VAULT_ADDR=$VAULT_ADDR" >>~/.zshrc
-fi
-
-# fish
-if [[ -f ~/.config/fish/config.fish ]] && ! grep -q "VAULT_ADDR" ~/.config/fish/config.fish; then
-    printf "\nAdding VAULT_ADDR to ~/.config/fish/config.fish ...\n"
-    echo "set -x VAULT_ADDR $VAULT_ADDR" >>~/.config/fish/config.fish
-fi
-
 printf "\n🥳 Vault authentication complete!\n\n"
 printf "You can now use Vault CLI to access secrets.\n"
