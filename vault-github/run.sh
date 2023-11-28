@@ -41,7 +41,7 @@ fi
 
 # Check if vault is installed and has the correct version
 installation_needed=1
-if command -v vault &> /dev/null; then
+if command -v vault >/dev/null 2>&1; then
   CURRENT_VERSION=$(vault version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
   if [ "$${CURRENT_VERSION}" = "${INSTALL_VERSION}" ]; then
     printf "Vault version %s is already installed and up-to-date.\n\n" "$${CURRENT_VERSION}"
