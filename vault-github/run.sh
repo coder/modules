@@ -34,6 +34,7 @@ unzip() {
 # Fetch latest version of Vault if VERSION is 'latest'
 if [ "${VERSION}" = "latest" ]; then
   LATEST_VERSION=$(curl -s https://releases.hashicorp.com/vault/ | grep -oP 'vault/\K[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -n 1)
+  printf "Latest version of Vault is %s.\n\n" "$LATEST_VERSION"
   if [ -z "$LATEST_VERSION" ]; then
     printf "Failed to determine the latest Vault version.\n"
     exit 1
@@ -53,9 +54,21 @@ fi
 
 if [ $installation_needed -eq 1 ]; then
   # Download and install Vault
-  printf "Installing or updating Vault CLI ...\n\n"
+    if [ -z "$CURRENT_VERSION" ]; then
+        printf "Installing Vault CLI ...\n\n"
+    else
+        printf "Upgrading Vault CLI ...\n\n"
+    fi
   fetch vault.zip "https://releases.hashicorp.com/vault/${VERSION}/vault_${VERSION}_linux_amd64.zip"
+  if [ $? -ne 0 ]; then
+    printf "Failed to download Vault.\n"
+    exit 1
+  fi
   unzip vault.zip
+  if [ $? -ne 0 ]; then
+    printf "Failed to unzip Vault.\n"
+    exit 1
+  fi
   rm vault.zip
   if sudo mv vault /usr/local/bin/vault 2> /dev/null; then
     printf "Vault installed successfully!\n\n"
