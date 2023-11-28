@@ -5,11 +5,11 @@ set -e
 fetch() {
   dest="$1"
   url="$2"
-  if command -v curl; then
+  if command -v curl >/dev/null 2>&1; then
     curl -sSL --fail "$${url}" -o "$${dest}"
-  elif command -v wget; then
+  elif command -v wget >/dev/null 2>&1; then
     wget -O "$${dest}" "$${url}"
-  elif command -v busybox; then
+  elif command -v busybox >/dev/null 2>&1; then
     busybox wget -O "$${dest}" "$${url}"
   else
     printf "curl, wget, or busybox is not installed. Please install curl or wget in your image.\n"
@@ -18,9 +18,9 @@ fetch() {
 }
 
 unzip() {
-  if command -v unzip; then
+  if command -v unzip >/dev/null 2>&1; then
     command unzip "$@"
-  elif command -v busybox; then
+  elif command -v busybox >/dev/null 2>&1; then
     busybox unzip "$@"
   else
     printf "unzip or busybox is not installed. Please install unzip in your image.\n"
@@ -49,7 +49,7 @@ if command -v vault >/dev/null 2>&1; then
   fi
 fi
 
-if [ $installation_needed -eq 1 ]; then
+if [ $${installation_needed} -eq 1 ]; then
   # Download and install Vault
   if [ -z "$${CURRENT_VERSION}" ]; then
     printf "Installing Vault CLI ...\n\n"
@@ -93,5 +93,5 @@ export VAULT_ADDR="${VAULT_ADDR}"
 # Login to Vault using GitHub token
 printf "🔑 Logging in to Vault ...\n\n"
 vault login -no-print -method=github -path=/${AUTH_PATH} token="$${GITHUB_TOKEN}"
-printf "\n🥳 Vault authentication complete!\n\n"
+printf "🥳 Vault authentication complete!\n\n"
 printf "You can now use Vault CLI to access secrets.\n"
