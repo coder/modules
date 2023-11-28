@@ -52,7 +52,7 @@ resource "coder_script" "vault" {
     VAULT_ADDR : var.vault_addr,
     AUTH_PATH : var.vault_github_auth_path,
     GITHUB_EXTERNAL_AUTH_ID : data.coder_external_auth.github.id,
-    VERSION : var.vault_cli_version,
+    INSTALL_VERSION : var.vault_cli_version,
   })
   run_on_start       = true
   start_blocks_login = true

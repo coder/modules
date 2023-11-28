@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 VAULT_ADDR=${VAULT_ADDR}
-VERSION=${VERSION}
+INSTALL_VERSION=${INSTALL_VERSION}
 AUTH_PATH=${AUTH_PATH}
 GITHUB_EXTERNAL_AUTH_ID=${GITHUB_EXTERNAL_AUTH_ID}
 
@@ -32,34 +32,34 @@ unzip() {
 }
 
 # Fetch latest version of Vault if VERSION is 'latest'
-if [ "${VERSION}" = "latest" ]; then
+if [ "$${INSTALL_VERSION}" == "latest" ]; then
   LATEST_VERSION=$(curl -s https://releases.hashicorp.com/vault/ | grep -oP 'vault/\K[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -n 1)
-  printf "Latest version of Vault is %s.\n\n" "$LATEST_VERSION"
-  if [ -z "$LATEST_VERSION" ]; then
+  printf "Latest version of Vault is %s.\n\n" "$${LATEST_VERSION}"
+  if [ -z "$${LATEST_VERSION}" ]; then
     printf "Failed to determine the latest Vault version.\n"
     exit 1
   fi
-  VERSION=$LATEST_VERSION
+  INSTALL_VERSION=$${LATEST_VERSION}
 fi
 
 # Check if vault is installed and has the correct version
 installation_needed=1
 if command -v vault &> /dev/null; then
   CURRENT_VERSION=$(vault version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
-  if [ "$CURRENT_VERSION" = "$VERSION" ]; then
-    printf "Vault version %s is already installed and up-to-date.\n\n" "$CURRENT_VERSION"
+  if [ "$${CURRENT_VERSION}" = "$${INSTALL_VERSION}" ]; then
+    printf "Vault version %s is already installed and up-to-date.\n\n" "$${CURRENT_VERSION}"
     installation_needed=0
   fi
 fi
 
 if [ $installation_needed -eq 1 ]; then
   # Download and install Vault
-    if [ -z "$CURRENT_VERSION" ]; then
+    if [ -z "$${CURRENT_VERSION}" ]; then
         printf "Installing Vault CLI ...\n\n"
     else
         printf "Upgrading Vault CLI ...\n\n"
     fi
-  fetch vault.zip "https://releases.hashicorp.com/vault/${VERSION}/vault_${VERSION}_linux_amd64.zip"
+  fetch vault.zip "https://releases.hashicorp.com/vault/$${INSTALL_VERSION}/vault_$${INSTALL_VERSION}_linux_amd64.zip"
   if [ $? -ne 0 ]; then
     printf "Failed to download Vault.\n"
     exit 1
@@ -85,16 +85,16 @@ fi
 
 # Authenticate with Vault
 printf "🔑 Authenticating with Vault ...\n\n"
-GITHUB_TOKEN=$(coder external-auth access-token $GITHUB_EXTERNAL_AUTH_ID)
+GITHUB_TOKEN=$(coder external-auth access-token "$${GITHUB_EXTERNAL_AUTH_ID})"
 if [ $? -ne 0 ]; then
   printf "Authentication with Vault failed. Please check your credentials.\n"
   exit 1
 fi
 
-export VAULT_ADDR=$VAULT_ADDR
+export VAULT_ADDR="$${VAULT_ADDR}"
 
 # Login to Vault using GitHub token
 printf "🔑 Logging in to Vault ...\n\n"
-vault login -no-print -method=github -path=/$AUTH_PATH token=$GITHUB_TOKEN
+vault login -no-print -method=github -path=/$${AUTH_PATH} token="$${GITHUB_TOKEN}"
 printf "\n🥳 Vault authentication complete!\n\n"
 printf "You can now use Vault CLI to access secrets.\n"
