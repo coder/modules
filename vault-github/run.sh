@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-BOLD='\033[0;1m'
 VAULT_ADDR=${VAULT_ADDR}
 VERSION=${VERSION}
 AUTH_PATH=${AUTH_PATH}
@@ -27,7 +26,7 @@ installation_needed=1
 if command -v vault &>/dev/null; then
     CURRENT_VERSION=$(vault version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
     if [ "$CURRENT_VERSION" = "$VERSION" ]; then
-        printf "${BOLD}Vault version $CURRENT_VERSION is already installed and up-to-date.\n\n"
+        printf "Vault version $CURRENT_VERSION is already installed and up-to-date.\n\n"
         installation_needed=0
     fi
 fi
