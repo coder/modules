@@ -35,4 +35,4 @@ jobs:
       - name: Format
         run: bun fmt:ci
       - name: Lint
-        run: bun install && bun lint
+        run: bun lint

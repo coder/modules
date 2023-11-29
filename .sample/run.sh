@@ -1,4 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
+
+# Convert templated variables to shell variables
+LOG_PATH=${LOG_PATH}
 
 BOLD='\033[0;1m'
 printf "$${BOLD}Installing MODULE_NAME ...\n\n"
@@ -13,6 +16,6 @@ printf "👷 Starting MODULE_NAME in background...\n\n"
 # 1. Use & to run it in background
 # 2. redirct stdout and stderr to log files
 
-./app >${LOG_PATH} 2>&1 &
+./app > "$${LOG_PATH}" 2>&1 &
 
-printf "check logs at ${LOG_PATH} \n\n"
+printf "check logs at %s\n\n" "$${LOG_PATH}"
