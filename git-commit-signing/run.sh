@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
 
+# Convert templated variables to shell variables
+CODER_AGENT_URL=${CODER_AGENT_URL}
+CODER_AGENT_TOKEN=${CODER_AGENT_TOKEN}
+
 if ! command -v git > /dev/null; then
   echo "git is not installed"
   exit 1
@@ -20,8 +24,8 @@ mkdir -p ~/.ssh/git-commit-signing
 echo "Downloading SSH key"
 
 ssh_key=$(curl --request GET \
-  --url "${CODER_AGENT_URL}api/v2/workspaceagents/me/gitsshkey" \
-  --header "Coder-Session-Token: ${CODER_AGENT_TOKEN}")
+  --url "$${CODER_AGENT_URL}api/v2/workspaceagents/me/gitsshkey" \
+  --header "Coder-Session-Token: $${CODER_AGENT_TOKEN}")
 
 jq --raw-output ".public_key" > ~/.ssh/git-commit-signing/coder.pub << EOF
 $ssh_key

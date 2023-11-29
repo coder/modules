@@ -9,18 +9,20 @@ printf "🥳 Installation comlete! \n\n"
 
 printf "👷 Starting filebrowser in background... \n\n"
 
+# Convert templated variables to shell variables
 ROOT_DIR=${FOLDER}
 ROOT_DIR=$${ROOT_DIR/\~/$HOME}
+PORT=${PORT}
+DB_PATH=${DB_PATH}
+LOG_PATH=${LOG_PATH}
 
 DB_FLAG=""
-if [ "${DB_PATH}" != "filebrowser.db" ]; then
-  DB_FLAG=" -d ${DB_PATH}"
+if [ "$${DB_PATH}" != "filebrowser.db" ]; then
+  DB_FLAG="-d $${DB_PATH}"
 fi
 
 printf "📂 Serving $${ROOT_DIR} at http://localhost:${PORT} \n\n"
 
-printf "Running 'filebrowser --noauth --root $ROOT_DIR --port ${PORT}$${DB_FLAG}' \n\n"
+filebrowser --noauth --root "$${ROOT_DIR}" --port "$${PORT}" "$${DB_FLAG}" > "$${LOG_PATH}" 2>&1 &
 
-filebrowser --noauth --root $ROOT_DIR --port ${PORT}$${DB_FLAG} > ${LOG_PATH} 2>&1 &
-
-printf "📝 Logs at ${LOG_PATH} \n\n"
+printf "📝 Logs at %s \n\n" "$${LOG_PATH}"
