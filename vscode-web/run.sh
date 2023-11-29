@@ -1,8 +1,10 @@
 #!/usr/bin/env sh
 
+# shellcheck disable=SC2034
 BOLD='\033[0;1m'
 
 # Convert templated variables to shell variables
+# shellcheck disable=SC2269
 PORT=${PORT}
 LOG_PATH=${LOG_PATH}
 INSTALL_DIR=${INSTALL_DIR}
@@ -10,6 +12,7 @@ INSTALL_DIR=${INSTALL_DIR}
 # Create install directory if it doesn't exist
 mkdir -p "$${INSTALL_DIR}"
 
+# shellcheck disable=SC2059
 printf "$${BOLD}Installing vscode-cli!\n"
 
 # Download and extract code-cli tarball

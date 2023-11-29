@@ -1,10 +1,15 @@
 #!/usr/bin/env sh
 
 # Convert templated variables to shell variables
+# shellcheck disable=SC2269
 LOG_PATH=${LOG_PATH}
 
+# shellcheck disable=SC2034
 BOLD='\033[0;1m'
+
+# shellcheck disable=SC2059
 printf "$${BOLD}Installing MODULE_NAME ...\n\n"
+
 # Add code here
 # Use varibles from the templatefile function in main.tf
 # e.g. LOG_PATH, PORT, etc.
