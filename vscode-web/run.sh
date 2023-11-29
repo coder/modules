@@ -7,7 +7,6 @@ PORT=${PORT}
 LOG_PATH=${LOG_PATH}
 INSTALL_DIR=${INSTALL_DIR}
 
-
 # Create install directory if it doesn't exist
 mkdir -p "$${INSTALL_DIR}"
 
