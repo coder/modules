@@ -52,7 +52,7 @@ describe("slackme", async () => {
     await assertSlackMessage({
       command: "echo test",
       durationMS: 2,
-      output: "👨‍💻 `echo test` completed in 2ms",
+      output: "👨‍💻 `test` completed in 2ms",
     });
   });
 
@@ -63,7 +63,7 @@ describe("slackme", async () => {
 \`$COMMAND\`
 executed`,
       output: `this command:
-\`echo test\`
+\`test\`
 executed`,
     });
   });
@@ -73,7 +73,7 @@ executed`,
       command: "echo test",
       format: `$COMMAND took $DURATION`,
       durationMS: 150,
-      output: "echo test took 150ms",
+      output: "test took 150ms",
     });
   });
 
@@ -82,7 +82,7 @@ executed`,
       command: "echo test",
       format: `$COMMAND took $DURATION`,
       durationMS: 15000,
-      output: "echo test took 15.0s",
+      output: "test took 15.0s",
     });
   });
 
@@ -91,7 +91,7 @@ executed`,
       command: "echo test",
       format: `$COMMAND took $DURATION`,
       durationMS: 120000,
-      output: "echo test took 2m 0.0s",
+      output: "test took 2m 0.0s",
     });
   });
 
@@ -100,7 +100,7 @@ executed`,
       command: "echo test",
       format: `$COMMAND took $DURATION`,
       durationMS: 60000 * 60,
-      output: "echo test took 1hr 0m 0.0s",
+      output: "test took 1hr 0m 0.0s",
     });
   });
 });
