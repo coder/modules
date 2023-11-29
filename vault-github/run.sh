@@ -1,6 +1,10 @@
 #!/usr/bin/env sh
 
-set -e
+# Convert all templated variables to shell variables
+INSTALL_VERSION=${INSTALL_VERSION}
+VAULT_ADDR=${VAULT_ADDR}
+GITHUB_EXTERNAL_AUTH_ID=${GITHUB_EXTERNAL_AUTH_ID}
+AUTH_PATH=${AUTH_PATH}
 
 fetch() {
   dest="$1"
@@ -28,8 +32,8 @@ unzip() {
   fi
 }
 
-# Fetch latest version of Vault if INSTALL_VERSION is 'latest'
-if [ "${INSTALL_VERSION}" = "latest" ]; then
+# Fetch the latest version of Vault if INSTALL_VERSION is 'latest'
+if [ "$${INSTALL_VERSION}" = "latest" ]; then
   LATEST_VERSION=$(curl -s https://releases.hashicorp.com/vault/ | grep -oP 'vault/\K[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -n 1)
   printf "Latest version of Vault is %s.\n\n" "$${LATEST_VERSION}"
   if [ -z "$${LATEST_VERSION}" ]; then
@@ -39,11 +43,11 @@ if [ "${INSTALL_VERSION}" = "latest" ]; then
   VERSION=$${LATEST_VERSION}
 fi
 
-# Check if vault is installed and has the correct version
+# Check if the vault CLI is installed and has the correct version
 installation_needed=1
 if command -v vault > /dev/null 2>&1; then
   CURRENT_VERSION=$(vault version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
-  if [ "$${CURRENT_VERSION}" = "${INSTALL_VERSION}" ]; then
+  if [ "$${CURRENT_VERSION}" = "$${INSTALL_VERSION}" ]; then
     printf "Vault version %s is already installed and up-to-date.\n\n" "$${CURRENT_VERSION}"
     installation_needed=0
   fi
@@ -82,16 +86,16 @@ fi
 
 # Authenticate with Vault
 printf "🔑 Authenticating with Vault ...\n\n"
-GITHUB_TOKEN=$(coder external-auth access-token "${GITHUB_EXTERNAL_AUTH_ID}")
+GITHUB_TOKEN=$(coder external-auth access-token "$${GITHUB_EXTERNAL_AUTH_ID}")
 if [ $? -ne 0 ]; then
   printf "Authentication with Vault failed. Please check your credentials.\n"
   exit 1
 fi
 
-export VAULT_ADDR="${VAULT_ADDR}"
+export VAULT_ADDR="$${VAULT_ADDR}"
 
-# Login to Vault using GitHub token
+# Login to vault using the GitHub token
 printf "🔑 Logging in to Vault ...\n\n"
-vault login -no-print -method=github -path=/${AUTH_PATH} token="$${GITHUB_TOKEN}"
+vault login -no-print -method=github -path=/$${AUTH_PATH} token="$${GITHUB_TOKEN}"
 printf "🥳 Vault authentication complete!\n\n"
 printf "You can now use Vault CLI to access secrets.\n"
