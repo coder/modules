@@ -31,10 +31,10 @@ variable "jetbrains_ides" {
   validation {
     condition = (
       alltrue([
-        for code in var.jetbrains_ides : contains(["IU", "PS", "WS", "PY", "CL", "GO", "DB", "RD", "RM"], code)
+        for code in var.jetbrains_ides : contains(["IU", "PS", "WS", "PY", "CL", "GO", "RM"], code)
       ])
     )
-    error_message = "The jetbrains_ides must be a list of valid product codes. Valid product codes are: IU, PS, WS, PY, CL, GO, DB, RD, RM."
+    error_message = "The jetbrains_ides must be a list of valid product codes. Valid product codes are IU, PS, WS, PY, CL, GO, RM."
   }
   # check if the list is empty
   validation {
@@ -70,20 +70,10 @@ locals {
       name  = "PyCharm Professional",
       value = jsonencode(["PY", "232.10203.26", "https://download.jetbrains.com/python/pycharm-professional-2023.2.4.tar.gz"])
     },
-    "RD" = {
-      icon  = "/icon/rider.svg",
-      name  = "Rider",
-      value = jsonencode(["RD", "232.10203.29", "https://download.jetbrains.com/rider/JetBrains.Rider-2023.2.3.tar.gz"])
-    }
     "CL" = {
       icon  = "/icon/clion.svg",
       name  = "CLion",
       value = jsonencode(["CL", "232.9921.42", "https://download.jetbrains.com/cpp/CLion-2023.2.2.tar.gz"])
-    },
-    "DB" = {
-      icon  = "/icon/datagrip.svg",
-      name  = "DataGrip",
-      value = jsonencode(["DB", "232.10203.8", "https://download.jetbrains.com/datagrip/datagrip-2023.2.3.tar.gz"])
     },
     "PS" = {
       icon  = "/icon/phpstorm.svg",
