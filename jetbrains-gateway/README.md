@@ -15,7 +15,6 @@ This module adds a JetBrains Gateway Button to open any workspace with a single 
 module "jetbrains_gateway" {
   source         = "https://registry.coder.com/modules/jetbrains-gateway"
   agent_id       = coder_agent.example.id
-  agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["GO", "WS", "IU", "PY", "PS", "CL", "RM"]
   default        = "PY"
@@ -32,7 +31,6 @@ module "jetbrains_gateway" {
 module "jetbrains_gateway" {
   source          = "https://registry.coder.com/modules/jetbrains-gateway"
   agent_id        = coder_agent.example.id
-  agent_name      = "example"
   folder          = "/home/coder/example"
   jetbrains_ides  = ["GO", "WS"]
   default         = "GO"
