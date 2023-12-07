@@ -11,7 +11,6 @@ describe("jetbrains-gateway", async () => {
   await testRequiredVariables(import.meta.dir, {
     agent_id: "foo",
     folder: "/baz/",
-    jetbrains_ides: '["IU", "GO", "PY"]',
   });
 
   it("default to first ide", async () => {
