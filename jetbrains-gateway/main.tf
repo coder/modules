@@ -28,6 +28,7 @@ variable "default" {
 variable "jetbrains_ides" {
   type        = list(string)
   description = "The list of IDE product codes."
+  default     = ["IU", "PS", "WS", "PY", "CL", "GO", "RM"]
   validation {
     condition = (
       alltrue([
