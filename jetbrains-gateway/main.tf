@@ -16,7 +16,7 @@ variable "agent_id" {
 
 variable "agent_name" {
   type        = string
-  description = "Agent name/"
+  description = "Agent name."
 }
 
 variable "folder" {
