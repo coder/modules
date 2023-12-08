@@ -10,12 +10,14 @@ describe("jetbrains-gateway", async () => {
 
   await testRequiredVariables(import.meta.dir, {
     agent_id: "foo",
+    agent_name: "foo",
     folder: "/baz/",
   });
 
   it("default to first ide", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
+      agent_name: "foo",
       folder: "/baz/",
       jetbrains_ides: '["IU", "GO", "PY"]',
     });
