@@ -14,6 +14,11 @@ variable "agent_id" {
   description = "The ID of a Coder agent."
 }
 
+variable "agent_name" {
+  type        = string
+  description = "Agent name."
+}
+
 variable "folder" {
   type        = string
   description = "The directory to open in the IDE. e.g. /home/coder/project"
@@ -119,8 +124,8 @@ resource "coder_app" "gateway" {
   url = join("", [
     "jetbrains-gateway://connect#type=coder&workspace=",
     data.coder_workspace.me.name,
-    "&agent_id=",
-    var.agent_id,
+    "&agent=",
+    var.agent_name,
     "&folder=",
     var.folder,
     "&url=",
