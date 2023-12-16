@@ -35,6 +35,8 @@ resource "coder_app" "vscode" {
     data.coder_workspace.me.name,
     "&folder=",
     var.folder,
+    "&url=",
+    data.coder_workspace.me.access_url,
     "&token=$SESSION_TOKEN",
     ]) : join("", [
     "vscode://coder.coder-remote/open?owner=",
