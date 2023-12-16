@@ -18,4 +18,4 @@ printf "🥳 vscode-cli has been installed.\n\n"
 
 echo "👷 Running ${INSTALL_DIR}/bin/code serve-web --port ${PORT} --without-connection-token --accept-server-license-terms in the background..."
 echo "Check logs at ${LOG_PATH}!"
-${INSTALL_DIR}/code serve-web --port ${PORT} --without-connection-token --accept-server-license-terms >${LOG_PATH} 2>&1 &
+${INSTALL_DIR}/code serve-web --port ${PORT} --without-connection-token --accept-server-license-terms > ${LOG_PATH} 2>&1 &
