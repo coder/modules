@@ -31,13 +31,15 @@ describe("filebrowser", async () => {
     const output = await executeScriptInContainer(state, "alpine");
     expect(output.exitCode).toBe(0);
     expect(output.stdout).toEqual([
-      "\u001B[0;1mInstalling filebrowser ",
+      "\u001b[0;1mInstalling filebrowser ",
       "",
-      "🥳 Installation complete! ",
+      "🥳 Installation comlete! ",
       "",
       "👷 Starting filebrowser in background... ",
       "",
       "📂 Serving /root at http://localhost:13339 ",
+      "",
+      "Running 'filebrowser --noauth --root /root --port 13339' ",
       "",
       "📝 Logs at /tmp/filebrowser.log",
     ]);
@@ -51,13 +53,15 @@ describe("filebrowser", async () => {
     const output = await executeScriptInContainer(state, "alpine");
     expect(output.exitCode).toBe(0);
     expect(output.stdout).toEqual([
-      "\u001B[0;1mInstalling filebrowser ",
+      "\u001b[0;1mInstalling filebrowser ",
       "",
-      "🥳 Installation complete! ",
+      "🥳 Installation comlete! ",
       "",
       "👷 Starting filebrowser in background... ",
       "",
       "📂 Serving /root at http://localhost:13339 ",
+      "",
+      "Running 'filebrowser --noauth --root /root --port 13339 -d .config/filebrowser.db' ",
       "",
       "📝 Logs at /tmp/filebrowser.log",
     ]);
@@ -73,11 +77,13 @@ describe("filebrowser", async () => {
     expect(output.stdout).toEqual([
       "\u001B[0;1mInstalling filebrowser ",
       "",
-      "🥳 Installation complete! ",
+      "🥳 Installation comlete! ",
       "",
       "👷 Starting filebrowser in background... ",
       "",
       "📂 Serving /home/coder/project at http://localhost:13339 ",
+      "",
+      "Running 'filebrowser --noauth --root /home/coder/project --port 13339' ",
       "",
       "📝 Logs at /tmp/filebrowser.log",
     ]);
