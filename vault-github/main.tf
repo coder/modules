@@ -4,7 +4,7 @@ terraform {
   required_providers {
     coder = {
       source  = "coder/coder"
-      version = ">= 0.12"
+      version = ">= 0.12.4"
     }
   }
 }
@@ -43,6 +43,7 @@ variable "vault_cli_version" {
 }
 
 data "coder_workspace" "me" {}
+
 resource "coder_script" "vault" {
   agent_id     = var.agent_id
   display_name = "Vault (GitHub)"
@@ -55,6 +56,12 @@ resource "coder_script" "vault" {
   })
   run_on_start       = true
   start_blocks_login = true
+}
+
+resource "coder_env" "vault_addr" {
+  agent_id = var.agent_id
+  name     = "VAULT_ADDR"
+  value    = var.vault_addr
 }
 
 data "coder_external_auth" "github" {
