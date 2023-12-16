@@ -18,7 +18,7 @@ if [ -z "$CLONE_PATH" ]; then
 fi
 
 # Check if `git` is installed...
-if ! command -v git >/dev/null; then
+if ! command -v git > /dev/null; then
   echo "Git is not installed!"
   exit 1
 fi
