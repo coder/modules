@@ -3,7 +3,7 @@
 BOLD='\033[0;1m'
 
 # check if JFrog CLI is already installed
-if command -v jf > /dev/null 2>&1; then
+if command -v jf >/dev/null 2>&1; then
   echo "✅ JFrog CLI is already installed, skipping installation."
 else
   echo "📦 Installing JFrog CLI..."
@@ -23,15 +23,15 @@ if [ -z "${REPOSITORY_NPM}" ]; then
   echo "🤔 REPOSITORY_NPM is not set, skipping npm configuration."
 else
   # check if npm is installed and configure it to use the Artifactory "npm" repository.
-  if command -v npm > /dev/null 2>&1; then
+  if command -v npm >/dev/null 2>&1; then
     echo "📦 Configuring npm..."
     jf npmc --global --repo-resolve "${REPOSITORY_NPM}"
   fi
-  cat << EOF > ~/.npmrc
+  cat <<EOF >~/.npmrc
 email = ${ARTIFACTORY_EMAIL}
 registry = ${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
 EOF
-  jf rt curl /api/npm/auth >> ~/.npmrc
+  jf rt curl /api/npm/auth >>~/.npmrc
 fi
 
 # Configure the `pip` to use the Artifactory "python" repository.
@@ -41,7 +41,7 @@ else
   echo "🐍 Configuring pip..."
   jf pipc --global --repo-resolve "${REPOSITORY_PYPI}"
   mkdir -p ~/.pip
-  cat << EOF > ~/.pip/pip.conf
+  cat <<EOF >~/.pip/pip.conf
 [global]
 index-url = https://${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}@${JFROG_HOST}/artifactory/api/pypi/${REPOSITORY_PYPI}/simple
 EOF
