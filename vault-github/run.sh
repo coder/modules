@@ -36,12 +36,11 @@ unzip() {
 if [ "$${INSTALL_VERSION}" = "latest" ]; then
   LATEST_VERSION=$(curl -s https://releases.hashicorp.com/vault/ | grep -oP 'vault/\K[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -n 1)
   printf "Latest version of Vault is %s.\n\n" "$${LATEST_VERSION}"
-  # check if the latest version is empty
-  if [ "$${LATEST_VERSION}" = "" ]; then
+  if [ -z "$${LATEST_VERSION}" ]; then
     printf "Failed to determine the latest Vault version.\n"
     exit 1
   fi
-  VERSION="$${LATEST_VERSION}"
+  VERSION=$${LATEST_VERSION}
 fi
 
 # Check if the vault CLI is installed and has the correct version
@@ -54,10 +53,9 @@ if command -v vault > /dev/null 2>&1; then
   fi
 fi
 
-if [ "$${installation_needed}" = 1 ]; then
+if [ $${installation_needed} -eq 1 ]; then
   # Download and install Vault
-  # if the current version is not the same as the version we want to install
-  if [ "$CURRENT_VERSION" = "" ]; then
+  if [ -z "$${CURRENT_VERSION}" ]; then
     printf "Installing Vault CLI ...\n\n"
   else
     printf "Upgrading Vault CLI from version %s to %s ...\n\n" "$${CURRENT_VERSION}" "$${VERSION}"
@@ -98,6 +96,6 @@ export VAULT_ADDR="$${VAULT_ADDR}"
 
 # Login to vault using the GitHub token
 printf "🔑 Logging in to Vault ...\n\n"
-vault login -no-print -method=github -path="/$${AUTH_PATH}" token="$${GITHUB_TOKEN}"
+vault login -no-print -method=github -path=/$${AUTH_PATH} token="$${GITHUB_TOKEN}"
 printf "🥳 Vault authentication complete!\n\n"
 printf "You can now use Vault CLI to access secrets.\n"
