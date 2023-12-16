@@ -17,16 +17,6 @@ module "vault" {
     agent_id   = coder_agent.example.id
     vault_addr = "https://vault.example.com"
 }
-
-# A workaround until we have https://github.com/coder/terraform-provider-coder/issues/170
-resource "coder_agent" "example" {
-    ...
-    env = {
-        VAULT_ADDR = "https://vault.example.com"
-    }
-    ...
-}
-
 ```
 
 Then you can use the Vault CLI in your workspaces to fetch secrets from Vault:
