@@ -2,16 +2,14 @@
   "name": "modules",
   "scripts": {
     "test": "bun test",
-    "fmt": "bun x prettier --plugin prettier-plugin-sh -w **/*.sh .sample/run.sh new.sh **/*.ts **/*.md *.md && terraform fmt **/*.tf .sample/main.tf",
-    "fmt:ci": "bun x prettier --plugin prettier-plugin-sh --check **/*.sh .sample/run.sh new.sh **/*.ts **/*.md *.md && terraform fmt -check **/*.tf .sample/main.tf",
-    "lint": "bun run lint.ts && bun x shellcheck **/*.sh .sample/run.sh new.sh"
+    "fmt": "bun x prettier -w **/*.ts **/*.md *.md && terraform fmt **/*.tf",
+    "fmt:ci": "bun x prettier --check **/*.ts **/*.md *.md && terraform fmt -check **/*.tf",
+    "lint": "bun run lint.ts"
   },
   "devDependencies": {
     "bun-types": "^1.0.3",
     "gray-matter": "^4.0.3",
-    "marked": "^9.0.3",
-    "prettier-plugin-sh": "^0.13.1",
-    "shellcheck": "^2.2.0"
+    "marked": "^9.0.3"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
