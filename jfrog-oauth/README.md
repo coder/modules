@@ -12,7 +12,9 @@ tags: [integration, jfrog]
 
 Install the JF CLI and authenticate package managers with Artifactory using OAuth configured via the Coder `external-auth` feature.
 
-![JFrog OAuth](../.images/jfrog-oauth.png)
+<p align="center">
+  <img src='../.images/jfrog-oauth.png' alt="JFrog OAuth" width='600'>
+</p>
 
 ```hcl
 module "jfrog" {
