@@ -8,7 +8,7 @@ terraform {
     }
     artifactory = {
       source  = "registry.terraform.io/jfrog/artifactory"
-      version = "~> 9.8.0"
+      version = "~> 10.0.2"
     }
   }
 }
