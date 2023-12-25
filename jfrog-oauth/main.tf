@@ -95,35 +95,35 @@ output "username" {
 }
 
 resource "coder_env" "jfrog_ide_url" {
-  count = var.configure_code_server ? 1 : 0
+  count    = var.configure_code_server ? 1 : 0
   agent_id = var.agent_id
-  name  = "JFROG_IDE_URL"
-  value = var.jfrog_url
+  name     = "JFROG_IDE_URL"
+  value    = var.jfrog_url
 }
 
 resource "coder_env" "jfrog_ide_username" {
-  count = var.configure_code_server ? 1 : 0
+  count    = var.configure_code_server ? 1 : 0
   agent_id = var.agent_id
-  name  = "JFROG_IDE_USERNAME"
-  value = local.username
+  name     = "JFROG_IDE_USERNAME"
+  value    = local.username
 }
 
 resource "coder_env" "jfrog_ide_password" {
-  count = var.configure_code_server ? 1 : 0
+  count    = var.configure_code_server ? 1 : 0
   agent_id = var.agent_id
-  name  = "JFROG_IDE_PASSWORD"
-  value = data.coder_external_auth.jfrog.access_token
+  name     = "JFROG_IDE_PASSWORD"
+  value    = data.coder_external_auth.jfrog.access_token
 }
 
 resource "coder_env" "jfrog_ide_access_token" {
-  count = var.configure_code_server ? 1 : 0
+  count    = var.configure_code_server ? 1 : 0
   agent_id = var.agent_id
   name     = "JFROG_IDE_ACCESS_TOKEN"
   value    = data.coder_external_auth.jfrog.access_token
 }
 
 resource "coder_env" "jfrog_ide_store_connection" {
-  count = var.configure_code_server ? 1 : 0
+  count    = var.configure_code_server ? 1 : 0
   agent_id = var.agent_id
   name     = "JFROG_IDE_STORE_CONNECTION"
   value    = true
