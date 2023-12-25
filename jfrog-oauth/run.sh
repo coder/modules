@@ -56,3 +56,21 @@ else
   export GOPROXY="https://${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}@${JFROG_HOST}/artifactory/api/go/${REPOSITORY_GO}"
 fi
 echo "🥳 Configuration complete!"
+
+# Install the JFrog vscode extension for code-server.
+Check if CONFIGURE_CODE_SERVER is set to true
+if [ "${CONFIGURE_CODE_SERVER}" == "true" ]; then
+  if command -v code-server > /dev/null 2>&1; then
+    echo "📦 Installing JFrog extension..."
+    code-server --install-extension jfrog.jfrog-vscode-extension
+    echo "🥳 JFrog extension installed!"
+  elif command /tmp/coder-server/bin/code-server > /dev/null 2>&1; then
+    echo "📦 Installing JFrog extension..."
+    /tmp/coder-server/bin/code-server --install-extension jfrog.jfrog-vscode-extension
+    echo "🥳 JFrog extension installed!"
+  else
+    echo "🤔 code-server is not installed, skipping JFrog extension installation."
+  fi
+else
+  echo "🤔 CONFIGURE_CODE_SERVER is not set to true, skipping JFrog extension installation."
+fi

@@ -4,7 +4,7 @@ terraform {
   required_providers {
     coder = {
       source  = "coder/coder"
-      version = ">= 0.12"
+      version = ">= 0.12.4"
     }
   }
 }
@@ -33,6 +33,12 @@ variable "external_auth_id" {
 variable "agent_id" {
   type        = string
   description = "The ID of a Coder agent."
+}
+
+variable "configure_code_server" {
+  type        = bool
+  description = "Whether to configure code-server to use JFrog."
+  default     = false
 }
 
 variable "package_managers" {
@@ -69,6 +75,7 @@ resource "coder_script" "jfrog" {
     ARTIFACTORY_USERNAME : local.username,
     ARTIFACTORY_EMAIL : data.coder_workspace.me.owner_email,
     ARTIFACTORY_ACCESS_TOKEN : data.coder_external_auth.jfrog.access_token,
+    CONFIGURE_CODE_SERVER : var.configure_code_server,
     REPOSITORY_NPM : lookup(var.package_managers, "npm", ""),
     REPOSITORY_GO : lookup(var.package_managers, "go", ""),
     REPOSITORY_PYPI : lookup(var.package_managers, "pypi", ""),
@@ -85,4 +92,39 @@ output "access_token" {
 output "username" {
   description = "value of the JFrog username"
   value       = local.username
+}
+
+resource "coder_env" "jfrog_ide_url" {
+  count = var.configure_code_server ? 1 : 0
+  agent_id = var.agent_id
+  name  = "JFROG_IDE_URL"
+  value = var.jfrog_url
+}
+
+resource "coder_env" "jfrog_ide_username" {
+  count = var.configure_code_server ? 1 : 0
+  agent_id = var.agent_id
+  name  = "JFROG_IDE_USERNAME"
+  value = local.username
+}
+
+resource "coder_env" "jfrog_ide_password" {
+  count = var.configure_code_server ? 1 : 0
+  agent_id = var.agent_id
+  name  = "JFROG_IDE_PASSWORD"
+  value = data.coder_external_auth.jfrog.access_token
+}
+
+resource "coder_env" "jfrog_ide_access_token" {
+  count = var.configure_code_server ? 1 : 0
+  agent_id = var.agent_id
+  name     = "JFROG_IDE_ACCESS_TOKEN"
+  value    = data.coder_external_auth.jfrog.access_token
+}
+
+resource "coder_env" "jfrog_ide_store_connection" {
+  count = var.configure_code_server ? 1 : 0
+  agent_id = var.agent_id
+  name     = "JFROG_IDE_STORE_CONNECTION"
+  value    = true
 }
