@@ -31,6 +31,9 @@ module "jfrog" {
 }
 ```
 
+> Note
+> This module does not install `npm`, `go`, `pip`, etc but only configure them. You need to handle the installation of these tools yourself. 
+
 ## Prerequisites
 
 Coder [`external-auth`](https://coder.com/docs/v2/latest/admin/external-auth) configured with Artifactory. This requires a [custom integration](https://jfrog.com/help/r/jfrog-installation-setup-documentation/enable-new-integrations) in Artifactory with **Callback URL** set to `https://<your-coder-url>/external-auth/jfrog/callback`.
