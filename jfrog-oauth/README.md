@@ -60,7 +60,7 @@ jf pip install requests
 pip install requests
 ```
 
-### Configure code-server to with JFrog extension
+### Configure code-server with JFrog extension
 
 The [JFrog extension](https://open-vsx.org/extension/JFrog/jfrog-vscode-extension) for VS Code allows you to interact with Artifactory from within the IDE.
 
@@ -73,7 +73,7 @@ module "jfrog" {
   username_field = "username" # If you are using GitHub to login to both Coder and Artifactory, use username_field = "username"
   configure_code_server = true
   package_managers = {
-    "npm": "npm",
+    "npm": "npm",Add JFrog extension configuration for code-server
     "go": "go",
     "pypi": "pypi"
   }
