@@ -60,6 +60,25 @@ jf pip install requests
 pip install requests
 ```
 
+### Configure code-server to with JFrog extension
+
+The [JFrog extension](https://open-vsx.org/extension/JFrog/jfrog-vscode-extension) for VS Code allows you to interact with Artifactory from within the IDE.
+
+```hcl
+module "jfrog" {
+  source = "https://registry.coder.com/modules/jfrog-oauth"
+  agent_id = coder_agent.example.id
+  jfrog_url = "https://jfrog.example.com"
+  auth_method = "oauth"
+  username_field = "username" # If you are using GitHub to login to both Coder and Artifactory, use username_field = "username"
+  configure_code_server = true
+  package_managers = {
+    "npm": "npm",
+    "go": "go",
+    "pypi": "pypi"
+  }
+}
+```
 ### Using the access token in other terraform resources
 
 JFrog Access token is also available as a terraform output. You can use it in other terraform resources. For example, you can use it to configure an [Artifactory docker registry](https://jfrog.com/help/r/jfrog-artifactory-documentation/docker-registry) with the [docker terraform provider](https://registry.terraform.io/providers/kreuzwerker/docker/latest/docs).
