@@ -32,7 +32,7 @@ module "jfrog" {
 ```
 
 > Note
-> This module does not install `npm`, `go`, `pip`, etc but only configure them. You need to handle the installation of these tools yourself. 
+> This module does not install `npm`, `go`, `pip`, etc but only configure them. You need to handle the installation of these tools yourself.
 
 ## Prerequisites
 
