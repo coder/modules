@@ -35,6 +35,9 @@ variable "artifactory_access_token" {
 }
 ```
 
+> Note
+> This module does not install `npm`, `go`, `pip`, etc but only configure them. You need to handle the installation of these tools yourself.
+
 ![JFrog](../.images/jfrog.png)
 
 ## Examples
