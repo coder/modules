@@ -145,14 +145,14 @@ resource "coder_env" "jfrog_ide_password" {
   count    = var.configure_code_server ? 1 : 0
   agent_id = var.agent_id
   name     = "JFROG_IDE_PASSWORD"
-  value    = data.coder_external_auth.jfrog.access_token
+  value    = artifactory_scoped_token.me.access_token
 }
 
 resource "coder_env" "jfrog_ide_access_token" {
   count    = var.configure_code_server ? 1 : 0
   agent_id = var.agent_id
   name     = "JFROG_IDE_ACCESS_TOKEN"
-  value    = data.coder_external_auth.jfrog.access_token
+  value    = artifactory_scoped_token.me.access_token
 }
 
 resource "coder_env" "jfrog_ide_store_connection" {
