@@ -119,7 +119,7 @@ resource "coder_env" "jfrog_ide_store_connection" {
   value    = true
 }
 
-resource "coder_env" "go_proxy" {
+resource "coder_env" "goproxy" {
   count    = lookup(var.package_managers, "go", "") == "" ? 0 : 1
   agent_id = var.agent_id
   name     = "GOPROXY"
