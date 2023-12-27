@@ -32,6 +32,10 @@ email = ${ARTIFACTORY_EMAIL}
 registry = ${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
 EOF
   jf rt curl /api/npm/auth >> ~/.npmrc
+  # if npm version is greater than or equal to 9.0.0, use the new npmrc format
+  if [ "$(npm --version | cut -d. -f1)" -ge 9 ]; then
+    npm config fix
+  fi
 fi
 
 # Configure the `pip` to use the Artifactory "python" repository.
@@ -59,6 +63,7 @@ echo "🥳 Configuration complete!"
 # Install the JFrog vscode extension for code-server.
 if [ "${CONFIGURE_CODE_SERVER}" == "true" ]; then
   while ! [ -x /tmp/code-server/bin/code-server ]; do
+    counter=0
     if [ $counter -eq 30 ]; then
       echo "Timed out waiting for /tmp/code-server/bin/code-server to be installed."
       exit 1

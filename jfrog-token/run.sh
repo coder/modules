@@ -59,6 +59,7 @@ echo "🥳 Configuration complete!"
 # Install the JFrog vscode extension for code-server.
 if [ "${CONFIGURE_CODE_SERVER}" == "true" ]; then
   while ! [ -x /tmp/code-server/bin/code-server ]; do
+    counter=0
     if [ $counter -eq 30 ]; then
       echo "Timed out waiting for /tmp/code-server/bin/code-server to be installed."
       exit 1
