@@ -53,7 +53,6 @@ if [ -z "${REPOSITORY_GO}" ]; then
 else
   echo "🐹 Configuring go..."
   jf go-config --global --repo-resolve "${REPOSITORY_GO}"
-  export GOPROXY="https://${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}@${JFROG_HOST}/artifactory/api/go/${REPOSITORY_GO}"
 fi
 echo "🥳 Configuration complete!"
 
