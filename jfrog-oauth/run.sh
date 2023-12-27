@@ -57,7 +57,6 @@ fi
 echo "🥳 Configuration complete!"
 
 # Install the JFrog vscode extension for code-server.
-Check if CONFIGURE_CODE_SERVER is set to true
 if [ "${CONFIGURE_CODE_SERVER}" == "true" ]; then
   if command -v code-server > /dev/null 2>&1; then
     echo "📦 Installing JFrog extension..."
@@ -71,5 +70,5 @@ if [ "${CONFIGURE_CODE_SERVER}" == "true" ]; then
     echo "🤔 code-server is not installed, skipping JFrog extension installation."
   fi
 else
-  echo "🤔 CONFIGURE_CODE_SERVER is not set to true, skipping JFrog extension installation."
+  echo "🤔 Skipping JFrog extension installation. Set configure_code_server to true to install the JFrog extension."
 fi
