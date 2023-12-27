@@ -62,9 +62,9 @@ if [ "${CONFIGURE_CODE_SERVER}" == "true" ]; then
     echo "📦 Installing JFrog extension..."
     code-server --install-extension jfrog.jfrog-vscode-extension
     echo "🥳 JFrog extension installed!"
-  elif command /tmp/coder-server/bin/code-server > /dev/null 2>&1; then
+  elif command /tmp/code-server/bin/code-server > /dev/null 2>&1; then
     echo "📦 Installing JFrog extension..."
-    /tmp/coder-server/bin/code-server --install-extension jfrog.jfrog-vscode-extension
+    /tmp/code-server/bin/code-server --install-extension jfrog.jfrog-vscode-extension
     echo "🥳 JFrog extension installed!"
   else
     echo "🤔 code-server is not installed, skipping JFrog extension installation."
