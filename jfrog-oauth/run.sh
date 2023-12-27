@@ -47,7 +47,7 @@ index-url = https://${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}@${JFROG_
 EOF
 fi
 
-# Set GOPROXY to use the Artifactory "go" repository.
+# Configure Artifactory "go" repository.
 if [ -z "${REPOSITORY_GO}" ]; then
   echo "🤔 REPOSITORY_GO is not set, skipping go configuration."
 else
@@ -58,17 +58,18 @@ echo "🥳 Configuration complete!"
 
 # Install the JFrog vscode extension for code-server.
 if [ "${CONFIGURE_CODE_SERVER}" == "true" ]; then
-  if command -v code-server > /dev/null 2>&1; then
-    echo "📦 Installing JFrog extension..."
-    code-server --install-extension jfrog.jfrog-vscode-extension
-    echo "🥳 JFrog extension installed!"
-  elif command /tmp/code-server/bin/code-server > /dev/null 2>&1; then
-    echo "📦 Installing JFrog extension..."
-    /tmp/code-server/bin/code-server --install-extension jfrog.jfrog-vscode-extension
-    echo "🥳 JFrog extension installed!"
-  else
-    echo "🤔 code-server is not installed, skipping JFrog extension installation."
-  fi
+  while ! [ -x /tmp/code-server/bin/code-server ]; do
+    if [ $counter -eq 30 ]; then
+      echo "Timed out waiting for /tmp/code-server/bin/code-server to be installed."
+      exit 1
+    fi
+    echo "Waiting for /tmp/code-server/bin/code-server to be installed..."
+    sleep 1
+    ((counter++))
+  done
+  echo "📦 Installing JFrog extension..."
+  /tmp/code-server/bin/code-server --install-extension jfrog.jfrog-vscode-extension
+  echo "🥳 JFrog extension installed!"
 else
   echo "🤔 Skipping JFrog extension installation. Set configure_code_server to true to install the JFrog extension."
 fi
