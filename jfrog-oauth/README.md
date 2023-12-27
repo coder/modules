@@ -21,7 +21,6 @@ module "jfrog" {
   source = "https://registry.coder.com/modules/jfrog-oauth"
   agent_id = coder_agent.example.id
   jfrog_url = "https://jfrog.example.com"
-  auth_method = "oauth"
   username_field = "username" # If you are using GitHub to login to both Coder and Artifactory, use username_field = "username"
   package_managers = {
     "npm": "npm",
@@ -115,7 +114,6 @@ module "jfrog" {
   source = "https://registry.coder.com/modules/jfrog-oauth"
   agent_id = coder_agent.example.id
   jfrog_url = "https://jfrog.example.com"
-  auth_method = "oauth"
   username_field = "username" # If you are using GitHub to login to both Coder and Artifactory, use username_field = "username"
   configure_code_server = true
   package_managers = {
