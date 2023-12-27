@@ -28,13 +28,13 @@ else
     jf npmc --global --repo-resolve "${REPOSITORY_NPM}"
   fi
   cat << EOF > ~/.npmrc
-email = ${ARTIFACTORY_EMAIL}
-registry = ${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
+email=${ARTIFACTORY_EMAIL}
+registry=${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
 EOF
   jf rt curl /api/npm/auth >> ~/.npmrc
   # if npm version is greater than or equal to 9.0.0, use the new npmrc format
   if [ "$(npm --version | cut -d. -f1)" -ge 9 ]; then
-    npm config fix
+    npm config fix --global
   fi
 fi
 
