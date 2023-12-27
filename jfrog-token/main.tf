@@ -105,7 +105,7 @@ resource "coder_script" "jfrog" {
   icon         = "/icon/jfrog.svg"
   script = templatefile("${path.module}/run.sh", {
     JFROG_URL : var.jfrog_url,
-    JFROG_HOST : var.jfrog_host,
+    JFROG_HOST : local.jfrog_host,
     ARTIFACTORY_USERNAME : local.username,
     ARTIFACTORY_EMAIL : data.coder_workspace.me.owner_email,
     ARTIFACTORY_ACCESS_TOKEN : artifactory_scoped_token.me.access_token,
@@ -156,7 +156,7 @@ resource "coder_env" "go_proxy" {
   count    = lookup(var.package_managers, "go", "") == "" ? 0 : 1
   agent_id = var.agent_id
   name     = "GOPROXY"
-  value    = "https://${local.username}:${artifactory_scoped_token.me.access_token}@${var.jfrog_host}/artifactory/api/go/${lookup(var.package_managers, "go", "")}"
+  value    = "https://${local.username}:${artifactory_scoped_token.me.access_token}@${local.jfrog_host}/artifactory/api/go/${lookup(var.package_managers, "go", "")}"
 }
 
 output "access_token" {
