@@ -123,7 +123,7 @@ resource "coder_env" "go_proxy" {
   count    = lookup(var.package_managers, "go", "") == "" ? 0 : 1
   agent_id = var.agent_id
   name     = "GOPROXY"
-  value    = "https://${local.username}:${artifactory_scoped_token.me.access_token}@${local.jfrog_host}/artifactory/api/go/${lookup(var.package_managers, "go", "")}"
+  value    = "https://${local.username}:${data.coder_external_auth.jfrog.access_token}@${local.jfrog_host}/artifactory/api/go/${lookup(var.package_managers, "go", "")}"
 }
 
 output "access_token" {
