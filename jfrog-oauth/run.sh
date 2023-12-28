@@ -33,7 +33,7 @@ email=${ARTIFACTORY_EMAIL}
 registry=${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
 EOF
   if [ "$(npm --version | cut -d. -f1)" -ge 9 ]; then
-    echo "//${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}/:_authToken=${ARTIFACTORY_ACCESS_TOKEN}" >> ~/.npmrc
+    echo "//${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}/:_authToken=${ARTIFACTORY_ACCESS_TOKEN}" >> ~/.npmrc
   else
     echo "_auth=${ARTIFACTORY_ACCESS_TOKEN}" >> ~/.npmrc
     echo "always-auth=true" >> ~/.npmrc

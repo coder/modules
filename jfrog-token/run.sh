@@ -30,7 +30,7 @@ else
   # if npm version is greater than or equal to 9.0.0, use the new npmrc format
   cat << EOF > ~/.npmrc
 email=${ARTIFACTORY_EMAIL}
-registry=${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
+registry=${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}
 EOF
   if [ "$(npm --version | cut -d. -f1)" -ge 9 ]; then
     echo "//${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}/:_authToken=${ARTIFACTORY_ACCESS_TOKEN}" >> ~/.npmrc
