@@ -15,8 +15,14 @@ terraform {
 
 variable "jfrog_url" {
   type        = string
-  description = "JFrog instance URL. e.g. https://YYY.jfrog.io"
+  description = "JFrog instance URL. e.g. https://myartifactory.jfrog.io"
+  # ensue the URL is HTTPS or HTTP
+  validation {
+    condition     = can(regex("^(https|http)://", var.jfrog_url))
+    error_message = "jfrog_url must be a valid URL starting with either 'https://' or 'http://'"
+  }
 }
+
 
 variable "artifactory_access_token" {
   type        = string
@@ -68,9 +74,9 @@ variable "package_managers" {
 A map of package manager names to their respective artifactory repositories.
 For example:
     {
-      "npm": "npm-local",
-      "go": "go-local",
-      "pypi": "pypi-local"
+      "npm": "YOUR_NPM_REPO_KEY",
+      "go": "YOUR_GO_REPO_KEY",
+      "pypi": "YOUR_PYPI_REPO_KEY"
     }
 EOF
 }

@@ -7,7 +7,6 @@ if command -v jf > /dev/null 2>&1; then
   echo "✅ JFrog CLI is already installed, skipping installation."
 else
   echo "📦 Installing JFrog CLI..."
-  # Install the JFrog CLI.
   curl -fL https://install-cli.jfrog.io | sudo sh
   sudo chmod 755 /usr/local/bin/jf
 fi
@@ -20,27 +19,31 @@ jf c rm 0 || true
 echo "${ARTIFACTORY_ACCESS_TOKEN}" | jf c add --access-token-stdin --url "${JFROG_URL}" 0
 
 if [ -z "${REPOSITORY_NPM}" ]; then
-  echo "🤔 REPOSITORY_NPM is not set, skipping npm configuration."
+  echo "🤔 no npm repository is set, skipping npm configuration."
+  echo "You can configure an npm repository by providing the a key for 'npm' in the 'package_managers' input."
 else
   # check if npm is installed and configure it to use the Artifactory "npm" repository.
   if command -v npm > /dev/null 2>&1; then
     echo "📦 Configuring npm..."
     jf npmc --global --repo-resolve "${REPOSITORY_NPM}"
   fi
-  cat << EOF > ~/.npmrc
-email=${ARTIFACTORY_EMAIL}
-registry=${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
-EOF
-  jf rt curl /api/npm/auth >> ~/.npmrc
   # if npm version is greater than or equal to 9.0.0, use the new npmrc format
+  cat << EOF > ~/.npmrc
+  email=${ARTIFACTORY_EMAIL}
+  registry=${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
+EOF
   if [ "$(npm --version | cut -d. -f1)" -ge 9 ]; then
-    npm config fix --global
+    echo "//${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}/:_authToken=${ARTIFACTORY_ACCESS_TOKEN}" >> ~/.npmrc
+  else
+    echo "_auth=${ARTIFACTORY_ACCESS_TOKEN}" >> ~/.npmrc
+    echo "always-auth=true" >> ~/.npmrc
   fi
 fi
 
 # Configure the `pip` to use the Artifactory "python" repository.
 if [ -z "${REPOSITORY_PYPI}" ]; then
-  echo "🤔 REPOSITORY_PYPI is not set, skipping pip configuration."
+  echo "🤔 no pypi repository is set, skipping pip configuration."
+  echo "You can configure a pypi repository by providing the a key for 'pypi' in the 'package_managers' input."
 else
   echo "🐍 Configuring pip..."
   jf pipc --global --repo-resolve "${REPOSITORY_PYPI}"
@@ -53,7 +56,8 @@ fi
 
 # Configure Artifactory "go" repository.
 if [ -z "${REPOSITORY_GO}" ]; then
-  echo "🤔 REPOSITORY_GO is not set, skipping go configuration."
+  echo "🤔 no go repository is set, skipping go configuration."
+  echo "You can configure a go repository by providing the a key for 'go' in the 'package_managers' input."
 else
   echo "🐹 Configuring go..."
   jf go-config --global --repo-resolve "${REPOSITORY_GO}"
