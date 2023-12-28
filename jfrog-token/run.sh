@@ -60,7 +60,7 @@ if [ -z "${REPOSITORY_GO}" ]; then
   echo "You can configure a go repository by providing the a key for 'go' in the 'package_managers' input."
 else
   echo "🐹 Configuring go..."
-  jf go-config --global --repo-resolve "${REPOSITORY_GO}"
+  jf goc --global --repo-resolve "${REPOSITORY_GO}"
 fi
 echo "🥳 Configuration complete!"
 
