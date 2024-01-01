@@ -100,8 +100,8 @@ fi
 
 # Configure the JFrog CLI completion
 echo "📦 Configuring JFrog CLI completion..."
-jf completion $SHELL --install
 SHELLNAME=$(basename $SHELL)
+jf completion $SHELLNAME --install
 if [ "$SHELLNAME" == "bash" ] || [ "$SHELLNAME" == "zsh" ]; then
   if ! grep -q "source $HOME/.jfrog/jfrog_$${SHELLNAME}_completion" ~/.$${SHELLNAME}rc; then
     echo "source $HOME/.jfrog/jfrog_$${SHELLNAME}_completion" >> ~/.$${SHELLNAME}rc
