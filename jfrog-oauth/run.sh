@@ -102,8 +102,11 @@ fi
 
 # Configure the JFrog CLI completion
 echo "📦 Configuring JFrog CLI completion..."
-SHELLNAME=$(basename $SHELL)
+## Get the user's shell
+SHELLNAME=$(grep "^$USER" /etc/passwd | awk -F':' '{print $7}' | awk -F'/' '{print $NF}')
+## Generate the completion script
 jf completion $SHELLNAME --install
+## Add the completion script to the user's shell profile
 if [ "$SHELLNAME" == "bash" ] || [ "$SHELLNAME" == "zsh" ]; then
   if ! grep -q "source $HOME/.jfrog/jfrog_$${SHELLNAME}_completion" ~/.$${SHELLNAME}rc; then
     echo "source $HOME/.jfrog/jfrog_$${SHELLNAME}_completion" >> ~/.$${SHELLNAME}rc
