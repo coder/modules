@@ -16,7 +16,7 @@ fi
 export CI=true
 # Authenticate with the JFrog CLI.
 jf c rm 0 || true
-echo "${ARTIFACTORY_ACCESS_TOKEN}" | jf c add --access-token-stdin --url "${JFROG_URL}" 0
+echo "${ARTIFACTORY_ACCESS_TOKEN}" | jf c add --access-token-stdin --url "${JFROG_URL}" --overwrite 0
 
 if [ -z "${REPOSITORY_NPM}" ]; then
   echo "🤔 no npm repository is set, skipping npm configuration."
