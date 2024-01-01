@@ -101,10 +101,9 @@ fi
 # Configure the JFrog CLI completion
 echo "📦 Configuring JFrog CLI completion..."
 jf completion $SHELL --install
-# Append the completion script to the shell profile if its bash or zsh if it isn't already there.
-if [ "$SHELL" = "/bin/bash" ] || [ "$SHELL" = "/bin/zsh" ]; then
-  if ! grep -q "source $HOME/.jfrog/jfrog_$${SHELL}_completion" ~/.$${SHELL}rc; then
-    echo "📦 Adding JFrog CLI completion to shell profile..."
-    echo "source $HOME/.jfrog/jfrog_$${SHELL}_completion" >> ~/.$${SHELL}rc
+SHELLNAME=$(basename $SHELL)
+if [ "$SHELLNAME" == "bash" ] || [ "$SHELLNAME" == "zsh" ]; then
+  if ! grep -q "source $HOME/.jfrog/jfrog_$${SHELLNAME}_completion" ~/.$${SHELLNAME}rc; then
+    echo "source $HOME/.jfrog/jfrog_$${SHELLNAME}_completion" >> ~/.$${SHELLNAME}rc
   fi
 fi
