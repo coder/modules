@@ -22,16 +22,13 @@ if [ -z "${REPOSITORY_NPM}" ]; then
   echo "🤔 no npm repository is set, skipping npm configuration."
   echo "You can configure an npm repository by providing the a key for 'npm' in the 'package_managers' input."
 else
-  # check if npm is installed and configure it to use the Artifactory "npm" repository.
-  if command -v npm > /dev/null 2>&1; then
-    echo "📦 Configuring npm..."
-    jf npmc --global --repo-resolve "${REPOSITORY_NPM}"
-  fi
-  # if npm version is greater than or equal to 9.0.0, use the new npmrc format
+  echo "📦 Configuring npm..."
+  jf npmc --global --repo-resolve "${REPOSITORY_NPM}"
   cat << EOF > ~/.npmrc
 email=${ARTIFACTORY_EMAIL}
 registry=${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
 EOF
+  # if npm version is greater than or equal to 9.0.0, use the new .npmrc format
   if [ "$(npm --version | cut -d. -f1)" -ge 9 ]; then
     echo "//${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}/:_authToken=${ARTIFACTORY_ACCESS_TOKEN}" >> ~/.npmrc
   else
@@ -45,7 +42,7 @@ if [ -z "${REPOSITORY_PYPI}" ]; then
   echo "🤔 no pypi repository is set, skipping pip configuration."
   echo "You can configure a pypi repository by providing the a key for 'pypi' in the 'package_managers' input."
 else
-  echo "🐍 Configuring pip..."
+  echo "📦 Configuring pip..."
   jf pipc --global --repo-resolve "${REPOSITORY_PYPI}"
   mkdir -p ~/.pip
   cat << EOF > ~/.pip/pip.conf
@@ -63,6 +60,24 @@ else
   jf goc --global --repo-resolve "${REPOSITORY_GO}"
 fi
 echo "🥳 Configuration complete!"
+
+# Configure the JFrog CLI to use the Artifactory "docker" repository.
+if [ -z "${REPOSITORY_DOCKER}" ]; then
+  echo "🤔 no docker repository is set, skipping docker configuration."
+  echo "You can configure a docker repository by providing the a key for 'docker' in the 'package_managers' input."
+else
+  echo "🐳 Configuring docker..."
+  mkdir -p ~/.docker
+  cat << EOF > ~/.docker/config.json
+{
+  "auths": {
+    "${JFROG_HOST}": {
+      "auth": "$(echo -n "${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}" | base64)"
+    }
+  }
+}
+EOF
+fi
 
 # Install the JFrog vscode extension for code-server.
 if [ "${CONFIGURE_CODE_SERVER}" == "true" ]; then

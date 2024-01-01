@@ -76,7 +76,8 @@ For example:
     {
       "npm": "YOUR_NPM_REPO_KEY",
       "go": "YOUR_GO_REPO_KEY",
-      "pypi": "YOUR_PYPI_REPO_KEY"
+      "pypi": "YOUR_PYPI_REPO_KEY",
+      "docker": "YOUR_DOCKER_REPO_KEY"
     }
 EOF
 }
@@ -119,6 +120,7 @@ resource "coder_script" "jfrog" {
     REPOSITORY_NPM : lookup(var.package_managers, "npm", ""),
     REPOSITORY_GO : lookup(var.package_managers, "go", ""),
     REPOSITORY_PYPI : lookup(var.package_managers, "pypi", ""),
+    REPOSITORY_DOCKER : lookup(var.package_managers, "docker", ""),
   })
   run_on_start = true
 }
@@ -128,20 +130,6 @@ resource "coder_env" "jfrog_ide_url" {
   agent_id = var.agent_id
   name     = "JFROG_IDE_URL"
   value    = var.jfrog_url
-}
-
-resource "coder_env" "jfrog_ide_username" {
-  count    = var.configure_code_server ? 1 : 0
-  agent_id = var.agent_id
-  name     = "JFROG_IDE_USERNAME"
-  value    = local.username
-}
-
-resource "coder_env" "jfrog_ide_password" {
-  count    = var.configure_code_server ? 1 : 0
-  agent_id = var.agent_id
-  name     = "JFROG_IDE_PASSWORD"
-  value    = artifactory_scoped_token.me.access_token
 }
 
 resource "coder_env" "jfrog_ide_access_token" {
