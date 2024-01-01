@@ -14,10 +14,12 @@ fi
 # The jf CLI checks $CI when determining whether to use interactive
 # flows.
 export CI=true
-# Authenticate with the JFrog CLI.
-jf c rm 0 || true
+# Authenticate JFrog CLI with Artifactory.
 echo "${ARTIFACTORY_ACCESS_TOKEN}" | jf c add --access-token-stdin --url "${JFROG_URL}" --overwrite 0
+# Set the configured server as the default.
+jf c use 0
 
+# Configure npm to use the Artifactory "npm" repository.
 if [ -z "${REPOSITORY_NPM}" ]; then
   echo "🤔 no npm repository is set, skipping npm configuration."
   echo "You can configure an npm repository by providing the a key for 'npm' in the 'package_managers' input."
