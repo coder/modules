@@ -23,7 +23,6 @@ variable "jfrog_url" {
   }
 }
 
-
 variable "artifactory_access_token" {
   type        = string
   description = "The admin-level access token to use for JFrog."
