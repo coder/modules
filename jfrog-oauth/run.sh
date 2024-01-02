@@ -115,7 +115,7 @@ elif [ "$SHELLNAME" == "zsh" ]; then
     echo "# BEGIN: jf CLI shell completion (added by coder module jfrog-oauth)" >> ~/.zshrc
     echo "autoload -Uz compinit" >> ~/.zshrc
     echo "compinit" >> ~/.zshrc
-    echo 'source "$HOME/.jfrog/jfrog_bash_completion"' >> ~/.zshrc
+    echo 'source "$HOME/.jfrog/jfrog_zsh_completion"' >> ~/.zshrc
     echo "# END: jf CLI shell completion" >> ~/.zshrc
   fi
 fi
