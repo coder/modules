@@ -74,7 +74,8 @@ else
 {
   "auths": {
     "${JFROG_HOST}": {
-      "auth": "$(echo -n "${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}" | base64)"
+      "auth": "$(echo -n "${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}" | base64)",
+      "email": "${ARTIFACTORY_EMAIL}"
     }
   }
 }
