@@ -82,9 +82,9 @@ module "jfrog" {
   agent_id = coder_agent.example.id
   jfrog_url = "https://XXXX.jfrog.io"
   artifactory_access_token = var.artifactory_access_token
-  configure_code_server = true
+  configure_code_server = true # Add JFrog extension configuration for code-server
   package_managers = {
-    "npm": "npm",Add JFrog extension configuration for code-server
+    "npm": "npm",
     "go": "go",
     "pypi": "pypi"
   }

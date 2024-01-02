@@ -115,9 +115,9 @@ module "jfrog" {
   agent_id = coder_agent.example.id
   jfrog_url = "https://jfrog.example.com"
   username_field = "username" # If you are using GitHub to login to both Coder and Artifactory, use username_field = "username"
-  configure_code_server = true
+  configure_code_server = true # Add JFrog extension configuration for code-server
   package_managers = {
-    "npm": "npm",Add JFrog extension configuration for code-server
+    "npm": "npm",
     "go": "go",
     "pypi": "pypi"
   }

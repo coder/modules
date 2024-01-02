@@ -63,7 +63,7 @@ variable "agent_id" {
 
 variable "configure_code_server" {
   type        = bool
-  description = "Whether to configure code-server to use JFrog."
+  description = "Set to true to configure code-server to use JFrog."  
   default     = false
 }
 
