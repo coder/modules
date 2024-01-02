@@ -108,8 +108,18 @@ SHELLNAME=$(grep "^$USER" /etc/passwd | awk -F':' '{print $7}' | awk -F'/' '{pri
 ## Generate the completion script
 jf completion $SHELLNAME --install
 ## Add the completion script to the user's shell profile
-if [ "$SHELLNAME" == "bash" ] || [ "$SHELLNAME" == "zsh" ]; then
-  if ! grep -q "source $HOME/.jfrog/jfrog_$${SHELLNAME}_completion" ~/.$${SHELLNAME}rc; then
-    echo "source $HOME/.jfrog/jfrog_$${SHELLNAME}_completion" >> ~/.$${SHELLNAME}rc
+if [ "$SHELLNAME" == "bash" ]; then
+  if ! grep -q "# jf CLI shell completion" ~/.bashrc; then
+    echo "# jf CLI shell completion" >> ~/.bashrc
+    echo "source $HOME/.jfrog/jfrog_bash_completion" >> ~/.bashrc
+    echo "# end jf CLI shell completion" >> ~/.bashrc
+  fi
+elif [ "$SHELLNAME" == "zsh" ]; then
+  if ! grep -q "# jf CLI shell completion" ~/.zshrc; then
+    echo "# jf CLI shell completion" >> ~/.zshrc
+    echo "autoload -Uz compinit" >> ~/.zshrc
+    echo "compinit" >> ~/.zshrc
+    echo "source $HOME/.jfrog/jfrog_zsh_completion" >> ~/.zshrc
+    echo "# end jf CLI shell completion" >> ~/.zshrc
   fi
 fi
