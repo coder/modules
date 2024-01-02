@@ -64,9 +64,7 @@ if [ -z "${REPOSITORY_DOCKER}" ]; then
 else
   echo "🔑 Configuring 🐳 docker credentials..."
   mkdir -p ~/.docker
-  echo -n "${ARTIFACTORY_ACCESS_TOKEN}" >> ~/.docker/token
-  cat ~/.docker/token | docker login ${JFROG_HOST} --username ${ARTIFACTORY_USERNAME} --password-stdin
-  rm ~/.docker/token
+  echo -n "${ARTIFACTORY_ACCESS_TOKEN}" | docker login ${JFROG_HOST} --username ${ARTIFACTORY_USERNAME} --password-stdin
 fi
 
 # Install the JFrog vscode extension for code-server.
