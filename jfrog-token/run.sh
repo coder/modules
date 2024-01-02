@@ -30,13 +30,7 @@ else
 email=${ARTIFACTORY_EMAIL}
 registry=${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
 EOF
-  # if npm version is greater than or equal to 9.0.0, use the new npmrc format
-  if [ "$(npm --version | cut -d. -f1)" -ge 9 ]; then
-    echo "//${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}/:_authToken=${ARTIFACTORY_ACCESS_TOKEN}" >> ~/.npmrc
-  else
-    echo "_auth=$(echo -n '${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}' | base64)" >> ~/.npmrc
-    echo "always-auth=true" >> ~/.npmrc
-  fi
+  echo "//${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}/:_authToken=${ARTIFACTORY_ACCESS_TOKEN}" >> ~/.npmrc
 fi
 
 # Configure the `pip` to use the Artifactory "python" repository.
