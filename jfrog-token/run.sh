@@ -111,17 +111,17 @@ jf completion $SHELLNAME --install
 if [ "$SHELLNAME" == "bash" ]; then
   if ! grep -q "# jf CLI shell completion" ~/.bashrc; then
     echo "" >> ~/.bashrc
-    echo "# jf CLI shell completion" >> ~/.bashrc
-    echo "source $HOME/.jfrog/jfrog_bash_completion" >> ~/.bashrc
-    echo "# End jf CLI shell completion" >> ~/.bashrc
+    echo "# BEGIN: jf CLI shell completion (added by coder module jfrog-token)" >> ~/.bashrc
+    echo 'source "$HOME/.jfrog/jfrog_bash_completion"' >> ~/.bashrc
+    echo "# END: jf CLI shell completion" >> ~/.bashrc
   fi
 elif [ "$SHELLNAME" == "zsh" ]; then
   if ! grep -q "# jf CLI shell completion" ~/.zshrc; then
     echo "" >> ~/.zshrc
-    echo "# jf CLI shell completion" >> ~/.zshrc
+    echo "# BEGIN: jf CLI shell completion (added by coder module jfrog-token)" >> ~/.zshrc
     echo "autoload -Uz compinit" >> ~/.zshrc
     echo "compinit" >> ~/.zshrc
-    echo "source $HOME/.jfrog/jfrog_zsh_completion" >> ~/.zshrc
-    echo "# End jf CLI shell completion" >> ~/.zshrc
+    echo 'source "$HOME/.jfrog/jfrog_bash_completion"' >> ~/.zshrc
+    echo "# END: jf CLI shell completion" >> ~/.zshrc
   fi
 fi
