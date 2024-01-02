@@ -110,16 +110,18 @@ jf completion $SHELLNAME --install
 ## Add the completion script to the user's shell profile
 if [ "$SHELLNAME" == "bash" ]; then
   if ! grep -q "# jf CLI shell completion" ~/.bashrc; then
+    echo "" >> ~/.bashrc
     echo "# jf CLI shell completion" >> ~/.bashrc
     echo "source $HOME/.jfrog/jfrog_bash_completion" >> ~/.bashrc
-    echo "# end jf CLI shell completion" >> ~/.bashrc
+    echo "# End jf CLI shell completion" >> ~/.bashrc
   fi
 elif [ "$SHELLNAME" == "zsh" ]; then
   if ! grep -q "# jf CLI shell completion" ~/.zshrc; then
+    echo "" >> ~/.zshrc
     echo "# jf CLI shell completion" >> ~/.zshrc
     echo "autoload -Uz compinit" >> ~/.zshrc
     echo "compinit" >> ~/.zshrc
     echo "source $HOME/.jfrog/jfrog_zsh_completion" >> ~/.zshrc
-    echo "# end jf CLI shell completion" >> ~/.zshrc
+    echo "# End jf CLI shell completion" >> ~/.zshrc
   fi
 fi
