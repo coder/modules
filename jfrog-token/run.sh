@@ -62,9 +62,13 @@ if [ -z "${REPOSITORY_DOCKER}" ]; then
   echo "🤔 no docker repository is set, skipping docker configuration."
   echo "You can configure a docker repository by providing the a key for 'docker' in the 'package_managers' input."
 else
-  echo "🔑 Configuring 🐳 docker credentials..."
-  mkdir -p ~/.docker
-  echo -n "${ARTIFACTORY_ACCESS_TOKEN}" | docker login ${JFROG_HOST} --username ${ARTIFACTORY_USERNAME} --password-stdin
+  if command -v docker > /dev/null 2>&1; then
+    echo "🔑 Configuring 🐳 docker credentials..."
+    mkdir -p ~/.docker
+    echo -n "${ARTIFACTORY_ACCESS_TOKEN}" | docker login ${JFROG_HOST} --username ${ARTIFACTORY_USERNAME} --password-stdin
+  else
+    echo "🤔 no docker is installed, skipping docker configuration."
+  fi
 fi
 
 # Install the JFrog vscode extension for code-server.
