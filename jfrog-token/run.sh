@@ -92,19 +92,21 @@ fi
 
 # Configure the JFrog CLI completion
 echo "📦 Configuring JFrog CLI completion..."
-## Get the user's shell
+# Get the user's shell
 SHELLNAME=$(grep "^$USER" /etc/passwd | awk -F':' '{print $7}' | awk -F'/' '{print $NF}')
-## Generate the completion script
+# Generate the completion script
 jf completion $SHELLNAME --install
-## Add the completion script to the user's shell profile
-if [ "$SHELLNAME" == "bash" ]; then
+# Add the completion script to the user's shell profile
+if [ "$SHELLNAME" == "bash" ] && [ -f ~/.bashrc ]; then
   if ! grep -q "# jf CLI shell completion" ~/.bashrc; then
     echo "" >> ~/.bashrc
     echo "# BEGIN: jf CLI shell completion (added by coder module jfrog-token)" >> ~/.bashrc
     echo 'source "$HOME/.jfrog/jfrog_bash_completion"' >> ~/.bashrc
     echo "# END: jf CLI shell completion" >> ~/.bashrc
+  else
+    echo "🥳 ~/.bashrc already contains jf CLI shell completion configuration, skipping."
   fi
-elif [ "$SHELLNAME" == "zsh" ]; then
+elif [ "$SHELLNAME" == "zsh" ] && [ -f ~/.zshrc ]; then
   if ! grep -q "# jf CLI shell completion" ~/.zshrc; then
     echo "" >> ~/.zshrc
     echo "# BEGIN: jf CLI shell completion (added by coder module jfrog-token)" >> ~/.zshrc
@@ -112,5 +114,9 @@ elif [ "$SHELLNAME" == "zsh" ]; then
     echo "compinit" >> ~/.zshrc
     echo 'source "$HOME/.jfrog/jfrog_zsh_completion"' >> ~/.zshrc
     echo "# END: jf CLI shell completion" >> ~/.zshrc
+  else
+    echo "🥳 ~/.zshrc already contains jf CLI shell completion configuration, skipping."
   fi
+else
+  echo "🤔 ~/.bashrc or ~/.zshrc does not exist, skipping jf CLI shell completion configuration."
 fi
