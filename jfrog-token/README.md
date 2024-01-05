@@ -14,15 +14,15 @@ Install the JF CLI and authenticate package managers with Artifactory using Arti
 
 ```hcl
 module "jfrog" {
-    source = "https://registry.coder.com/modules/jfrog-token"
-    agent_id = coder_agent.example.id
-    jfrog_url = "https://XXXX.jfrog.io"
-    artifactory_access_token = var.artifactory_access_token
-    package_managers = {
-      "npm": "npm",
-      "go": "go",
-      "pypi": "pypi"
-    }
+  source = "https://registry.coder.com/modules/jfrog-token"
+  agent_id = coder_agent.example.id
+  jfrog_url = "https://XXXX.jfrog.io"
+  artifactory_access_token = var.artifactory_access_token
+  package_managers = {
+    "npm": "npm",
+    "go": "go",
+    "pypi": "pypi"
+  }
 }
 ```
 
@@ -30,8 +30,8 @@ Get a JFrog access token from your Artifactory instance. The token must be an [a
 
 ```hcl
 variable "artifactory_access_token" {
-    type      = string
-    sensitive = true
+  type      = string
+  sensitive = true
 }
 ```
 
@@ -46,15 +46,15 @@ variable "artifactory_access_token" {
 
 ```hcl
 module "jfrog" {
-    source = "https://registry.coder.com/modules/jfrog-token"
-    agent_id = coder_agent.example.id
-    jfrog_url = "https://YYYY.jfrog.io"
-    artifactory_access_token = var.artifactory_access_token # An admin access token
-    package_managers = {
-      "npm": "npm-local",
-      "go": "go-local",
-      "pypi": "pypi-local"
-    }
+  source = "https://registry.coder.com/modules/jfrog-token"
+  agent_id = coder_agent.example.id
+  jfrog_url = "https://YYYY.jfrog.io"
+  artifactory_access_token = var.artifactory_access_token # An admin access token
+  package_managers = {
+    "npm": "npm-local",
+    "go": "go-local",
+    "pypi": "pypi-local"
+  }
 }
 ```
 
@@ -70,6 +70,25 @@ jf pip install requests
 npm install prettier
 go get github.com/golang/example/hello
 pip install requests
+```
+
+### Configure code-server with JFrog extension
+
+The [JFrog extension](https://open-vsx.org/extension/JFrog/jfrog-vscode-extension) for VS Code allows you to interact with Artifactory from within the IDE.
+
+```hcl
+module "jfrog" {
+  source = "https://registry.coder.com/modules/jfrog-token"
+  agent_id = coder_agent.example.id
+  jfrog_url = "https://XXXX.jfrog.io"
+  artifactory_access_token = var.artifactory_access_token
+  configure_code_server = true # Add JFrog extension configuration for code-server
+  package_managers = {
+    "npm": "npm",
+    "go": "go",
+    "pypi": "pypi"
+  }
+}
 ```
 
 ### Using the access token in other terraform resources
