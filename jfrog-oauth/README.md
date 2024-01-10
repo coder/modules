@@ -38,7 +38,8 @@ module "jfrog" {
 Coder [`external-auth`](https://coder.com/docs/v2/latest/admin/external-auth) configured with Artifactory. This requires a [custom integration](https://jfrog.com/help/r/jfrog-installation-setup-documentation/enable-new-integrations) in Artifactory with **Callback URL** set to `https://<your-coder-url>/external-auth/jfrog/callback`.
 
 To set this up,
-1 . Modify your `values.yaml` for JFrog Artifactory to add,
+
+1. Modify your `values.yaml` for JFrog Artifactory to add,
 
 ```yaml
 artifactory:
