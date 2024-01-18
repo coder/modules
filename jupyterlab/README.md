@@ -15,7 +15,8 @@ A module that adds JupyterLab in your Coder template.
 
 ```hcl
 module "jupyterlab" {
-    source = "https://registry.coder.com/modules/jupyterlab"
-    agent_id = coder_agent.example.id
+  source = "registry.coder.com/modules/jupyterlab"
+  version = "1.0.0"
+  agent_id = coder_agent.example.id
 }
 ```

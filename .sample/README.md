@@ -13,7 +13,8 @@ tags: [helper]
 
 ```hcl
 module "MODULE_NAME" {
-    source = "https://registry.coder.com/modules/MODULE_NAME"
+  source = "registry.coder.com/modules/MODULE_NAME"
+  version = "1.0.0"
 }
 ```
 
@@ -27,11 +28,12 @@ Install the Dracula theme from [OpenVSX](https://open-vsx.org/):
 
 ```hcl
 module "MODULE_NAME" {
-    source = "https://registry.coder.com/modules/MODULE_NAME"
-    agent_id = coder_agent.example.id
-    extensions = [
-        "dracula-theme.theme-dracula"
-    ]
+  source = "registry.coder.com/modules/MODULE_NAME"
+  version = "1.0.0"
+  agent_id = coder_agent.example.id
+  extensions = [
+    "dracula-theme.theme-dracula"
+  ]
 }
 ```
 
@@ -43,12 +45,13 @@ Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarte
 
 ```hcl
 module "MODULE_NAME" {
-    source = "https://registry.coder.com/modules/MODULE_NAME"
-    agent_id = coder_agent.example.id
-    extensions = [ "dracula-theme.theme-dracula" ]
-    settings = {
-        "workbench.colorTheme" = "Dracula"
-    }
+  source = "registry.coder.com/modules/MODULE_NAME"
+  version = "1.0.0"
+  agent_id = coder_agent.example.id
+  extensions = [ "dracula-theme.theme-dracula" ]
+  settings = {
+    "workbench.colorTheme" = "Dracula"
+  }
 }
 ```
 
@@ -58,8 +61,9 @@ Run code-server in the background, don't fetch it from GitHub:
 
 ```hcl
 module "MODULE_NAME" {
-    source = "https://registry.coder.com/modules/MODULE_NAME"
-    agent_id = coder_agent.example.id
-    offline = true
+  source = "registry.coder.com/modules/MODULE_NAME"
+  version = "1.0.0"
+  agent_id = coder_agent.example.id
+  offline = true
 }
 ```

@@ -16,12 +16,13 @@ Customize the preselected parameter value:
 
 ```hcl
 module "aws-region" {
-    source = "https://registry.coder.com/modules/aws-region"
-    default = "us-east-1"
+  source = "registry.coder.com/modules/aws-region"
+  version = "1.0.0"
+  default = "us-east-1"
 }
 
 provider "aws" {
-    region = module.aws_region.value
+  region = module.aws_region.value
 }
 ```
 
@@ -35,18 +36,19 @@ Change the display name and icon for a region using the corresponding maps:
 
 ```hcl
 module "aws-region" {
-    source = "https://registry.coder.com/modules/aws-region"
-    default = "ap-south-1"
-    custom_names = {
-        "ap-south-1": "Awesome Mumbai!"
-    }
-    custom_icons = {
-        "ap-south-1": "/emojis/1f33a.png"
-    }
+  source = "registry.coder.com/modules/aws-region"
+  version = "1.0.0"
+  default = "ap-south-1"
+  custom_names = {
+    "ap-south-1": "Awesome Mumbai!"
+  }
+  custom_icons = {
+    "ap-south-1": "/emojis/1f33a.png"
+  }
 }
 
 provider "aws" {
-    region = module.aws_region.value
+  region = module.aws_region.value
 }
 ```
 
@@ -58,12 +60,13 @@ Hide the Asia Pacific regions Seoul and Osaka:
 
 ```hcl
 module "aws-region" {
-    source = "https://registry.coder.com/modules/aws-region"
-    exclude = [ "ap-northeast-2", "ap-northeast-3" ]
+  source = "registry.coder.com/modules/aws-region"
+  version = "1.0.0"
+  exclude = [ "ap-northeast-2", "ap-northeast-3" ]
 }
 
 provider "aws" {
-    region = module.aws_region.value
+  region = module.aws_region.value
 }
 ```
 

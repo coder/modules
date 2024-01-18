@@ -13,8 +13,9 @@ Automatically install [code-server](https://github.com/coder/code-server) in a w
 
 ```hcl
 module "code-server" {
-    source = "https://registry.coder.com/modules/code-server"
-    agent_id = coder_agent.example.id
+  source = "registry.coder.com/modules/code-server"
+  version = "1.0.0"
+  agent_id = coder_agent.example.id
 }
 ```
 
@@ -38,11 +39,12 @@ Install the Dracula theme from [OpenVSX](https://open-vsx.org/):
 
 ```hcl
 module "code-server" {
-    source = "https://registry.coder.com/modules/code-server"
-    agent_id = coder_agent.example.id
-    extensions = [
-        "dracula-theme.theme-dracula"
-    ]
+  source = "registry.coder.com/modules/code-server"
+  version = "1.0.0"
+  agent_id = coder_agent.example.id
+  extensions = [
+    "dracula-theme.theme-dracula"
+  ]
 }
 ```
 
@@ -54,12 +56,13 @@ Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarte
 
 ```hcl
 module "settings" {
-    source = "https://registry.coder.com/modules/code-server"
-    agent_id = coder_agent.example.id
-    extensions = [ "dracula-theme.theme-dracula" ]
-    settings = {
-        "workbench.colorTheme" = "Dracula"
-    }
+  source = "registry.coder.com/modules/code-server"
+  version = "1.0.0"
+  agent_id = coder_agent.example.id
+  extensions = [ "dracula-theme.theme-dracula" ]
+  settings = {
+    "workbench.colorTheme" = "Dracula"
+  }
 }
 ```
 
@@ -69,9 +72,10 @@ Just run code-server in the background, don't fetch it from GitHub:
 
 ```hcl
 module "settings" {
-    source = "https://registry.coder.com/modules/code-server"
-    agent_id = coder_agent.example.id
-    extensions = [ "dracula-theme.theme-dracula", "ms-azuretools.vscode-docker" ]
+  source = "registry.coder.com/modules/code-server"
+  version = "1.0.0"
+  agent_id = coder_agent.example.id
+  extensions = [ "dracula-theme.theme-dracula", "ms-azuretools.vscode-docker" ]
 }
 ```
 
@@ -81,8 +85,9 @@ Just run code-server in the background, don't fetch it from GitHub:
 
 ```hcl
 module "settings" {
-    source = "https://registry.coder.com/modules/code-server"
-    agent_id = coder_agent.example.id
-    offline = true
+  source = "registry.coder.com/modules/code-server"
+  version = "1.0.0"
+  agent_id = coder_agent.example.id
+  offline = true
 }
 ```

@@ -16,8 +16,9 @@ Customize the preselected parameter value:
 
 ```hcl
 module "exoscale-instance-type" {
-    source = "https://registry.coder.com/modules/exoscale-instance-type"
-    default = "standard.medium"
+  source = "registry.coder.com/modules/exoscale-instance-type"
+  version = "1.0.0"
+  default = "standard.medium"
 }
 
 resource "exoscale_compute_instance" "instance" {
@@ -43,14 +44,15 @@ Change the display name a type using the corresponding maps:
 
 ```hcl
 module "exoscale-instance-type" {
-    source = "https://registry.coder.com/modules/exoscale-instance-type"
-    default = "standard.medium"
-    custom_names = {
-        "standard.medium": "Mittlere Instanz" # German translation
-    }
-    custom_descriptions = {
-        "standard.medium": "4 GB Arbeitsspeicher, 2 Kerne, 10 - 400 GB Festplatte" # German translation
-    }
+  source = "registry.coder.com/modules/exoscale-instance-type"
+  version = "1.0.0"
+  default = "standard.medium"
+  custom_names = {
+    "standard.medium": "Mittlere Instanz" # German translation
+  }
+  custom_descriptions = {
+    "standard.medium": "4 GB Arbeitsspeicher, 2 Kerne, 10 - 400 GB Festplatte" # German translation
+  }
 }
 
 resource "exoscale_compute_instance" "instance" {
@@ -74,19 +76,19 @@ Show only gpu1 types
 
 ```hcl
 module "exoscale-instance-type" {
-    source        = "https://registry.coder.com/modules/exoscale-instance-type"
-    default       = "gpu.large"
-    type_category = ["gpu"]
-    exclude       = [
-        "gpu2.small",
-        "gpu2.medium",
-        "gpu2.large",
-        "gpu2.huge",
-        "gpu3.small",
-        "gpu3.medium",
-        "gpu3.large",
-        "gpu3.huge"
-    ]
+  source        = "https://registry.coder.com/modules/exoscale-instance-type"
+  default       = "gpu.large"
+  type_category = ["gpu"]
+  exclude       = [
+    "gpu2.small",
+    "gpu2.medium",
+    "gpu2.large",
+    "gpu2.huge",
+    "gpu3.small",
+    "gpu3.medium",
+    "gpu3.large",
+    "gpu3.huge"
+  ]
 }
 
 resource "exoscale_compute_instance" "instance" {

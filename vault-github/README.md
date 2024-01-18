@@ -13,9 +13,9 @@ This module lets you authenticate with [Hashicorp Vault](https://www.vaultprojec
 
 ```hcl
 module "vault" {
-    source     = "https://registry.coder.com/modules/vault-github"
-    agent_id   = coder_agent.example.id
-    vault_addr = "https://vault.example.com"
+  source     = "https://registry.coder.com/modules/vault-github"
+  agent_id   = coder_agent.example.id
+  vault_addr = "https://vault.example.com"
 }
 ```
 
@@ -43,10 +43,10 @@ To configure the Vault module, you must set up a Vault GitHub auth method. See t
 
 ```hcl
 module "vault" {
-    source               = "https://registry.coder.com/modules/vault"
-    agent_id             = coder_agent.example.id
-    vault_addr           = "https://vault.example.com"
-    coder_github_auth_id = "my-github-auth-id"
+  source               = "https://registry.coder.com/modules/vault"
+  agent_id             = coder_agent.example.id
+  vault_addr           = "https://vault.example.com"
+  coder_github_auth_id = "my-github-auth-id"
 }
 ```
 
@@ -54,11 +54,11 @@ module "vault" {
 
 ```hcl
 module "vault" {
-    source                 = "https://registry.coder.com/modules/vault"
-    agent_id               = coder_agent.example.id
-    vault_addr             = "https://vault.example.com"
-    coder_github_auth_id   = "my-github-auth-id"
-    vault_github_auth_path = "my-github-auth-path"
+  source                 = "https://registry.coder.com/modules/vault"
+  agent_id               = coder_agent.example.id
+  vault_addr             = "https://vault.example.com"
+  coder_github_auth_id   = "my-github-auth-id"
+  vault_github_auth_path = "my-github-auth-path"
 }
 ```
 
@@ -66,9 +66,9 @@ module "vault" {
 
 ```hcl
 module "vault" {
-    source            = "https://registry.coder.com/modules/vault"
-    agent_id          = coder_agent.example.id
-    vault_addr        = "https://vault.example.com"
-    vault_cli_version = "1.15.0"
+  source            = "https://registry.coder.com/modules/vault"
+  agent_id          = coder_agent.example.id
+  vault_addr        = "https://vault.example.com"
+  vault_cli_version = "1.15.0"
 }
 ```

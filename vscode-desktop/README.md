@@ -15,7 +15,8 @@ Uses the [Coder Remote VS Code Extension](https://github.com/coder/vscode-coder)
 
 ```hcl
 module "vscode" {
-  source = "https://registry.coder.com/modules/vscode-desktop"
+  source = "registry.coder.com/modules/vscode-desktop"
+  version = "1.0.0"
   agent_id = coder_agent.example.id
 }
 ```
@@ -26,7 +27,8 @@ module "vscode" {
 
 ```hcl
 module "vscode" {
-  source = "https://registry.coder.com/modules/vscode-desktop"
+  source = "registry.coder.com/modules/vscode-desktop"
+  version = "1.0.0"
   agent_id = coder_agent.example.id
   folder = "/home/coder/project"
 }

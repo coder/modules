@@ -18,7 +18,8 @@ This module has a chance of conflicting with the user's dotfiles / the personali
 
 ```hcl
 module "git-commit-signing" {
-    source = "https://registry.coder.com/modules/git-commit-signing"
-    agent_id = coder_agent.example.id
+  source = "registry.coder.com/modules/git-commit-signing"
+  version = "1.0.0"
+  agent_id = coder_agent.example.id
 }
 ```

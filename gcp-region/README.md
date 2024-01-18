@@ -13,12 +13,12 @@ This module adds Google Cloud Platform regions to your Coder template.
 
 ```hcl
 module "gcp_region" {
-    source  = "https://registry.coder.com/modules/gcp-region"
-    regions = ["us", "europe"]
+  source  = "https://registry.coder.com/modules/gcp-region"
+  regions = ["us", "europe"]
 }
 
 resource "google_compute_instance" "example" {
-    zone = module.gcp_region.value
+  zone = module.gcp_region.value
 }
 ```
 
@@ -32,14 +32,14 @@ Note: setting `gpu_only = true` and using a default region without GPU support, 
 
 ```hcl
 module "gcp_region" {
-    source   = "https://registry.coder.com/modules/gcp-region"
-    default  = ["us-west1-a"]
-    regions  = ["us-west1"]
-    gpu_only = false
+  source   = "https://registry.coder.com/modules/gcp-region"
+  default  = ["us-west1-a"]
+  regions  = ["us-west1"]
+  gpu_only = false
 }
 
 resource "google_compute_instance" "example" {
-    zone = module.gcp_region.value
+  zone = module.gcp_region.value
 }
 ```
 
@@ -47,13 +47,13 @@ resource "google_compute_instance" "example" {
 
 ```hcl
 module "gcp_region" {
-    source                 = "https://registry.coder.com/modules/gcp-region"
-    regions                = ["europe-west"]
-    single_zone_per_region = false
+  source                 = "https://registry.coder.com/modules/gcp-region"
+  regions                = ["europe-west"]
+  single_zone_per_region = false
 }
 
 resource "google_compute_instance" "example" {
-    zone = module.gcp_region.value
+  zone = module.gcp_region.value
 }
 ```
 
@@ -61,13 +61,13 @@ resource "google_compute_instance" "example" {
 
 ```hcl
 module "gcp_region" {
-    source                 = "https://registry.coder.com/modules/gcp-region"
-    regions                = ["us", "europe"]
-    gpu_only               = true
-    single_zone_per_region = true
+  source                 = "https://registry.coder.com/modules/gcp-region"
+  regions                = ["us", "europe"]
+  gpu_only               = true
+  single_zone_per_region = true
 }
 
 resource "google_compute_instance" "example" {
-    zone = module.gcp_region.value
+  zone = module.gcp_region.value
 }
 ```

@@ -18,7 +18,8 @@ Install the JF CLI and authenticate package managers with Artifactory using OAut
 
 ```hcl
 module "jfrog" {
-  source = "https://registry.coder.com/modules/jfrog-oauth"
+  source = "registry.coder.com/modules/jfrog-oauth"
+  version = "1.0.0"
   agent_id = coder_agent.example.id
   jfrog_url = "https://jfrog.example.com"
   username_field = "username" # If you are using GitHub to login to both Coder and Artifactory, use username_field = "username"
@@ -45,17 +46,17 @@ To set this up,
 artifactory:
   enabled: true
   frontend:
-    extraEnvironmentVariables:
-      - name: JF_FRONTEND_FEATURETOGGLER_ACCESSINTEGRATION
-        value: "true"
+  extraEnvironmentVariables:
+    - name: JF_FRONTEND_FEATURETOGGLER_ACCESSINTEGRATION
+      value: "true"
   access:
-    accessConfig:
-      integrations-enabled: true
-      integration-templates:
-        - id: "1"
-          name: "CODER"
-          redirect-uri: "https://CODER_URL/external-auth/jfrog/callback"
-          scope: "applied-permissions/user"
+  accessConfig:
+    integrations-enabled: true
+    integration-templates:
+      - id: "1"
+        name: "CODER"
+        redirect-uri: "https://CODER_URL/external-auth/jfrog/callback"
+        scope: "applied-permissions/user"
 ```
 
 > Note
@@ -85,7 +86,8 @@ Configure the Python pip package manager to fetch packages from Artifactory whil
 
 ```hcl
 module "jfrog" {
-  source = "https://registry.coder.com/modules/jfrog-oauth"
+  source = "registry.coder.com/modules/jfrog-oauth"
+  version = "1.0.0"
   agent_id = coder_agent.example.id
   jfrog_url = "https://jfrog.example.com"
   auth_method = "oauth"
@@ -112,7 +114,8 @@ The [JFrog extension](https://open-vsx.org/extension/JFrog/jfrog-vscode-extensio
 
 ```hcl
 module "jfrog" {
-  source = "https://registry.coder.com/modules/jfrog-oauth"
+  source = "registry.coder.com/modules/jfrog-oauth"
+  version = "1.0.0"
   agent_id = coder_agent.example.id
   jfrog_url = "https://jfrog.example.com"
   username_field = "username" # If you are using GitHub to login to both Coder and Artifactory, use username_field = "username"

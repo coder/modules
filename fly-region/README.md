@@ -15,8 +15,9 @@ We can use the simplest format here, only adding a default selection as the `atl
 
 ```hcl
 module "fly-region" {
-    source = "https://registry.coder.com/modules/fly-region"
-    default = "atl"
+  source = "registry.coder.com/modules/fly-region"
+  version = "1.0.0"
+  default = "atl"
 }
 ```
 
@@ -30,9 +31,10 @@ The regions argument can be used to display only the desired regions in the Code
 
 ```hcl
 module "fly-region" {
-    source = "https://registry.coder.com/modules/fly-region"
-    default = "ams"
-    regions = ["ams", "arn", "atl"]
+  source = "registry.coder.com/modules/fly-region"
+  version = "1.0.0"
+  default = "ams"
+  regions = ["ams", "arn", "atl"]
 }
 ```
 
@@ -44,14 +46,15 @@ Set custom icons and names with their respective maps.
 
 ```hcl
 module "fly-region" {
-    source = "https://registry.coder.com/modules/fly-region"
-    default = "ams"
-    custom_icons = {
-        "ams" = "/emojis/1f90e.png"
-    }
-    custom_names = {
-        "ams" = "We love the Netherlands!"
-    }
+  source = "registry.coder.com/modules/fly-region"
+  version = "1.0.0"
+  default = "ams"
+  custom_icons = {
+      "ams" = "/emojis/1f90e.png"
+  }
+  custom_names = {
+      "ams" = "We love the Netherlands!"
+  }
 }
 ```
 
