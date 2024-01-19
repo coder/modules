@@ -28,7 +28,7 @@ variable "agent_id" {
 resource "coder_script" "git_clone" {
   agent_id = var.agent_id
   script = templatefile("${path.module}/run.sh", {
-    CLONE_PATH : var.path != "" ? join("/", [var.path, basename(var.url)]) : join("/", ["~", basename(var.url)])
+    clone_path = var.path != "" ? join("/", [var.path, replace(basename(var.url), ".git", "")]) : join("/", ["~", replace(basename(var.url), ".git", "")])
     REPO_URL : var.url,
   })
   display_name       = "Git Clone"
