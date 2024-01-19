@@ -56,7 +56,7 @@ slackme npm run long-build
 
    ```hcl
    module "slackme" {
-  source = "registry.coder.com/modules/slackme/coder"
+     source = "registry.coder.com/modules/slackme/coder"
      version = "1.0.0"
      agent_id = coder_agent.example.id
      auth_provider_id = "slack"
