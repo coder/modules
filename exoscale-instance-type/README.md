@@ -16,7 +16,7 @@ Customize the preselected parameter value:
 
 ```hcl
 module "exoscale-instance-type" {
-  source = "registry.coder.com/modules/exoscale-instance-type"
+  source = "registry.coder.com/modules/exoscale-instance-type/coder"
   version = "1.0.0"
   default = "standard.medium"
 }
@@ -44,7 +44,7 @@ Change the display name a type using the corresponding maps:
 
 ```hcl
 module "exoscale-instance-type" {
-  source = "registry.coder.com/modules/exoscale-instance-type"
+  source = "registry.coder.com/modules/exoscale-instance-type/coder"
   version = "1.0.0"
   default = "standard.medium"
   custom_names = {

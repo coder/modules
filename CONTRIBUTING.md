@@ -22,7 +22,6 @@ You can test a module locally by updating the source as follows
 ```hcl
 module "example" {
   source = "git::https://github.com/<USERNAME>/<REPO>.git//<MODULE-NAME>?ref=<BRANCH-NAME>"
-  version = "1.0.0"
 }
 ```
 

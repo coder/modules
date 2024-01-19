@@ -13,7 +13,7 @@ tags: [helper]
 
 ```hcl
 module "MODULE_NAME" {
-  source = "registry.coder.com/modules/MODULE_NAME"
+  source = "registry.coder.com/modules/MODULE_NAME/coder"
   version = "1.0.0"
 }
 ```
@@ -28,7 +28,7 @@ Install the Dracula theme from [OpenVSX](https://open-vsx.org/):
 
 ```hcl
 module "MODULE_NAME" {
-  source = "registry.coder.com/modules/MODULE_NAME"
+  source = "registry.coder.com/modules/MODULE_NAME/coder"
   version = "1.0.0"
   agent_id = coder_agent.example.id
   extensions = [
@@ -45,7 +45,7 @@ Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarte
 
 ```hcl
 module "MODULE_NAME" {
-  source = "registry.coder.com/modules/MODULE_NAME"
+  source = "registry.coder.com/modules/MODULE_NAME/coder"
   version = "1.0.0"
   agent_id = coder_agent.example.id
   extensions = [ "dracula-theme.theme-dracula" ]
@@ -61,7 +61,7 @@ Run code-server in the background, don't fetch it from GitHub:
 
 ```hcl
 module "MODULE_NAME" {
-  source = "registry.coder.com/modules/MODULE_NAME"
+  source = "registry.coder.com/modules/MODULE_NAME/coder"
   version = "1.0.0"
   agent_id = coder_agent.example.id
   offline = true

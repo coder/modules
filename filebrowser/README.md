@@ -13,7 +13,7 @@ A file browser for your workspace.
 
 ```hcl
 module "filebrowser" {
-  source = "registry.coder.com/modules/filebrowser"
+  source = "registry.coder.com/modules/filebrowser/coder"
   version = "1.0.0"
   agent_id = coder_agent.example.id
 }
@@ -27,7 +27,7 @@ module "filebrowser" {
 
 ```hcl
 module "filebrowser" {
-  source = "registry.coder.com/modules/filebrowser"
+  source = "registry.coder.com/modules/filebrowser/coder"
   version = "1.0.0"
   agent_id = coder_agent.example.id
   folder = "/home/coder/project"
@@ -38,7 +38,7 @@ module "filebrowser" {
 
 ```hcl
 module "filebrowser" {
-  source = "registry.coder.com/modules/filebrowser"
+  source = "registry.coder.com/modules/filebrowser/coder"
   version = "1.0.0"
   agent_id = coder_agent.example.id
   database_path = ".config/filebrowser.db"

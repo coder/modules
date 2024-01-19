@@ -13,7 +13,7 @@ This module adds a parameter with all Azure regions, allowing developers to sele
 
 ```hcl
 module "azure_region" {
-  source = "registry.coder.com/modules/azure-region"
+  source = "registry.coder.com/modules/azure-region/coder"
   version = "1.0.0"
   default = "eastus"
 }
@@ -33,7 +33,7 @@ Change the display name and icon for a region using the corresponding maps:
 
 ```hcl
 module "azure-region" {
-  source = "registry.coder.com/modules/azure-region"
+  source = "registry.coder.com/modules/azure-region/coder"
   version = "1.0.0"
   custom_names = {
     "australia": "Go Australia!"
@@ -56,7 +56,7 @@ Hide all regions in Australia except australiacentral:
 
 ```hcl
 module "azure-region" {
-  source = "registry.coder.com/modules/azure-region"
+  source = "registry.coder.com/modules/azure-region/coder"
   version = "1.0.0"
   exclude = [
     "australia",
