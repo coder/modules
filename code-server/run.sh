@@ -39,10 +39,10 @@ for extension in "$${EXTENSIONLIST[@]}"; do
 done
 
 # Check if the settings file exists...
-if [ ! -f ~/.local/share/code-server/Machine/settings.json ]; then
+if [ ! -f ~/.local/share/code-server/User/settings.json ]; then
   echo "⚙️ Creating settings file..."
-  mkdir -p ~/.local/share/code-server/Machine
-  echo "${SETTINGS}" > ~/.local/share/code-server/Machine/settings.json
+  mkdir -p ~/.local/share/code-server/User
+  echo "${SETTINGS}" > ~/.local/share/code-server/User/settings.json
 fi
 
 echo "👷 Running code-server in the background..."
