@@ -62,6 +62,7 @@ for (const dir of dirs) {
   let h1 = false;
   let code = false;
   let paragraph = false;
+  let version = false;
 
   for (const token of tokens) {
     if (token.type === "heading" && token.depth === 1) {
@@ -77,6 +78,16 @@ for (const dir of dirs) {
     }
     if (token.type === "code") {
       code = true;
+      if (token.lang !== "hcl") {
+        version = true;
+        continue;
+      }
+      let text = token.text;
+      // check if text contains version
+      if (text.includes("version")) {
+        version = true;
+        continue;
+      }
       continue;
     }
   }
@@ -88,6 +99,9 @@ for (const dir of dirs) {
   }
   if (!code) {
     error(dir.name, "missing example code block after paragraph");
+  }
+  if (!version) {
+    error(dir.name, "missing version in code block");
   }
 }
 

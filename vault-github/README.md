@@ -73,6 +73,6 @@ module "vault" {
   version = "1.0.1"
   agent_id          = coder_agent.example.id
   vault_addr        = "https://vault.example.com"
-  vault_cli_version = "1.0.1"
+  vault_cli_version = "1.15.0"
 }
 ```
