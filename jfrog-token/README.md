@@ -31,7 +31,7 @@ Get a JFrog access token from your Artifactory instance. The token must be an [a
 
 ```hcl
 variable "artifactory_access_token" {
-  type      = string
+  type = string
   sensitive = true
 }
 ```

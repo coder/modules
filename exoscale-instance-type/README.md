@@ -22,13 +22,13 @@ module "exoscale-instance-type" {
 }
 
 resource "exoscale_compute_instance" "instance" {
-  type        = module.exoscale-instance-type.value
+  type = module.exoscale-instance-type.value
   ...
 }
 
 resource "coder_metadata" "workspace_info" {
   item {
-    key   = "instance type"
+    key = "instance type"
     value = module.exoscale-instance-type.name
   }
 }
@@ -56,13 +56,13 @@ module "exoscale-instance-type" {
 }
 
 resource "exoscale_compute_instance" "instance" {
-  type        = module.exoscale-instance-type.value
+  type = module.exoscale-instance-type.value
   ...
 }
 
 resource "coder_metadata" "workspace_info" {
   item {
-    key   = "instance type"
+    key = "instance type"
     value = module.exoscale-instance-type.name
   }
 }
@@ -76,11 +76,11 @@ Show only gpu1 types
 
 ```hcl
 module "exoscale-instance-type" {
-  source        = "registry.coder.com/modules/exoscale-instance-type/coder"
+  source = "registry.coder.com/modules/exoscale-instance-type/coder"
   version = "1.0.1"
-  default       = "gpu.large"
+  default = "gpu.large"
   type_category = ["gpu"]
-  exclude       = [
+  exclude = [
     "gpu2.small",
     "gpu2.medium",
     "gpu2.large",
@@ -93,13 +93,13 @@ module "exoscale-instance-type" {
 }
 
 resource "exoscale_compute_instance" "instance" {
-  type        = module.exoscale-instance-type.value
+  type = module.exoscale-instance-type.value
   ...
 }
 
 resource "coder_metadata" "workspace_info" {
   item {
-    key   = "instance type"
+    key = "instance type"
     value = module.exoscale-instance-type.name
   }
 }

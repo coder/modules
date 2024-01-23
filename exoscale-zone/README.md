@@ -28,7 +28,7 @@ data "exoscale_compute_template" "my_template" {
 }
 
 resource "exoscale_compute_instance" "instance" {
-  zone    = module.exoscale-zone.value
+  zone = module.exoscale-zone.value
   ....
 }
 ```
@@ -60,7 +60,7 @@ data "exoscale_compute_template" "my_template" {
 }
 
 resource "exoscale_compute_instance" "instance" {
-  zone    = module.exoscale-zone.value
+  zone = module.exoscale-zone.value
   ....
 }
 ```
@@ -84,7 +84,7 @@ data "exoscale_compute_template" "my_template" {
 }
 
 resource "exoscale_compute_instance" "instance" {
-  zone    = module.exoscale-zone.value
+  zone = module.exoscale-zone.value
   ....
 }
 ```
