@@ -12,7 +12,7 @@ tags: [helper]
 Add the `slackme` command to your workspace that DMs you on Slack when your command finishes running.
 
 ```bash
-$ slackme npm run long-build
+slackme npm run long-build
 ```
 
 ## Setup
@@ -56,7 +56,8 @@ $ slackme npm run long-build
 
    ```hcl
    module "slackme" {
-     source = "https://registry.coder.com/modules/slackme"
+     source = "registry.coder.com/modules/slackme/coder"
+     version = "1.0.0"
      agent_id = coder_agent.example.id
      auth_provider_id = "slack"
    }
@@ -71,7 +72,8 @@ $ slackme npm run long-build
 
 ```hcl
 module "slackme" {
-  source = "https://registry.coder.com/modules/slackme"
+  source = "registry.coder.com/modules/slackme/coder"
+  version = "1.0.0"
   agent_id = coder_agent.example.id
   auth_provider_id = "slack"
   slack_message = <<EOF

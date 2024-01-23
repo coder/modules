@@ -13,9 +13,10 @@ This module allows you to automatically clone a repository by URL and skip if it
 
 ```hcl
 module "git-clone" {
-    source   = "https://registry.coder.com/modules/git-clone"
-    agent_id = coder_agent.example.id
-    url      = "https://github.com/coder/coder"
+  source   = "registry.coder.com/modules/git-clone/coder"
+  version  = "1.0.0"
+  agent_id = coder_agent.example.id
+  url      = "https://github.com/coder/coder"
 }
 ```
 
@@ -23,7 +24,7 @@ To use with [Git Authentication](https://coder.com/docs/v2/latest/admin/git-prov
 
 ```hcl
 data "coder_git_auth" "github" {
-    id = "github"
+  id = "github"
 }
 ```
 
@@ -33,9 +34,10 @@ data "coder_git_auth" "github" {
 
 ```hcl
 module "git-clone" {
-    source   = "https://registry.coder.com/modules/git-clone"
-    agent_id = coder_agent.example.id
-    url      = "https://github.com/coder/coder"
-    path     = "~/projects/coder/coder"
+  source   = "registry.coder.com/modules/git-clone/coder"
+  version  = "1.0.0"
+  agent_id = coder_agent.example.id
+  url      = "https://github.com/coder/coder"
+  path     = "~/projects/coder/coder"
 }
 ```

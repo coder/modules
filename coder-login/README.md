@@ -13,8 +13,9 @@ Automatically logs the user into Coder when creating their workspace.
 
 ```hcl
 module "coder-login" {
-    source   = "https://registry.coder.com/modules/coder-login"
-    agent_id = coder_agent.example.id
+  source   = "registry.coder.com/modules/coder-login/coder"
+  version  = "1.0.0"
+  agent_id = coder_agent.example.id
 }
 ```
 

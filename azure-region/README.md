@@ -13,12 +13,13 @@ This module adds a parameter with all Azure regions, allowing developers to sele
 
 ```hcl
 module "azure_region" {
-    source = "https://registry.coder.com/modules/azure-region"
-    default = "eastus"
+  source = "registry.coder.com/modules/azure-region/coder"
+  version = "1.0.0"
+  default = "eastus"
 }
 
 resource "azurem_resource_group" "example" {
-    location = module.azure_region.value
+  location = module.azure_region.value
 }
 ```
 
@@ -32,17 +33,18 @@ Change the display name and icon for a region using the corresponding maps:
 
 ```hcl
 module "azure-region" {
-    source = "https://registry.coder.com/modules/azure-region"
-    custom_names = {
-        "australia": "Go Australia!"
-    }
-    custom_icons = {
-        "australia": "/icons/smiley.svg"
-    }
+  source = "registry.coder.com/modules/azure-region/coder"
+  version = "1.0.0"
+  custom_names = {
+    "australia": "Go Australia!"
+  }
+  custom_icons = {
+    "australia": "/icons/smiley.svg"
+  }
 }
 
 resource "azurerm_resource_group" "example" {
-    location = module.azure_region.value
+  location = module.azure_region.value
 }
 ```
 
@@ -54,17 +56,18 @@ Hide all regions in Australia except australiacentral:
 
 ```hcl
 module "azure-region" {
-    source = "https://registry.coder.com/modules/azure-region"
-    exclude = [
-        "australia",
-        "australiacentral2",
-        "australiaeast",
-        "australiasoutheast"
-    ]
+  source = "registry.coder.com/modules/azure-region/coder"
+  version = "1.0.0"
+  exclude = [
+    "australia",
+    "australiacentral2",
+    "australiaeast",
+    "australiasoutheast"
+  ]
 }
 
 resource "azurerm_resource_group" "example" {
-    location = module.azure_region.value
+  location = module.azure_region.value
 }
 ```
 
