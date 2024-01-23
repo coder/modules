@@ -17,7 +17,7 @@ e.g.
 ```hcl
 module "code-server" {
   source = "registry.coder.com/modules/code-server/coder"
-  version = "1.0.0"
+  version = "1.0.1"
   agent_id = coder_agent.main.id
 }
 ```

@@ -17,7 +17,7 @@ Customize the preselected parameter value:
 ```hcl
 module "exoscale-instance-type" {
   source = "registry.coder.com/modules/exoscale-instance-type/coder"
-  version = "1.0.0"
+  version = "1.0.1"
   default = "standard.medium"
 }
 
@@ -45,7 +45,7 @@ Change the display name a type using the corresponding maps:
 ```hcl
 module "exoscale-instance-type" {
   source = "registry.coder.com/modules/exoscale-instance-type/coder"
-  version = "1.0.0"
+  version = "1.0.1"
   default = "standard.medium"
   custom_names = {
     "standard.medium": "Mittlere Instanz" # German translation
@@ -77,7 +77,7 @@ Show only gpu1 types
 ```hcl
 module "exoscale-instance-type" {
   source        = "registry.coder.com/modules/exoscale-instance-type/coder"
-  version       = "1.0.0"
+  version = "1.0.1"
   default       = "gpu.large"
   type_category = ["gpu"]
   exclude       = [

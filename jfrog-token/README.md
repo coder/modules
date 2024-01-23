@@ -15,7 +15,7 @@ Install the JF CLI and authenticate package managers with Artifactory using Arti
 ```hcl
 module "jfrog" {
   source = "registry.coder.com/modules/jfrog-token/coder"
-  version = "1.0.0"
+  version = "1.0.1"
   agent_id = coder_agent.example.id
   jfrog_url = "https://XXXX.jfrog.io"
   artifactory_access_token = var.artifactory_access_token
@@ -48,7 +48,7 @@ variable "artifactory_access_token" {
 ```hcl
 module "jfrog" {
   source = "registry.coder.com/modules/jfrog-token/coder"
-  version = "1.0.0"
+  version = "1.0.1"
   agent_id = coder_agent.example.id
   jfrog_url = "https://YYYY.jfrog.io"
   artifactory_access_token = var.artifactory_access_token # An admin access token
@@ -81,7 +81,7 @@ The [JFrog extension](https://open-vsx.org/extension/JFrog/jfrog-vscode-extensio
 ```hcl
 module "jfrog" {
   source = "registry.coder.com/modules/jfrog-token/coder"
-  version = "1.0.0"
+  version = "1.0.1"
   agent_id = coder_agent.example.id
   jfrog_url = "https://XXXX.jfrog.io"
   artifactory_access_token = var.artifactory_access_token

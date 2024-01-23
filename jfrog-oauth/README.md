@@ -19,7 +19,7 @@ Install the JF CLI and authenticate package managers with Artifactory using OAut
 ```hcl
 module "jfrog" {
   source = "registry.coder.com/modules/jfrog-oauth/coder"
-  version = "1.0.0"
+  version = "1.0.1"
   agent_id = coder_agent.example.id
   jfrog_url = "https://jfrog.example.com"
   username_field = "username" # If you are using GitHub to login to both Coder and Artifactory, use username_field = "username"
@@ -87,7 +87,7 @@ Configure the Python pip package manager to fetch packages from Artifactory whil
 ```hcl
 module "jfrog" {
   source = "registry.coder.com/modules/jfrog-oauth/coder"
-  version = "1.0.0"
+  version = "1.0.1"
   agent_id = coder_agent.example.id
   jfrog_url = "https://jfrog.example.com"
   auth_method = "oauth"
@@ -115,7 +115,7 @@ The [JFrog extension](https://open-vsx.org/extension/JFrog/jfrog-vscode-extensio
 ```hcl
 module "jfrog" {
   source = "registry.coder.com/modules/jfrog-oauth/coder"
-  version = "1.0.0"
+  version = "1.0.1"
   agent_id = coder_agent.example.id
   jfrog_url = "https://jfrog.example.com"
   username_field = "username" # If you are using GitHub to login to both Coder and Artifactory, use username_field = "username"
