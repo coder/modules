@@ -27,7 +27,8 @@ module "code-server" {
 
 ```hcl
 module "code-server" {
-  source          = "https://registry.coder.com/modules/code-server"
+  source          = "registry.coder.com/modules/code-server/coder"
+  version         = "1.0.0"
   agent_id        = coder_agent.example.id
   install_version = "4.8.3"
 }

@@ -13,7 +13,8 @@ This module adds Google Cloud Platform regions to your Coder template.
 
 ```hcl
 module "gcp_region" {
-  source  = "https://registry.coder.com/modules/gcp-region"
+  source  = "registry.coder.com/modules/gcp-region/coder"
+  version = "1.0.0"
   regions = ["us", "europe"]
 }
 
@@ -32,7 +33,8 @@ Note: setting `gpu_only = true` and using a default region without GPU support, 
 
 ```hcl
 module "gcp_region" {
-  source   = "https://registry.coder.com/modules/gcp-region"
+  source   = "registry.coder.com/modules/gcp-region/coder"
+  version  = "1.0.0"
   default  = ["us-west1-a"]
   regions  = ["us-west1"]
   gpu_only = false
@@ -47,7 +49,8 @@ resource "google_compute_instance" "example" {
 
 ```hcl
 module "gcp_region" {
-  source                 = "https://registry.coder.com/modules/gcp-region"
+  source                 = "registry.coder.com/modules/gcp-region/coder"
+  version                = "1.0.0"
   regions                = ["europe-west"]
   single_zone_per_region = false
 }
@@ -61,7 +64,8 @@ resource "google_compute_instance" "example" {
 
 ```hcl
 module "gcp_region" {
-  source                 = "https://registry.coder.com/modules/gcp-region"
+  source                 = "registry.coder.com/modules/gcp-region/coder"
+  version                = "1.0.0"
   regions                = ["us", "europe"]
   gpu_only               = true
   single_zone_per_region = true

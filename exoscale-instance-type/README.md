@@ -76,7 +76,8 @@ Show only gpu1 types
 
 ```hcl
 module "exoscale-instance-type" {
-  source        = "https://registry.coder.com/modules/exoscale-instance-type"
+  source        = "registry.coder.com/modules/exoscale-instance-type/coder"
+  version       = "1.0.0"
   default       = "gpu.large"
   type_category = ["gpu"]
   exclude       = [
