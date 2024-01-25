@@ -34,51 +34,7 @@ module "jfrog" {
 
 ## Prerequisites
 
-Coder [`external-auth`](https://coder.com/docs/v2/latest/admin/external-auth) configured with Artifactory. This requires a [custom integration](https://jfrog.com/help/r/jfrog-installation-setup-documentation/enable-new-integrations) in Artifactory with **Callback URL** set to `https://<your-coder-url>/external-auth/jfrog/callback`.
-
-To set this up,
-
-1. Modify your `values.yaml` for JFrog Artifactory to add,
-
-```yaml
-artifactory:
-  enabled: true
-  frontend:
-  extraEnvironmentVariables:
-    - name: JF_FRONTEND_FEATURETOGGLER_ACCESSINTEGRATION
-      value: "true"
-  access:
-  accessConfig:
-    integrations-enabled: true
-    integration-templates:
-      - id: "1"
-        name: "CODER"
-        redirect-uri: "https://CODER_URL/external-auth/jfrog/callback"
-        scope: "applied-permissions/user"
-```
-
-> Note
-> Replace `CODER_URL` with your Coder deployment URL, e.g., <coder.example.com>
-
-2. Create a new Application Integration by going to <https://JFROG_URL/ui/admin/configuration/integrations/new> and select the Application Type as the integartion you created in step 1.
-   ![JFrog Platform New Integrtaion](../.images/jfrog-oauth-app.png)
-
-3. Add a new [external authetication](https://coder.com/docs/v2/latest/admin/external-auth) to Coder by setting these env variables,
-
-```env
-# JFrog Artifactory External Auth
-CODER_EXTERNAL_AUTH_1_ID="jfrog"
-CODER_EXTERNAL_AUTH_1_TYPE="jfrog"
-CODER_EXTERNAL_AUTH_1_CLIENT_ID="YYYYYYYYYYYYYYY"
-CODER_EXTERNAL_AUTH_1_CLIENT_SECRET="XXXXXXXXXXXXXXXXXXX"
-CODER_EXTERNAL_AUTH_1_DISPLAY_NAME="JFrog Artifactory"
-CODER_EXTERNAL_AUTH_1_DISPLAY_ICON="/icon/jfrog.svg"
-CODER_EXTERNAL_AUTH_1_AUTH_URL="https://JFROG_URL/ui/authorization"
-CODER_EXTERNAL_AUTH_1_SCOPES="applied-permissions/user"
-```
-
-> Note
-> Replace `JFROG_URL` with your JFrog Artifactory base URL, e.g., <example.jfrog.io>
+This module is usable by JFrog self-hosted (on-premises) Artifactory as it requires configuring a custom integration. This integration benefits from Coder's [external-auth](https://coder.com/docs/v2/latest/admin/external-auth) feature and allows each user to authenticate with Artifactory using an OAuth flow and issues user-scoped tokens to each user. For configuration instructions, see this [guide](coder.com/docs/v2/latest/guides/artifactory-integration#jfrog-oauth) on the Coder documentation.
 
 ## Examples
 
