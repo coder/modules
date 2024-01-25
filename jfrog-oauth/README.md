@@ -61,7 +61,7 @@ artifactory:
 > Replace `CODER_URL` with your Coder deployment URL, e.g., <coder.example.com>
 
 2. Create a new Application Integration by going to <https://JFROG_URL/ui/admin/configuration/integrations/new> and select the Application Type as the integartion you created in step 1.
-![JFrog Platform New Integrtaion](https://github.com/coder/modules/assets/10648092/88a0d8c8-040a-4345-86c5-f3b8740122a5)
+![JFrog Platform New Integrtaion](../.images/jfrog-oauth-app.png)
 
 3. Add a new [external authetication](https://coder.com/docs/v2/latest/admin/external-auth) to Coder by setting these env variables,
 
