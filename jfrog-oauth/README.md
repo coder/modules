@@ -62,7 +62,7 @@ artifactory:
 > Note
 > Replace `CODER_URL` with your Coder deployment URL, e.g., <coder.example.com>
 
-2. Add a new [external authetication](https://coder.com/docs/v2/latest/admin/external-auth) to Coder by setting these env variables,
+2. Add a new [external authentication](https://coder.com/docs/v2/latest/admin/external-auth) to Coder by setting these env variables,
 
 ```env
 # JFrog Artifactory External Auth

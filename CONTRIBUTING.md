@@ -3,7 +3,7 @@
 To create a new module, clone this repository and run:
 
 ```shell
-./new.sh MOUDLE_NAME
+./new.sh MODULE_NAME
 ```
 
 ## Testing a Module
