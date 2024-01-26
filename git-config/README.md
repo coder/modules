@@ -13,8 +13,8 @@ Runs a script that updates git credentials in the workspace to match the user's 
 
 ```hcl
 module "git-config" {
-  source = "registry.coder.com/modules/git-config/coder"
-  version = "1.0.1"
+  source   = "registry.coder.com/modules/git-config/coder"
+  version  = "1.0.2"
   agent_id = coder_agent.example.id
 }
 ```
@@ -27,9 +27,9 @@ TODO: Add screenshot
 
 ```hcl
 module "git-config" {
-  source = "registry.coder.com/modules/git-config/coder"
-  version = "1.0.1"
-  agent_id = coder_agent.example.id
+  source             = "registry.coder.com/modules/git-config/coder"
+  version            = "1.0.2"
+  agent_id           = coder_agent.example.id
   allow_email_change = true
 }
 ```
@@ -40,12 +40,10 @@ TODO: Add screenshot
 
 ```hcl
 module "git-config" {
-  source = "registry.coder.com/modules/git-config/coder"
-  version = "1.0.1"
-  agent_id = coder_agent.example.id
+  source                = "registry.coder.com/modules/git-config/coder"
+  version               = "1.0.2"
+  agent_id              = coder_agent.example.id
   allow_username_change = false
-  allow_email_change = false
+  allow_email_change    = false
 }
 ```
-
-TODO: Add screenshot

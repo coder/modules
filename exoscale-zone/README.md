@@ -16,8 +16,8 @@ Customize the preselected parameter value:
 
 ```hcl
 module "exoscale-zone" {
-  source = "registry.coder.com/modules/exoscale-zone/coder"
-  version = "1.0.1"
+  source  = "registry.coder.com/modules/exoscale-zone/coder"
+  version = "1.0.2"
   default = "ch-dk-2"
 }
 
@@ -43,12 +43,14 @@ Change the display name and icon for a zone using the corresponding maps:
 
 ```hcl
 module "exoscale-zone" {
-  source = "registry.coder.com/modules/exoscale-zone/coder"
-  version = "1.0.1"
+  source  = "registry.coder.com/modules/exoscale-zone/coder"
+  version = "1.0.2"
   default = "at-vie-1"
+
   custom_names = {
     "at-vie-1": "Home Vienna"
   }
+
   custom_icons = {
     "at-vie-1": "/emojis/1f3e0.png"
   }
@@ -73,8 +75,8 @@ Hide the Switzerland zones Geneva and Zurich
 
 ```hcl
 module "exoscale-zone" {
-  source = "registry.coder.com/modules/exoscale-zone/coder"
-  version = "1.0.1"
+  source  = "registry.coder.com/modules/exoscale-zone/coder"
+  version = "1.0.2"
   exclude = [ "ch-gva-2", "ch-dk-2" ]
 }
 

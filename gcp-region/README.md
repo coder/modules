@@ -13,8 +13,8 @@ This module adds Google Cloud Platform regions to your Coder template.
 
 ```hcl
 module "gcp_region" {
-  source = "registry.coder.com/modules/gcp-region/coder"
-  version = "1.0.1"
+  source  = "registry.coder.com/modules/gcp-region/coder"
+  version = "1.0.2"
   regions = ["us", "europe"]
 }
 
@@ -33,10 +33,10 @@ Note: setting `gpu_only = true` and using a default region without GPU support, 
 
 ```hcl
 module "gcp_region" {
-  source = "registry.coder.com/modules/gcp-region/coder"
-  version = "1.0.1"
-  default = ["us-west1-a"]
-  regions = ["us-west1"]
+  source   = "registry.coder.com/modules/gcp-region/coder"
+  version  = "1.0.2"
+  default  = ["us-west1-a"]
+  regions  = ["us-west1"]
   gpu_only = false
 }
 
@@ -49,9 +49,9 @@ resource "google_compute_instance" "example" {
 
 ```hcl
 module "gcp_region" {
-  source = "registry.coder.com/modules/gcp-region/coder"
-  version = "1.0.1"
-  regions = ["europe-west"]
+  source                 = "registry.coder.com/modules/gcp-region/coder"
+  version                = "1.0.2"
+  regions                = ["europe-west"]
   single_zone_per_region = false
 }
 
@@ -60,14 +60,14 @@ resource "google_compute_instance" "example" {
 }
 ```
 
-### Add a single zone from each region in US and Europe that laos has GPUs
+### Add a single zone from each region in US and Europe that has GPUs
 
 ```hcl
 module "gcp_region" {
-  source = "registry.coder.com/modules/gcp-region/coder"
-  version = "1.0.1"
-  regions = ["us", "europe"]
-  gpu_only = true
+  source                 = "registry.coder.com/modules/gcp-region/coder"
+  version                = "1.0.2"
+  regions                = ["us", "europe"]
+  gpu_only               = true
   single_zone_per_region = true
 }
 

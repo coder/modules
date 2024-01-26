@@ -13,9 +13,9 @@ This module lets you authenticate with [Hashicorp Vault](https://www.vaultprojec
 
 ```hcl
 module "vault" {
-  source = "registry.coder.com/modules/vault-github/coder"
-  version = "1.0.1"
-  agent_id = coder_agent.example.id
+  source     = "registry.coder.com/modules/vault-github/coder"
+  version    = "1.0.2"
+  agent_id   = coder_agent.example.id
   vault_addr = "https://vault.example.com"
 }
 ```
@@ -23,7 +23,7 @@ module "vault" {
 Then you can use the Vault CLI in your workspaces to fetch secrets from Vault:
 
 ```shell
-vault kv get -mount = secret my-secret
+vault kv get -mount=secret my-secret
 ```
 
 or using the Vault API:
@@ -44,10 +44,10 @@ To configure the Vault module, you must set up a Vault GitHub auth method. See t
 
 ```hcl
 module "vault" {
-  source = "registry.coder.com/modules/vault-github/coder"
-  version = "1.0.1"
-  agent_id = coder_agent.example.id
-  vault_addr = "https://vault.example.com"
+  source               = "registry.coder.com/modules/vault-github/coder"
+  version              = "1.0.2"
+  agent_id             = coder_agent.example.id
+  vault_addr           = "https://vault.example.com"
   coder_github_auth_id = "my-github-auth-id"
 }
 ```
@@ -56,11 +56,11 @@ module "vault" {
 
 ```hcl
 module "vault" {
-  source = "registry.coder.com/modules/vault-github/coder"
-  version = "1.0.1"
-  agent_id = coder_agent.example.id
-  vault_addr = "https://vault.example.com"
-  coder_github_auth_id = "my-github-auth-id"
+  source                 = "registry.coder.com/modules/vault-github/coder"
+  version                = "1.0.2"
+  agent_id               = coder_agent.example.id
+  vault_addr             = "https://vault.example.com"
+  coder_github_auth_id   = "my-github-auth-id"
   vault_github_auth_path = "my-github-auth-path"
 }
 ```
@@ -69,10 +69,10 @@ module "vault" {
 
 ```hcl
 module "vault" {
-  source = "registry.coder.com/modules/vault-github/coder"
-  version = "1.0.1"
-  agent_id = coder_agent.example.id
-  vault_addr = "https://vault.example.com"
+  source            = "registry.coder.com/modules/vault-github/coder"
+  version           = "1.0.2"
+  agent_id          = coder_agent.example.id
+  vault_addr        = "https://vault.example.com"
   vault_cli_version = "1.15.0"
 }
 ```

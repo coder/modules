@@ -56,9 +56,9 @@ slackme npm run long-build
 
    ```hcl
    module "slackme" {
-     source = "registry.coder.com/modules/slackme/coder"
-     version = "1.0.1"
-     agent_id = coder_agent.example.id
+     source           = "registry.coder.com/modules/slackme/coder"
+     version          = "1.0.2"
+     agent_id         = coder_agent.example.id
      auth_provider_id = "slack"
    }
    ```
@@ -72,11 +72,11 @@ slackme npm run long-build
 
 ```hcl
 module "slackme" {
-  source = "registry.coder.com/modules/slackme/coder"
-  version = "1.0.1"
-  agent_id = coder_agent.example.id
+  source           = "registry.coder.com/modules/slackme/coder"
+  version          = "1.0.2"
+  agent_id         = coder_agent.example.id
   auth_provider_id = "slack"
-  slack_message = <<EOF
+  slack_message    = <<EOF
 👋 Hey there from Coder! $COMMAND took $DURATION to execute!
 EOF
 }

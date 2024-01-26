@@ -15,7 +15,7 @@ Install the JF CLI and authenticate package managers with Artifactory using Arti
 ```hcl
 module "jfrog" {
   source = "registry.coder.com/modules/jfrog-token/coder"
-  version = "1.0.1"
+  version = "1.0.2"
   agent_id = coder_agent.example.id
   jfrog_url = "https://XXXX.jfrog.io"
   artifactory_access_token = var.artifactory_access_token
@@ -40,11 +40,12 @@ For detailed instructions, please see this [guide](https://coder.com/docs/v2/lat
 
 ```hcl
 module "jfrog" {
-  source = "registry.coder.com/modules/jfrog-token/coder"
-  version = "1.0.1"
-  agent_id = coder_agent.example.id
-  jfrog_url = "https://YYYY.jfrog.io"
-  artifactory_access_token = var.artifactory_access_token # An admin access token
+  source                   = "registry.coder.com/modules/jfrog-token/coder"
+  version                  = "1.0.2"
+  agent_id                 = coder_agent.example.id
+  jfrog_url                = "https://example.jfrog.io"
+  artifactory_access_token = var.artifactory_access_token
+
   package_managers = {
     "npm": "npm-local",
     "go": "go-local",
@@ -73,12 +74,13 @@ The [JFrog extension](https://open-vsx.org/extension/JFrog/jfrog-vscode-extensio
 
 ```hcl
 module "jfrog" {
-  source = "registry.coder.com/modules/jfrog-token/coder"
-  version = "1.0.1"
-  agent_id = coder_agent.example.id
-  jfrog_url = "https://XXXX.jfrog.io"
+  source                   = "registry.coder.com/modules/jfrog-token/coder"
+  version                  = "1.0.2"
+  agent_id                 = coder_agent.example.id
+  jfrog_url                = "https://example.jfrog.io"
   artifactory_access_token = var.artifactory_access_token
-  configure_code_server = true # Add JFrog extension configuration for code-server
+  configure_code_server    = true # Add JFrog extension configuration for code-server
+
   package_managers = {
     "npm": "npm",
     "go": "go",
@@ -96,9 +98,11 @@ JFrog Access token is also available as a terraform output. You can use it in ot
 provider "docker" {
   ...
   registry_auth {
-    address = "https://YYYY.jfrog.io/artifactory/api/docker/REPO-KEY"
+    address  = "https://YYYY.jfrog.io/artifactory/api/docker/REPO-KEY"
     username = module.jfrog.username
     password = module.jfrog.access_token
   }
 }
 ```
+
+> Here `REPO_KEY` is the name of docker repository in Artifactory.

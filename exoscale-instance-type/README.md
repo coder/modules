@@ -16,8 +16,8 @@ Customize the preselected parameter value:
 
 ```hcl
 module "exoscale-instance-type" {
-  source = "registry.coder.com/modules/exoscale-instance-type/coder"
-  version = "1.0.1"
+  source  = "registry.coder.com/modules/exoscale-instance-type/coder"
+  version = "1.0.2"
   default = "standard.medium"
 }
 
@@ -28,7 +28,7 @@ resource "exoscale_compute_instance" "instance" {
 
 resource "coder_metadata" "workspace_info" {
   item {
-    key = "instance type"
+    key   = "instance type"
     value = module.exoscale-instance-type.name
   }
 }
@@ -44,12 +44,14 @@ Change the display name a type using the corresponding maps:
 
 ```hcl
 module "exoscale-instance-type" {
-  source = "registry.coder.com/modules/exoscale-instance-type/coder"
-  version = "1.0.1"
+  source  = "registry.coder.com/modules/exoscale-instance-type/coder"
+  version = "1.0.2"
   default = "standard.medium"
+
   custom_names = {
     "standard.medium": "Mittlere Instanz" # German translation
   }
+
   custom_descriptions = {
     "standard.medium": "4 GB Arbeitsspeicher, 2 Kerne, 10 - 400 GB Festplatte" # German translation
   }
@@ -62,7 +64,7 @@ resource "exoscale_compute_instance" "instance" {
 
 resource "coder_metadata" "workspace_info" {
   item {
-    key = "instance type"
+    key   = "instance type"
     value = module.exoscale-instance-type.name
   }
 }
@@ -76,11 +78,11 @@ Show only gpu1 types
 
 ```hcl
 module "exoscale-instance-type" {
-  source = "registry.coder.com/modules/exoscale-instance-type/coder"
-  version = "1.0.1"
-  default = "gpu.large"
+  source        = "registry.coder.com/modules/exoscale-instance-type/coder"
+  version       = "1.0.2"
+  default       = "gpu.large"
   type_category = ["gpu"]
-  exclude = [
+  exclude       = [
     "gpu2.small",
     "gpu2.medium",
     "gpu2.large",
@@ -99,7 +101,7 @@ resource "exoscale_compute_instance" "instance" {
 
 resource "coder_metadata" "workspace_info" {
   item {
-    key = "instance type"
+    key   = "instance type"
     value = module.exoscale-instance-type.name
   }
 }
