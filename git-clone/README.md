@@ -38,6 +38,6 @@ module "git-clone" {
   version  = "1.0.0"
   agent_id = coder_agent.example.id
   url      = "https://github.com/coder/coder"
-  path     = "~/projects/coder/coder"
+  path     = "~/projects/coder"
 }
 ```
