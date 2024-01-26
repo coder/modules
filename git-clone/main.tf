@@ -25,10 +25,19 @@ variable "agent_id" {
   type        = string
 }
 
+locals {
+  clone_path = var.path != "" ? join("/", [var.path, replace(basename(var.url), ".git", "")]) : join("/", ["~", replace(basename(var.url), ".git", "")])
+}
+
+output "repo_dir" {
+  value       = local.clone_path
+  description = "Full path of cloned repo directory"
+}
+
 resource "coder_script" "git_clone" {
   agent_id = var.agent_id
   script = templatefile("${path.module}/run.sh", {
-    CLONE_PATH = var.path != "" ? join("/", [var.path, replace(basename(var.url), ".git", "")]) : join("/", ["~", replace(basename(var.url), ".git", "")])
+    CLONE_PATH = local.clone_path
     REPO_URL : var.url,
   })
   display_name       = "Git Clone"
