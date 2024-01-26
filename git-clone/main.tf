@@ -14,9 +14,9 @@ variable "url" {
   type        = string
 }
 
-variable "path" {
+variable "base_dir" {
   default     = ""
-  description = "The path to clone the repository. Defaults to \"$HOME/<basename of url>\"."
+  description = "The base directory to clone the repository. Defaults to \"$HOME\"."
   type        = string
 }
 
@@ -26,7 +26,7 @@ variable "agent_id" {
 }
 
 locals {
-  clone_path = var.path != "" ? join("/", [var.path, replace(basename(var.url), ".git", "")]) : join("/", ["~", replace(basename(var.url), ".git", "")])
+  clone_path = var.base_dir != "" ? join("/", [var.base_dir, replace(basename(var.url), ".git", "")]) : join("/", ["~", replace(basename(var.url), ".git", "")])
 }
 
 output "repo_dir" {
