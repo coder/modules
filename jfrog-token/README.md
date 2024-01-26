@@ -27,14 +27,7 @@ module "jfrog" {
 }
 ```
 
-Get a JFrog access token from your Artifactory instance. The token must be an [admin token](https://registry.terraform.io/providers/jfrog/artifactory/latest/docs#access-token). It is recommended to store the token in a secret terraform variable.
-
-```hcl
-variable "artifactory_access_token" {
-  type = string
-  sensitive = true
-}
-```
+For detailed instructions, please see this [guide](https://coder.com/docs/v2/latest/guides/artifactory-integration#jfrog-token) on the Coder documentation.
 
 > Note
 > This module does not install `npm`, `go`, `pip`, etc but only configure them. You need to handle the installation of these tools yourself.
