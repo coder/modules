@@ -31,7 +31,7 @@ module "jetbrains_gateway" {
 ```tf
 module "jetbrains_gateway" {
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
-  version        = "1.0.0"
+  version        = "1.0.2"
   agent_id       = coder_agent.example.id
   folder         = "/home/coder/example"
   jetbrains_ides = ["GO", "WS"]
