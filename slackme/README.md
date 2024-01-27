@@ -54,11 +54,11 @@ slackme npm run long-build
 
 3. Restart your Coder deployment. Any Template can now import the Slack Me module, and `slackme` will be available on the `$PATH`:
 
-   ```hcl
+   ```tf
    module "slackme" {
-     source = "registry.coder.com/modules/slackme/coder"
-     version = "1.0.0"
-     agent_id = coder_agent.example.id
+     source           = "registry.coder.com/modules/slackme/coder"
+     version          = "1.0.0"
+     agent_id         = coder_agent.example.id
      auth_provider_id = "slack"
    }
    ```
@@ -70,13 +70,13 @@ slackme npm run long-build
 - `$COMMAND` is replaced with the command the user executed.
 - `$DURATION` is replaced with a human-readable duration the command took to execute.
 
-```hcl
+```tf
 module "slackme" {
-  source = "registry.coder.com/modules/slackme/coder"
-  version = "1.0.0"
-  agent_id = coder_agent.example.id
+  source           = "registry.coder.com/modules/slackme/coder"
+  version          = "1.0.0"
+  agent_id         = coder_agent.example.id
   auth_provider_id = "slack"
-  slack_message = <<EOF
+  slack_message    = <<EOF
 👋 Hey there from Coder! $COMMAND took $DURATION to execute!
 EOF
 }

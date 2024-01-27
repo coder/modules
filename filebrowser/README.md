@@ -11,10 +11,10 @@ tags: [helper, filebrowser]
 
 A file browser for your workspace.
 
-```hcl
+```tf
 module "filebrowser" {
-  source = "registry.coder.com/modules/filebrowser/coder"
-  version = "1.0.0"
+  source   = "registry.coder.com/modules/filebrowser/coder"
+  version  = "1.0.0"
   agent_id = coder_agent.example.id
 }
 ```
@@ -25,22 +25,22 @@ module "filebrowser" {
 
 ### Serve a specific directory
 
-```hcl
+```tf
 module "filebrowser" {
-  source = "registry.coder.com/modules/filebrowser/coder"
-  version = "1.0.0"
+  source   = "registry.coder.com/modules/filebrowser/coder"
+  version  = "1.0.0"
   agent_id = coder_agent.example.id
-  folder = "/home/coder/project"
+  folder   = "/home/coder/project"
 }
 ```
 
 ### Specify location of `filebrowser.db`
 
-```hcl
+```tf
 module "filebrowser" {
-  source = "registry.coder.com/modules/filebrowser/coder"
-  version = "1.0.0"
-  agent_id = coder_agent.example.id
+  source        = "registry.coder.com/modules/filebrowser/coder"
+  version       = "1.0.0"
+  agent_id      = coder_agent.example.id
   database_path = ".config/filebrowser.db"
 }
 ```

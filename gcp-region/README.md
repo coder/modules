@@ -11,7 +11,7 @@ tags: [gcp, regions, parameter, helper]
 
 This module adds Google Cloud Platform regions to your Coder template.
 
-```hcl
+```tf
 module "gcp_region" {
   source  = "registry.coder.com/modules/gcp-region/coder"
   version = "1.0.0"
@@ -31,7 +31,7 @@ resource "google_compute_instance" "example" {
 
 Note: setting `gpu_only = true` and using a default region without GPU support, the default will be set to `null`.
 
-```hcl
+```tf
 module "gcp_region" {
   source   = "registry.coder.com/modules/gcp-region/coder"
   version  = "1.0.0"
@@ -47,7 +47,7 @@ resource "google_compute_instance" "example" {
 
 ### Add all zones in the Europe West region
 
-```hcl
+```tf
 module "gcp_region" {
   source                 = "registry.coder.com/modules/gcp-region/coder"
   version                = "1.0.0"
@@ -62,7 +62,7 @@ resource "google_compute_instance" "example" {
 
 ### Add a single zone from each region in US and Europe that laos has GPUs
 
-```hcl
+```tf
 module "gcp_region" {
   source                 = "registry.coder.com/modules/gcp-region/coder"
   version                = "1.0.0"
