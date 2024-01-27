@@ -11,10 +11,10 @@ tags: [helper, ide, web]
 
 Automatically install [code-server](https://github.com/coder/code-server) in a workspace, create an app to access it via the dashboard, install extensions, and pre-configure editor settings.
 
-```hcl
+```tf
 module "code-server" {
   source   = "registry.coder.com/modules/code-server/coder"
-  version  = "1.0.2"
+  version  = "1.0.0"
   agent_id = coder_agent.example.id
 }
 ```
@@ -25,7 +25,7 @@ module "code-server" {
 
 ### Pin Versions
 
-```hcl
+```tf
 module "code-server" {
   source          = "registry.coder.com/modules/code-server/coder"
   version         = "1.0.2"
@@ -38,11 +38,11 @@ module "code-server" {
 
 Install the Dracula theme from [OpenVSX](https://open-vsx.org/):
 
-```hcl
+```tf
 module "code-server" {
-  source     = "registry.coder.com/modules/code-server/coder"
-  version    = "1.0.2"
-  agent_id   = coder_agent.example.id
+  source   = "registry.coder.com/modules/code-server/coder"
+  version  = "1.0.0"
+  agent_id = coder_agent.example.id
   extensions = [
     "dracula-theme.theme-dracula"
   ]
@@ -55,13 +55,12 @@ Enter the `<author>.<name>` into the extensions array and code-server will autom
 
 Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarted/settings#_settingsjson) file:
 
-```hcl
+```tf
 module "settings" {
   source     = "registry.coder.com/modules/code-server/coder"
-  version    = "1.0.2"
+  version    = "1.0.0"
   agent_id   = coder_agent.example.id
-  extensions = [ "dracula-theme.theme-dracula" ]
-
+  extensions = ["dracula-theme.theme-dracula"]
   settings = {
     "workbench.colorTheme" = "Dracula"
   }
@@ -72,12 +71,12 @@ module "settings" {
 
 Just run code-server in the background, don't fetch it from GitHub:
 
-```hcl
+```tf
 module "settings" {
   source     = "registry.coder.com/modules/code-server/coder"
-  version    = "1.0.2"
+  version    = "1.0.0"
   agent_id   = coder_agent.example.id
-  extensions = [ "dracula-theme.theme-dracula", "ms-azuretools.vscode-docker" ]
+  extensions = ["dracula-theme.theme-dracula", "ms-azuretools.vscode-docker"]
 }
 ```
 
@@ -85,10 +84,10 @@ module "settings" {
 
 Just run code-server in the background, don't fetch it from GitHub:
 
-```hcl
+```tf
 module "settings" {
   source   = "registry.coder.com/modules/code-server/coder"
-  version  = "1.0.2"
+  version  = "1.0.0"
   agent_id = coder_agent.example.id
   offline  = true
 }

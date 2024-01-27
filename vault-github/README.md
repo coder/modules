@@ -11,7 +11,7 @@ tags: [helper, integration, vault, github]
 
 This module lets you authenticate with [Hashicorp Vault](https://www.vaultproject.io/) in your Coder workspaces using [external auth](https://coder.com/docs/v2/latest/admin/external-auth) for GitHub.
 
-```hcl
+```tf
 module "vault" {
   source     = "registry.coder.com/modules/vault-github/coder"
   version    = "1.0.2"
@@ -42,7 +42,7 @@ To configure the Vault module, you must set up a Vault GitHub auth method. See t
 
 ### Configure Vault integration with a different Coder GitHub external auth ID (i.e., not the default `github`)
 
-```hcl
+```tf
 module "vault" {
   source               = "registry.coder.com/modules/vault-github/coder"
   version              = "1.0.2"
@@ -54,7 +54,7 @@ module "vault" {
 
 ### Configure Vault integration with a different Coder GitHub external auth ID and a different Vault GitHub auth path
 
-```hcl
+```tf
 module "vault" {
   source                 = "registry.coder.com/modules/vault-github/coder"
   version                = "1.0.2"
@@ -67,7 +67,7 @@ module "vault" {
 
 ### Configure Vault integration and install a specific version of the Vault CLI
 
-```hcl
+```tf
 module "vault" {
   source            = "registry.coder.com/modules/vault-github/coder"
   version           = "1.0.2"

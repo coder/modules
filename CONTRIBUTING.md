@@ -19,7 +19,7 @@ $ bun test -t '<module>'
 
 You can test a module locally by updating the source as follows
 
-```hcl
+```tf
 module "example" {
   source = "git::https://github.com/<USERNAME>/<REPO>.git//<MODULE-NAME>?ref=<BRANCH-NAME>"
 }

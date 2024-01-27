@@ -11,7 +11,7 @@ tags: [helper]
 
 Automatically logs the user into Coder when creating their workspace.
 
-```hcl
+```tf
 module "coder-login" {
   source   = "registry.coder.com/modules/coder-login/coder"
   version  = "1.0.2"

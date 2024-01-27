@@ -13,10 +13,10 @@ Add a button to open any workspace with a single click.
 
 Uses the [Coder Remote VS Code Extension](https://github.com/coder/vscode-coder).
 
-```hcl
+```tf
 module "vscode" {
   source   = "registry.coder.com/modules/vscode-desktop/coder"
-  version  = "1.0.2"
+  version  = "1.0.0"
   agent_id = coder_agent.example.id
 }
 ```
@@ -25,10 +25,10 @@ module "vscode" {
 
 ### Open in a specific directory
 
-```hcl
+```tf
 module "vscode" {
   source   = "registry.coder.com/modules/vscode-desktop/coder"
-  version  = "1.0.2"
+  version  = "1.0.0"
   agent_id = coder_agent.example.id
   folder   = "/home/coder/project"
 }

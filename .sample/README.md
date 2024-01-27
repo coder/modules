@@ -11,7 +11,7 @@ tags: [helper]
 
 <!-- Describes what this module does -->
 
-```hcl
+```tf
 module "MODULE_NAME" {
   source  = "registry.coder.com/modules/MODULE_NAME/coder"
   version = "1.0.2"
@@ -26,7 +26,7 @@ module "MODULE_NAME" {
 
 Install the Dracula theme from [OpenVSX](https://open-vsx.org/):
 
-```hcl
+```tf
 module "MODULE_NAME" {
   source     = "registry.coder.com/modules/MODULE_NAME/coder"
   version    = "1.0.2"
@@ -43,7 +43,7 @@ Enter the `<author>.<name>` into the extensions array and code-server will autom
 
 Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarted/settings#_settingsjson) file:
 
-```hcl
+```tf
 module "MODULE_NAME" {
   source     = "registry.coder.com/modules/MODULE_NAME/coder"
   version    = "1.0.2"
@@ -59,7 +59,7 @@ module "MODULE_NAME" {
 
 Run code-server in the background, don't fetch it from GitHub:
 
-```hcl
+```tf
 module "MODULE_NAME" {
   source   = "registry.coder.com/modules/MODULE_NAME/coder"
   version  = "1.0.2"

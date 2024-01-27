@@ -11,7 +11,7 @@ tags: [git, helper]
 
 This module allows you to automatically clone a repository by URL and skip if it exists in the base directory provided.
 
-```hcl
+```tf
 module "git-clone" {
   source   = "registry.coder.com/modules/git-clone/coder"
   version  = "1.0.2"
@@ -22,7 +22,7 @@ module "git-clone" {
 
 To use with [Git Authentication](https://coder.com/docs/v2/latest/admin/git-providers), add the provider by ID to your template:
 
-```hcl
+```tf
 data "coder_git_auth" "github" {
   id = "github"
 }
@@ -32,7 +32,7 @@ data "coder_git_auth" "github" {
 
 ### Custom Path
 
-```hcl
+```tf
 module "git-clone" {
   source   = "registry.coder.com/modules/git-clone/coder"
   version  = "1.0.2"

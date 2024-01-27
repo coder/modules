@@ -12,17 +12,17 @@ tags: [integration, jfrog]
 
 Install the JF CLI and authenticate package managers with Artifactory using Artifactory terraform provider.
 
-```hcl
+```tf
 module "jfrog" {
-  source = "registry.coder.com/modules/jfrog-token/coder"
-  version = "1.0.2"
-  agent_id = coder_agent.example.id
-  jfrog_url = "https://XXXX.jfrog.io"
+  source                   = "registry.coder.com/modules/jfrog-token/coder"
+  version                  = "1.0.0"
+  agent_id                 = coder_agent.example.id
+  jfrog_url                = "https://XXXX.jfrog.io"
   artifactory_access_token = var.artifactory_access_token
   package_managers = {
-    "npm": "npm",
-    "go": "go",
-    "pypi": "pypi"
+    "npm" : "npm",
+    "go" : "go",
+    "pypi" : "pypi"
   }
 }
 ```
@@ -38,18 +38,17 @@ For detailed instructions, please see this [guide](https://coder.com/docs/v2/lat
 
 ### Configure npm, go, and pypi to use Artifactory local repositories
 
-```hcl
+```tf
 module "jfrog" {
   source                   = "registry.coder.com/modules/jfrog-token/coder"
-  version                  = "1.0.2"
+  version                  = "1.0.0"
   agent_id                 = coder_agent.example.id
-  jfrog_url                = "https://example.jfrog.io"
-  artifactory_access_token = var.artifactory_access_token
-
+  jfrog_url                = "https://YYYY.jfrog.io"
+  artifactory_access_token = var.artifactory_access_token # An admin access token
   package_managers = {
-    "npm": "npm-local",
-    "go": "go-local",
-    "pypi": "pypi-local"
+    "npm" : "npm-local",
+    "go" : "go-local",
+    "pypi" : "pypi-local"
   }
 }
 ```
@@ -72,19 +71,18 @@ pip install requests
 
 The [JFrog extension](https://open-vsx.org/extension/JFrog/jfrog-vscode-extension) for VS Code allows you to interact with Artifactory from within the IDE.
 
-```hcl
+```tf
 module "jfrog" {
   source                   = "registry.coder.com/modules/jfrog-token/coder"
-  version                  = "1.0.2"
+  version                  = "1.0.0"
   agent_id                 = coder_agent.example.id
-  jfrog_url                = "https://example.jfrog.io"
+  jfrog_url                = "https://XXXX.jfrog.io"
   artifactory_access_token = var.artifactory_access_token
   configure_code_server    = true # Add JFrog extension configuration for code-server
-
   package_managers = {
-    "npm": "npm",
-    "go": "go",
-    "pypi": "pypi"
+    "npm" : "npm",
+    "go" : "go",
+    "pypi" : "pypi"
   }
 }
 ```
@@ -93,10 +91,10 @@ module "jfrog" {
 
 JFrog Access token is also available as a terraform output. You can use it in other terraform resources. For example, you can use it to configure an [Artifactory docker registry](https://jfrog.com/help/r/jfrog-artifactory-documentation/docker-registry) with the [docker terraform provider](https://registry.terraform.io/providers/kreuzwerker/docker/latest/docs).
 
-```hcl
+```tf
 
 provider "docker" {
-  ...
+  # ...
   registry_auth {
     address  = "https://YYYY.jfrog.io/artifactory/api/docker/REPO-KEY"
     username = module.jfrog.username

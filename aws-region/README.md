@@ -14,10 +14,10 @@ the region closest to them.
 
 Customize the preselected parameter value:
 
-```hcl
+```tf
 module "aws-region" {
   source  = "registry.coder.com/modules/aws-region/coder"
-  version = "1.0.2"
+  version = "1.0.0"
   default = "us-east-1"
 }
 
@@ -34,18 +34,18 @@ provider "aws" {
 
 Change the display name and icon for a region using the corresponding maps:
 
-```hcl
+```tf
 module "aws-region" {
   source  = "registry.coder.com/modules/aws-region/coder"
-  version = "1.0.2"
+  version = "1.0.0"
   default = "ap-south-1"
 
   custom_names = {
-    "ap-south-1": "Awesome Mumbai!"
+    "ap-south-1" : "Awesome Mumbai!"
   }
 
   custom_icons = {
-    "ap-south-1": "/emojis/1f33a.png"
+    "ap-south-1" : "/emojis/1f33a.png"
   }
 }
 
@@ -60,11 +60,11 @@ provider "aws" {
 
 Hide the Asia Pacific regions Seoul and Osaka:
 
-```hcl
+```tf
 module "aws-region" {
   source  = "registry.coder.com/modules/aws-region/coder"
-  version = "1.0.2"
-  exclude = [ "ap-northeast-2", "ap-northeast-3" ]
+  version = "1.0.0"
+  exclude = ["ap-northeast-2", "ap-northeast-3"]
 }
 
 provider "aws" {
