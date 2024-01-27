@@ -28,11 +28,11 @@ module "vscode-web" {
 
 ```tf
 module "vscode-web" {
-  source          = "registry.coder.com/modules/vscode-web/coder"
-  version         = "1.0.0"
-  agent_id        = coder_agent.example.id
-  install_dir     = "/home/coder/.vscode-web"
-  folder          = "/home/coder"
-  accept_license  = true
+  source         = "registry.coder.com/modules/vscode-web/coder"
+  version        = "1.0.0"
+  agent_id       = coder_agent.example.id
+  install_dir    = "/home/coder/.vscode-web"
+  folder         = "/home/coder"
+  accept_license = true
 }
 ```

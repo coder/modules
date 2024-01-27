@@ -15,8 +15,8 @@ A module that adds JupyterLab in your Coder template.
 
 ```tf
 module "jupyterlab" {
-  source = "registry.coder.com/modules/jupyterlab/coder"
-  version = "1.0.0"
+  source   = "registry.coder.com/modules/jupyterlab/coder"
+  version  = "1.0.0"
   agent_id = coder_agent.example.id
 }
 ```

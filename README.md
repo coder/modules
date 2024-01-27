@@ -16,8 +16,8 @@ e.g.
 
 ```tf
 module "code-server" {
-  source = "registry.coder.com/modules/code-server/coder"
-  version = "1.0.0"
+  source   = "registry.coder.com/modules/code-server/coder"
+  version  = "1.0.0"
   agent_id = coder_agent.main.id
 }
 ```

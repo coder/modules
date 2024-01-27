@@ -13,8 +13,8 @@ Run a script on workspace start that allows developers to run custom commands to
 
 ```tf
 module "personalize" {
-  source = "registry.coder.com/modules/personalize/coder"
-  version = "1.0.0"
+  source   = "registry.coder.com/modules/personalize/coder"
+  version  = "1.0.0"
   agent_id = coder_agent.example.id
 }
 ```
