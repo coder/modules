@@ -16,13 +16,13 @@ Customize the preselected parameter value:
 
 ```tf
 module "exoscale-instance-type" {
-  source = "registry.coder.com/modules/exoscale-instance-type/coder"
+  source  = "registry.coder.com/modules/exoscale-instance-type/coder"
   version = "1.0.0"
   default = "standard.medium"
 }
 
 resource "exoscale_compute_instance" "instance" {
-  type        = module.exoscale-instance-type.value
+  type = module.exoscale-instance-type.value
   # ...
 }
 
@@ -44,19 +44,19 @@ Change the display name a type using the corresponding maps:
 
 ```tf
 module "exoscale-instance-type" {
-  source = "registry.coder.com/modules/exoscale-instance-type/coder"
+  source  = "registry.coder.com/modules/exoscale-instance-type/coder"
   version = "1.0.0"
   default = "standard.medium"
   custom_names = {
-    "standard.medium": "Mittlere Instanz" # German translation
+    "standard.medium" : "Mittlere Instanz" # German translation
   }
   custom_descriptions = {
-    "standard.medium": "4 GB Arbeitsspeicher, 2 Kerne, 10 - 400 GB Festplatte" # German translation
+    "standard.medium" : "4 GB Arbeitsspeicher, 2 Kerne, 10 - 400 GB Festplatte" # German translation
   }
 }
 
 resource "exoscale_compute_instance" "instance" {
-  type        = module.exoscale-instance-type.value
+  type = module.exoscale-instance-type.value
   # ...
 }
 
@@ -80,7 +80,7 @@ module "exoscale-instance-type" {
   version       = "1.0.0"
   default       = "gpu.large"
   type_category = ["gpu"]
-  exclude       = [
+  exclude = [
     "gpu2.small",
     "gpu2.medium",
     "gpu2.large",
@@ -93,7 +93,7 @@ module "exoscale-instance-type" {
 }
 
 resource "exoscale_compute_instance" "instance" {
-  type        = module.exoscale-instance-type.value
+  type = module.exoscale-instance-type.value
   # ...
 }
 

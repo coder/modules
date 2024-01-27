@@ -16,7 +16,7 @@ Customize the preselected parameter value:
 
 ```tf
 module "exoscale-zone" {
-  source = "registry.coder.com/modules/exoscale-zone/coder"
+  source  = "registry.coder.com/modules/exoscale-zone/coder"
   version = "1.0.0"
   default = "ch-dk-2"
 }
@@ -28,7 +28,7 @@ data "exoscale_compute_template" "my_template" {
 }
 
 resource "exoscale_compute_instance" "instance" {
-  zone    = module.exoscale-zone.value
+  zone = module.exoscale-zone.value
   # ...
 }
 ```
@@ -43,14 +43,14 @@ Change the display name and icon for a zone using the corresponding maps:
 
 ```tf
 module "exoscale-zone" {
-  source = "registry.coder.com/modules/exoscale-zone/coder"
+  source  = "registry.coder.com/modules/exoscale-zone/coder"
   version = "1.0.0"
   default = "at-vie-1"
   custom_names = {
-    "at-vie-1": "Home Vienna"
+    "at-vie-1" : "Home Vienna"
   }
   custom_icons = {
-    "at-vie-1": "/emojis/1f3e0.png"
+    "at-vie-1" : "/emojis/1f3e0.png"
   }
 }
 
@@ -60,7 +60,7 @@ data "exoscale_compute_template" "my_template" {
 }
 
 resource "exoscale_compute_instance" "instance" {
-  zone    = module.exoscale-zone.value
+  zone = module.exoscale-zone.value
   # ...
 }
 ```
@@ -73,9 +73,9 @@ Hide the Switzerland zones Geneva and Zurich
 
 ```tf
 module "exoscale-zone" {
-  source = "registry.coder.com/modules/exoscale-zone/coder"
+  source  = "registry.coder.com/modules/exoscale-zone/coder"
   version = "1.0.0"
-  exclude = [ "ch-gva-2", "ch-dk-2" ]
+  exclude = ["ch-gva-2", "ch-dk-2"]
 }
 
 data "exoscale_compute_template" "my_template" {
@@ -84,7 +84,7 @@ data "exoscale_compute_template" "my_template" {
 }
 
 resource "exoscale_compute_instance" "instance" {
-  zone    = module.exoscale-zone.value
+  zone = module.exoscale-zone.value
   # ...
 }
 ```
