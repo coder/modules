@@ -23,7 +23,7 @@ module "exoscale-instance-type" {
 
 resource "exoscale_compute_instance" "instance" {
   type        = module.exoscale-instance-type.value
-  ...
+  # ...
 }
 
 resource "coder_metadata" "workspace_info" {
@@ -57,7 +57,7 @@ module "exoscale-instance-type" {
 
 resource "exoscale_compute_instance" "instance" {
   type        = module.exoscale-instance-type.value
-  ...
+  # ...
 }
 
 resource "coder_metadata" "workspace_info" {
@@ -94,7 +94,7 @@ module "exoscale-instance-type" {
 
 resource "exoscale_compute_instance" "instance" {
   type        = module.exoscale-instance-type.value
-  ...
+  # ...
 }
 
 resource "coder_metadata" "workspace_info" {

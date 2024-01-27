@@ -94,7 +94,7 @@ JFrog Access token is also available as a terraform output. You can use it in ot
 ```tf
 
 provider "docker" {
-  ...
+  # ...
   registry_auth {
     address = "https://YYYY.jfrog.io/artifactory/api/docker/REPO-KEY"
     username = module.jfrog.username
