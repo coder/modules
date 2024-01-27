@@ -33,7 +33,7 @@ describe("filebrowser", async () => {
     expect(output.stdout).toEqual([
       "\u001b[0;1mInstalling filebrowser ",
       "",
-      "🥳 Installation comlete! ",
+      "🥳 Installation complete! ",
       "",
       "👷 Starting filebrowser in background... ",
       "",
@@ -55,7 +55,7 @@ describe("filebrowser", async () => {
     expect(output.stdout).toEqual([
       "\u001b[0;1mInstalling filebrowser ",
       "",
-      "🥳 Installation comlete! ",
+      "🥳 Installation complete! ",
       "",
       "👷 Starting filebrowser in background... ",
       "",
@@ -77,7 +77,7 @@ describe("filebrowser", async () => {
     expect(output.stdout).toEqual([
       "\u001B[0;1mInstalling filebrowser ",
       "",
-      "🥳 Installation comlete! ",
+      "🥳 Installation complete! ",
       "",
       "👷 Starting filebrowser in background... ",
       "",

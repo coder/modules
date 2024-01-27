@@ -5,7 +5,7 @@ printf "$${BOLD}Installing filebrowser \n\n"
 
 curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
 
-printf "🥳 Installation comlete! \n\n"
+printf "🥳 Installation complete! \n\n"
 
 printf "👷 Starting filebrowser in background... \n\n"
 
