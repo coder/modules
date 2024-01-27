@@ -62,7 +62,7 @@ for (const dir of dirs) {
   let h1 = false;
   let code = false;
   let paragraph = false;
-  let version = false;
+  let version = true;
 
   for (const token of tokens) {
     if (token.type === "heading" && token.depth === 1) {
@@ -78,15 +78,12 @@ for (const dir of dirs) {
     }
     if (token.type === "code") {
       code = true;
-      if (token.lang !== "hcl") {
-        version = true;
-        continue;
+      if (token.lang === "tf" && !token.text.includes("version")) {
+        version = false;
+        error(dir.name, "missing version in tf code block");
       }
-      let text = token.text;
-      // check if text contains version
-      if (text.includes("version")) {
-        version = true;
-        continue;
+      if (token.lang === "hcl") {
+        error(dir.name, "HCL code blocks are not allowed, use tf");
       }
       continue;
     }
@@ -101,7 +98,7 @@ for (const dir of dirs) {
     error(dir.name, "missing example code block after paragraph");
   }
   if (!version) {
-    error(dir.name, "missing version in code block");
+    error(dir.name, "missing version in tf code block");
   }
 }
 
