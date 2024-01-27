@@ -11,7 +11,7 @@ tags: [helper, filebrowser]
 
 A file browser for your workspace.
 
-```hcl
+```tf
 module "filebrowser" {
   source = "registry.coder.com/modules/filebrowser/coder"
   version = "1.0.0"
@@ -25,7 +25,7 @@ module "filebrowser" {
 
 ### Serve a specific directory
 
-```hcl
+```tf
 module "filebrowser" {
   source = "registry.coder.com/modules/filebrowser/coder"
   version = "1.0.0"
@@ -36,7 +36,7 @@ module "filebrowser" {
 
 ### Specify location of `filebrowser.db`
 
-```hcl
+```tf
 module "filebrowser" {
   source = "registry.coder.com/modules/filebrowser/coder"
   version = "1.0.0"

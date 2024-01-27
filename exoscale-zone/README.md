@@ -14,7 +14,7 @@ the zone closest to them.
 
 Customize the preselected parameter value:
 
-```hcl
+```tf
 module "exoscale-zone" {
   source = "registry.coder.com/modules/exoscale-zone/coder"
   version = "1.0.0"
@@ -41,7 +41,7 @@ resource "exoscale_compute_instance" "instance" {
 
 Change the display name and icon for a zone using the corresponding maps:
 
-```hcl
+```tf
 module "exoscale-zone" {
   source = "registry.coder.com/modules/exoscale-zone/coder"
   version = "1.0.0"
@@ -71,7 +71,7 @@ resource "exoscale_compute_instance" "instance" {
 
 Hide the Switzerland zones Geneva and Zurich
 
-```hcl
+```tf
 module "exoscale-zone" {
   source = "registry.coder.com/modules/exoscale-zone/coder"
   version = "1.0.0"

@@ -11,7 +11,7 @@ tags: [helper]
 
 Allow developers to optionally bring their own [dotfiles repository](https://dotfiles.github.io)! Under the hood, this module uses the [coder dotfiles](https://coder.com/docs/v2/latest/dotfiles) command.
 
-```hcl
+```tf
 module "dotfiles" {
   source = "registry.coder.com/modules/dotfiles/coder"
   version = "1.0.0"

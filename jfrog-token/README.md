@@ -12,7 +12,7 @@ tags: [integration, jfrog]
 
 Install the JF CLI and authenticate package managers with Artifactory using Artifactory terraform provider.
 
-```hcl
+```tf
 module "jfrog" {
   source = "registry.coder.com/modules/jfrog-token/coder"
   version = "1.0.0"
@@ -38,7 +38,7 @@ For detailed instructions, please see this [guide](https://coder.com/docs/v2/lat
 
 ### Configure npm, go, and pypi to use Artifactory local repositories
 
-```hcl
+```tf
 module "jfrog" {
   source = "registry.coder.com/modules/jfrog-token/coder"
   version = "1.0.0"
@@ -71,7 +71,7 @@ pip install requests
 
 The [JFrog extension](https://open-vsx.org/extension/JFrog/jfrog-vscode-extension) for VS Code allows you to interact with Artifactory from within the IDE.
 
-```hcl
+```tf
 module "jfrog" {
   source = "registry.coder.com/modules/jfrog-token/coder"
   version = "1.0.0"
@@ -91,7 +91,7 @@ module "jfrog" {
 
 JFrog Access token is also available as a terraform output. You can use it in other terraform resources. For example, you can use it to configure an [Artifactory docker registry](https://jfrog.com/help/r/jfrog-artifactory-documentation/docker-registry) with the [docker terraform provider](https://registry.terraform.io/providers/kreuzwerker/docker/latest/docs).
 
-```hcl
+```tf
 
 provider "docker" {
   ...

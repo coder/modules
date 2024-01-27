@@ -11,7 +11,7 @@ tags: [helper, parameter, azure, regions]
 
 This module adds a parameter with all Azure regions, allowing developers to select the region closest to them.
 
-```hcl
+```tf
 module "azure_region" {
   source = "registry.coder.com/modules/azure-region/coder"
   version = "1.0.0"
@@ -31,7 +31,7 @@ resource "azurem_resource_group" "example" {
 
 Change the display name and icon for a region using the corresponding maps:
 
-```hcl
+```tf
 module "azure-region" {
   source = "registry.coder.com/modules/azure-region/coder"
   version = "1.0.0"
@@ -54,7 +54,7 @@ resource "azurerm_resource_group" "example" {
 
 Hide all regions in Australia except australiacentral:
 
-```hcl
+```tf
 module "azure-region" {
   source = "registry.coder.com/modules/azure-region/coder"
   version = "1.0.0"

@@ -11,7 +11,7 @@ tags: [ide, jetbrains, helper, parameter]
 
 This module adds a JetBrains Gateway Button to open any workspace with a single click.
 
-```hcl
+```tf
 module "jetbrains_gateway" {
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
   version        = "1.0.0"
@@ -28,7 +28,7 @@ module "jetbrains_gateway" {
 
 ### Add GoLand and WebStorm with the default set to GoLand
 
-```hcl
+```tf
 module "jetbrains_gateway" {
   source          = "registry.coder.com/modules/jetbrains-gateway/coder"
   version         = "1.0.0"

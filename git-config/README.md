@@ -11,7 +11,7 @@ tags: [helper, git]
 
 Runs a script that updates git credentials in the workspace to match the user's Coder credentials, optionally allowing to the developer to override the defaults.
 
-```hcl
+```tf
 module "git-config" {
   source = "registry.coder.com/modules/git-config/coder"
   version = "1.0.0"
@@ -25,7 +25,7 @@ TODO: Add screenshot
 
 ### Allow users to override both username and email
 
-```hcl
+```tf
 module "git-config" {
   source = "registry.coder.com/modules/git-config/coder"
   version = "1.0.0"
@@ -38,7 +38,7 @@ TODO: Add screenshot
 
 ## Disallowing users from overriding both username and email
 
-```hcl
+```tf
 module "git-config" {
   source = "registry.coder.com/modules/git-config/coder"
   version = "1.0.0"

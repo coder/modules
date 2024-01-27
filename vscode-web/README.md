@@ -11,7 +11,7 @@ tags: [helper, ide, vscode, web]
 
 Automatically install [Visual Studio Code Server](https://code.visualstudio.com/docs/remote/vscode-server) in a workspace using the [VS Code CLI](https://code.visualstudio.com/docs/editor/command-line) and create an app to access it via the dashboard.
 
-```hcl
+```tf
 module "vscode-web" {
   source         = "registry.coder.com/modules/vscode-web/coder"
   version        = "1.0.0"
@@ -26,7 +26,7 @@ module "vscode-web" {
 
 ### Install VS Code Web to a custom folder
 
-```hcl
+```tf
 module "vscode-web" {
   source          = "registry.coder.com/modules/vscode-web/coder"
   version         = "1.0.0"

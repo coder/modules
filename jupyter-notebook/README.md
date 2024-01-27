@@ -13,7 +13,7 @@ A module that adds Jupyter Notebook in your Coder template.
 
 ![Jupyter Notebook](../.images/jupyter-notebook.png)
 
-```hcl
+```tf
 module "jupyter-notebook" {
   source = "registry.coder.com/modules/jupyter-notebook/coder"
   version = "1.0.0"

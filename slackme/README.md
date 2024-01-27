@@ -54,7 +54,7 @@ slackme npm run long-build
 
 3. Restart your Coder deployment. Any Template can now import the Slack Me module, and `slackme` will be available on the `$PATH`:
 
-   ```hcl
+   ```tf
    module "slackme" {
      source = "registry.coder.com/modules/slackme/coder"
      version = "1.0.0"
@@ -70,7 +70,7 @@ slackme npm run long-build
 - `$COMMAND` is replaced with the command the user executed.
 - `$DURATION` is replaced with a human-readable duration the command took to execute.
 
-```hcl
+```tf
 module "slackme" {
   source = "registry.coder.com/modules/slackme/coder"
   version = "1.0.0"

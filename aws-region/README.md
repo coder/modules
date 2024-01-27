@@ -14,7 +14,7 @@ the region closest to them.
 
 Customize the preselected parameter value:
 
-```hcl
+```tf
 module "aws-region" {
   source = "registry.coder.com/modules/aws-region/coder"
   version = "1.0.0"
@@ -34,7 +34,7 @@ provider "aws" {
 
 Change the display name and icon for a region using the corresponding maps:
 
-```hcl
+```tf
 module "aws-region" {
   source = "registry.coder.com/modules/aws-region/coder"
   version = "1.0.0"
@@ -58,7 +58,7 @@ provider "aws" {
 
 Hide the Asia Pacific regions Seoul and Osaka:
 
-```hcl
+```tf
 module "aws-region" {
   source = "registry.coder.com/modules/aws-region/coder"
   version = "1.0.0"

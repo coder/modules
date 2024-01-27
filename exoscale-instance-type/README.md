@@ -14,7 +14,7 @@ their desired virtuell machine for the workspace.
 
 Customize the preselected parameter value:
 
-```hcl
+```tf
 module "exoscale-instance-type" {
   source = "registry.coder.com/modules/exoscale-instance-type/coder"
   version = "1.0.0"
@@ -42,7 +42,7 @@ resource "coder_metadata" "workspace_info" {
 
 Change the display name a type using the corresponding maps:
 
-```hcl
+```tf
 module "exoscale-instance-type" {
   source = "registry.coder.com/modules/exoscale-instance-type/coder"
   version = "1.0.0"
@@ -74,7 +74,7 @@ resource "coder_metadata" "workspace_info" {
 
 Show only gpu1 types
 
-```hcl
+```tf
 module "exoscale-instance-type" {
   source        = "registry.coder.com/modules/exoscale-instance-type/coder"
   version       = "1.0.0"

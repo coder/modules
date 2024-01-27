@@ -14,7 +14,7 @@ Modules extend Templates to create reusable components for your development envi
 
 e.g.
 
-```hcl
+```tf
 module "code-server" {
   source = "registry.coder.com/modules/code-server/coder"
   version = "1.0.0"
