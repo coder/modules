@@ -10,7 +10,7 @@ tags: [helper, parameter, instances, exoscale]
 # exoscale-instance-type
 
 A parameter with all Exoscale instance types. This allows developers to select
-their desired virtuell machine for the workspace.
+their desired virtual machine for the workspace.
 
 Customize the preselected parameter value:
 
@@ -72,7 +72,7 @@ resource "coder_metadata" "workspace_info" {
 
 ![Exoscale instance types Custom](../.images/exoscale-instance-custom.png)
 
-### Use category and exlude type
+### Use category and exclude type
 
 Show only gpu1 types
 

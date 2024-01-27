@@ -13,9 +13,39 @@ let badExit = false;
 // error reports an error to the console and sets badExit to true
 // so that the process will exit with a non-zero exit code.
 const error = (...data: any[]) => {
-    console.error(...data);
-    badExit = true;
-}
+  console.error(...data);
+  badExit = true;
+};
+
+const verifyCodeBlocks = (
+  tokens: marked.Token[],
+  res = {
+    codeIsTF: false,
+    codeIsHCL: false,
+  }
+) => {
+  for (const token of tokens) {
+    // Check in-depth.
+    if (token.type === "list") {
+      verifyCodeBlocks(token.items, res);
+      continue;
+    }
+    if (token.type === "list_item") {
+      verifyCodeBlocks(token.tokens, res);
+      continue;
+    }
+
+    if (token.type === "code") {
+      if (token.lang === "tf") {
+        res.codeIsTF = true;
+      }
+      if (token.lang === "hcl") {
+        res.codeIsHCL = true;
+      }
+    }
+  }
+  return res;
+};
 
 // Ensures that each README has the proper format.
 // Exits with 0 if all is good!
@@ -82,9 +112,6 @@ for (const dir of dirs) {
         version = false;
         error(dir.name, "missing version in tf code block");
       }
-      if (token.lang === "hcl") {
-        error(dir.name, "HCL code blocks are not allowed, use tf");
-      }
       continue;
     }
   }
@@ -97,8 +124,13 @@ for (const dir of dirs) {
   if (!code) {
     error(dir.name, "missing example code block after paragraph");
   }
-  if (!version) {
-    error(dir.name, "missing version in tf code block");
+
+  const { codeIsTF, codeIsHCL } = verifyCodeBlocks(tokens);
+  if (!codeIsTF) {
+    error(dir.name, "missing example tf code block");
+  }
+  if (codeIsHCL) {
+    error(dir.name, "hcl code block should be tf");
   }
 }
 

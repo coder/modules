@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This scripts creates a new sample moduledir with requried files
+# This scripts creates a new sample moduledir with required files
 # Run it like : ./new.sh my-module
 
 MODULE_NAME=$1
@@ -11,7 +11,7 @@ if [ -z "$MODULE_NAME" ]; then
   exit 1
 fi
 
-# Create module directory and exit if it alredy exists
+# Create module directory and exit if it already exists
 if [ -d "$MODULE_NAME" ]; then
   echo "Module with name $MODULE_NAME already exists"
   echo "Please choose a different name"
