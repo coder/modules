@@ -26,7 +26,7 @@ module "vscode-web" {
 
 ### Install VS Code Web to a custom folder
 
-```hcl
+```tf
 module "vscode-web" {
   source         = "registry.coder.com/modules/vscode-web/coder"
   version        = "1.0.2"
