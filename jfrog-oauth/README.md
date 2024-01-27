@@ -14,17 +14,17 @@ Install the JF CLI and authenticate package managers with Artifactory using OAut
 
 ![JFrog OAuth](../.images/jfrog-oauth.png)
 
-```hcl
+```tf
 module "jfrog" {
-  source = "registry.coder.com/modules/jfrog-oauth/coder"
-  version = "1.0.0"
-  agent_id = coder_agent.example.id
-  jfrog_url = "https://example.jfrog.io"
+  source         = "registry.coder.com/modules/jfrog-oauth/coder"
+  version        = "1.0.0"
+  agent_id       = coder_agent.example.id
+  jfrog_url      = "https://example.jfrog.io"
   username_field = "username" # If you are using GitHub to login to both Coder and Artifactory, use username_field = "username"
   package_managers = {
-    "npm": "npm",
-    "go": "go",
-    "pypi": "pypi"
+    "npm" : "npm",
+    "go" : "go",
+    "pypi" : "pypi"
   }
 }
 ```
@@ -40,15 +40,15 @@ This module is usable by JFrog self-hosted (on-premises) Artifactory as it requi
 
 Configure the Python pip package manager to fetch packages from Artifactory while mapping the Coder email to the Artifactory username.
 
-```hcl
+```tf
 module "jfrog" {
-  source = "registry.coder.com/modules/jfrog-oauth/coder"
-  version = "1.0.0"
-  agent_id = coder_agent.example.id
-  jfrog_url = "https://example.jfrog.io"
+  source         = "registry.coder.com/modules/jfrog-oauth/coder"
+  version        = "1.0.0"
+  agent_id       = coder_agent.example.id
+  jfrog_url      = "https://example.jfrog.io"
   username_field = "email"
   package_managers = {
-    "pypi": "pypi"
+    "pypi" : "pypi"
   }
 }
 ```
@@ -67,18 +67,18 @@ pip install requests
 
 The [JFrog extension](https://open-vsx.org/extension/JFrog/jfrog-vscode-extension) for VS Code allows you to interact with Artifactory from within the IDE.
 
-```hcl
+```tf
 module "jfrog" {
-  source = "registry.coder.com/modules/jfrog-oauth/coder"
-  version = "1.0.0"
-  agent_id = coder_agent.example.id
-  jfrog_url = "https://example.jfrog.io"
-  username_field = "username" # If you are using GitHub to login to both Coder and Artifactory, use username_field = "username"
-  configure_code_server = true # Add JFrog extension configuration for code-server
+  source                = "registry.coder.com/modules/jfrog-oauth/coder"
+  version               = "1.0.0"
+  agent_id              = coder_agent.example.id
+  jfrog_url             = "https://example.jfrog.io"
+  username_field        = "username" # If you are using GitHub to login to both Coder and Artifactory, use username_field = "username"
+  configure_code_server = true       # Add JFrog extension configuration for code-server
   package_managers = {
-    "npm": "npm",
-    "go": "go",
-    "pypi": "pypi"
+    "npm" : "npm",
+    "go" : "go",
+    "pypi" : "pypi"
   }
 }
 ```
@@ -87,11 +87,11 @@ module "jfrog" {
 
 JFrog Access token is also available as a terraform output. You can use it in other terraform resources. For example, you can use it to configure an [Artifactory docker registry](https://jfrog.com/help/r/jfrog-artifactory-documentation/docker-registry) with the [docker terraform provider](https://registry.terraform.io/providers/kreuzwerker/docker/latest/docs).
 
-```hcl
+```tf
 provider "docker" {
-  ...
+  # ...
   registry_auth {
-    address = "https://example.jfrog.io/artifactory/api/docker/REPO-KEY"
+    address  = "https://example.jfrog.io/artifactory/api/docker/REPO-KEY"
     username = module.jfrog.username
     password = module.jfrog.access_token
   }
