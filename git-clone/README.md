@@ -9,7 +9,7 @@ tags: [git, helper]
 
 # Git Clone
 
-This module allows you to automatically clone a repository by URL and skip if it exists in the path provided.
+This module allows you to automatically clone a repository by URL and skip if it exists in the base directory provided.
 
 ```hcl
 module "git-clone" {
@@ -38,6 +38,6 @@ module "git-clone" {
   version  = "1.0.0"
   agent_id = coder_agent.example.id
   url      = "https://github.com/coder/coder"
-  path     = "~/projects/coder/coder"
+  base_dir = "~/projects/coder"
 }
 ```
