@@ -14,7 +14,7 @@ This module adds a parameter with all Azure regions, allowing developers to sele
 ```tf
 module "azure_region" {
   source  = "registry.coder.com/modules/azure-region/coder"
-  version = "1.0.0"
+  version = "1.0.2"
   default = "eastus"
 }
 
@@ -34,7 +34,7 @@ Change the display name and icon for a region using the corresponding maps:
 ```tf
 module "azure-region" {
   source  = "registry.coder.com/modules/azure-region/coder"
-  version = "1.0.0"
+  version = "1.0.2"
   custom_names = {
     "australia" : "Go Australia!"
   }
@@ -57,7 +57,7 @@ Hide all regions in Australia except australiacentral:
 ```tf
 module "azure-region" {
   source  = "registry.coder.com/modules/azure-region/coder"
-  version = "1.0.0"
+  version = "1.0.2"
   exclude = [
     "australia",
     "australiacentral2",

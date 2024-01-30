@@ -4,7 +4,8 @@
     "test": "bun test",
     "fmt": "bun x prettier -w **/*.sh .sample/run.sh new.sh **/*.ts **/*.md *.md && terraform fmt **/*.tf .sample/main.tf",
     "fmt:ci": "bun x prettier --check **/*.sh .sample/run.sh new.sh **/*.ts **/*.md *.md && terraform fmt -check **/*.tf .sample/main.tf",
-    "lint": "bun run lint.ts"
+    "lint": "bun run lint.ts",
+    "update-version": "./update-version.sh"
   },
   "devDependencies": {
     "bun-types": "^1.0.18",

@@ -57,7 +57,7 @@ slackme npm run long-build
    ```tf
    module "slackme" {
      source           = "registry.coder.com/modules/slackme/coder"
-     version          = "1.0.0"
+     version          = "1.0.2"
      agent_id         = coder_agent.example.id
      auth_provider_id = "slack"
    }
@@ -73,7 +73,7 @@ slackme npm run long-build
 ```tf
 module "slackme" {
   source           = "registry.coder.com/modules/slackme/coder"
-  version          = "1.0.0"
+  version          = "1.0.2"
   agent_id         = coder_agent.example.id
   auth_provider_id = "slack"
   slack_message    = <<EOF
