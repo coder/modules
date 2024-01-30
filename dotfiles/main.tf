@@ -45,7 +45,7 @@ locals {
   user         = var.user != null ? var.user : ""
 }
 
-resource "coder_script" "personalize" {
+resource "coder_script" "dotfiles" {
   agent_id = var.agent_id
   script = templatefile("${path.module}/run.sh", {
     DOTFILES_URI : local.dotfiles_uri,
