@@ -1,5 +1,5 @@
 #/usr/bin/env bash
-
+set -euo pipefail
 # This script updates the version number in the README.md files of all modules
 # to the latest tag in the repository. It is intended to be run from the root
 # of the repository or by using the `bun update-version` command.
