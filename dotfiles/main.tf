@@ -14,7 +14,16 @@ variable "agent_id" {
   description = "The ID of a Coder agent."
 }
 
+variable "dotfiles_uri" {
+  type        = string
+  description = "The URL to a dotfiles repository. (optional)"
+
+  default = null
+}
+
 data "coder_parameter" "dotfiles_uri" {
+  count = var.dotfiles_uri == null ? 1 : 0
+
   type         = "string"
   name         = "dotfiles_uri"
   display_name = "Dotfiles URL (optional)"
@@ -27,7 +36,7 @@ data "coder_parameter" "dotfiles_uri" {
 resource "coder_script" "personalize" {
   agent_id = var.agent_id
   script = templatefile("${path.module}/run.sh", {
-    DOTFILES_URI : data.coder_parameter.dotfiles_uri.value,
+    DOTFILES_URI : var.dotfiles_uri != null ? var.dotfiles_uri : data.coder_parameter.dotfiles_uri[0].value,
   })
   display_name = "Dotfiles"
   icon         = "/icon/dotfiles.svg"
@@ -36,5 +45,5 @@ resource "coder_script" "personalize" {
 
 output "dotfiles_uri" {
   description = "Dotfiles URI"
-  value       = data.coder_parameter.dotfiles_uri.value
+  value       = var.dotfiles_uri != null ? var.dotfiles_uri : data.coder_parameter.dotfiles_uri[0].value
 }
