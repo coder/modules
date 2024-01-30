@@ -25,13 +25,10 @@ data "coder_parameter" "dotfiles_uri" {
 }
 
 resource "coder_script" "personalize" {
-  agent_id     = var.agent_id
-  script       = <<-EOT
-    DOTFILES_URI="${data.coder_parameter.dotfiles_uri.value}"
-    if [ -n "$${DOTFILES_URI// }" ]; then
-    coder dotfiles "$DOTFILES_URI" -y 2>&1 | tee -a ~/.dotfiles.log
-    fi
-    EOT
+  agent_id = var.agent_id
+  script = templatefile("${path.module}/run.sh", {
+    DOTFILES_URI : data.coder_parameter.dotfiles_uri.value,
+  })
   display_name = "Dotfiles"
   icon         = "/icon/dotfiles.svg"
   run_on_start = true
