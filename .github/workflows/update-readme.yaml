@@ -1,10 +1,11 @@
 name: Update README on Tag
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - 'v*'
-      
+
 jobs:
   update-readme:
     permissions:
