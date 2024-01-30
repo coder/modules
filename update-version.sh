@@ -10,9 +10,7 @@ find . -name README.md | while read -r file; do
     awk -v tag="$LATEST_TAG" '{
         if ($1 == "version" && $2 == "=") {
             sub(/"[^"]*"/, "\"" tag "\"")
-            print
-        } else {
-            print
         }
+        print
     }' "$file" > tmpfile && mv tmpfile "$file"
 done
