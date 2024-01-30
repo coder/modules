@@ -1,5 +1,4 @@
 DOTFILES_URI="${DOTFILES_URI}"
-ROOT="${ROOT}"
 
 if [ -n "$${DOTFILES_URI// }" ]; then
   echo "✨ Applying dotfiles for user $USER"
