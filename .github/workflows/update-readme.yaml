@@ -29,10 +29,12 @@ jobs:
         id: create-pr
         uses: peter-evans/create-pull-request@v5
         with:
-          commit-message: 'chore: bump version to ${{ steps.get-latest-tag.outputs.TAG }} in README.md files'
-          title: 'chore: bump version to ${{ steps.get-latest-tag.outputs.TAG }} in README.md files'
-          body: 'This is an auto-generated PR to update README.md files of all modules with the new tag ${{ steps.get-latest-tag.outputs.TAG }}'
+          commit-message: 'chore: bump version to ${{ env.TAG }} in README.md files'
+          title: 'chore: bump version to ${{ env.TAG }} in README.md files'
+          body: 'This is an auto-generated PR to update README.md files of all modules with the new tag ${{ env.TAG }}'
           branch: 'update-readme-branch'
+        env:
+          TAG: ${{ steps.get-latest-tag.outputs.TAG }}
 
       - name: Auto-approve
         uses: hmarr/auto-approve-action@v4
