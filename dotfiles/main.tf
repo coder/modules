@@ -33,10 +33,14 @@ data "coder_parameter" "dotfiles_uri" {
   icon         = "/icon/dotfiles.svg"
 }
 
+locals {
+  dotfiles_uri = var.dotfiles_uri != null ? var.dotfiles_uri : data.coder_parameter.dotfiles_uri[0].value
+}
+
 resource "coder_script" "personalize" {
   agent_id = var.agent_id
   script = templatefile("${path.module}/run.sh", {
-    DOTFILES_URI : var.dotfiles_uri != null ? var.dotfiles_uri : data.coder_parameter.dotfiles_uri[0].value,
+    DOTFILES_URI : local.dotfiles_uri,
   })
   display_name = "Dotfiles"
   icon         = "/icon/dotfiles.svg"
@@ -45,5 +49,5 @@ resource "coder_script" "personalize" {
 
 output "dotfiles_uri" {
   description = "Dotfiles URI"
-  value       = var.dotfiles_uri != null ? var.dotfiles_uri : data.coder_parameter.dotfiles_uri[0].value
+  value       = local.dotfiles_uri
 }
