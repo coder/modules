@@ -21,6 +21,13 @@ variable "dotfiles_uri" {
   default = null
 }
 
+variable "user" {
+  type        = string
+  description = "The name of the user to apply the dotfiles to. (optional, applies to the current user by default)"
+
+  default = null
+}
+
 data "coder_parameter" "dotfiles_uri" {
   count = var.dotfiles_uri == null ? 1 : 0
 
@@ -35,12 +42,14 @@ data "coder_parameter" "dotfiles_uri" {
 
 locals {
   dotfiles_uri = var.dotfiles_uri != null ? var.dotfiles_uri : data.coder_parameter.dotfiles_uri[0].value
+  user         = var.user != null ? var.user : ""
 }
 
 resource "coder_script" "personalize" {
   agent_id = var.agent_id
   script = templatefile("${path.module}/run.sh", {
     DOTFILES_URI : local.dotfiles_uri,
+    DOTFILES_USER : local.user
   })
   display_name = "Dotfiles"
   icon         = "/icon/dotfiles.svg"
