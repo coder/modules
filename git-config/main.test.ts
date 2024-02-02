@@ -1,8 +1,5 @@
-import { describe} from "bun:test";
-import {
-  runTerraformInit,
-  testRequiredVariables,
-} from "../test";
+import { describe } from "bun:test";
+import { runTerraformInit, testRequiredVariables } from "../test";
 
 describe("git-config", async () => {
   await runTerraformInit(import.meta.dir);
