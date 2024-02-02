@@ -60,7 +60,7 @@ To configure the Vault module, you must create a Vault token with the the requir
    ```shell
    vault token create -policy="read-coder-secrets"
    ```
-3. Copy the generated and use in your template. 
+3. Copy the generated token and use in your template.
 
 ## Examples
 
