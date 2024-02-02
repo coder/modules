@@ -15,7 +15,7 @@ This module lets you authenticate with [Hashicorp Vault](https://www.vaultprojec
 ```tf
 module "vault" {
   source     = "registry.coder.com/modules/vault-github/coder"
-  version    = "1.0.2"
+  version    = "1.0.3"
   agent_id   = coder_agent.example.id
   vault_addr = "https://vault.example.com"
 }
@@ -24,13 +24,13 @@ module "vault" {
 Then you can use the Vault CLI in your workspaces to fetch secrets from Vault:
 
 ```shell
-vault kv get -mount=secret my-secret
+vault kv get -mount=coder my-secret
 ```
 
 or using the Vault API:
 
 ```shell
-curl -H "X-Vault-Token: ${VAULT_TOKEN}" -X GET "${VAULT_ADDR}/v1/secret/data/my-secret"
+curl -H "X-Vault-Token: ${VAULT_TOKEN}" -X GET "${VAULT_ADDR}/v1/coder/data/my-secret"
 ```
 
 ![Vault login](../.images/vault-login.png)
@@ -46,7 +46,7 @@ To configure the Vault module, you must set up a Vault GitHub auth method. See t
 ```tf
 module "vault" {
   source               = "registry.coder.com/modules/vault-github/coder"
-  version              = "1.0.2"
+  version              = "1.0.3"
   agent_id             = coder_agent.example.id
   vault_addr           = "https://vault.example.com"
   coder_github_auth_id = "my-github-auth-id"
@@ -58,7 +58,7 @@ module "vault" {
 ```tf
 module "vault" {
   source                 = "registry.coder.com/modules/vault-github/coder"
-  version                = "1.0.2"
+  version                = "1.0.3"
   agent_id               = coder_agent.example.id
   vault_addr             = "https://vault.example.com"
   coder_github_auth_id   = "my-github-auth-id"
@@ -71,7 +71,7 @@ module "vault" {
 ```tf
 module "vault" {
   source            = "registry.coder.com/modules/vault-github/coder"
-  version           = "1.0.2"
+  version           = "1.0.3"
   agent_id          = coder_agent.example.id
   vault_addr        = "https://vault.example.com"
   vault_cli_version = "1.15.0"
