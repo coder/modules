@@ -1,9 +1,7 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Convert all templated variables to shell variables
 INSTALL_VERSION=${INSTALL_VERSION}
-VAULT_ADDR=${VAULT_ADDR}
-VAULT_TOKEN=${VAULT_TOKEN}
 
 fetch() {
   dest="$1"
@@ -82,11 +80,3 @@ if [ $${installation_needed} -eq 1 ]; then
     printf "Please add ~/.local/bin to your PATH to use vault CLI.\n"
   fi
 fi
-
-# Login to vault using the configured token
-export VAULT_ADDR="$${VAULT_ADDR}"
-export VAULT_TOKEN="$${VAULT_TOKEN}"
-printf "🔑 Authenticating with Vault ...\n\n"
-vault login -no-print token="$${VAULT_TOKEN}"
-printf "🥳 Vault authentication complete!\n\n"
-printf "You can now use Vault CLI to access secrets.\n"
