@@ -44,17 +44,16 @@ curl -H "X-Vault-Token: ${VAULT_TOKEN}" -X GET "${VAULT_ADDR}/v1/coder/data/my-s
 
 To configure the Vault module, you must create a Vault token with the the required permissions and configure the module with the token and Vault address.
 
-1. Create a vault policy `read-coder-secrets.hcl` with read access to the secret mount you need your developers to access.
-   ```hcl
-   path "coder/data/*" {
-     capabilities = ["read"]
-   }
-   path "coder/metadata/*" {
-     capabilities = ["read"]
-   }
-   ```
+1. Create a vault policy with read access to the secret mount you need your developers to access.
    ```shell
-   vault policy write read-coder-secrets ead-coder-secrets.hcl
+   vault policy write read-coder-secrets - <<EOF
+    path "coder/data/*" {
+      capabilities = ["read"]
+    }
+    path "coder/metadata/*" {
+      capabilities = ["read"]
+    }
+    EOF
    ```
 2. Create a token using this policy.
    ```shell
