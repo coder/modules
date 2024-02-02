@@ -4,7 +4,7 @@ terraform {
   required_providers {
     coder = {
       source  = "coder/coder"
-      version = ">= 0.12"
+      version = ">= 0.13"
     }
   }
 }
@@ -49,13 +49,26 @@ data "coder_parameter" "username" {
   mutable      = true
 }
 
-resource "coder_script" "git_config" {
+resource "coder_env" "git_author_name" {
   agent_id = var.agent_id
-  script = templatefile("${path.module}/run.sh", {
-    GIT_USERNAME = try(data.coder_parameter.username[0].value, "") == "" ? data.coder_workspace.me.owner : try(data.coder_parameter.username[0].value, "")
-    GIT_EMAIL    = try(data.coder_parameter.user_email[0].value, "") == "" ? data.coder_workspace.me.owner_email : try(data.coder_parameter.user_email[0].value, "")
-  })
-  display_name = "Git Config"
-  icon         = "/icon/git.svg"
-  run_on_start = true
+  name     = "GIT_AUTHOR_NAME"
+  value    = "coalesce(data.coder_paramter.username.value, data.coder_workspace.me.owner_name, data.coder_workspace.me.owner)"
+}
+
+resource "coder_env" "git_commmiter_name" {
+  agent_id = var.agent_id
+  name     = "GIT_COMMITTER_NAME"
+  value    = "coalesce(data.coder_paramter.username.value, data.coder_workspace.me.owner_name, data.coder_workspace.me.owner)"
+}
+
+resource "coder_env" "git_author_email" {
+  agent_id = var.agent_id
+  name     = "GIT_AUTHOR_EMAIL"
+  value    = "coalesce(data.coder_paramter.user_email.value, data.coder_workspace.me.owner_email)"
+}
+
+resource "coder_env" "git_commmiter_email" {
+  agent_id = var.agent_id
+  name     = "GIT_COMMITTER_EMAIL"
+  value    = "coalesce(data.coder_paramter.username.value, data.coder_workspace.me.owner_email)"
 }
