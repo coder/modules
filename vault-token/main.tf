@@ -20,6 +20,12 @@ variable "vault_addr" {
   description = "The address of the Vault server."
 }
 
+variable "vault_token" {
+  type        = string
+  description = "The Vault token to use for authentication."
+  sensitive   = true
+}
+
 variable "vault_cli_version" {
   type        = string
   description = "The version of Vault to install."
@@ -30,11 +36,6 @@ variable "vault_cli_version" {
   }
 }
 
-variable "vault_token" {
-  type        = string
-  description = "The Vault token to use for authentication."
-}
-
 data "coder_workspace" "me" {}
 
 resource "coder_script" "vault" {
@@ -42,8 +43,6 @@ resource "coder_script" "vault" {
   display_name = "Vault (Token)"
   icon         = "/icon/vault.svg"
   script = templatefile("${path.module}/run.sh", {
-    VAULT_ADDR : var.vault_addr,
-    VAULT_TOKEN : var.vault_token,
     INSTALL_VERSION : var.vault_cli_version,
   })
   run_on_start       = true
@@ -54,4 +53,10 @@ resource "coder_env" "vault_addr" {
   agent_id = var.agent_id
   name     = "VAULT_ADDR"
   value    = var.vault_addr
+}
+
+resource "coder_env" "vault_token" {
+  agent_id = var.agent_id
+  name     = "VAULT_TOKEN"
+  value    = var.vault_token
 }
