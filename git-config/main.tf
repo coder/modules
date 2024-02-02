@@ -34,7 +34,7 @@ data "coder_parameter" "user_email" {
   name         = "user_email"
   type         = "string"
   default      = ""
-  description  = "Git user.email to be used for commits. Leave empty to default to Coder username."
+  description  = "Git user.email to be used for commits. Leave empty to default to Coder user's email."
   display_name = "Git config user.email"
   mutable      = true
 }
@@ -44,7 +44,7 @@ data "coder_parameter" "username" {
   name         = "username"
   type         = "string"
   default      = ""
-  description  = "Git user.name to be used for commits. Leave empty to default to Coder username."
+  description  = "Git user.name to be used for commits. Leave empty to default to Coder user's Full Name."
   display_name = "Git config user.name"
   mutable      = true
 }
@@ -52,23 +52,23 @@ data "coder_parameter" "username" {
 resource "coder_env" "git_author_name" {
   agent_id = var.agent_id
   name     = "GIT_AUTHOR_NAME"
-  value    = "coalesce(data.coder_paramter.username.value, data.coder_workspace.me.owner_name, data.coder_workspace.me.owner)"
+  value    = "coalesce(data.coder_parameter.username.value, data.coder_workspace.me.owner_name, data.coder_workspace.me.owner)"
 }
 
 resource "coder_env" "git_commmiter_name" {
   agent_id = var.agent_id
   name     = "GIT_COMMITTER_NAME"
-  value    = "coalesce(data.coder_paramter.username.value, data.coder_workspace.me.owner_name, data.coder_workspace.me.owner)"
+  value    = "coalesce(data.coder_parameter.username.value, data.coder_workspace.me.owner_name, data.coder_workspace.me.owner)"
 }
 
 resource "coder_env" "git_author_email" {
   agent_id = var.agent_id
   name     = "GIT_AUTHOR_EMAIL"
-  value    = "coalesce(data.coder_paramter.user_email.value, data.coder_workspace.me.owner_email)"
+  value    = "coalesce(data.coder_parameter.user_email.value, data.coder_workspace.me.owner_email)"
 }
 
 resource "coder_env" "git_commmiter_email" {
   agent_id = var.agent_id
   name     = "GIT_COMMITTER_EMAIL"
-  value    = "coalesce(data.coder_paramter.username.value, data.coder_workspace.me.owner_email)"
+  value    = "coalesce(data.coder_parameter.username.value, data.coder_workspace.me.owner_email)"
 }
