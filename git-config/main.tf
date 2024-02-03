@@ -45,7 +45,7 @@ data "coder_parameter" "username" {
   type         = "string"
   default      = ""
   description  = "Git user.name to be used for commits. Leave empty to default to Coder user's Full Name."
-  display_name = "Git config user.name"
+  display_name = "Full Name for Git config"
   mutable      = true
 }
 
