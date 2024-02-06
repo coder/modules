@@ -25,10 +25,6 @@ variable "agent_id" {
   description = "The ID of a Coder agent."
 }
 
-variable "secrets_list" {
-  type = list(string)
-}
-
 variable "client_id" {
   type        = string
   description = <<-EOF
@@ -52,15 +48,20 @@ variable "app_name" {
   description = "The name of the secrets app in HCP Vault Secrets"
 }
 
-data "hcp_vault_secrets_secret" "secret" {
-  for_each    = toset(var.secrets_list)
-  app_name    = var.app_name
-  secret_name = each.value
+variable "secrets" {
+  type        = list(string)
+  description = "The names of the secrets to retrieve from HCP Vault Secrets"
+  default     = null
+}
+
+data "hcp_vault_secrets_app" "secrets" {
+  app_name = var.app_name
 }
 
 resource "coder_env" "hvs_secrets" {
-  for_each = data.hcp_vault_secrets_secret.secret
+  # https://support.hashicorp.com/hc/en-us/articles/4538432032787-Variable-has-a-sensitive-value-and-cannot-be-used-as-for-each-arguments
+  for_each = var.secrets != null ? toset(var.secrets) : nonsensitive(toset(keys(data.hcp_vault_secrets_app.secrets.secrets)))
   agent_id = var.agent_id
   name     = each.key
-  value    = each.value.secret_value
+  value    = data.hcp_vault_secrets_app.secrets.secrets[each.key]
 }
