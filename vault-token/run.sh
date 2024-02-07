@@ -37,7 +37,7 @@ if [ "$${INSTALL_VERSION}" = "latest" ]; then
     printf "Failed to determine the latest Vault version.\n"
     exit 1
   fi
-  VERSION=$${LATEST_VERSION}
+  INSTALL_VERSION=$${LATEST_VERSION}
 fi
 
 # Check if the vault CLI is installed and has the correct version
@@ -55,15 +55,14 @@ if [ $${installation_needed} -eq 1 ]; then
   if [ -z "$${CURRENT_VERSION}" ]; then
     printf "Installing Vault CLI ...\n\n"
   else
-    printf "Upgrading Vault CLI from version %s to %s ...\n\n" "$${CURRENT_VERSION}" "$${VERSION}"
+    printf "Upgrading Vault CLI from version %s to %s ...\n\n" "$${CURRENT_VERSION}" "$${INSTALL_VERSION}"
   fi
-  fetch vault.zip "https://releases.hashicorp.com/vault/$${VERSION}/vault_$${VERSION}_linux_amd64.zip"
+  fetch vault.zip "https://releases.hashicorp.com/vault/$${INSTALL_VERSION}/vault_$${INSTALL_VERSION}_linux_amd64.zip"
   if [ $? -ne 0 ]; then
     printf "Failed to download Vault.\n"
     exit 1
   fi
-  unzip vault.zip
-  if [ $? -ne 0 ]; then
+  if ! unzip vault.zip; then
     printf "Failed to unzip Vault.\n"
     exit 1
   fi
@@ -72,8 +71,7 @@ if [ $${installation_needed} -eq 1 ]; then
     printf "Vault installed successfully!\n\n"
   else
     mkdir -p ~/.local/bin
-    mv vault ~/.local/bin/vault
-    if [ ! -f ~/.local/bin/vault ]; then
+    if ! mv vault ~/.local/bin/vault; then
       printf "Failed to move Vault to local bin.\n"
       exit 1
     fi
