@@ -30,17 +30,68 @@ variable "default" {
   description = "Default IDE"
 }
 
-variable "jetbrains_ides" {
-  type        = list(string)
-  description = "The list of IDE product codes."
-  default     = ["IU", "PS", "WS", "PY", "CL", "GO", "RM"]
+locals {
+  supported_ides = ["IU", "PS", "WS", "PY", "CL", "GO", "RM"]
+}
+
+variable "jetbrains_ide_versions" {
+  type = map(object({
+    build_number = string
+    version      = string
+  }))
+  description = "The set of versions for each jetbrains IDE"
+  default = {
+    "IU" = {
+      build_number = "232.10203.10"
+      version      = "2023.2.4"
+    }
+    "PS" = {
+      build_number = "232.10072.32"
+      version      = "2023.2.3"
+    }
+    "WS" = {
+      build_number = "232.10203.14"
+      version      = "2023.2.4"
+    }
+    "PY" = {
+      build_number = "232.10203.26"
+      version      = "2023.2.4"
+    }
+    "CL" = {
+      build_number = "232.9921.42"
+      version      = "2023.2.2"
+    }
+    "GO" = {
+      build_number = "232.10203.20"
+      version      = "2023.2.4"
+    }
+    "RM" = {
+      build_number = "232.10203.15"
+      version      = "2023.2.4"
+    }
+
+  }
   validation {
     condition = (
       alltrue([
-        for code in var.jetbrains_ides : contains(["IU", "PS", "WS", "PY", "CL", "GO", "RM"], code)
+        for code in var.jetbrains_ide_versions : contains(local.supported_ides, code)
       ])
     )
-    error_message = "The jetbrains_ides must be a list of valid product codes. Valid product codes are IU, PS, WS, PY, CL, GO, RM."
+    error_message = "The jetbrains_ide_versions must contain a map of valid product codes. Valid product codes are ${join(",", local.supported_ides)}."
+  }
+}
+
+variable "jetbrains_ides" {
+  type        = list(string)
+  description = "The list of IDE product codes."
+  default     = local.supported_ides
+  validation {
+    condition = (
+      alltrue([
+        for code in var.jetbrains_ides : contains(local.supported_ides, code)
+      ])
+    )
+    error_message = "The jetbrains_ides must be a list of valid product codes. Valid product codes are ${join(",", local.supported_ides)}."
   }
   # check if the list is empty
   validation {
@@ -59,37 +110,37 @@ locals {
     "GO" = {
       icon  = "/icon/goland.svg",
       name  = "GoLand",
-      value = jsonencode(["GO", "232.10203.20", "https://download.jetbrains.com/go/goland-2023.2.4.tar.gz"])
+      value = jsonencode(["GO", var.jetbrains_ide_versions["GO"].build_number, "https://download.jetbrains.com/go/goland-${var.jetbrains_ide_versions["GO"].version}.tar.gz"])
     },
     "WS" = {
       icon  = "/icon/webstorm.svg",
       name  = "WebStorm",
-      value = jsonencode(["WS", "232.10203.14", "https://download.jetbrains.com/webstorm/WebStorm-2023.2.4.tar.gz"])
+      value = jsonencode(["WS", var.jetbrains_ide_versions["WS"].build_number, "https://download.jetbrains.com/webstorm/WebStorm-${var.jetbrains_ide_versions["WS"].version}.tar.gz"])
     },
     "IU" = {
       icon  = "/icon/intellij.svg",
       name  = "IntelliJ IDEA Ultimate",
-      value = jsonencode(["IU", "232.10203.10", "https://download.jetbrains.com/idea/ideaIU-2023.2.4.tar.gz"])
+      value = jsonencode(["IU", var.jetbrains_ide_versions["IU"].build_number, "https://download.jetbrains.com/idea/ideaIU-${var.jetbrains_ide_versions["IU"].version}.tar.gz"])
     },
     "PY" = {
       icon  = "/icon/pycharm.svg",
       name  = "PyCharm Professional",
-      value = jsonencode(["PY", "232.10203.26", "https://download.jetbrains.com/python/pycharm-professional-2023.2.4.tar.gz"])
+      value = jsonencode(["PY", var.jetbrains_ide_versions["PY"].build_number, "https://download.jetbrains.com/python/pycharm-professional-${var.jetbrains_ide_versions["PY"].version}.tar.gz"])
     },
     "CL" = {
       icon  = "/icon/clion.svg",
       name  = "CLion",
-      value = jsonencode(["CL", "232.9921.42", "https://download.jetbrains.com/cpp/CLion-2023.2.2.tar.gz"])
+      value = jsonencode(["CL", var.jetbrains_ide_versions["CL"].build_number, "https://download.jetbrains.com/cpp/CLion-${var.jetbrains_ide_versions["CL"].version}.tar.gz"])
     },
     "PS" = {
       icon  = "/icon/phpstorm.svg",
       name  = "PhpStorm",
-      value = jsonencode(["PS", "232.10072.32", "https://download.jetbrains.com/webide/PhpStorm-2023.2.3.tar.gz"])
+      value = jsonencode(["PS", var.jetbrains_ide_versions["PS"].build_number, "https://download.jetbrains.com/webide/PhpStorm-${var.jetbrains_ide_versions["PS"].version}.tar.gz"])
     },
     "RM" = {
       icon  = "/icon/rubymine.svg",
       name  = "RubyMine",
-      value = jsonencode(["RM", "232.10203.15", "https://download.jetbrains.com/ruby/RubyMine-2023.2.4.tar.gz"])
+      value = jsonencode(["RM", var.jetbrains_ide_versions["RM"].build_number, "https://download.jetbrains.com/ruby/RubyMine-${var.jetbrains_ide_versions["RM"].version}.tar.gz"])
     }
   }
 }
