@@ -31,8 +31,8 @@ jq --raw-output ".private_key" > ~/.ssh/git-commit-signing/coder << EOF
 $ssh_key
 EOF
 
-chmod -R 400 ~/.ssh/git-commit-signing/coder
-chmod -R 400 ~/.ssh/git-commit-signing/coder.pub
+chmod -R 600 ~/.ssh/git-commit-signing/coder
+chmod -R 644 ~/.ssh/git-commit-signing/coder.pub
 
 echo "Configuring git to use the SSH key"
 
