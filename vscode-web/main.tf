@@ -20,6 +20,18 @@ variable "port" {
   default     = 13338
 }
 
+variable "display_name" {
+  type        = string
+  description = "The display name for the VS Code Web application."
+  default     = "VS Code Web"
+}
+
+variable "slug" {
+  type        = string
+  description = "The slug for the VS Code Web application."
+  default     = "vscode-web"
+}
+
 variable "folder" {
   type        = string
   description = "The folder to open in vscode-web."
@@ -71,8 +83,8 @@ resource "coder_script" "vscode-web" {
 
 resource "coder_app" "vscode-web" {
   agent_id     = var.agent_id
-  slug         = "vscode-web"
-  display_name = "VS Code Web"
+  slug         = var.slug
+  display_name = var.display_name
   url          = var.folder == "" ? "http://localhost:${var.port}" : "http://localhost:${var.port}?folder=${var.folder}"
   icon         = "/icon/code.svg"
   subdomain    = true
