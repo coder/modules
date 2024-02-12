@@ -16,6 +16,7 @@ module "jetbrains_gateway" {
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
   version        = "1.0.2"
   agent_id       = coder_agent.example.id
+  agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["GO", "WS", "IU", "PY", "PS", "CL", "RM"]
   default        = "PY"
@@ -33,6 +34,7 @@ module "jetbrains_gateway" {
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
   version        = "1.0.2"
   agent_id       = coder_agent.example.id
+  agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["GO", "WS"]
   default        = "GO"
