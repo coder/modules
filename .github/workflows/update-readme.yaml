@@ -23,7 +23,7 @@ jobs:
         run: echo "TAG=$(git describe --tags --abbrev=0 | sed 's/^v//')" >> $GITHUB_OUTPUT
 
       - name: Run update script
-        run: ./update-readme.sh
+        run: ./update-version.sh
 
       - name: Create Pull Request
         id: create-pr
