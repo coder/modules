@@ -82,9 +82,9 @@ install() {
 }
 
 TMP=$(mktemp -d)
-pushd "${TMP}" > /dev/null
+pushd "$${TMP}" > /dev/null
 if ! install; then
   printf "Installation failed\n"
 fi
 popd > /dev/null
-rm -rf "${TMP}"
+rm -rf "$${TMP}"
