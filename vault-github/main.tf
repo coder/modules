@@ -49,7 +49,6 @@ resource "coder_script" "vault" {
   display_name = "Vault (GitHub)"
   icon         = "/icon/vault.svg"
   script = templatefile("${path.module}/run.sh", {
-    VAULT_ADDR : var.vault_addr,
     AUTH_PATH : var.vault_github_auth_path,
     GITHUB_EXTERNAL_AUTH_ID : data.coder_external_auth.github.id,
     INSTALL_VERSION : var.vault_cli_version,

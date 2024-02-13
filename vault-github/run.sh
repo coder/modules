@@ -2,7 +2,6 @@
 
 # Convert all templated variables to shell variables
 INSTALL_VERSION=${INSTALL_VERSION}
-VAULT_ADDR=${VAULT_ADDR}
 GITHUB_EXTERNAL_AUTH_ID=${GITHUB_EXTERNAL_AUTH_ID}
 AUTH_PATH=${AUTH_PATH}
 
@@ -91,8 +90,6 @@ if [ $? -ne 0 ]; then
   printf "Authentication with Vault failed. Please check your credentials.\n"
   exit 1
 fi
-
-export VAULT_ADDR="$${VAULT_ADDR}"
 
 # Login to vault using the GitHub token
 printf "🔑 Logging in to Vault ...\n\n"

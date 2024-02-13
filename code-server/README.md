@@ -56,7 +56,7 @@ Enter the `<author>.<name>` into the extensions array and code-server will autom
 Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarted/settings#_settingsjson) file:
 
 ```tf
-module "settings" {
+module "code-server" {
   source     = "registry.coder.com/modules/code-server/coder"
   version    = "1.0.2"
   agent_id   = coder_agent.example.id
@@ -72,7 +72,7 @@ module "settings" {
 Just run code-server in the background, don't fetch it from GitHub:
 
 ```tf
-module "settings" {
+module "code-server" {
   source     = "registry.coder.com/modules/code-server/coder"
   version    = "1.0.2"
   agent_id   = coder_agent.example.id
@@ -85,7 +85,7 @@ module "settings" {
 Just run code-server in the background, don't fetch it from GitHub:
 
 ```tf
-module "settings" {
+module "code-server" {
   source   = "registry.coder.com/modules/code-server/coder"
   version  = "1.0.2"
   agent_id = coder_agent.example.id
