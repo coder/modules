@@ -56,7 +56,7 @@ variable "log_path" {
 variable "install_prefix" {
   type        = string
   description = "The prefix to install vscode-web to."
-  default     = "/tmp/vscode-server"
+  default     = "/tmp/vscode-web"
 }
 
 variable "extensions" {

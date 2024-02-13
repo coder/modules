@@ -20,7 +20,7 @@ case "$ARCH" in
 esac
 
 HASH=$(curl https://update.code.visualstudio.com/api/commits/stable/server-linux-$ARCH-web | cut -d '"' -f 2)
-outut=$(curl -sL https://vscode.download.prss.microsoft.com/dbazure/download/stable/$HASH/vscode-server-linux-$ARCH-web.tar.gz | tar -xz -C ${INSTALL_PREFIX} --strip-components 1 && rm -rf vscode-server-linux-$ARCH-web.tar.gz)
+output=$(curl -sL https://vscode.download.prss.microsoft.com/dbazure/download/stable/$HASH/vscode-server-linux-$ARCH-web.tar.gz | tar -xz -C ${INSTALL_PREFIX} --strip-components 1)
 
 if [ $? -ne 0 ]; then
   echo "Failed to install vscode-server: $output"
