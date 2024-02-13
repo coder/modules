@@ -23,10 +23,11 @@ HASH=$(curl https://update.code.visualstudio.com/api/commits/stable/server-linux
 output=$(curl -sL https://vscode.download.prss.microsoft.com/dbazure/download/stable/$HASH/vscode-server-linux-$ARCH-web.tar.gz | tar -xz -C ${INSTALL_PREFIX} --strip-components 1)
 
 if [ $? -ne 0 ]; then
-  echo "Failed to install vscode-server: $output"
+  echo "Failed to install Microsoft Visual Studio Code Server: $output"
   exit 1
 fi
-echo "🥳 vscode-server has been installed."
+printf "$${BOLD}Microsoft Visual Studio Code Server has been installed.\n"
+
 
 VSCODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
 
