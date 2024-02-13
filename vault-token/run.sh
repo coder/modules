@@ -84,10 +84,10 @@ install() {
 
 TMP=$(mktemp -d)
 if ! (
-  cd $TMP
+  cd "$TMP"
   install
 ); then
   echo "Failed to install Vault CLI."
   exit 1
 fi
-rm -rf $TMP
+rm -rf "$TMP"
