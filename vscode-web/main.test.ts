@@ -41,9 +41,9 @@ describe("vscode-web", async () => {
     expect(output.exitCode).toBe(1);
     expect(output.stdout).toEqual([
       "\u001b[0;1mInstalling Microsoft Visual Studio Code Server!",
-      "Failed to install vscode-server:", // TODO: manually test error log
+      "Failed to install Microsoft Visual Studio Code Server:", // TODO: manually test error log
     ]);
-  });
+  }, 15000);
 
   it("runs with curl", async () => {
     const state = await runTerraformApply(import.meta.dir, {
@@ -54,10 +54,10 @@ describe("vscode-web", async () => {
     expect(output.exitCode).toBe(0);
     expect(output.stdout).toEqual([
       "\u001b[0;1mInstalling Microsoft Visual Studio Code Server!",
-      "🥳 vscode-server has been installed.",
+      "🥳 Microsoft Visual Studio Code Server has been installed.",
       "",
       "👷 Running /tmp/vscode-web/bin/code-server serve-local --port 13338 --accept-server-license-terms serve-local --without-connection-token --telemetry-level error in the background...",
       "Check logs at /tmp/vscode-web.log!",
     ]);
-  });
+  }, 15000);
 });

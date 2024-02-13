@@ -28,7 +28,6 @@ if [ $? -ne 0 ]; then
 fi
 printf "$${BOLD}Microsoft Visual Studio Code Server has been installed.\n"
 
-
 VSCODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
 
 # Install each extension...
