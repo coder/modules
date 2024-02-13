@@ -84,12 +84,14 @@ install() {
 }
 
 TMP=$(mktemp -d)
-pushd "$${TMP}" > /dev/null
-if ! install; then
-  printf "Installation failed\n"
+if ! (
+  cd $TMP
+  install
+); then
+  echo "Failed to install Vault CLI."
+  exit 1
 fi
-popd > /dev/null
-rm -rf "$${TMP}"
+rm -rf $TMP
 
 # Authenticate with Vault
 printf "🔑 Authenticating with Vault ...\n\n"
