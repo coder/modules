@@ -81,6 +81,7 @@ install() {
       printf "Please add ~/.local/bin to your PATH to use vault CLI.\n"
     fi
   fi
+  return 0
 }
 
 TMP=$(mktemp -d)
