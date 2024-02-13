@@ -9,7 +9,7 @@ tags: [helper, ide, vscode, web]
 
 # VS Code Web
 
-Automatically install [Visual Studio Code Server](https://code.visualstudio.com/docs/remote/vscode-server) in a workspace using the [VS Code CLI](https://code.visualstudio.com/docs/editor/command-line) and create an app to access it via the dashboard.
+Automatically install [Visual Studio Code Server](https://code.visualstudio.com/docs/remote/vscode-server) in a workspace and create an app to access it via the dashboard.
 
 ```tf
 module "vscode-web" {
@@ -31,8 +31,20 @@ module "vscode-web" {
   source         = "registry.coder.com/modules/vscode-web/coder"
   version        = "1.0.2"
   agent_id       = coder_agent.example.id
-  install_dir    = "/home/coder/.vscode-web"
+  install_prefix = "/home/coder/.vscode-web"
   folder         = "/home/coder"
+  accept_license = true
+}
+```
+
+### Install Extensions
+
+```tf
+module "vscode-web" {
+  source         = "registry.coder.com/modules/vscode-web/coder"
+  version        = "1.0.2"
+  agent_id       = coder_agent.example.id
+  extensions     = ["github.copilot", "ms-python.python", "ms-toolsai.jupyter"]
   accept_license = true
 }
 ```
