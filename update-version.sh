@@ -8,7 +8,7 @@ set -euo pipefail
 
 current_tag=$(git describe --tags --abbrev=0)
 previous_tag=$(git describe --tags --abbrev=0 $current_tag^)
-changed_files=$(git diff --name-only "$previous_tag" "$current_tag")
+mapfile -t changed_files < <(git diff --name-only "$previous_tag" "$current_tag" | xargs dirname | sort -u | grep -v '^\.')
 
 changed_dirs=()
 for file in $changed_files; do
