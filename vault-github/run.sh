@@ -20,7 +20,7 @@ fetch() {
   fi
 }
 
-unzip() {
+unzip_safe() {
   if command -v unzip > /dev/null 2>&1; then
     command unzip "$@"
   elif command -v busybox > /dev/null 2>&1; then
