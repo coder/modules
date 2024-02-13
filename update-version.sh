@@ -6,16 +6,31 @@
 
 set -euo pipefail
 
+current_tag=$(git describe --tags --abbrev=0)
+previous_tag=$(git describe --tags --abbrev=0 $current_tag^)
+mapfile -t changed_files < <(git diff --name-only "$previous_tag" "$current_tag" | xargs dirname | sort -u | grep -v '^\.')
+
+changed_dirs=()
+for file in $changed_files; do
+  dir=$(dirname "$file")
+  changed_dirs+=("$dir")
+done
+changed_dirs=($(printf "%s\n" "${changed_dirs[@]}" | sort -u))
+
 LATEST_TAG=$(git describe --abbrev=0 --tags | sed 's/^v//') || exit $?
 
-find . -name README.md | while read -r file; do
-  tmpfile=$(mktemp /tmp/tempfile.XXXXXX)
-  awk -v tag="$LATEST_TAG" '{
-    if ($1 == "version" && $2 == "=") {
-      sub(/"[^"]*"/, "\"" tag "\"")
-      print
-    } else {
-      print
-    }
-  }' "$file" > "$tmpfile" && mv "$tmpfile" "$file"
+for dir in "${changed_dirs[@]}"; do
+  if [[ -f "$dir/README.md" ]]; then
+    echo "Bumping version in $dir/README.md"
+    file="$dir/README.md"
+    tmpfile=$(mktemp /tmp/tempfile.XXXXXX)
+    awk -v tag="$LATEST_TAG" '{
+      if ($1 == "version" && $2 == "=") {
+        sub(/"[^"]*"/, "\"" tag "\"")
+        print
+      } else {
+        print
+      }
+    }' "$file" > "$tmpfile" && mv "$tmpfile" "$file"
+  fi
 done
