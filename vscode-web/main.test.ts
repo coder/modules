@@ -43,7 +43,7 @@ describe("vscode-web", async () => {
       "\u001b[0;1mInstalling Microsoft Visual Studio Code Server!",
       "Failed to install Microsoft Visual Studio Code Server:", // TODO: manually test error log
     ]);
-  }, 15000);
+  }, 15000); // 15 seconds timeout
 
   it("runs with curl", async () => {
     const state = await runTerraformApply(import.meta.dir, {
@@ -59,5 +59,5 @@ describe("vscode-web", async () => {
       "👷 Running /tmp/vscode-web/bin/code-server serve-local --port 13338 --accept-server-license-terms serve-local --without-connection-token --telemetry-level error in the background...",
       "Check logs at /tmp/vscode-web.log!",
     ]);
-  }, 15000);
+  }, 15000); // 15 seconds timeout
 });
