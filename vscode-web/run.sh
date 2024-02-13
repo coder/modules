@@ -48,5 +48,3 @@ echo "👷 Running ${INSTALL_PREFIX}/bin/code-server
 
 echo "Check logs at ${LOG_PATH}!"
 ${INSTALL_PREFIX}/code serve-local --port ${PORT} --accept-server-license-terms serve-local --without-connection-token --telemetry-level ${TELEMETRY_LEVEL} > ${LOG_PATH} 2>&1 &
-
-
