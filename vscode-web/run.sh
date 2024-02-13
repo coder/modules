@@ -26,7 +26,7 @@ if [ $? -ne 0 ]; then
   echo "Failed to install vscode-server: $output"
   exit 1
 fi
-printf "🥳 vscode-server has been installed in ${INSTALL_PREFIX}"
+echo "🥳 vscode-server has been installed in ${INSTALL_PREFIX}\n"
 
 VSCODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
 
@@ -46,4 +46,4 @@ done
 
 echo "👷 Running ${INSTALL_PREFIX}/bin/code-server"
 echo "Check logs at ${LOG_PATH}!"
-${INSTALL_PREFIX}/code serve-local --port ${PORT} --accept-server-license-terms serve-local --without-connection-token --telemetry-level ${TELEMETRY_LEVEL} > ${LOG_PATH} 2>&1 &
+${INSTALL_PREFIX}/bin/code-server serve-local --port ${PORT} --accept-server-license-terms serve-local --without-connection-token --telemetry-level ${TELEMETRY_LEVEL} > ${LOG_PATH} 2>&1 &
