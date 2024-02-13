@@ -40,8 +40,8 @@ describe("vscode-web", async () => {
     const output = await executeScriptInContainer(state, "alpine");
     expect(output.exitCode).toBe(1);
     expect(output.stdout).toEqual([
-      "\u001b[0;1mInstalling vscode-cli!",
-      "Failed to install vscode-cli:", // TODO: manually test error log
+      "\u001b[0;1mInstalling Microsoft Visual Studio Code Server!",
+      "Failed to install vscode-server:", // TODO: manually test error log
     ]);
   });
 
@@ -53,10 +53,10 @@ describe("vscode-web", async () => {
     const output = await executeScriptInContainer(state, "alpine/curl");
     expect(output.exitCode).toBe(0);
     expect(output.stdout).toEqual([
-      "\u001b[0;1mInstalling vscode-cli!",
-      "🥳 vscode-cli has been installed.",
+      "\u001b[0;1mInstalling Microsoft Visual Studio Code Server!",
+      "🥳 vscode-server has been installed.",
       "",
-      "👷 Running /tmp/vscode-cli/bin/code serve-web --port 13338 --without-connection-token --accept-server-license-terms in the background...",
+      "👷 Running /tmp/vscode-web/bin/code-server serve-local --port 13338 --accept-server-license-terms serve-local --without-connection-token --telemetry-level error in the background...",
       "Check logs at /tmp/vscode-web.log!",
     ]);
   });

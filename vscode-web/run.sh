@@ -26,7 +26,7 @@ if [ $? -ne 0 ]; then
   echo "Failed to install vscode-server: $output"
   exit 1
 fi
-echo "🥳 vscode-server has been installed in ${INSTALL_PREFIX}\n"
+echo "🥳 vscode-server has been installed."
 
 VSCODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
 
@@ -44,6 +44,6 @@ for extension in "$${EXTENSIONLIST[@]}"; do
   fi
 done
 
-echo "👷 Running ${INSTALL_PREFIX}/bin/code-server"
+echo "👷 Running ${INSTALL_PREFIX}/bin/code-server serve-local --port ${PORT} --accept-server-license-terms serve-local --without-connection-token --telemetry-level ${TELEMETRY_LEVEL} in the background..."
 echo "Check logs at ${LOG_PATH}!"
 ${INSTALL_PREFIX}/bin/code-server serve-local --port ${PORT} --accept-server-license-terms serve-local --without-connection-token --telemetry-level ${TELEMETRY_LEVEL} > ${LOG_PATH} 2>&1 &
