@@ -75,12 +75,6 @@ variable "accept_license" {
   }
 }
 
-variable "extensions" {
-  type        = list(string)
-  description = "A list of extensions to install."
-  default     = []
-}
-
 variable "telemetry_level" {
   type        = string
   description = "Set the telemetry level for VS Code Web."
