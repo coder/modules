@@ -19,7 +19,7 @@ This module has a chance of conflicting with the user's dotfiles / the personali
 ```tf
 module "git-commit-signing" {
   source   = "registry.coder.com/modules/git-commit-signing/coder"
-  version  = "1.0.2"
+  version  = "1.0.3"
   agent_id = coder_agent.example.id
 }
 ```

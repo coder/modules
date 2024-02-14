@@ -14,7 +14,7 @@ Automatically install [Visual Studio Code Server](https://code.visualstudio.com/
 ```tf
 module "vscode-web" {
   source         = "registry.coder.com/modules/vscode-web/coder"
-  version        = "1.0.2"
+  version        = "1.0.3"
   agent_id       = coder_agent.example.id
   accept_license = true
 }
@@ -29,7 +29,7 @@ module "vscode-web" {
 ```tf
 module "vscode-web" {
   source         = "registry.coder.com/modules/vscode-web/coder"
-  version        = "1.0.2"
+  version        = "1.0.3"
   agent_id       = coder_agent.example.id
   install_dir    = "/home/coder/.vscode-web"
   folder         = "/home/coder"
