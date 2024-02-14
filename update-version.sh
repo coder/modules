@@ -8,14 +8,7 @@ set -euo pipefail
 
 current_tag=$(git describe --tags --abbrev=0)
 previous_tag=$(git describe --tags --abbrev=0 $current_tag^)
-mapfile -t changed_files < <(git diff --name-only "$previous_tag" "$current_tag" | xargs dirname | sort -u | grep -v '^\.')
-
-changed_dirs=()
-for file in $changed_files; do
-  dir=$(dirname "$file")
-  changed_dirs+=("$dir")
-done
-changed_dirs=($(printf "%s\n" "${changed_dirs[@]}" | sort -u))
+mapfile -t changed_dirs < <(git diff --name-only "$previous_tag"..."$current_tag" -- ':!**/README.md' ':!**/*.test.ts' | xargs dirname | grep -v '^\.' | sort -u)
 
 LATEST_TAG=$(git describe --abbrev=0 --tags | sed 's/^v//') || exit $?
 
