@@ -15,9 +15,9 @@ fi
 # flows.
 export CI=true
 # Authenticate JFrog CLI with Artifactory.
-echo "${ARTIFACTORY_ACCESS_TOKEN}" | jf c add --access-token-stdin --url "${JFROG_URL}" --overwrite 0
+echo "${ARTIFACTORY_ACCESS_TOKEN}" | jf c add --access-token-stdin --url "${JFROG_URL}" --overwrite "${JFROG_SERVER_ID}"
 # Set the configured server as the default.
-jf c use 0
+jf c use "${JFROG_SERVER_ID}"
 
 # Configure npm to use the Artifactory "npm" repository.
 if [ -z "${REPOSITORY_NPM}" ]; then
