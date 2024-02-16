@@ -37,7 +37,7 @@ describe("vscode-web", async () => {
       agent_id: "foo",
       accept_license: "true",
     });
-    const output = await executeScriptInContainer(state, "alpine");
+    const output = await executeScriptInContainer(state, "alpine", "apk add gcompat libgcc libstdc++");
     expect(output.exitCode).toBe(1);
     expect(output.stdout).toEqual([
       "\u001b[0;1mInstalling Microsoft Visual Studio Code Server!",
@@ -50,7 +50,7 @@ describe("vscode-web", async () => {
       agent_id: "foo",
       accept_license: "true",
     });
-    const output = await executeScriptInContainer(state, "alpine/curl");
+    const output = await executeScriptInContainer(state, "alpine/curl", "apk add gcompat libgcc libstdc++");
     expect(output.exitCode).toBe(0);
     expect(output.stdout).toEqual([
       "\u001b[0;1mInstalling Microsoft Visual Studio Code Server!",
