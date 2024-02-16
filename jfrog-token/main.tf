@@ -25,7 +25,7 @@ variable "jfrog_url" {
 
 variable "jfrog_server_id" {
   type        = string
-  description = "The server ID of the JFrog instance for JFrog CLI confuguration"
+  description = "The server ID of the JFrog instance for JFrog CLI configuration"
   default     = "0"
 }
 
