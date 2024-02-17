@@ -4,7 +4,7 @@ description: Install node via nvm
 icon: ../.icons/node.svg
 maintainer_github: coder
 verified: true
-tags: [node, nvm, nodejs]
+tags: [helper]
 ---
 
 # node-via-nvm
