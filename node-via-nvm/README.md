@@ -30,8 +30,8 @@ module "node-via-nvm" {
   version  = "1.0.2"
   agent_id = coder_agent.example.id
   node_versions = [
-    "18"
-    "20"
+    "18",
+    "20",
     "node"
   ]
   default_node_version = "20"
@@ -49,8 +49,8 @@ module "node-via-nvm" {
   nvm_version = "v0.39.7"
   nvm_install_prefix = "/opt/nvm"
   node_versions = [
-    "16"
-    "18"
+    "16",
+    "18",
     "node"
   ]
   default_node_version = "16"
