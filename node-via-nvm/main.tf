@@ -29,7 +29,7 @@ variable "nvm_install_prefix" {
 variable "node_versions" {
   type        = list(string)
   description = "A list of node versions to install."
-  default   	= ["node"]
+  default     = ["node"]
 }
 
 variable "default_node_version" {
@@ -40,6 +40,7 @@ variable "default_node_version" {
 
 resource "coder_script" "node" {
   agent_id     = var.agent_id
+  display_name = "node-via-nvm"
   script = templatefile("${path.module}/run.sh", {
     NVM_VERSION : var.nvm_version,
     INSTALL_PREFIX : var.nvm_install_prefix,

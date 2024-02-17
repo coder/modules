@@ -19,7 +19,6 @@ module "node-via-nvm" {
 }
 ```
 
-
 ### Install multiple versions
 
 This installs multiple versions of node
@@ -41,12 +40,13 @@ module "node-via-nvm" {
 ### Full example
 
 A example with all available options:
+
 ```tf
 module "node-via-nvm" {
-  source   = "registry.coder.com/modules/node-via-nvm/coder"
-  version  = "1.0.2"
-  agent_id = coder_agent.example.id
-  nvm_version = "v0.39.7"
+  source             = "registry.coder.com/modules/node-via-nvm/coder"
+  version            = "1.0.2"
+  agent_id           = coder_agent.example.id
+  nvm_version        = "v0.39.7"
   nvm_install_prefix = "/opt/nvm"
   node_versions = [
     "16",
