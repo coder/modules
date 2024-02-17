@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import { runTerraformInit, testRequiredVariables } from "../test";
 
-describe("code-server", async () => {
+describe("node-via-nvm", async () => {
   await runTerraformInit(import.meta.dir);
 
   testRequiredVariables(import.meta.dir, {
