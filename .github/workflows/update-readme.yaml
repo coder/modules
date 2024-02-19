@@ -9,7 +9,7 @@ on:
 jobs:
   update-readme:
     permissions:
-      contents: read
+      contents: write
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
@@ -33,6 +33,7 @@ jobs:
           title: 'chore: bump version to ${{ env.TAG }} in README.md files'
           body: 'This is an auto-generated PR to update README.md files of all modules with the new tag ${{ env.TAG }}'
           branch: 'update-readme-branch'
+          base: 'main'
         env:
           TAG: ${{ steps.get-latest-tag.outputs.TAG }}
 
