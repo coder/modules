@@ -30,10 +30,6 @@ variable "default" {
   description = "Default IDE"
 }
 
-locals {
-  supported_ides = ["IU", "PS", "WS", "PY", "CL", "GO", "RM"]
-}
-
 variable "jetbrains_ide_versions" {
   type = map(object({
     build_number = string
@@ -69,29 +65,28 @@ variable "jetbrains_ide_versions" {
       build_number = "232.10203.15"
       version      = "2023.2.4"
     }
-
   }
   validation {
     condition = (
       alltrue([
-        for code in var.jetbrains_ide_versions : contains(local.supported_ides, code)
+        for code in var.jetbrains_ide_versions : contains(["IU", "PS", "WS", "PY", "CL", "GO", "RM"], code)
       ])
     )
-    error_message = "The jetbrains_ide_versions must contain a map of valid product codes. Valid product codes are ${join(",", local.supported_ides)}."
+    error_message = "The jetbrains_ide_versions must contain a map of valid product codes. Valid product codes are ${join(",", ["IU", "PS", "WS", "PY", "CL", "GO", "RM"])}."
   }
 }
 
 variable "jetbrains_ides" {
   type        = list(string)
   description = "The list of IDE product codes."
-  default     = local.supported_ides
+  default     = ["IU", "PS", "WS", "PY", "CL", "GO", "RM"]
   validation {
     condition = (
       alltrue([
-        for code in var.jetbrains_ides : contains(local.supported_ides, code)
+        for code in var.jetbrains_ides : contains(["IU", "PS", "WS", "PY", "CL", "GO", "RM"], code)
       ])
     )
-    error_message = "The jetbrains_ides must be a list of valid product codes. Valid product codes are ${join(",", local.supported_ides)}."
+    error_message = "The jetbrains_ides must be a list of valid product codes. Valid product codes are ${join(",", ["IU", "PS", "WS", "PY", "CL", "GO", "RM"])}."
   }
   # check if the list is empty
   validation {
@@ -152,7 +147,7 @@ data "coder_parameter" "jetbrains_ide" {
   icon         = "/icon/gateway.svg"
   mutable      = true
   # check if default is in the jet_brains_ides list and if it is not empty or null otherwise set it to null
-  default = var.default != null && var.default != "" && contains(var.jetbrains_ides, var.default) ? local.jetbrains_ides[var.default].value : local.jetbrains_ides[var.jetbrains_ides[0]].value
+  default = contains(var.jetbrains_ides, var.default) ? var.default : null
 
   dynamic "option" {
     for_each = { for key, value in local.jetbrains_ides : key => value if contains(var.jetbrains_ides, key) }
