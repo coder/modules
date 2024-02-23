@@ -53,19 +53,35 @@ variable "log_path" {
   default     = "/tmp/vscode-web.log"
 }
 
-variable "install_dir" {
+variable "install_prefix" {
   type        = string
-  description = "The directory to install VS Code CLI"
-  default     = "/tmp/vscode-cli"
+  description = "The prefix to install vscode-web to."
+  default     = "/tmp/vscode-web"
+}
+
+variable "extensions" {
+  type        = list(string)
+  description = "A list of extensions to install."
+  default     = []
 }
 
 variable "accept_license" {
   type        = bool
-  description = "Accept the VS Code license. https://code.visualstudio.com/license"
+  description = "Accept the VS Code Server license. https://code.visualstudio.com/license/server"
   default     = false
   validation {
     condition     = var.accept_license == true
     error_message = "You must accept the VS Code license agreement by setting accept_license=true."
+  }
+}
+
+variable "telemetry_level" {
+  type        = string
+  description = "Set the telemetry level for VS Code Web."
+  default     = "error"
+  validation {
+    condition     = var.telemetry_level == "off" || var.telemetry_level == "crash" || var.telemetry_level == "error" || var.telemetry_level == "all"
+    error_message = "Incorrect value. Please set either 'off', 'crash', 'error', or 'all'."
   }
 }
 
@@ -76,7 +92,9 @@ resource "coder_script" "vscode-web" {
   script = templatefile("${path.module}/run.sh", {
     PORT : var.port,
     LOG_PATH : var.log_path,
-    INSTALL_DIR : var.install_dir,
+    INSTALL_PREFIX : var.install_prefix,
+    EXTENSIONS : join(",", var.extensions),
+    TELEMETRY_LEVEL : var.telemetry_level,
   })
   run_on_start = true
 }
