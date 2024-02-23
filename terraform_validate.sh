@@ -6,7 +6,7 @@ run_terraform() {
   echo "Running terraform init and validate in $dir"
   cd "$dir" || exit
   terraform init
-  terraform validatecd 
+  terraform validate
   cd - || exit
 }
 
