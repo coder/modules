@@ -34,7 +34,6 @@ export const runContainer = async (
 export const executeScriptInContainer = async (
   state: TerraformState,
   image: string,
-  command: string = "",
   shell: string = "sh",
 ): Promise<{
   exitCode: number;
@@ -43,9 +42,7 @@ export const executeScriptInContainer = async (
 }> => {
   const instance = findResourceInstance(state, "coder_script");
   const id = await runContainer(image);
-  // const resp = await execContainer(id, [shell, "-c", instance.script]);
-  command = command + "; " + instance.script;
-  const resp = await execContainer(id, [shell, "-c", command]);
+  const resp = await execContainer(id, [shell, "-c", instance.script]);
   const stdout = resp.stdout.trim().split("\n");
   const stderr = resp.stderr.trim().split("\n");
   return {
