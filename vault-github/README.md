@@ -24,13 +24,13 @@ module "vault" {
 Then you can use the Vault CLI in your workspaces to fetch secrets from Vault:
 
 ```shell
-vault kv get -mount=coder my-secret
+vault kv get -namespace=coder -mount=secrets coder
 ```
 
 or using the Vault API:
 
 ```shell
-curl -H "X-Vault-Token: ${VAULT_TOKEN}" -X GET "${VAULT_ADDR}/v1/coder/data/my-secret"
+curl -H "X-Vault-Token: ${VAULT_TOKEN}" -X GET "${VAULT_ADDR}/v1/coder/secrets/data/coder"
 ```
 
 ![Vault login](../.images/vault-login.png)
