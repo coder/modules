@@ -6,9 +6,10 @@ set -euo pipefail
 run_terraform() {
     local dir="$1"
     echo "Running terraform init and validate in $dir"
-    cd "$dir" || exit
-    terraform init -upgrade && terraform validate
-    cd - || exit
+    pushd "$dir"
+    terraform init -upgrade
+    terraform validate
+    popd
 }
 
 # Main script
