@@ -16,6 +16,7 @@ terraform {
 provider "hcp" {
   client_id     = var.client_id
   client_secret = var.client_secret
+  project_id    = var.project_id 
 }
 
 provider "coder" {}
@@ -23,6 +24,11 @@ provider "coder" {}
 variable "agent_id" {
   type        = string
   description = "The ID of a Coder agent."
+}
+
+variable "project_id" {
+  type        = string
+  description = "The ID of the HCP project."
 }
 
 variable "client_id" {
