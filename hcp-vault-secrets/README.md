@@ -17,8 +17,8 @@ module "vault" {
   source     = "registry.coder.com/modules/hcp-vault-secrets/coder"
   version    = "1.0.3"
   agent_id   = coder_agent.example.id
-  project_id = "aaa-bbb-ccc"
   app_name   = "demo-app"
+  project_id = "aaa-bbb-ccc"
 }
 ```
 
