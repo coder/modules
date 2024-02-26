@@ -32,7 +32,7 @@ unzip_safe() {
 }
 
 install() {
-  # Get ARCH to fetch the correct binary for arm64 or amd64
+  # Get the architecture of the system
   ARCH=$(uname -m)
   if [ "$${ARCH}" = "x86_64" ]; then
     ARCH="amd64"
