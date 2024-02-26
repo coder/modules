@@ -16,7 +16,7 @@ terraform {
 provider "hcp" {
   client_id     = var.client_id
   client_secret = var.client_secret
-  project_id    = var.project_id 
+  project_id    = var.project_id
 }
 
 provider "coder" {}
