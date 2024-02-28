@@ -15,7 +15,7 @@ This module lets you authenticate with [Hashicorp Vault](https://www.vaultprojec
 ```tf
 module "vault" {
   source     = "registry.coder.com/modules/vault-github/coder"
-  version    = "1.0.4"
+  version    = "1.0.7"
   agent_id   = coder_agent.example.id
   vault_addr = "https://vault.example.com"
 }
@@ -46,7 +46,7 @@ To configure the Vault module, you must set up a Vault GitHub auth method. See t
 ```tf
 module "vault" {
   source               = "registry.coder.com/modules/vault-github/coder"
-  version              = "1.0.4"
+  version              = "1.0.7"
   agent_id             = coder_agent.example.id
   vault_addr           = "https://vault.example.com"
   coder_github_auth_id = "my-github-auth-id"
@@ -58,7 +58,7 @@ module "vault" {
 ```tf
 module "vault" {
   source                 = "registry.coder.com/modules/vault-github/coder"
-  version                = "1.0.4"
+  version                = "1.0.7"
   agent_id               = coder_agent.example.id
   vault_addr             = "https://vault.example.com"
   coder_github_auth_id   = "my-github-auth-id"
@@ -71,7 +71,7 @@ module "vault" {
 ```tf
 module "vault" {
   source            = "registry.coder.com/modules/vault-github/coder"
-  version           = "1.0.4"
+  version           = "1.0.7"
   agent_id          = coder_agent.example.id
   vault_addr        = "https://vault.example.com"
   vault_cli_version = "1.15.0"

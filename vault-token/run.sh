@@ -30,9 +30,19 @@ unzip_safe() {
 }
 
 install() {
+  # Get the architecture of the system
+  ARCH=$(uname -m)
+  if [ "$${ARCH}" = "x86_64" ]; then
+    ARCH="amd64"
+  elif [ "$${ARCH}" = "aarch64" ]; then
+    ARCH="arm64"
+  else
+    printf "Unsupported architecture: $${ARCH}\n"
+    return 1
+  fi
   # Fetch the latest version of Vault if INSTALL_VERSION is 'latest'
   if [ "$${INSTALL_VERSION}" = "latest" ]; then
-    LATEST_VERSION=$(curl -s https://releases.hashicorp.com/vault/ | grep -v '-rc' | grep -oP 'vault/\K[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -n 1)
+    LATEST_VERSION=$(curl -s https://releases.hashicorp.com/vault/ | grep -v 'rc' | grep -oE 'vault/[0-9]+\.[0-9]+\.[0-9]+' | sed 's/vault\///' | sort -V | tail -n 1)
     printf "Latest version of Vault is %s.\n\n" "$${LATEST_VERSION}"
     if [ -z "$${LATEST_VERSION}" ]; then
       printf "Failed to determine the latest Vault version.\n"

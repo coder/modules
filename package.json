@@ -4,13 +4,13 @@
     "test": "bun test",
     "fmt": "bun x prettier -w **/*.sh .sample/run.sh new.sh **/*.ts **/*.md *.md && terraform fmt **/*.tf .sample/main.tf",
     "fmt:ci": "bun x prettier --check **/*.sh .sample/run.sh new.sh **/*.ts **/*.md *.md && terraform fmt -check **/*.tf .sample/main.tf",
-    "lint": "bun run lint.ts",
+    "lint": "bun run lint.ts && ./terraform_validate.sh",
     "update-version": "./update-version.sh"
   },
   "devDependencies": {
     "bun-types": "^1.0.18",
     "gray-matter": "^4.0.3",
-    "marked": "^11.1.0",
+    "marked": "^12.0.0",
     "prettier-plugin-sh": "^0.13.1",
     "prettier-plugin-terraform-formatter": "^1.2.1"
   },

@@ -69,7 +69,7 @@ resource "coder_app" "MODULE_NAME" {
   slug         = "MODULE_NAME"
   display_name = "MODULE_NAME"
   url          = "http://localhost:${var.port}"
-  icon         = loocal.icon_url
+  icon         = local.icon_url
   subdomain    = false
   share        = "owner"
 
