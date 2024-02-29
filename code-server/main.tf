@@ -26,6 +26,12 @@ variable "port" {
   default     = 13337
 }
 
+variable "app_name" {
+  type        = string
+  description = "The app name for the code-server application."
+  default     = "code-server"
+}
+
 variable "display_name" {
   type        = string
   description = "The display name for the code-server application."
@@ -84,6 +90,7 @@ resource "coder_script" "code-server" {
   script = templatefile("${path.module}/run.sh", {
     VERSION : var.install_version,
     EXTENSIONS : join(",", var.extensions),
+    APP_NAME : var.app_name,
     PORT : var.port,
     LOG_PATH : var.log_path,
     INSTALL_PREFIX : var.install_prefix,
