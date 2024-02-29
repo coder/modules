@@ -50,6 +50,12 @@ variable "mutable" {
   description = "Whether the parameter is mutable."
   default     = true
 }
+
+variable "order" {
+  type        = number
+  description = "The order determines the position of app in the UI presentation. The lowest order is shown first and apps with equal order are sorted by name (ascending order)."
+  default     = null
+}
 # Add other variables here
 
 
@@ -72,6 +78,7 @@ resource "coder_app" "MODULE_NAME" {
   icon         = local.icon_url
   subdomain    = false
   share        = "owner"
+  order        = var.order
 
   # Remove if the app does not have a healthcheck endpoint
   healthcheck {

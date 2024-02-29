@@ -52,6 +52,12 @@ variable "share" {
   }
 }
 
+variable "order" {
+  type        = number
+  description = "The order determines the position of app in the UI presentation. The lowest order is shown first and apps with equal order are sorted by name (ascending order)."
+  default     = null
+}
+
 resource "coder_script" "filebrowser" {
   agent_id     = var.agent_id
   display_name = "File Browser"
@@ -74,4 +80,5 @@ resource "coder_app" "filebrowser" {
   icon         = "https://raw.githubusercontent.com/filebrowser/logo/master/icon_raw.svg"
   subdomain    = true
   share        = var.share
+  order        = var.order
 }
