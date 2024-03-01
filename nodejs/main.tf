@@ -47,6 +47,6 @@ resource "coder_script" "nodejs" {
     NODE_VERSIONS : join(",", var.node_versions),
     DEFAULT : var.default_node_version,
   })
-  run_on_start = true
+  run_on_start       = true
   start_blocks_login = true
 }
