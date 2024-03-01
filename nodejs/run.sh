@@ -13,11 +13,17 @@ printf "$${BOLD}Installing nvm!$${RESET}\n"
 export NVM_DIR="$${INSTALL_PREFIX}/nvm"
 
 script="$(curl -sS -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$${NVM_VERSION}/install.sh" 2>&1)"
+if [ $? -ne 0 ]; then
+  echo "Failed to download nvm installation script."
+  exit 1
+fi
+
 output="$(bash <<<"$script" 2>&1)"
 if [ $? -ne 0 ]; then
   echo "Failed to install nvm: $output"
   exit 1
 fi
+
 printf "🥳 nvm has been installed\n\n"
 
 # Set up nvm for the rest of the script.
