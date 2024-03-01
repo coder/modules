@@ -14,7 +14,7 @@ export NVM_DIR="$${INSTALL_PREFIX}/nvm"
 
 script="$(curl -sS -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$${NVM_VERSION}/install.sh" 2>&1)"
 if [ $? -ne 0 ]; then
-  echo "Failed to download nvm installation script."
+  echo "Failed to download nvm installation script: $script"
   exit 1
 fi
 
@@ -44,7 +44,7 @@ for version in "$${VERSIONLIST[@]}"; do
 done
 
 # Set default if provided
-if [ -n "${DEFAULT}" ]; then
+if [ -n "$${DEFAULT}" ]; then
   printf "🛠️ Setting default node version $${CODE}$DEFAULT$${RESET}...\n"
   output=$(nvm alias default $DEFAULT 2>&1)
 fi
