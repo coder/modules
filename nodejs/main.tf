@@ -28,19 +28,19 @@ variable "nvm_install_prefix" {
 
 variable "node_versions" {
   type        = list(string)
-  description = "A list of node versions to install."
+  description = "A list of Node.js versions to install."
   default     = ["node"]
 }
 
 variable "default_node_version" {
   type        = string
-  description = "The default node version"
+  description = "The default Node.js version"
   default     = "node"
 }
 
-resource "coder_script" "node" {
+resource "coder_script" "nodejs" {
   agent_id     = var.agent_id
-  display_name = "node-via-nvm"
+  display_name = "Node.js:"
   script = templatefile("${path.module}/run.sh", {
     NVM_VERSION : var.nvm_version,
     INSTALL_PREFIX : var.nvm_install_prefix,
@@ -48,4 +48,5 @@ resource "coder_script" "node" {
     DEFAULT : var.default_node_version,
   })
   run_on_start = true
+  start_blocks_login = true
 }

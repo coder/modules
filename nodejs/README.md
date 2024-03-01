@@ -1,19 +1,19 @@
 ---
-display_name: node-via-nvm
-description: Install node via nvm
+display_name: nodejs
+description: Install Node.js via nvm
 icon: ../.icons/node.svg
-maintainer_github: coder
+maintainer_github: TheZoker
 verified: true
 tags: [helper]
 ---
 
-# node-via-nvm
+# nodejs
 
-Automatically installs the latest version of [node](https://github.com/nodejs/node) versions via [nvm](https://github.com/nvm-sh/nvm). It can also install multiple versions of node and set a default version.
+Automatically installs [Node.js](https://github.com/nodejs/node) via [nvm](https://github.com/nvm-sh/nvm). It can also install multiple versions of node and set a default version. If no options are specified, the latest version is installed.
 
 ```tf
-module "node-via-nvm" {
-  source   = "registry.coder.com/modules/node-via-nvm/coder"
+module "nodejs" {
+  source   = "registry.coder.com/modules/nodejs/coder"
   version  = "1.0.2"
   agent_id = coder_agent.example.id
 }
@@ -21,11 +21,11 @@ module "node-via-nvm" {
 
 ### Install multiple versions
 
-This installs multiple versions of node
+This installs multiple versions of Node.js:
 
 ```tf
-module "node-via-nvm" {
-  source   = "registry.coder.com/modules/node-via-nvm/coder"
+module "nodejs" {
+  source   = "registry.coder.com/modules/nodejs/coder"
   version  = "1.0.2"
   agent_id = coder_agent.example.id
   node_versions = [
@@ -42,8 +42,8 @@ module "node-via-nvm" {
 A example with all available options:
 
 ```tf
-module "node-via-nvm" {
-  source             = "registry.coder.com/modules/node-via-nvm/coder"
+module "nodejs" {
+  source             = "registry.coder.com/modules/nodejs/coder"
   version            = "1.0.2"
   agent_id           = coder_agent.example.id
   nvm_version        = "v0.39.7"
