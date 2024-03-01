@@ -38,6 +38,6 @@ done
 
 # Set default if provided
 if [ -n "${DEFAULT}" ]; then
-  printf "🛠️ Setting default node version $${CODE}$${DEFAULT}$${RESET}...\n"
+  printf "🛠️ Setting default node version $${CODE}$DEFAULT$${RESET}...\n"
   output=$(nvm alias default $DEFAULT 2>&1)
 fi
