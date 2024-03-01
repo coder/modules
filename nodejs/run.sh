@@ -18,7 +18,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-output="$(bash <<<"$script" 2>&1)"
+output="$(bash <<< "$script" 2>&1)"
 if [ $? -ne 0 ]; then
   echo "Failed to install nvm: $output"
   exit 1
