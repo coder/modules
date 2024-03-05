@@ -47,4 +47,4 @@ fi
 
 echo "👷 Running code-server in the background..."
 echo "Check logs at ${LOG_PATH}!"
-$CODE_SERVER --auth none --port ${PORT} --app-name ${APP_NAME} > ${LOG_PATH} 2>&1 &
+$CODE_SERVER --auth none --port ${PORT} --app-name "${APP_NAME}" > ${LOG_PATH} 2>&1 &
