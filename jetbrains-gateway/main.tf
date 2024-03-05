@@ -4,7 +4,7 @@ terraform {
   required_providers {
     coder = {
       source  = "coder/coder"
-      version = ">= 0.11"
+      version = ">= 0.17"
     }
   }
 }
@@ -32,6 +32,12 @@ variable "default" {
   default     = ""
   type        = string
   description = "Default IDE"
+}
+
+variable "order" {
+  type        = number
+  description = "The order determines the position of app in the UI presentation. The lowest order is shown first and apps with equal order are sorted by name (ascending order)."
+  default     = null
 }
 
 variable "jetbrains_ide_versions" {
@@ -184,6 +190,7 @@ resource "coder_app" "gateway" {
   display_name = try(lookup(local.jetbrains_ides, data.coder_parameter.jetbrains_ide.value).name, "JetBrains IDE")
   icon         = try(lookup(local.jetbrains_ides, data.coder_parameter.jetbrains_ide.value).icon, "/icon/gateway.svg")
   external     = true
+  order        = var.order
   url = join("", [
     "jetbrains-gateway://connect#type=coder&workspace=",
     data.coder_workspace.me.name,

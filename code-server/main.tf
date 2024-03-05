@@ -4,7 +4,7 @@ terraform {
   required_providers {
     coder = {
       source  = "coder/coder"
-      version = ">= 0.12"
+      version = ">= 0.17"
     }
   }
 }
@@ -77,6 +77,12 @@ variable "share" {
   }
 }
 
+variable "order" {
+  type        = number
+  description = "The order determines the position of app in the UI presentation. The lowest order is shown first and apps with equal order are sorted by name (ascending order)."
+  default     = null
+}
+
 resource "coder_script" "code-server" {
   agent_id     = var.agent_id
   display_name = "code-server"
@@ -101,6 +107,7 @@ resource "coder_app" "code-server" {
   icon         = "/icon/code.svg"
   subdomain    = false
   share        = var.share
+  order        = var.order
 
   healthcheck {
     url       = "http://localhost:${var.port}/healthz"

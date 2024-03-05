@@ -20,5 +20,18 @@ describe("vscode-desktop", async () => {
     expect(state.outputs.vscode_url.value).toBe(
       "vscode://coder.coder-remote/open?owner=default&workspace=default&token=$SESSION_TOKEN",
     );
+
+    const resources: any = state.resources;
+    expect(resources[1].instances[0].attributes.order).toBeNull();
+  });
+
+  it("expect order to be set", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      order: "22",
+    });
+
+    const resources: any = state.resources;
+    expect(resources[1].instances[0].attributes.order).toBe(22);
   });
 });
