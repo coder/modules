@@ -14,7 +14,7 @@ Automatically installs [Node.js](https://github.com/nodejs/node) via [nvm](https
 ```tf
 module "nodejs" {
   source   = "registry.coder.com/modules/nodejs/coder"
-  version  = "1.0.2"
+  version  = "1.0.8"
   agent_id = coder_agent.example.id
 }
 ```
@@ -26,7 +26,7 @@ This installs multiple versions of Node.js:
 ```tf
 module "nodejs" {
   source   = "registry.coder.com/modules/nodejs/coder"
-  version  = "1.0.2"
+  version  = "1.0.8"
   agent_id = coder_agent.example.id
   node_versions = [
     "18",
@@ -44,7 +44,7 @@ A example with all available options:
 ```tf
 module "nodejs" {
   source             = "registry.coder.com/modules/nodejs/coder"
-  version            = "1.0.2"
+  version            = "1.0.8"
   agent_id           = coder_agent.example.id
   nvm_version        = "v0.39.7"
   nvm_install_prefix = "/opt/nvm"
