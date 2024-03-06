@@ -90,6 +90,7 @@ resource "coder_script" "code-server" {
   script = templatefile("${path.module}/run.sh", {
     VERSION : var.install_version,
     EXTENSIONS : join(",", var.extensions),
+    APP_NAME : var.display_name,
     PORT : var.port,
     LOG_PATH : var.log_path,
     INSTALL_PREFIX : var.install_prefix,
