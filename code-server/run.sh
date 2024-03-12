@@ -4,6 +4,20 @@ EXTENSIONS=("${EXTENSIONS}")
 BOLD='\033[0;1m'
 CODE='\033[36;40;1m'
 RESET='\033[0m'
+CODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
+
+# Check if the settings file exists...
+if [ ! -f ~/.local/share/code-server/User/settings.json ]; then
+  echo "⚙️ Creating settings file..."
+  mkdir -p ~/.local/share/code-server/User
+  echo "${SETTINGS}" > ~/.local/share/code-server/User/settings.json
+fi
+
+if [ "${OFFLINE}" = true ]; then
+  echo "👷 Running code-server in offline mode..."
+  $CODE_SERVER --auth none --port ${PORT} --app-name "${APP_NAME}" > ${LOG_PATH} 2>&1 &
+  exit 0
+fi
 
 printf "$${BOLD}Installing code-server!\n"
 
@@ -22,8 +36,6 @@ if [ $? -ne 0 ]; then
 fi
 printf "🥳 code-server has been installed in ${INSTALL_PREFIX}\n\n"
 
-CODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
-
 # Install each extension...
 IFS=',' read -r -a EXTENSIONLIST <<< "$${EXTENSIONS}"
 for extension in "$${EXTENSIONLIST[@]}"; do
@@ -37,13 +49,6 @@ for extension in "$${EXTENSIONLIST[@]}"; do
     exit 1
   fi
 done
-
-# Check if the settings file exists...
-if [ ! -f ~/.local/share/code-server/User/settings.json ]; then
-  echo "⚙️ Creating settings file..."
-  mkdir -p ~/.local/share/code-server/User
-  echo "${SETTINGS}" > ~/.local/share/code-server/User/settings.json
-fi
 
 echo "👷 Running code-server in the background..."
 echo "Check logs at ${LOG_PATH}!"

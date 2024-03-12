@@ -83,6 +83,12 @@ variable "order" {
   default     = null
 }
 
+variable "offline" {
+  type        = bool
+  description = "Just run code-server in the background, don't fetch it from GitHub"
+  default     = false
+}
+
 resource "coder_script" "code-server" {
   agent_id     = var.agent_id
   display_name = "code-server"
@@ -96,6 +102,7 @@ resource "coder_script" "code-server" {
     INSTALL_PREFIX : var.install_prefix,
     // This is necessary otherwise the quotes are stripped!
     SETTINGS : replace(jsonencode(var.settings), "\"", "\\\""),
+    OFFLINE : var.offline,
   })
   run_on_start = true
 }
