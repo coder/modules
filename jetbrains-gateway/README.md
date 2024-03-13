@@ -18,7 +18,7 @@ module "jetbrains_gateway" {
   agent_id       = coder_agent.example.id
   agent_name     = "example"
   folder         = "/home/coder/example"
-  jetbrains_ides = ["GO", "WS", "IU", "PY", "PS", "CL", "RM"]
+  jetbrains_ides = ["GO", "WS", "IU", "PY", "PS", "CL", "RM", "RD"]
   default        = "PY"
 }
 ```
@@ -52,3 +52,4 @@ This module and JetBrains Gateway support the following JetBrains IDEs:
 - PhpStorm (`PS`)
 - CLion (`CL`)
 - RubyMine (`RM`)
+- Rider (`RD`)

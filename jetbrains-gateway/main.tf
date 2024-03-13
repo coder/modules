@@ -75,28 +75,32 @@ variable "jetbrains_ide_versions" {
       build_number = "232.10203.15"
       version      = "2023.2.4"
     }
+    "RD" = {
+      build_number = "232.10300.49"
+      version      = "2023.2.4"
+    }
   }
   validation {
     condition = (
       alltrue([
-        for code in keys(var.jetbrains_ide_versions) : contains(["IU", "PS", "WS", "PY", "CL", "GO", "RM"], code)
+        for code in keys(var.jetbrains_ide_versions) : contains(["IU", "PS", "WS", "PY", "CL", "GO", "RM", "RD"], code)
       ])
     )
-    error_message = "The jetbrains_ide_versions must contain a map of valid product codes. Valid product codes are ${join(",", ["IU", "PS", "WS", "PY", "CL", "GO", "RM"])}."
+    error_message = "The jetbrains_ide_versions must contain a map of valid product codes. Valid product codes are ${join(",", ["IU", "PS", "WS", "PY", "CL", "GO", "RM", "RD"])}."
   }
 }
 
 variable "jetbrains_ides" {
   type        = list(string)
   description = "The list of IDE product codes."
-  default     = ["IU", "PS", "WS", "PY", "CL", "GO", "RM"]
+  default     = ["IU", "PS", "WS", "PY", "CL", "GO", "RM", "RD"]
   validation {
     condition = (
       alltrue([
-        for code in var.jetbrains_ides : contains(["IU", "PS", "WS", "PY", "CL", "GO", "RM"], code)
+        for code in var.jetbrains_ides : contains(["IU", "PS", "WS", "PY", "CL", "GO", "RM", "RD"], code)
       ])
     )
-    error_message = "The jetbrains_ides must be a list of valid product codes. Valid product codes are ${join(",", ["IU", "PS", "WS", "PY", "CL", "GO", "RM"])}."
+    error_message = "The jetbrains_ides must be a list of valid product codes. Valid product codes are ${join(",", ["IU", "PS", "WS", "PY", "CL", "GO", "RM", "RD"])}."
   }
   # check if the list is empty
   validation {
@@ -160,6 +164,13 @@ locals {
       identifier    = "RM",
       build_number  = var.jetbrains_ide_versions["RM"].build_number,
       download_link = "https://download.jetbrains.com/ruby/RubyMine-${var.jetbrains_ide_versions["RM"].version}.tar.gz"
+    }
+    "RD" = {
+      icon          = "/icon/rider.svg",
+      name          = "Rider",
+      identifier    = "RD",
+      build_number  = var.jetbrains_ide_versions["RD"].build_number,
+      download_link = "https://download.jetbrains.com/rider/JetBrains.Rider-${var.jetbrains_ide_versions["RD"].version}.tar.gz"
     }
   }
 }
