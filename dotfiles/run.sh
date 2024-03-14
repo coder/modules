@@ -16,6 +16,6 @@ if [ -n "$${DOTFILES_URI// }" ]; then
     # sudo -u coder sh -c 'eval echo ~$USER' -> "/home/coder"                                                                                               ~/projects/coder-modules
     # sudo sh -c 'eval echo ~$USER'          -> "/root"
 
-    sudo -u "$DOTFILES_USER" sh -c "$(which coder) dotfiles \"$DOTFILES_URI\" -y 2>&1 | tee -a $(eval echo ~$USER)/.dotfiles.log"
+    sudo -u "$DOTFILES_USER" sh -c "$(which coder) dotfiles \"$DOTFILES_URI\" -y 2>&1 | tee -a $(eval echo ~\'$DOTFILES_USER\')/.dotfiles.log"
   fi
 fi
