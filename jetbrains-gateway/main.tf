@@ -48,36 +48,36 @@ variable "jetbrains_ide_versions" {
   description = "The set of versions for each jetbrains IDE"
   default = {
     "IU" = {
-      build_number = "232.10203.10"
-      version      = "2023.2.4"
+      build_number = "233.14808.21"
+      version      = "2023.3.5"
     }
     "PS" = {
-      build_number = "232.10072.32"
-      version      = "2023.2.3"
+      build_number = "233.14808.18"
+      version      = "2023.3.5"
     }
     "WS" = {
-      build_number = "232.10203.14"
-      version      = "2023.2.4"
+      build_number = "233.14475.40"
+      version      = "2023.3.4"
     }
     "PY" = {
-      build_number = "232.10203.26"
-      version      = "2023.2.4"
+      build_number = "233.14475.56"
+      version      = "2023.3.4"
     }
     "CL" = {
-      build_number = "232.9921.42"
-      version      = "2023.2.2"
+      build_number = "233.14475.31"
+      version      = "2023.3.4"
     }
     "GO" = {
-      build_number = "232.10203.20"
-      version      = "2023.2.4"
+      build_number = "233.14808.20"
+      version      = "2023.3.5"
     }
     "RM" = {
-      build_number = "232.10203.15"
-      version      = "2023.2.4"
+      build_number = "233.14808.14"
+      version      = "2023.3.5"
     }
     "RD" = {
-      build_number = "232.10300.49"
-      version      = "2023.2.4"
+      build_number = "233.14475.66"
+      version      = "2023.3.4"
     }
   }
   validation {
