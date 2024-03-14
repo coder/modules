@@ -35,7 +35,7 @@ module "dotfiles" {
 }
 ```
 
-### Apply dotfiles as root (only works if sudo is passwordless)
+### Apply dotfiles as another user (only works if sudo is passwordless)
 
 ```tf
 module "dotfiles" {
