@@ -6,6 +6,12 @@ CODE='\033[36;40;1m'
 RESET='\033[0m'
 CODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
 
+function run_code_server() {
+    echo "👷 Running code-server in the background..."
+    echo "Check logs at ${LOG_PATH}!"
+    $CODE_SERVER --auth none --port ${PORT} --app-name "${APP_NAME}" > ${LOG_PATH} 2>&1 &
+}
+
 # Check if the settings file exists...
 if [ ! -f ~/.local/share/code-server/User/settings.json ]; then
   echo "⚙️ Creating settings file..."
@@ -13,9 +19,9 @@ if [ ! -f ~/.local/share/code-server/User/settings.json ]; then
   echo "${SETTINGS}" > ~/.local/share/code-server/User/settings.json
 fi
 
-if [ "${OFFLINE}" = true ]; then
-  echo "👷 Running code-server in offline mode..."
-  $CODE_SERVER --auth none --port ${PORT} --app-name "${APP_NAME}" > ${LOG_PATH} 2>&1 &
+if [ "${OFFLINE}" = true ] && [ -f $CODE_SERVER ]; then
+  echo "🥳 Found offline copy of code-server"
+  run_code_server
   exit 0
 fi
 
@@ -50,6 +56,4 @@ for extension in "$${EXTENSIONLIST[@]}"; do
   fi
 done
 
-echo "👷 Running code-server in the background..."
-echo "Check logs at ${LOG_PATH}!"
-$CODE_SERVER --auth none --port ${PORT} --app-name "${APP_NAME}" > ${LOG_PATH} 2>&1 &
+run_code_server
