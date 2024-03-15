@@ -44,6 +44,13 @@ for extension in "$${EXTENSIONLIST[@]}"; do
   fi
 done
 
+# Check if the settings file exists...
+if [ ! -f ~/.vscode-server/data/Machine/settings.json ]; then
+  echo "⚙️ Creating settings file..."
+  mkdir -p ~/.vscode-server/data/Machine
+  echo "${SETTINGS}" > ~/.vscode-server/data/Machine/settings.json
+fi
+
 echo "👷 Running ${INSTALL_PREFIX}/bin/code-server serve-local --port ${PORT} --accept-server-license-terms serve-local --without-connection-token --telemetry-level ${TELEMETRY_LEVEL} in the background..."
 echo "Check logs at ${LOG_PATH}!"
 "${INSTALL_PREFIX}/bin/code-server" serve-local --port "${PORT}" --accept-server-license-terms serve-local --without-connection-token --telemetry-level "${TELEMETRY_LEVEL}" > "${LOG_PATH}" 2>&1 &

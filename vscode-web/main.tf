@@ -91,6 +91,12 @@ variable "order" {
   default     = null
 }
 
+variable "settings" {
+  type        = map(string)
+  description = "A map of settings to apply to code-server."
+  default     = {}
+}
+
 resource "coder_script" "vscode-web" {
   agent_id     = var.agent_id
   display_name = "VS Code Web"
@@ -101,6 +107,8 @@ resource "coder_script" "vscode-web" {
     INSTALL_PREFIX : var.install_prefix,
     EXTENSIONS : join(",", var.extensions),
     TELEMETRY_LEVEL : var.telemetry_level,
+    // This is necessary otherwise the quotes are stripped!
+    SETTINGS : replace(jsonencode(var.settings), "\"", "\\\""),
   })
   run_on_start = true
 }
