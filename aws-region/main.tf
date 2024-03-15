@@ -56,6 +56,14 @@ locals {
   # frequently and including the `aws_regions` data source requires
   # the provider, which requires a region.
   regions = {
+    "af-south-1" = {
+      name = "Africa (Cape Town)"
+      icon = "/emojis/1f1ff-1f1e6.png"
+    }
+    "ap-east-1" = {
+      name = "Asia Pacific (Hong Kong)"
+      icon = "/emojis/1f1ed-1f1f0.png"
+    }
     "ap-northeast-1" = {
       name = "Asia Pacific (Tokyo)"
       icon = "/emojis/1f1ef-1f1f5.png"
@@ -72,6 +80,10 @@ locals {
       name = "Asia Pacific (Mumbai)"
       icon = "/emojis/1f1ee-1f1f3.png"
     }
+    "ap-south-2" = {
+      name = "Asia Pacific (Hyderabad)"
+      icon = "/emojis/1f1ee-1f1f3.png"
+    }
     "ap-southeast-1" = {
       name = "Asia Pacific (Singapore)"
       icon = "/emojis/1f1f8-1f1ec.png"
@@ -80,16 +92,40 @@ locals {
       name = "Asia Pacific (Sydney)"
       icon = "/emojis/1f1e6-1f1fa.png"
     }
+    "ap-southeast-3" = {
+      name = "Asia Pacific (Jakarta)"
+      icon = "/emojis/1f1ee-1f1e9.png"
+    }
+    "ap-southeast-4" = {
+      name = "Asia Pacific (Melbourne)"
+      icon = "/emojis/1f1e6-1f1fa.png"
+    }
     "ca-central-1" = {
       name = "Canada (Central)"
+      icon = "/emojis/1f1e8-1f1e6.png"
+    }
+    "ca-west-1" = {
+      name = "Canada West (Calgary)"
       icon = "/emojis/1f1e8-1f1e6.png"
     }
     "eu-central-1" = {
       name = "EU (Frankfurt)"
       icon = "/emojis/1f1ea-1f1fa.png"
     }
+    "eu-central-2" = {
+      name = "Europe (Zurich)"
+      icon = "/emojis/1f1ea-1f1fa.png"
+    }
     "eu-north-1" = {
       name = "EU (Stockholm)"
+      icon = "/emojis/1f1ea-1f1fa.png"
+    }
+    "eu-south-1" = {
+      name = "Europe (Milan)"
+      icon = "/emojis/1f1ea-1f1fa.png"
+    }
+    "eu-south-2" = {
+      name = "Europe (Spain)"
       icon = "/emojis/1f1ea-1f1fa.png"
     }
     "eu-west-1" = {
@@ -103,6 +139,14 @@ locals {
     "eu-west-3" = {
       name = "EU (Paris)"
       icon = "/emojis/1f1ea-1f1fa.png"
+    }
+    "il-central-1" = {
+      name = "Israel (Tel Aviv)"
+      icon = "/emojis/1f1ee-1f1f1.png"
+    }
+    "me-south-1" = {
+      name = "Middle East (Bahrain)"
+      icon = "/emojis/1f1e7-1f1ed.png"
     }
     "sa-east-1" = {
       name = "South America (São Paulo)"
