@@ -34,6 +34,12 @@ variable "artifactory_access_token" {
   description = "The admin-level access token to use for JFrog."
 }
 
+variable "token_description" {
+  type        = string
+  description = "Free text token description. Useful for filtering and managing tokens."
+  default     = "coder-${lower(data.coder_workspace.me.owner)}-${lower(data.coder_workspace.me.name)}"
+}
+
 variable "check_license" {
   type        = bool
   description = "Toggle for pre-flight checking of Artifactory license. Default to `true`."
@@ -107,6 +113,7 @@ resource "artifactory_scoped_token" "me" {
   scopes      = ["applied-permissions/user"]
   refreshable = var.refreshable
   expires_in  = var.expires_in
+  description = var.token_description
 }
 
 data "coder_workspace" "me" {}
