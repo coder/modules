@@ -79,3 +79,16 @@ module "code-server" {
   extensions = ["dracula-theme.theme-dracula", "ms-azuretools.vscode-docker"]
 }
 ```
+
+### Offline Mode
+
+Just run code-server in the background, don't fetch it from GitHub:
+
+```tf
+module "code-server" {
+  source   = "registry.coder.com/modules/code-server/coder"
+  version  = "1.0.8"
+  agent_id = coder_agent.example.id
+  offline  = true
+}
+```
