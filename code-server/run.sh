@@ -7,9 +7,9 @@ RESET='\033[0m'
 CODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
 
 function run_code_server() {
-    echo "👷 Running code-server in the background..."
-    echo "Check logs at ${LOG_PATH}!"
-    $CODE_SERVER --auth none --port ${PORT} --app-name "${APP_NAME}" > ${LOG_PATH} 2>&1 &
+  echo "👷 Running code-server in the background..."
+  echo "Check logs at ${LOG_PATH}!"
+  $CODE_SERVER --auth none --port ${PORT} --app-name "${APP_NAME}" > ${LOG_PATH} 2>&1 &
 }
 
 # Check if the settings file exists...
