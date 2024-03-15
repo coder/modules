@@ -82,7 +82,7 @@ module "code-server" {
 
 ### Offline Mode
 
-Just run code-server in the background, don't fetch it from GitHub:
+Run an existing copy of code-server if found, otherwise download from GitHub. By default the module looks for code-server at `/tmp/code-server` but this can be changed with `install_prefix`.
 
 ```tf
 module "code-server" {
