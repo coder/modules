@@ -19,8 +19,8 @@ case "$ARCH" in
     ;;
 esac
 
-HASH=$(curl https://update.code.visualstudio.com/api/commits/stable/server-linux-$ARCH-web | cut -d '"' -f 2)
-output=$(curl -sL https://vscode.download.prss.microsoft.com/dbazure/download/stable/$HASH/vscode-server-linux-$ARCH-web.tar.gz | tar -xz -C ${INSTALL_PREFIX} --strip-components 1)
+HASH=$(curl -fsSL https://update.code.visualstudio.com/api/commits/stable/server-linux-$ARCH-web | cut -d '"' -f 2)
+output=$(curl -fsSL https://vscode.download.prss.microsoft.com/dbazure/download/stable/$HASH/vscode-server-linux-$ARCH-web.tar.gz | tar -xz -C ${INSTALL_PREFIX} --strip-components 1)
 
 if [ $? -ne 0 ]; then
   echo "Failed to install Microsoft Visual Studio Code Server: $output"
