@@ -93,7 +93,7 @@ variable "order" {
 
 variable "settings" {
   type        = map(string)
-  description = "A map of settings to apply to code-server."
+  description = "A map of settings to apply to VS Code web."
   default     = {}
 }
 
