@@ -14,11 +14,11 @@ This module adds a JetBrains Gateway Button to open any workspace with a single 
 ```tf
 module "jetbrains_gateway" {
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
-  version        = "1.0.8"
+  version        = "1.0.9"
   agent_id       = coder_agent.example.id
   agent_name     = "example"
   folder         = "/home/coder/example"
-  jetbrains_ides = ["GO", "WS", "IU", "PY", "PS", "CL", "RM"]
+  jetbrains_ides = ["GO", "WS", "IU", "PY", "PS", "CL", "RM", "RD"]
   default        = "PY"
 }
 ```
@@ -32,7 +32,7 @@ module "jetbrains_gateway" {
 ```tf
 module "jetbrains_gateway" {
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
-  version        = "1.0.8"
+  version        = "1.0.9"
   agent_id       = coder_agent.example.id
   agent_name     = "example"
   folder         = "/home/coder/example"
@@ -52,3 +52,4 @@ This module and JetBrains Gateway support the following JetBrains IDEs:
 - PhpStorm (`PS`)
 - CLion (`CL`)
 - RubyMine (`RM`)
+- Rider (`RD`)
