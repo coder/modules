@@ -19,10 +19,18 @@ if [ ! -f ~/.local/share/code-server/User/settings.json ]; then
   echo "${SETTINGS}" > ~/.local/share/code-server/User/settings.json
 fi
 
-if [ "${OFFLINE}" = true ] && [ -f $CODE_SERVER ]; then
-  echo "🥳 Found offline copy of code-server"
-  run_code_server
-  exit 0
+# Check if code-server is already installed for offline or cached mode
+if [ -f $CODE_SERVER ]; then
+  if "${OFFLINE}" = true || "${USE_CACHED}" = true; then
+    echo "🥳 Found a copy of code-server"
+    run_code_server
+    exit 0
+  fi
+fi
+# Offline mode always expects a copy of code-server to be present
+if [ "${OFFLINE}" = true ]; then
+  echo "Failed to find a copy of code-server"
+  exit 1
 fi
 
 printf "$${BOLD}Installing code-server!\n"

@@ -80,9 +80,23 @@ module "code-server" {
 }
 ```
 
-### Offline Mode
+### Offline and Use Cached Modes
 
-Run an existing copy of code-server if found, otherwise download from GitHub. By default the module looks for code-server at `/tmp/code-server` but this can be changed with `install_prefix`.
+By default the module looks for code-server at `/tmp/code-server` but this can be changed with `install_prefix`.
+
+Run an existing copy of code-server if found, otherwise download from GitHub:
+
+```tf
+module "code-server" {
+  source     = "registry.coder.com/modules/code-server/coder"
+  version    = "1.0.8"
+  agent_id   = coder_agent.example.id
+  use_cached = true
+  extensions = ["dracula-theme.theme-dracula", "ms-azuretools.vscode-docker"]
+}
+```
+
+Just run code-server in the background, don't fetch it from GitHub:
 
 ```tf
 module "code-server" {
