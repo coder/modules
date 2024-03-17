@@ -9,7 +9,7 @@ CODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
 function run_code_server() {
   echo "👷 Running code-server in the background..."
   echo "Check logs at ${LOG_PATH}!"
-  $CODE_SERVER --auth none --port ${PORT} --app-name "${APP_NAME}" > ${LOG_PATH} 2>&1 &
+  $CODE_SERVER --auth none --port "${PORT}" --app-name "${APP_NAME}" > "${LOG_PATH}" 2>&1 &
 }
 
 # Check if the settings file exists...
@@ -20,8 +20,8 @@ if [ ! -f ~/.local/share/code-server/User/settings.json ]; then
 fi
 
 # Check if code-server is already installed for offline or cached mode
-if [ -f $CODE_SERVER ]; then
-  if "${OFFLINE}" = true || "${USE_CACHED}" = true; then
+if [ -f "$CODE_SERVER" ]; then
+  if [ "${OFFLINE}" = true ] || [ "${USE_CACHED}" = true ]; then
     echo "🥳 Found a copy of code-server"
     run_code_server
     exit 0
