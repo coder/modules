@@ -87,6 +87,26 @@ module "jfrog" {
 }
 ```
 
+### Add a custom token description
+
+```tf
+data "coder_workspace" "me" {}
+
+module "jfrog" {
+  source                   = "registry.coder.com/modules/jfrog-token/coder"
+  version                  = "1.0.5"
+  agent_id                 = coder_agent.example.id
+  jfrog_url                = "https://XXXX.jfrog.io"
+  artifactory_access_token = var.artifactory_access_token
+  token_description        = "Token for Coder workspace: ${data.coder_workspace.me.owner}/${data.coder_workspace.me.name}"
+  package_managers = {
+    "npm" : "npm",
+    "go" : "go",
+    "pypi" : "pypi"
+  }
+}
+```
+
 ### Using the access token in other terraform resources
 
 JFrog Access token is also available as a terraform output. You can use it in other terraform resources. For example, you can use it to configure an [Artifactory docker registry](https://jfrog.com/help/r/jfrog-artifactory-documentation/docker-registry) with the [docker terraform provider](https://registry.terraform.io/providers/kreuzwerker/docker/latest/docs).
