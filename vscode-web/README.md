@@ -48,3 +48,20 @@ module "vscode-web" {
   accept_license = true
 }
 ```
+
+### Pre-configure Settings
+
+Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarted/settings#_settingsjson) file:
+
+```tf
+module "vscode-web" {
+  source     = "registry.coder.com/modules/vscode-web/coder"
+  version    = "1.0.8"
+  agent_id   = coder_agent.example.id
+  extensions = ["dracula-theme.theme-dracula"]
+  settings = {
+    "workbench.colorTheme" = "Dracula"
+  }
+  accept_license = true
+}
+```
