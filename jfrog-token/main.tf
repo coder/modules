@@ -37,7 +37,7 @@ variable "artifactory_access_token" {
 variable "token_description" {
   type        = string
   description = "Free text token description. Useful for filtering and managing tokens."
-  default     = "coder-workspace-${lower(data.coder_workspace.me.owner)}-${lower(data.coder_workspace.me.name)}"
+  default     = "Token for Coder workspace: ${data.coder_workspace.me.owner}/${data.coder_workspace.me.name}"
 }
 
 variable "check_license" {
