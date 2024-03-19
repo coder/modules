@@ -10,7 +10,7 @@ RESET='\033[0m'
 
 printf "$${BOLD}Installing nvm!$${RESET}\n"
 
-export NVM_DIR="$${INSTALL_PREFIX}/nvm"
+export NVM_DIR="$HOME/$${INSTALL_PREFIX}/nvm"
 mkdir -p "$NVM_DIR"
 
 script="$(curl -sS -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$${NVM_VERSION}/install.sh" 2>&1)"
