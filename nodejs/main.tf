@@ -22,8 +22,8 @@ variable "nvm_version" {
 
 variable "nvm_install_prefix" {
   type        = string
-  description = "The prefix to install nvm to."
-  default     = "$HOME/.nvm"
+  description = "The prefix to install nvm to (relative to $HOME)."
+  default     = ".nvm"
 }
 
 variable "node_versions" {
