@@ -16,7 +16,7 @@ variable "agent_id" {
 
 resource "coder_script" "git-commit-signing" {
   display_name = "Git commit signing"
-  icon         = "https://raw.githubusercontent.com/coder/modules/main/.icons/git.svg"
+  icon         = "/icon/git.svg"
 
   script       = file("${path.module}/run.sh")
   run_on_start = true
