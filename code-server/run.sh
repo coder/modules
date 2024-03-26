@@ -6,10 +6,16 @@ CODE='\033[36;40;1m'
 RESET='\033[0m'
 CODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
 
+# Set extension directory
+EXTENSION_ARG=""
+if [ -n "${EXTENSIONS_DIR}" ]; then
+  EXTENSION_ARG="--extensions-dir=${EXTENSIONS_DIR}"
+fi
+
 function run_code_server() {
   echo "👷 Running code-server in the background..."
   echo "Check logs at ${LOG_PATH}!"
-  $CODE_SERVER --auth none --port "${PORT}" --app-name "${APP_NAME}" > "${LOG_PATH}" 2>&1 &
+  $CODE_SERVER "$EXTENSION_ARG" --auth none --port "${PORT}" --app-name "${APP_NAME}" > "${LOG_PATH}" 2>&1 &
 }
 
 # Check if the settings file exists...
@@ -57,7 +63,7 @@ for extension in "$${EXTENSIONLIST[@]}"; do
     continue
   fi
   printf "🧩 Installing extension $${CODE}$extension$${RESET}...\n"
-  output=$($CODE_SERVER --install-extension "$extension")
+  output=$($CODE_SERVER "$EXTENSION_ARG" --install-extension "$extension")
   if [ $? -ne 0 ]; then
     echo "Failed to install extension: $extension: $output"
     exit 1
