@@ -9,7 +9,7 @@ CODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
 # Set extension directory
 EXTENSION_ARG=""
 if [ -n "${EXTENSIONS_DIR}" ]; then
-  EXTENSION_ARG="--extensions-dir ${EXTENSIONS_DIR} "
+  EXTENSION_ARG="--extensions-dir=${EXTENSIONS_DIR}"
 fi
 
 function run_code_server() {
