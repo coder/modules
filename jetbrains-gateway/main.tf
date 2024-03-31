@@ -40,6 +40,12 @@ variable "order" {
   default     = null
 }
 
+variable "coder_parameter_order" {
+  type        = number
+  description = "The order determines the position of a template parameter in the UI/CLI presentation. The lowest order is shown first and parameters with equal order are sorted by name (ascending order)."
+  default     = null
+}
+
 variable "jetbrains_ide_versions" {
   type = map(object({
     build_number = string
@@ -182,6 +188,7 @@ data "coder_parameter" "jetbrains_ide" {
   icon         = "/icon/gateway.svg"
   mutable      = true
   default      = var.default == "" ? var.jetbrains_ides[0] : var.default
+  order        = var.coder_parameter_order
 
   dynamic "option" {
     for_each = var.jetbrains_ides
