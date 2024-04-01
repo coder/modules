@@ -40,7 +40,7 @@ if [ -z "$(ls -A "$CLONE_PATH")" ]; then
   # Return the exit code of the last command
   exit_code=$?
   if [ $exit_code -ne 0 ]; then
-      exit $exit_code
+    exit $exit_code
   fi
 
   # If BRANCH_NAME is set of a non-blank value, switch to that branch
