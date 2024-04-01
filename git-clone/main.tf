@@ -26,7 +26,9 @@ variable "agent_id" {
 }
 
 locals {
-  clone_path = var.base_dir != "" ? join("/", [var.base_dir, replace(basename(var.url), ".git", "")]) : join("/", ["~", replace(basename(var.url), ".git", "")])
+  clone_url   = replace(replace(var.url, "//-/tree/.*/", ""), "//tree/.*/", "")
+  branch_name = replace(replace(replace(var.url, local.clone_url, ""), "/.*/-/tree//", ""), "/.*/tree//", "")
+  clone_path  = var.base_dir != "" ? join("/", [var.base_dir, replace(basename(local.clone_url), ".git", "")]) : join("/", ["~", replace(basename(local.clone_url), ".git", "")])
 }
 
 output "repo_dir" {
@@ -34,11 +36,22 @@ output "repo_dir" {
   description = "Full path of cloned repo directory"
 }
 
+output "clone_url" {
+  value       = local.clone_url
+  description = "Git repository URL"
+}
+
+output "branch_name" {
+  value       = local.branch_name
+  description = "Git branch"
+}
+
 resource "coder_script" "git_clone" {
   agent_id = var.agent_id
   script = templatefile("${path.module}/run.sh", {
-    CLONE_PATH = local.clone_path
-    REPO_URL : var.url,
+    CLONE_PATH = local.clone_path,
+    REPO_URL : local.clone_url,
+    BRANCH_NAME : local.branch_name,
   })
   display_name       = "Git Clone"
   icon               = "/icon/git.svg"

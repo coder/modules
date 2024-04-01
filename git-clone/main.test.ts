@@ -14,6 +14,71 @@ describe("git-clone", async () => {
     url: "foo",
   });
 
+  it("repo_dir should match repo name for https", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      base_dir: "/tmp",
+      url: "https://github.com/coder/coder.git",
+    });
+    expect(state.outputs.repo_dir.value).toEqual("/tmp/coder");
+    expect(state.outputs.clone_url.value).toEqual(
+      "https://github.com/coder/coder.git",
+    );
+    expect(state.outputs.branch_name.value).toEqual("");
+  });
+
+  it("repo_dir should match repo name for https without .git", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      base_dir: "/tmp",
+      url: "https://github.com/coder/coder",
+    });
+    expect(state.outputs.repo_dir.value).toEqual("/tmp/coder");
+    expect(state.outputs.clone_url.value).toEqual(
+      "https://github.com/coder/coder",
+    );
+    expect(state.outputs.branch_name.value).toEqual("");
+  });
+
+  it("repo_dir should match repo name for ssh", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      base_dir: "/tmp",
+      url: "git@github.com:coder/coder.git",
+    });
+    expect(state.outputs.repo_dir.value).toEqual("/tmp/coder");
+    expect(state.outputs.clone_url.value).toEqual(
+      "git@github.com:coder/coder.git",
+    );
+    expect(state.outputs.branch_name.value).toEqual("");
+  });
+
+  it("repo_dir should match repo name with gitlab tree url", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      base_dir: "/tmp",
+      url: "https://gitlab.com/mike.brew/repo-tests.log/-/tree/feat/branch",
+    });
+    expect(state.outputs.repo_dir.value).toEqual("/tmp/repo-tests.log");
+    expect(state.outputs.clone_url.value).toEqual(
+      "https://gitlab.com/mike.brew/repo-tests.log",
+    );
+    expect(state.outputs.branch_name.value).toEqual("feat/branch");
+  });
+
+  it("repo_dir should match repo name with github tree url", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      base_dir: "/tmp",
+      url: "https://github.com/michaelbrewer/repo-tests.log/tree/feat/branch",
+    });
+    expect(state.outputs.repo_dir.value).toEqual("/tmp/repo-tests.log");
+    expect(state.outputs.clone_url.value).toEqual(
+      "https://github.com/michaelbrewer/repo-tests.log",
+    );
+    expect(state.outputs.branch_name.value).toEqual("feat/branch");
+  });
+
   it("fails without git", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
