@@ -14,6 +14,29 @@ describe("git-clone", async () => {
     url: "foo",
   });
 
+  it("fails without git", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      url: "some-url",
+    });
+    const output = await executeScriptInContainer(state, "alpine");
+    expect(output.exitCode).toBe(1);
+    expect(output.stdout).toEqual(["Git is not installed!"]);
+  });
+
+  it("runs with git", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      url: "fake-url",
+    });
+    const output = await executeScriptInContainer(state, "alpine/git");
+    expect(output.exitCode).toBe(128);
+    expect(output.stdout).toEqual([
+      "Creating directory ~/fake-url...",
+      "Cloning fake-url to ~/fake-url...",
+    ]);
+  });
+
   it("repo_dir should match repo name for https", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
@@ -79,26 +102,35 @@ describe("git-clone", async () => {
     expect(state.outputs.branch_name.value).toEqual("feat/branch");
   });
 
-  it("fails without git", async () => {
+  it("runs with github clone with switch to feat/branch", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
-      url: "some-url",
-    });
-    const output = await executeScriptInContainer(state, "alpine");
-    expect(output.exitCode).toBe(1);
-    expect(output.stdout).toEqual(["Git is not installed!"]);
-  });
-
-  it("runs with git", async () => {
-    const state = await runTerraformApply(import.meta.dir, {
-      agent_id: "foo",
-      url: "fake-url",
+      url: "https://github.com/michaelbrewer/repo-tests.log/tree/feat/branch",
     });
     const output = await executeScriptInContainer(state, "alpine/git");
-    expect(output.exitCode).toBe(128);
+    expect(output.exitCode).toBe(0);
     expect(output.stdout).toEqual([
-      "Creating directory ~/fake-url...",
-      "Cloning fake-url to ~/fake-url...",
+      "Creating directory ~/repo-tests.log...",
+      "Cloning https://github.com/michaelbrewer/repo-tests.log to ~/repo-tests.log...",
+      "Switch to branch feat/branch...",
+      "branch 'feat/branch' set up to track 'origin/feat/branch'.",
+      "/git",
+    ]);
+  });
+
+  it("runs with gitlab clone with switch to feat/branch", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      url: "https://gitlab.com/mike.brew/repo-tests.log/-/tree/feat/branch",
+    });
+    const output = await executeScriptInContainer(state, "alpine/git");
+    expect(output.exitCode).toBe(0);
+    expect(output.stdout).toEqual([
+      "Creating directory ~/repo-tests.log...",
+      "Cloning https://gitlab.com/mike.brew/repo-tests.log to ~/repo-tests.log...",
+      "Switch to branch feat/branch...",
+      "branch 'feat/branch' set up to track 'origin/feat/branch'.",
+      "/git",
     ]);
   });
 });
