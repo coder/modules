@@ -34,21 +34,12 @@ fi
 # Check if the directory is empty
 # and if it is, clone the repo, otherwise skip cloning
 if [ -z "$(ls -A "$CLONE_PATH")" ]; then
-  echo "Cloning $REPO_URL to $CLONE_PATH..."
-  git clone "$REPO_URL" "$CLONE_PATH"
-
-  # Return the exit code of the last command
-  exit_code=$?
-  if [ $exit_code -ne 0 ]; then
-    exit $exit_code
-  fi
-
-  # If BRANCH_NAME is set of a non-blank value, switch to that branch
-  if [ -n "$BRANCH_NAME" ]; then
-    echo "Switch to branch $BRANCH_NAME..."
-    cd "$CLONE_PATH" || exit 1
-    git switch "$BRANCH_NAME"
-    cd - || exit 1
+  if [ -z "$BRANCH_NAME" ]; then
+    echo "Cloning $REPO_URL to $CLONE_PATH..."
+    git clone "$REPO_URL" "$CLONE_PATH"
+  else
+    echo "Cloning $REPO_URL to $CLONE_PATH on branch $BRANCH_NAME..."
+    git clone "$REPO_URL" -b "$BRANCH_NAME" "$CLONE_PATH"
   fi
 else
   echo "$CLONE_PATH already exists and isn't empty, skipping clone!"

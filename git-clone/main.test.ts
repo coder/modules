@@ -111,10 +111,7 @@ describe("git-clone", async () => {
     expect(output.exitCode).toBe(0);
     expect(output.stdout).toEqual([
       "Creating directory ~/repo-tests.log...",
-      "Cloning https://github.com/michaelbrewer/repo-tests.log to ~/repo-tests.log...",
-      "Switch to branch feat/branch...",
-      "branch 'feat/branch' set up to track 'origin/feat/branch'.",
-      "/git",
+      "Cloning https://github.com/michaelbrewer/repo-tests.log to ~/repo-tests.log on branch feat/branch...",
     ]);
   });
 
@@ -127,10 +124,7 @@ describe("git-clone", async () => {
     expect(output.exitCode).toBe(0);
     expect(output.stdout).toEqual([
       "Creating directory ~/repo-tests.log...",
-      "Cloning https://gitlab.com/mike.brew/repo-tests.log to ~/repo-tests.log...",
-      "Switch to branch feat/branch...",
-      "branch 'feat/branch' set up to track 'origin/feat/branch'.",
-      "/git",
+      "Cloning https://gitlab.com/mike.brew/repo-tests.log to ~/repo-tests.log on branch feat/branch...",
     ]);
   });
 });
