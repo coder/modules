@@ -38,42 +38,60 @@ describe("git-clone", async () => {
   });
 
   it("repo_dir should match repo name for https", async () => {
+    const url = "https://github.com/coder/coder.git";
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
       base_dir: "/tmp",
-      url: "https://github.com/coder/coder.git",
+      url,
     });
     expect(state.outputs.repo_dir.value).toEqual("/tmp/coder");
-    expect(state.outputs.clone_url.value).toEqual(
+    expect(state.outputs.clone_url.value).toEqual(url);
+    expect(state.outputs.web_url.value).toEqual(url);
+    expect(state.outputs.branch_name.value).toEqual("");
+  });
+
+  it("repo_dir should match repo name for https without .git", async () => {
+    const url = "https://github.com/coder/coder";
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      base_dir: "/tmp",
+      url,
+    });
+    expect(state.outputs.repo_dir.value).toEqual("/tmp/coder");
+    expect(state.outputs.clone_url.value).toEqual(url);
+    expect(state.outputs.web_url.value).toEqual(url);
+    expect(state.outputs.branch_name.value).toEqual("");
+  });
+
+  it("repo_dir should match repo name for ssh", async () => {
+    const url = "git@github.com:coder/coder.git";
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      base_dir: "/tmp",
+      url,
+    });
+    expect(state.outputs.repo_dir.value).toEqual("/tmp/coder");
+    expect(state.outputs.clone_url.value).toEqual(url);
+    expect(state.outputs.web_url.value).toEqual(
       "https://github.com/coder/coder.git",
     );
     expect(state.outputs.branch_name.value).toEqual("");
   });
 
-  it("repo_dir should match repo name for https without .git", async () => {
+  it("branch_name should not include query string", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
       base_dir: "/tmp",
-      url: "https://github.com/coder/coder",
+      url: "https://gitlab.com/mike.brew/repo-tests.log/-/tree/feat/branch?ref_type=heads",
     });
-    expect(state.outputs.repo_dir.value).toEqual("/tmp/coder");
+    expect(state.outputs.repo_dir.value).toEqual("/tmp/repo-tests.log");
     expect(state.outputs.clone_url.value).toEqual(
-      "https://github.com/coder/coder",
+      "https://gitlab.com/mike.brew/repo-tests.log",
     );
-    expect(state.outputs.branch_name.value).toEqual("");
-  });
-
-  it("repo_dir should match repo name for ssh", async () => {
-    const state = await runTerraformApply(import.meta.dir, {
-      agent_id: "foo",
-      base_dir: "/tmp",
-      url: "git@github.com:coder/coder.git",
-    });
-    expect(state.outputs.repo_dir.value).toEqual("/tmp/coder");
-    expect(state.outputs.clone_url.value).toEqual(
-      "git@github.com:coder/coder.git",
+    expect(state.outputs.web_url.value).toEqual(
+      "https://gitlab.com/mike.brew/repo-tests.log",
     );
-    expect(state.outputs.branch_name.value).toEqual("");
+    expect(state.outputs.branch_name.value).toEqual("feat/branch");
   });
 
   it("repo_dir should match repo name with gitlab tree url", async () => {
@@ -84,6 +102,9 @@ describe("git-clone", async () => {
     });
     expect(state.outputs.repo_dir.value).toEqual("/tmp/repo-tests.log");
     expect(state.outputs.clone_url.value).toEqual(
+      "https://gitlab.com/mike.brew/repo-tests.log",
+    );
+    expect(state.outputs.web_url.value).toEqual(
       "https://gitlab.com/mike.brew/repo-tests.log",
     );
     expect(state.outputs.branch_name.value).toEqual("feat/branch");
@@ -97,6 +118,9 @@ describe("git-clone", async () => {
     });
     expect(state.outputs.repo_dir.value).toEqual("/tmp/repo-tests.log");
     expect(state.outputs.clone_url.value).toEqual(
+      "https://github.com/michaelbrewer/repo-tests.log",
+    );
+    expect(state.outputs.web_url.value).toEqual(
       "https://github.com/michaelbrewer/repo-tests.log",
     );
     expect(state.outputs.branch_name.value).toEqual("feat/branch");

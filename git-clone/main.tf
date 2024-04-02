@@ -26,9 +26,18 @@ variable "agent_id" {
 }
 
 locals {
-  clone_url   = replace(replace(var.url, "//-/tree/.*/", ""), "//tree/.*/", "")
-  branch_name = replace(replace(replace(var.url, local.clone_url, ""), "/.*/-/tree//", ""), "/.*/tree//", "")
-  clone_path  = var.base_dir != "" ? join("/", [var.base_dir, replace(basename(local.clone_url), ".git", "")]) : join("/", ["~", replace(basename(local.clone_url), ".git", "")])
+  # Remove query parameters and branch name from the URL
+  url = replace(replace(var.url, "/\\?.*/", ""), "/#.*", "")
+  # Remove tree and branch name from the URL
+  clone_url = replace(replace(local.url, "//-/tree/.*/", ""), "//tree/.*/", "")
+  # Extract the branch name from the URL
+  branch_name = replace(replace(replace(local.url, local.clone_url, ""), "/.*/-/tree//", ""), "/.*/tree//", "")
+  # Construct the path to clone the repository
+  clone_path = var.base_dir != "" ? join("/", [var.base_dir, replace(basename(local.clone_url), ".git", "")]) : join("/", ["~", replace(basename(local.clone_url), ".git", "")])
+
+  # git@gitlab.com:mike.brew/repo-tests.log.git
+  # becomes https://gitlab.com/mike.brew/repo-tests.log.git
+  web_url = startswith(local.clone_url, "git@") ? replace(replace(local.clone_url, ":", "/"), "git@", "https://") : local.clone_url
 }
 
 output "repo_dir" {
@@ -39,6 +48,11 @@ output "repo_dir" {
 output "clone_url" {
   value       = local.clone_url
   description = "Git repository URL"
+}
+
+output "web_url" {
+  value       = local.web_url
+  description = "Git https repository URL"
 }
 
 output "branch_name" {
