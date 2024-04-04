@@ -97,7 +97,7 @@ variable "use_cached" {
 
 variable "extensions_dir" {
   type        = string
-  description = "Override the directory to store extensions in. By default extensions are in ~/.local/share/code-server/extensions."
+  description = "Override the directory to store extensions in."
   default     = ""
 }
 
