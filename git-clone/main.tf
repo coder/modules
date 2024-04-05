@@ -27,7 +27,7 @@ variable "agent_id" {
 
 locals {
   # Remove query parameters and fragments from the URL
-  url = replace(replace(var.url, "/\\?.*/", ""), "/#.*", "")
+  url = replace(replace(var.url, "/\\?.*/", ""), "/#.*/", "")
   # Remove tree and branch name from the URL
   clone_url = replace(replace(local.url, "//-/tree/.*/", ""), "//tree/.*/", "")
   # Extract the branch name from the URL
