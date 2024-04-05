@@ -26,17 +26,17 @@ variable "agent_id" {
 }
 
 locals {
-  # Remove query parameters and branch name from the URL
+  # Remove query parameters and fragments from the URL
   url = replace(replace(var.url, "/\\?.*/", ""), "/#.*", "")
   # Remove tree and branch name from the URL
   clone_url = replace(replace(local.url, "//-/tree/.*/", ""), "//tree/.*/", "")
   # Extract the branch name from the URL
   branch_name = replace(replace(replace(local.url, local.clone_url, ""), "/.*/-/tree//", ""), "/.*/tree//", "")
+  # Extract the folder name from the URL
+  folder_name = replace(basename(local.clone_url), ".git", "")
   # Construct the path to clone the repository
-  clone_path = var.base_dir != "" ? join("/", [var.base_dir, replace(basename(local.clone_url), ".git", "")]) : join("/", ["~", replace(basename(local.clone_url), ".git", "")])
-
-  # git@gitlab.com:mike.brew/repo-tests.log.git
-  # becomes https://gitlab.com/mike.brew/repo-tests.log.git
+  clone_path = var.base_dir != "" ? join("/", [var.base_dir, local.folder_name]) : join("/", ["~", local.folder_name])
+  # Construct the web URL
   web_url = startswith(local.clone_url, "git@") ? replace(replace(local.clone_url, ":", "/"), "git@", "https://") : local.clone_url
 }
 
@@ -52,12 +52,12 @@ output "clone_url" {
 
 output "web_url" {
   value       = local.web_url
-  description = "Git https repository URL"
+  description = "Git https repository URL (may be invalid for unsupported providers)"
 }
 
 output "branch_name" {
   value       = local.branch_name
-  description = "Git branch"
+  description = "Git branch name (may be empty)"
 }
 
 resource "coder_script" "git_clone" {
