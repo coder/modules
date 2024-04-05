@@ -51,6 +51,6 @@ if [ ! -f ~/.vscode-server/data/Machine/settings.json ]; then
   echo "${SETTINGS}" > ~/.vscode-server/data/Machine/settings.json
 fi
 
-echo "👷 Running ${INSTALL_PREFIX}/bin/code-server serve-local --port ${PORT} --accept-server-license-terms serve-local --without-connection-token --telemetry-level ${TELEMETRY_LEVEL} in the background..."
+echo "👷 Running ${INSTALL_PREFIX}/bin/code-server serve-local --port ${PORT} --host 127.0.0.1 --accept-server-license-terms serve-local --without-connection-token --telemetry-level ${TELEMETRY_LEVEL} in the background..."
 echo "Check logs at ${LOG_PATH}!"
-"${INSTALL_PREFIX}/bin/code-server" serve-local --port "${PORT}" --accept-server-license-terms serve-local --without-connection-token --telemetry-level "${TELEMETRY_LEVEL}" > "${LOG_PATH}" 2>&1 &
+"${INSTALL_PREFIX}/bin/code-server" serve-local --port "${PORT}" --host 127.0.0.1 --accept-server-license-terms serve-local --without-connection-token --telemetry-level "${TELEMETRY_LEVEL}" > "${LOG_PATH}" 2>&1 &
