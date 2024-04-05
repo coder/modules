@@ -47,7 +47,7 @@ output "repo_dir" {
 
 output "clone_url" {
   value       = local.clone_url
-  description = "Git repository URL"
+  description = "The exact Git repository URL that will be cloned"
 }
 
 output "web_url" {
