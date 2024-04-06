@@ -91,7 +91,7 @@ resource "coder_app" "windows-rdp" {
   subdomain    = true
 
   healthcheck {
-    url       = "http://localhost:${var.port}"
+    url       = "http://localhost:7171"
     interval  = 5
     threshold = 15
   }
