@@ -25,4 +25,4 @@ module "code-server" {
 
 ## Tested on
 
-- ✅ GCP with Windows Server 2022: [Example template](#TODO)
+- ✅ GCP with Windows Server 2022: [Example template](https://gist.github.com/bpmct/18918b8cab9f20295e5c4039b92b5143)
