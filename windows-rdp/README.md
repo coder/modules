@@ -31,5 +31,5 @@ module "windows_rdp" {
 ## Roadmap
 
 - [ ] Test on additional cloud providers
-- [ ] Automatically establish web RDP session
-  > This may require forking [the webapp from devolutions-gateway](https://github.com/Devolutions/devolutions-gateway/tree/master/webapp)
+- [ ] Automatically establish web RDP session when users click "web RDP"
+  > This may require forking [the webapp from devolutions-gateway](https://github.com/Devolutions/devolutions-gateway/tree/master/webapp), modifying `webapp/`, building, and specifying a new [static root path](https://github.com/Devolutions/devolutions-gateway/blob/a884cbb8ff313496fb3d4072e67ef75350c40c03/devolutions-gateway/tests/config.rs#L271). Ideally we can upstream this functionality.
