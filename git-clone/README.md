@@ -51,20 +51,27 @@ data "coder_git_auth" "github" {
 }
 ```
 
-## Github clone with branch name
+## GitHub clone with branch name
 
-To github clone a url at a specific branch like `feat/example`
+To GitHub clone with a specific branch like `feat/example`
 
 ```tf
+# Prompt the user for the git repo URL
+data "coder_parameter" "git_repo" {
+  name         = "git_repo"
+  display_name = "Git repository"
+  default      = "https://github.com/coder/coder/tree/feat/example"
+}
+
 module "git-clone" {
   source   = "registry.coder.com/modules/git-clone/coder"
   version  = "1.0.11"
   agent_id = coder_agent.example.id
-  url      = "https://github.com/coder/coder/tree/feat/example"
+  url      = data.coder_parameter.git_repo.value
 }
 ```
 
-Self host github
+Configuring `git-clone` for a self-hosted GitHub Enterprise Server running at `github.example.com`
 
 ```tf
 module "git-clone" {
@@ -80,9 +87,9 @@ module "git-clone" {
 }
 ```
 
-## Gitlab clone with branch name
+## GitLab clone with branch name
 
-To gitlab clone a url at a specific branch like `feat/example`
+To GitLab clone with a specific branch like `feat/example`
 
 ```tf
 module "git-clone" {
@@ -93,7 +100,7 @@ module "git-clone" {
 }
 ```
 
-Self host gitlab
+Configuring `git-clone` for a self-hosted GitLab running at `gitlab.example.com`
 
 ```tf
 module "git-clone" {
