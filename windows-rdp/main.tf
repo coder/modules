@@ -118,7 +118,6 @@ resource "coder_app" "rdp-docs" {
 }
 
 resource "coder_metadata" "rdp_details" {
-  count       = data.coder_workspace.me.start_count
   resource_id = var.resource_id
   daily_cost  = 0
   item {
