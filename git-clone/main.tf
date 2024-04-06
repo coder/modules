@@ -49,9 +49,9 @@ locals {
   url = replace(replace(var.url, "/\\?.*/", ""), "/#.*/", "")
 
   # Find the git provider based on the URL and determine the tree path
-  git_provider_key = try(coalesce([for provider in keys(var.git_providers) : provider if startswith(local.url, provider)]...), null)
-  git_provider     = try(lookup(var.git_providers, local.git_provider_key).provider, "")
-  tree_path        = local.git_provider == "gitlab" ? "/-/tree/" : local.git_provider == "github" ? "/tree/" : ""
+  provider_key = try(one([for key in keys(var.git_providers) : key if startswith(local.url, key)]), null)
+  provider     = try(lookup(var.git_providers, local.provider_key).provider, "")
+  tree_path    = local.provider == "gitlab" ? "/-/tree/" : local.provider == "github" ? "/tree/" : ""
 
   # Remove tree and branch name from the URL
   clone_url = local.tree_path != "" ? replace(local.url, "/${local.tree_path}.*/", "") : local.url

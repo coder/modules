@@ -72,9 +72,8 @@ describe("git-clone", async () => {
     });
     expect(state.outputs.repo_dir.value).toEqual("/tmp/coder");
     expect(state.outputs.clone_url.value).toEqual(url);
-    expect(state.outputs.web_url.value).toEqual(
-      "https://github.com/coder/coder.git",
-    );
+    const https_url = "https://github.com/coder/coder.git";
+    expect(state.outputs.web_url.value).toEqual(https_url);
     expect(state.outputs.branch_name.value).toEqual("");
   });
 
@@ -149,7 +148,7 @@ describe("git-clone", async () => {
     expect(state.outputs.branch_name.value).toEqual("feat/example");
   });
 
-  it("handle invalid git provider configuration", async () => {
+  it("handle unsupported git provider configuration", async () => {
     const t = async () => {
       await runTerraformApply(import.meta.dir, {
         agent_id: "foo",
@@ -165,7 +164,7 @@ describe("git-clone", async () => {
     expect(t).toThrow('Allowed values for provider are "github" or "gitlab".');
   });
 
-  it("handle unsupported git provider", async () => {
+  it("handle unknown git provider url", async () => {
     const url = "https://git.unknown.com/coder/coder";
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
