@@ -25,13 +25,34 @@ variable "agent_id" {
   type        = string
 }
 
+variable "git_providers" {
+  type = map(object({
+    tree_path = string
+  }))
+  description = "The set of tree paths for each git provider."
+  default = {
+    "https://github.com/" = {
+      tree_path = "/tree/"
+    },
+    "https://gitlab.com/" = {
+      tree_path = "/-/tree/"
+    },
+  }
+}
+
 locals {
   # Remove query parameters and fragments from the URL
   url = replace(replace(var.url, "/\\?.*/", ""), "/#.*/", "")
+
+  # Determine the git provider based on the URL
+  git_provider = try(coalesce([for provider in keys(var.git_providers) : provider if startswith(local.url, provider)]...), null)
+  # Get the tree path based on the git provider
+  tree_path = try(lookup(var.git_providers, local.git_provider).tree_path, "")
+
   # Remove tree and branch name from the URL
-  clone_url = replace(replace(local.url, "//-/tree/.*/", ""), "//tree/.*/", "")
+  clone_url = local.tree_path != "" ? replace(local.url, "/${local.tree_path}.*/", "") : local.url
   # Extract the branch name from the URL
-  branch_name = replace(replace(replace(local.url, local.clone_url, ""), "/.*/-/tree//", ""), "/.*/tree//", "")
+  branch_name = local.tree_path != "" ? replace(replace(local.url, local.clone_url, ""), "/.*${local.tree_path}/", "") : ""
   # Extract the folder name from the URL
   folder_name = replace(basename(local.clone_url), ".git", "")
   # Construct the path to clone the repository

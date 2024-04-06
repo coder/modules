@@ -104,7 +104,7 @@ describe("git-clone", async () => {
     expect(state.outputs.branch_name.value).toEqual("feat/branch");
   });
 
-  it("repo_dir should match repo name with gitlab tree url", async () => {
+  it("gitlab tree url branch_name should match", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
       base_dir: "/tmp",
@@ -117,7 +117,7 @@ describe("git-clone", async () => {
     expect(state.outputs.branch_name.value).toEqual("feat/branch");
   });
 
-  it("repo_dir should match repo name with github tree url", async () => {
+  it("github tree url branch_name should match", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
       base_dir: "/tmp",
@@ -128,6 +128,19 @@ describe("git-clone", async () => {
     expect(state.outputs.clone_url.value).toEqual(https_url);
     expect(state.outputs.web_url.value).toEqual(https_url);
     expect(state.outputs.branch_name.value).toEqual("feat/branch");
+  });
+
+  it("handle unsupported git provider", async () => {
+    const url = "https://git.unknown.com/coder/coder";
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      base_dir: "/tmp",
+      url,
+    });
+    expect(state.outputs.repo_dir.value).toEqual("/tmp/coder");
+    expect(state.outputs.clone_url.value).toEqual(url);
+    expect(state.outputs.web_url.value).toEqual(url);
+    expect(state.outputs.branch_name.value).toEqual("");
   });
 
   it("runs with github clone with switch to feat/branch", async () => {
