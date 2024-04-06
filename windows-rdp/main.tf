@@ -117,24 +117,24 @@ resource "coder_app" "rdp-docs" {
   external     = true
 }
 
-resource "coder_metadata" "rdp_details" {
-  resource_id = var.resource_id
-  daily_cost  = 0
-  item {
-    key   = "Host"
-    value = "localhost"
-  }
-  item {
-    key   = "Port"
-    value = "3389"
-  }
-  item {
-    key   = "Username"
-    value = "Administrator"
-  }
-  item {
-    key       = "Password"
-    value     = var.admin_password
-    sensitive = true
-  }
-}
+# resource "coder_metadata" "rdp_details" {
+#   resource_id = var.resource_id
+#   daily_cost  = 0
+#   item {
+#     key   = "Host"
+#     value = "localhost"
+#   }
+#   item {
+#     key   = "Port"
+#     value = "3389"
+#   }
+#   item {
+#     key   = "Username"
+#     value = "Administrator"
+#   }
+#   item {
+#     key       = "Password"
+#     value     = var.admin_password
+#     sensitive = true
+#   }
+# }
