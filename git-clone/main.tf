@@ -27,16 +27,20 @@ variable "agent_id" {
 
 variable "git_providers" {
   type = map(object({
-    tree_path = string
+    provider = string
   }))
-  description = "The set of tree paths for each git provider."
+  description = "The set of git provider by the base url."
   default = {
     "https://github.com/" = {
-      tree_path = "/tree/"
+      provider = "github"
     },
     "https://gitlab.com/" = {
-      tree_path = "/-/tree/"
+      provider = "gitlab"
     },
+  }
+  validation {
+    error_message = "Allowed values for provider are \"github\" or \"gitlab\"."
+    condition     = alltrue([for provider in var.git_providers : contains(["github", "gitlab"], provider.provider)])
   }
 }
 
@@ -44,10 +48,10 @@ locals {
   # Remove query parameters and fragments from the URL
   url = replace(replace(var.url, "/\\?.*/", ""), "/#.*/", "")
 
-  # Determine the git provider based on the URL
-  git_provider = try(coalesce([for provider in keys(var.git_providers) : provider if startswith(local.url, provider)]...), null)
-  # Get the tree path based on the git provider
-  tree_path = try(lookup(var.git_providers, local.git_provider).tree_path, "")
+  # Find the git provider based on the URL and determine the tree path
+  git_provider_key = try(coalesce([for provider in keys(var.git_providers) : provider if startswith(local.url, provider)]...), null)
+  git_provider     = try(lookup(var.git_providers, local.git_provider_key).provider, "")
+  tree_path        = local.git_provider == "gitlab" ? "/-/tree/" : local.git_provider == "github" ? "/tree/" : ""
 
   # Remove tree and branch name from the URL
   clone_url = local.tree_path != "" ? replace(local.url, "/${local.tree_path}.*/", "") : local.url

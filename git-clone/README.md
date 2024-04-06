@@ -74,7 +74,7 @@ module "git-clone" {
   url      = "https://github.example.com/coder/coder/tree/feat/example"
   git_providers = {
     "https://github.example.com/" = {
-      tree_path = "/tree/"
+      tree_path = "github"
     }
   }
 }
@@ -103,7 +103,7 @@ module "git-clone" {
   url      = "https://gitlab.example.com/coder/coder/-/tree/feat/example"
   git_providers = {
     "https://gitlab.example.com/" = {
-      tree_path = "/-/tree/"
+      tree_path = "gitlab"
     }
   }
 }

@@ -138,7 +138,7 @@ describe("git-clone", async () => {
       git_providers: `
       {
         "https://git.example.com/" = {
-          tree_path = "/-/tree/"
+          provider = "gitlab"
         }
       }`,
     });
@@ -147,6 +147,22 @@ describe("git-clone", async () => {
     expect(state.outputs.clone_url.value).toEqual(https_url);
     expect(state.outputs.web_url.value).toEqual(https_url);
     expect(state.outputs.branch_name.value).toEqual("feat/example");
+  });
+
+  it("handle invalid git provider configuration", async () => {
+    const t = async () => {
+      await runTerraformApply(import.meta.dir, {
+        agent_id: "foo",
+        url: "foo",
+        git_providers: `
+        {
+          "https://git.example.com/" = {
+            provider = "bitbucket"
+          }
+        }`,
+      });
+    };
+    expect(t).toThrow('Allowed values for provider are "github" or "gitlab".');
   });
 
   it("handle unsupported git provider", async () => {
