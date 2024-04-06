@@ -104,7 +104,7 @@ describe("git-clone", async () => {
     expect(state.outputs.branch_name.value).toEqual("feat/branch");
   });
 
-  it("gitlab tree url branch_name should match", async () => {
+  it("gitlab url with branch should match", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
       base_dir: "/tmp",
@@ -117,7 +117,7 @@ describe("git-clone", async () => {
     expect(state.outputs.branch_name.value).toEqual("feat/branch");
   });
 
-  it("github tree url branch_name should match", async () => {
+  it("github url with branch should match", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
       base_dir: "/tmp",
@@ -128,6 +128,25 @@ describe("git-clone", async () => {
     expect(state.outputs.clone_url.value).toEqual(https_url);
     expect(state.outputs.web_url.value).toEqual(https_url);
     expect(state.outputs.branch_name.value).toEqual("feat/branch");
+  });
+
+  it("self-host git url with branch should match", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      base_dir: "/tmp",
+      url: "https://git.example.com/example/project/-/tree/feat/example",
+      git_providers: `
+      {
+        "https://git.example.com/" = {
+          tree_path = "/-/tree/"
+        }
+      }`,
+    });
+    expect(state.outputs.repo_dir.value).toEqual("/tmp/project");
+    const https_url = "https://git.example.com/example/project";
+    expect(state.outputs.clone_url.value).toEqual(https_url);
+    expect(state.outputs.web_url.value).toEqual(https_url);
+    expect(state.outputs.branch_name.value).toEqual("feat/example");
   });
 
   it("handle unsupported git provider", async () => {

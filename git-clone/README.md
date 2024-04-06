@@ -50,3 +50,61 @@ data "coder_git_auth" "github" {
   id = "github"
 }
 ```
+
+## Github clone with branch name
+
+To github clone a url at a specific branch like `feat/example`
+
+```tf
+module "git-clone" {
+  source   = "registry.coder.com/modules/git-clone/coder"
+  version  = "1.0.11"
+  agent_id = coder_agent.example.id
+  url      = "https://github.com/coder/coder/tree/feat/example"
+}
+```
+
+Self host github
+
+```tf
+module "git-clone" {
+  source   = "registry.coder.com/modules/git-clone/coder"
+  version  = "1.0.11"
+  agent_id = coder_agent.example.id
+  url      = "https://github.example.com/coder/coder/tree/feat/example"
+  git_providers = {
+    "https://github.example.com/" = {
+      tree_path = "/tree/"
+    }
+  }
+}
+```
+
+## Gitlab clone with branch name
+
+To gitlab clone a url at a specific branch like `feat/example`
+
+```tf
+module "git-clone" {
+  source   = "registry.coder.com/modules/git-clone/coder"
+  version  = "1.0.11"
+  agent_id = coder_agent.example.id
+  url      = "https://gitlab.com/coder/coder/-/tree/feat/example"
+}
+```
+
+Self host gitlab
+
+```tf
+module "git-clone" {
+  source   = "registry.coder.com/modules/git-clone/coder"
+  version  = "1.0.11"
+  agent_id = coder_agent.example.id
+  url      = "https://gitlab.example.com/coder/coder/-/tree/feat/example"
+  git_providers = {
+    "https://gitlab.example.com/" = {
+      tree_path = "/-/tree/"
+    }
+  }
+}
+```
