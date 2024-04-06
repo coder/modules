@@ -16,10 +16,11 @@ Enable Remote Desktop + a web based client on Windows workspaces
 ## Usage
 
 ```tf
-module "code-server" {
-  source   = "registry.coder.com/modules/code-server/coder"
-  version  = "1.0.10"
-  agent_id = coder_agent.example.id
+module "windows_rdp" {
+  count = data.coder_workspace.me.start_count
+  source = "github.com/coder/modules//windows-rdp?ref=web-rdp"
+  agent_id = resource.coder_agent.main.id
+  resource_id = resource.google_compute_instance.dev[0].id
 }
 ```
 
