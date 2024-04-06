@@ -14,6 +14,17 @@ variable "agent_id" {
   description = "The ID of a Coder agent."
 }
 
+variable "resource_id" {
+  type        = string
+  description = "The ID of the primary Coder resource (e.g. VM)."
+}
+
+variable "admin_password" {
+  type      = string
+  default   = "coderRDP!"
+  sensitive = true
+}
+
 resource "coder_script" "windows-rdp" {
   agent_id     = var.agent_id
   display_name = "web-rdp"
@@ -73,7 +84,7 @@ resource "coder_script" "windows-rdp" {
     Start-Service 'DevolutionsGateway'
   }
 
-  Set-AdminPassword -adminPassword "coderRDP!"
+  Set-AdminPassword -adminPassword "${var.admin_password}"
   Configure-RDP
   Install-DevolutionsGateway
 
@@ -94,5 +105,37 @@ resource "coder_app" "windows-rdp" {
     url       = "http://localhost:7171"
     interval  = 5
     threshold = 15
+  }
+}
+
+resource "coder_app" "rdp-docs" {
+  agent_id     = coder_agent.main.id
+  display_name = "Local RDP"
+  slug         = "rdp-docs"
+  icon         = "https://raw.githubusercontent.com/matifali/logos/main/windows.svg"
+  url          = "https://coder.com/docs/v2/latest/ides/remote-desktops#rdp-desktop"
+  external     = true
+}
+
+resource "coder_metadata" "rdp_details" {
+  count       = data.coder_workspace.me.start_count
+  resource_id = var.resource_id
+  daily_cost  = 0
+  item {
+    key   = "Host"
+    value = "localhost"
+  }
+  item {
+    key   = "Port"
+    value = "3389"
+  }
+  item {
+    key   = "Username"
+    value = "Administrator"
+  }
+  item {
+    key       = "Password"
+    value     = var.admin_password
+    sensitive = true
   }
 }
