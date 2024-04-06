@@ -4,12 +4,12 @@ description: RDP Server and Web Client powered by Devolutions
 icon: ../.icons/desktop.svg
 maintainer_github: coder
 verified: false
-tags: [windows, ide, web]
+tags: [windows, rdp, web, desktop]
 ---
 
 # Windows RDP
 
-Enable Remote Desktop + a web based client on Windows workspaces
+Enable Remote Desktop + a web based client on Windows workspaces, powered by [devolutions-gateway](https://github.com/Devolutions/devolutions-gateway)
 
 [![Web RDP on Windows](https://cdn.loom.com/sessions/thumbnails/a5d98c7007a7417fb572aba1acf8d538-with-play.gif)](https://www.loom.com/share/a5d98c7007a7417fb572aba1acf8d538)
 
