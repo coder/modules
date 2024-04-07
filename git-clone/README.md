@@ -63,11 +63,33 @@ data "coder_parameter" "git_repo" {
   default      = "https://github.com/coder/coder/tree/feat/example"
 }
 
-module "git-clone" {
+# Clone the repository for branch `feat/example`
+module "git_clone" {
   source   = "registry.coder.com/modules/git-clone/coder"
   version  = "1.0.11"
   agent_id = coder_agent.example.id
   url      = data.coder_parameter.git_repo.value
+}
+
+# Create a code-server instance for the cloned repository
+module "code-server" {
+  source   = "registry.coder.com/modules/code-server/coder"
+  version  = "1.0.11"
+  agent_id = coder_agent.example.id
+  order    = 1
+  folder   = "/home/${local.username}/${module.git_clone.folder_name}"
+}
+
+# Create a Coder app for the website
+resource "coder_app" "website" {
+  agent_id     = coder_agent.example.id
+  order        = 2
+  slug         = "website"
+  external     = true
+  display_name = module.git_clone.folder_name
+  url          = module.git_clone.web_url
+  icon         = module.git_clone.git_provider != "" ? "/icon/${module.git_clone.git_provider}.svg" : "/icon/git.svg"
+  count        = module.git_clone.web_url != "" ? 1 : 0
 }
 ```
 
