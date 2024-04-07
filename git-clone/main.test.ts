@@ -45,6 +45,7 @@ describe("git-clone", async () => {
       url,
     });
     expect(state.outputs.repo_dir.value).toEqual("/tmp/coder");
+    expect(state.outputs.folder_name.value).toEqual("coder");
     expect(state.outputs.clone_url.value).toEqual(url);
     expect(state.outputs.web_url.value).toEqual(url);
     expect(state.outputs.branch_name.value).toEqual("");
@@ -71,6 +72,7 @@ describe("git-clone", async () => {
       url,
     });
     expect(state.outputs.repo_dir.value).toEqual("/tmp/coder");
+    expect(state.outputs.git_provider.value).toEqual("");
     expect(state.outputs.clone_url.value).toEqual(url);
     const https_url = "https://github.com/coder/coder.git";
     expect(state.outputs.web_url.value).toEqual(https_url);
@@ -80,10 +82,10 @@ describe("git-clone", async () => {
   it("branch_name should not include query string", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
-      base_dir: "/tmp",
       url: "https://gitlab.com/mike.brew/repo-tests.log/-/tree/feat/branch?ref_type=heads",
     });
-    expect(state.outputs.repo_dir.value).toEqual("/tmp/repo-tests.log");
+    expect(state.outputs.repo_dir.value).toEqual("~/repo-tests.log");
+    expect(state.outputs.folder_name.value).toEqual("repo-tests.log");
     const https_url = "https://gitlab.com/mike.brew/repo-tests.log";
     expect(state.outputs.clone_url.value).toEqual(https_url);
     expect(state.outputs.web_url.value).toEqual(https_url);
@@ -110,6 +112,7 @@ describe("git-clone", async () => {
       url: "https://gitlab.com/mike.brew/repo-tests.log/-/tree/feat/branch",
     });
     expect(state.outputs.repo_dir.value).toEqual("/tmp/repo-tests.log");
+    expect(state.outputs.git_provider.value).toEqual("gitlab");
     const https_url = "https://gitlab.com/mike.brew/repo-tests.log";
     expect(state.outputs.clone_url.value).toEqual(https_url);
     expect(state.outputs.web_url.value).toEqual(https_url);
@@ -123,6 +126,7 @@ describe("git-clone", async () => {
       url: "https://github.com/michaelbrewer/repo-tests.log/tree/feat/branch",
     });
     expect(state.outputs.repo_dir.value).toEqual("/tmp/repo-tests.log");
+    expect(state.outputs.git_provider.value).toEqual("github");
     const https_url = "https://github.com/michaelbrewer/repo-tests.log";
     expect(state.outputs.clone_url.value).toEqual(https_url);
     expect(state.outputs.web_url.value).toEqual(https_url);
@@ -142,6 +146,7 @@ describe("git-clone", async () => {
       }`,
     });
     expect(state.outputs.repo_dir.value).toEqual("/tmp/project");
+    expect(state.outputs.git_provider.value).toEqual("gitlab");
     const https_url = "https://git.example.com/example/project";
     expect(state.outputs.clone_url.value).toEqual(https_url);
     expect(state.outputs.web_url.value).toEqual(https_url);

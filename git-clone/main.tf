@@ -70,6 +70,16 @@ output "repo_dir" {
   description = "Full path of cloned repo directory"
 }
 
+output "git_provider" {
+  value       = local.provider
+  description = "The git provider of the repository"
+}
+
+output "folder_name" {
+  value       = local.folder_name
+  description = "The name of the folder that will be created"
+}
+
 output "clone_url" {
   value       = local.clone_url
   description = "The exact Git repository URL that will be cloned"
