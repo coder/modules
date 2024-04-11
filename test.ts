@@ -171,9 +171,9 @@ export const testRequiredVariables = (
 export const runTerraformApply = async (
   dir: string,
   vars: Record<string, string>,
+  env: Record<string, string> = {},
 ): Promise<TerraformState> => {
   const stateFile = `${dir}/${crypto.randomUUID()}.tfstate`;
-  const env = {};
   Object.keys(vars).forEach((key) => (env[`TF_VAR_${key}`] = vars[key]));
   const proc = spawn(
     [

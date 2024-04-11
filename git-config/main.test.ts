@@ -44,4 +44,26 @@ describe("git-config", async () => {
       { type: "coder_env", name: "git_commmiter_name" },
     ]);
   });
+
+  it("can run apply allow_email_change enabled", async () => {
+    const state = await runTerraformApply(
+      import.meta.dir,
+      {
+        agent_id: "foo",
+        allow_username_change: "false",
+        allow_email_change: "false",
+      },
+      { CODER_WORKSPACE_OWNER_EMAIL: "foo@emai.com" },
+    );
+
+    const resources = state.resources;
+    expect(resources).toHaveLength(5);
+    expect(resources).toMatchObject([
+      { type: "coder_workspace", name: "me" },
+      { type: "coder_env", name: "git_author_email" },
+      { type: "coder_env", name: "git_author_name" },
+      { type: "coder_env", name: "git_commmiter_email" },
+      { type: "coder_env", name: "git_commmiter_name" },
+    ]);
+  });
 });
