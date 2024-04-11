@@ -18,4 +18,14 @@ describe("dotfiles", async () => {
     });
     expect(state.outputs.dotfiles_uri.value).toBe("");
   });
+
+  it("set custom order for coder_parameter", async () => {
+    const order = 99;
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      coder_parameter_order: order.toString(),
+    });
+    expect(state.resources).toHaveLength(2);
+    expect(state.resources[0].instances[0].attributes.order).toBe(order);
+  });
 });

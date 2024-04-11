@@ -31,4 +31,13 @@ describe("exoscale-instance-type", async () => {
       });
     }).toThrow('default value "gpu3.huge" must be defined as one of options');
   });
+
+  it("set custom order for coder_parameter", async () => {
+    const order = 99;
+    const state = await runTerraformApply(import.meta.dir, {
+      coder_parameter_order: order.toString(),
+    });
+    expect(state.resources).toHaveLength(1);
+    expect(state.resources[0].instances[0].attributes.order).toBe(order);
+  });
 });
