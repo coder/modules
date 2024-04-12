@@ -1,54 +1,33 @@
-terraform {
-  required_version = ">= 1.0"
+---
+display_name: Dotfiles
+description: Allow developers to optionally bring their own dotfiles repository to customize their shell and IDE settings!
+icon: ../.icons/dotfiles.svg
+maintainer_github: coder
+verified: true
+tags: [helper]
+---
 
-  required_providers {
-    coder = {
-      source  = "coder/coder"
-      version = ">= 0.12"
-    }
-  }
-}
+# Dotfiles
 
-variable "agent_id" {
-  type        = string
-  description = "The ID of a Coder agent."
-}
+Allow developers to optionally bring their own [dotfiles repository](https://dotfiles.github.io)! Under the hood, this module uses the [coder dotfiles](https://coder.com/docs/v2/latest/dotfiles) command.
 
-variable "default_dotfiles_uri" {
-  type        = string
-  description = "The default dotfiles URI if the workspace user does not provide one."
-  default     = ""
+```tf
+module "dotfiles" {
+  source   = "registry.coder.com/modules/dotfiles/coder"
+  version  = "1.0.2"
+  agent_id = coder_agent.example.id
 }
+```
 
-data "coder_parameter" "dotfiles_uri" {
-  type         = "string"
-  name         = "dotfiles_uri"
-  display_name = "Dotfiles URL (optional)"
-  default      = var.default_dotfiles_uri
-  description  = "Enter a URL for a [dotfiles repository](https://dotfiles.github.io) to personalize your workspace"
-  mutable      = true
-  icon         = "/icon/dotfiles.svg"
-}
+## Setting a default dotfiles repository
 
-resource "coder_script" "personalize" {
-  agent_id     = var.agent_id
-  script       = <<-EOT
-    DOTFILES_URI="${data.coder_parameter.dotfiles_uri.value}"
-    if [ -n "$${DOTFILES_URI// }" ]; then
-    coder dotfiles "$DOTFILES_URI" -y 2>&1 | tee -a ~/.dotfiles.log
-    fi
-    EOT
-  display_name = "Dotfiles"
-  icon         = "/icon/dotfiles.svg"
-  run_on_start = true
-}
+You can set a default dotfiles repository for all users by setting the `default_dotfiles_repo` variable:
 
-output "dotfiles_uri" {
-  description = "Dotfiles URI"
-  value       = data.coder_parameter.dotfiles_uri.value
+```tf
+module "dotfiles" {
+  source                = "registry.coder.com/modules/dotfiles/coder"
+  version               = "1.0.12"
+  agent_id              = coder_agent.example.id
+  default_dotfiles_repo = "https://github.com/coder/dotfiles"
 }
-
-output "dotfiles_default_uri" {
-  description = "Dotfiles Default URI"
-  value       = var.default_dotfiles_uri
-}
+```
