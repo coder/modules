@@ -14,11 +14,17 @@ variable "agent_id" {
   description = "The ID of a Coder agent."
 }
 
+variable "default_dotfiles_uri" {
+  type        = string
+  description = "The default dotfiles URI if the workspace user does not provide one."
+  default     = ""
+}
+
 data "coder_parameter" "dotfiles_uri" {
   type         = "string"
   name         = "dotfiles_uri"
   display_name = "Dotfiles URL (optional)"
-  default      = ""
+  default      = var.default_dotfiles_uri
   description  = "Enter a URL for a [dotfiles repository](https://dotfiles.github.io) to personalize your workspace"
   mutable      = true
   icon         = "/icon/dotfiles.svg"
@@ -40,4 +46,9 @@ resource "coder_script" "personalize" {
 output "dotfiles_uri" {
   description = "Dotfiles URI"
   value       = data.coder_parameter.dotfiles_uri.value
+}
+
+output "dotfiles_default_uri" {
+  description = "Dotfiles Default URI"
+  value       = var.default_dotfiles_uri
 }
