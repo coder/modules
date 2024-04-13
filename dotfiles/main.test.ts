@@ -20,11 +20,11 @@ describe("dotfiles", async () => {
   });
   
   it("set a default dotfiles_uri", async () => {
-    const default = "foo";
+    const default_dotfiles_uri = "foo";
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
-      default,
+      default_dotfiles_uri,
     });
-    expect(state.outputs.dotfiles_uri.value).toBe(default);
+    expect(state.outputs.dotfiles_uri.value).toBe(default_dotfiles_uri);
   });
 });
