@@ -28,6 +28,6 @@ module "dotfiles" {
   source                = "registry.coder.com/modules/dotfiles/coder"
   version               = "1.0.12"
   agent_id              = coder_agent.example.id
-  default_dotfiles_repo = "https://github.com/coder/dotfiles"
+  default = "https://github.com/coder/dotfiles"
 }
 ```
