@@ -18,7 +18,7 @@ Under the hood, this module uses the [coder dotfiles](https://coder.com/docs/v2/
 ```tf
 module "dotfiles" {
   source   = "registry.coder.com/modules/dotfiles/coder"
-  version  = "1.0.0"
+  version  = "1.0.2"
   agent_id = coder_agent.example.id
 }
 ```

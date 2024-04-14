@@ -23,9 +23,21 @@ variable "jfrog_url" {
   }
 }
 
+variable "jfrog_server_id" {
+  type        = string
+  description = "The server ID of the JFrog instance for JFrog CLI configuration"
+  default     = "0"
+}
+
 variable "artifactory_access_token" {
   type        = string
   description = "The admin-level access token to use for JFrog."
+}
+
+variable "token_description" {
+  type        = string
+  description = "Free text token description. Useful for filtering and managing tokens."
+  default     = "Token for Coder workspace"
 }
 
 variable "check_license" {
@@ -101,6 +113,7 @@ resource "artifactory_scoped_token" "me" {
   scopes      = ["applied-permissions/user"]
   refreshable = var.refreshable
   expires_in  = var.expires_in
+  description = var.token_description
 }
 
 data "coder_workspace" "me" {}
@@ -112,6 +125,7 @@ resource "coder_script" "jfrog" {
   script = templatefile("${path.module}/run.sh", {
     JFROG_URL : var.jfrog_url,
     JFROG_HOST : local.jfrog_host,
+    JFROG_SERVER_ID : var.jfrog_server_id,
     ARTIFACTORY_USERNAME : local.username,
     ARTIFACTORY_EMAIL : data.coder_workspace.me.owner_email,
     ARTIFACTORY_ACCESS_TOKEN : artifactory_scoped_token.me.access_token,

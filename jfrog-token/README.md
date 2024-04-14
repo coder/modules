@@ -15,7 +15,7 @@ Install the JF CLI and authenticate package managers with Artifactory using Arti
 ```tf
 module "jfrog" {
   source                   = "registry.coder.com/modules/jfrog-token/coder"
-  version                  = "1.0.0"
+  version                  = "1.0.10"
   agent_id                 = coder_agent.example.id
   jfrog_url                = "https://XXXX.jfrog.io"
   artifactory_access_token = var.artifactory_access_token
@@ -41,7 +41,7 @@ For detailed instructions, please see this [guide](https://coder.com/docs/v2/lat
 ```tf
 module "jfrog" {
   source                   = "registry.coder.com/modules/jfrog-token/coder"
-  version                  = "1.0.0"
+  version                  = "1.0.10"
   agent_id                 = coder_agent.example.id
   jfrog_url                = "https://YYYY.jfrog.io"
   artifactory_access_token = var.artifactory_access_token # An admin access token
@@ -74,11 +74,31 @@ The [JFrog extension](https://open-vsx.org/extension/JFrog/jfrog-vscode-extensio
 ```tf
 module "jfrog" {
   source                   = "registry.coder.com/modules/jfrog-token/coder"
-  version                  = "1.0.0"
+  version                  = "1.0.10"
   agent_id                 = coder_agent.example.id
   jfrog_url                = "https://XXXX.jfrog.io"
   artifactory_access_token = var.artifactory_access_token
   configure_code_server    = true # Add JFrog extension configuration for code-server
+  package_managers = {
+    "npm" : "npm",
+    "go" : "go",
+    "pypi" : "pypi"
+  }
+}
+```
+
+### Add a custom token description
+
+```tf
+data "coder_workspace" "me" {}
+
+module "jfrog" {
+  source                   = "registry.coder.com/modules/jfrog-token/coder"
+  version                  = "1.0.10"
+  agent_id                 = coder_agent.example.id
+  jfrog_url                = "https://XXXX.jfrog.io"
+  artifactory_access_token = var.artifactory_access_token
+  token_description        = "Token for Coder workspace: ${data.coder_workspace.me.owner}/${data.coder_workspace.me.name}"
   package_managers = {
     "npm" : "npm",
     "go" : "go",
@@ -102,3 +122,5 @@ provider "docker" {
   }
 }
 ```
+
+> Here `REPO_KEY` is the name of docker repository in Artifactory.

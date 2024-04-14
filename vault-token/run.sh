@@ -2,8 +2,6 @@
 
 # Convert all templated variables to shell variables
 INSTALL_VERSION=${INSTALL_VERSION}
-GITHUB_EXTERNAL_AUTH_ID=${GITHUB_EXTERNAL_AUTH_ID}
-AUTH_PATH=${AUTH_PATH}
 
 fetch() {
   dest="$1"
@@ -16,7 +14,7 @@ fetch() {
     busybox wget -O "$${dest}" "$${url}"
   else
     printf "curl, wget, or busybox is not installed. Please install curl or wget in your image.\n"
-    exit 1
+    return 1
   fi
 }
 
@@ -27,7 +25,7 @@ unzip_safe() {
     busybox unzip "$@"
   else
     printf "unzip or busybox is not installed. Please install unzip in your image.\n"
-    exit 1
+    return 1
   fi
 }
 
@@ -70,7 +68,7 @@ install() {
     else
       printf "Upgrading Vault CLI from version %s to %s ...\n\n" "$${CURRENT_VERSION}" "${INSTALL_VERSION}"
     fi
-    fetch vault.zip "https://releases.hashicorp.com/vault/$${INSTALL_VERSION}/vault_$${INSTALL_VERSION}_linux_$${ARCH}.zip"
+    fetch vault.zip "https://releases.hashicorp.com/vault/$${INSTALL_VERSION}/vault_$${INSTALL_VERSION}_linux_amd64.zip"
     if [ $? -ne 0 ]; then
       printf "Failed to download Vault.\n"
       return 1
@@ -103,17 +101,3 @@ if ! (
   exit 1
 fi
 rm -rf "$TMP"
-
-# Authenticate with Vault
-printf "🔑 Authenticating with Vault ...\n\n"
-GITHUB_TOKEN=$(coder external-auth access-token "$${GITHUB_EXTERNAL_AUTH_ID}")
-if [ $? -ne 0 ]; then
-  printf "Authentication with Vault failed. Please check your credentials.\n"
-  exit 1
-fi
-
-# Login to vault using the GitHub token
-printf "🔑 Logging in to Vault ...\n\n"
-vault login -no-print -method=github -path=/$${AUTH_PATH} token="$${GITHUB_TOKEN}"
-printf "🥳 Vault authentication complete!\n\n"
-printf "You can now use Vault CLI to access secrets.\n"

@@ -4,7 +4,7 @@ terraform {
   required_providers {
     coder = {
       source  = "coder/coder"
-      version = ">= 0.12"
+      version = ">= 0.17"
     }
   }
 }
@@ -20,6 +20,12 @@ variable "folder" {
   default     = ""
 }
 
+variable "order" {
+  type        = number
+  description = "The order determines the position of app in the UI presentation. The lowest order is shown first and apps with equal order are sorted by name (ascending order)."
+  default     = null
+}
+
 data "coder_workspace" "me" {}
 
 resource "coder_app" "vscode" {
@@ -28,6 +34,7 @@ resource "coder_app" "vscode" {
   icon         = "/icon/code.svg"
   slug         = "vscode"
   display_name = "VS Code Desktop"
+  order        = var.order
   url = var.folder != "" ? join("", [
     "vscode://coder.coder-remote/open?owner=",
     data.coder_workspace.me.owner,

@@ -4,7 +4,7 @@ terraform {
   required_providers {
     coder = {
       source  = "coder/coder"
-      version = ">= 0.12"
+      version = ">= 0.17"
     }
   }
 }
@@ -50,6 +50,12 @@ variable "mutable" {
   description = "Whether the parameter is mutable."
   default     = true
 }
+
+variable "order" {
+  type        = number
+  description = "The order determines the position of app in the UI presentation. The lowest order is shown first and apps with equal order are sorted by name (ascending order)."
+  default     = null
+}
 # Add other variables here
 
 
@@ -69,9 +75,10 @@ resource "coder_app" "MODULE_NAME" {
   slug         = "MODULE_NAME"
   display_name = "MODULE_NAME"
   url          = "http://localhost:${var.port}"
-  icon         = loocal.icon_url
+  icon         = local.icon_url
   subdomain    = false
   share        = "owner"
+  order        = var.order
 
   # Remove if the app does not have a healthcheck endpoint
   healthcheck {

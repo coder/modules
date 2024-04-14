@@ -14,7 +14,7 @@ Automatically install [code-server](https://github.com/coder/code-server) in a w
 ```tf
 module "code-server" {
   source   = "registry.coder.com/modules/code-server/coder"
-  version  = "1.0.0"
+  version  = "1.0.10"
   agent_id = coder_agent.example.id
 }
 ```
@@ -28,7 +28,7 @@ module "code-server" {
 ```tf
 module "code-server" {
   source          = "registry.coder.com/modules/code-server/coder"
-  version         = "1.0.0"
+  version         = "1.0.10"
   agent_id        = coder_agent.example.id
   install_version = "4.8.3"
 }
@@ -41,7 +41,7 @@ Install the Dracula theme from [OpenVSX](https://open-vsx.org/):
 ```tf
 module "code-server" {
   source   = "registry.coder.com/modules/code-server/coder"
-  version  = "1.0.0"
+  version  = "1.0.10"
   agent_id = coder_agent.example.id
   extensions = [
     "dracula-theme.theme-dracula"
@@ -56,9 +56,9 @@ Enter the `<author>.<name>` into the extensions array and code-server will autom
 Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarted/settings#_settingsjson) file:
 
 ```tf
-module "settings" {
+module "code-server" {
   source     = "registry.coder.com/modules/code-server/coder"
-  version    = "1.0.0"
+  version    = "1.0.10"
   agent_id   = coder_agent.example.id
   extensions = ["dracula-theme.theme-dracula"]
   settings = {
@@ -72,22 +72,36 @@ module "settings" {
 Just run code-server in the background, don't fetch it from GitHub:
 
 ```tf
-module "settings" {
+module "code-server" {
   source     = "registry.coder.com/modules/code-server/coder"
-  version    = "1.0.0"
+  version    = "1.0.10"
   agent_id   = coder_agent.example.id
   extensions = ["dracula-theme.theme-dracula", "ms-azuretools.vscode-docker"]
 }
 ```
 
-### Offline Mode
+### Offline and Use Cached Modes
+
+By default the module looks for code-server at `/tmp/code-server` but this can be changed with `install_prefix`.
+
+Run an existing copy of code-server if found, otherwise download from GitHub:
+
+```tf
+module "code-server" {
+  source     = "registry.coder.com/modules/code-server/coder"
+  version    = "1.0.10"
+  agent_id   = coder_agent.example.id
+  use_cached = true
+  extensions = ["dracula-theme.theme-dracula", "ms-azuretools.vscode-docker"]
+}
+```
 
 Just run code-server in the background, don't fetch it from GitHub:
 
 ```tf
-module "settings" {
+module "code-server" {
   source   = "registry.coder.com/modules/code-server/coder"
-  version  = "1.0.0"
+  version  = "1.0.10"
   agent_id = coder_agent.example.id
   offline  = true
 }

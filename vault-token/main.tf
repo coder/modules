@@ -20,16 +20,10 @@ variable "vault_addr" {
   description = "The address of the Vault server."
 }
 
-variable "coder_github_auth_id" {
+variable "vault_token" {
   type        = string
-  description = "The ID of the GitHub external auth."
-  default     = "github"
-}
-
-variable "vault_github_auth_path" {
-  type        = string
-  description = "The path to the GitHub auth method."
-  default     = "github"
+  description = "The Vault token to use for authentication."
+  sensitive   = true
 }
 
 variable "vault_cli_version" {
@@ -46,11 +40,9 @@ data "coder_workspace" "me" {}
 
 resource "coder_script" "vault" {
   agent_id     = var.agent_id
-  display_name = "Vault (GitHub)"
+  display_name = "Vault (Token)"
   icon         = "/icon/vault.svg"
   script = templatefile("${path.module}/run.sh", {
-    AUTH_PATH : var.vault_github_auth_path,
-    GITHUB_EXTERNAL_AUTH_ID : data.coder_external_auth.github.id,
     INSTALL_VERSION : var.vault_cli_version,
   })
   run_on_start       = true
@@ -63,6 +55,8 @@ resource "coder_env" "vault_addr" {
   value    = var.vault_addr
 }
 
-data "coder_external_auth" "github" {
-  id = var.coder_github_auth_id
+resource "coder_env" "vault_token" {
+  agent_id = var.agent_id
+  name     = "VAULT_TOKEN"
+  value    = var.vault_token
 }

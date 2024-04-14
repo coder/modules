@@ -4,7 +4,7 @@ terraform {
   required_providers {
     coder = {
       source  = "coder/coder"
-      version = ">= 0.12"
+      version = ">= 0.17"
     }
   }
 }
@@ -29,6 +29,12 @@ variable "port" {
 variable "display_name" {
   type        = string
   description = "The display name for the code-server application."
+  default     = "code-server"
+}
+
+variable "slug" {
+  type        = string
+  description = "The slug for the code-server application."
   default     = "code-server"
 }
 
@@ -71,6 +77,24 @@ variable "share" {
   }
 }
 
+variable "order" {
+  type        = number
+  description = "The order determines the position of app in the UI presentation. The lowest order is shown first and apps with equal order are sorted by name (ascending order)."
+  default     = null
+}
+
+variable "offline" {
+  type        = bool
+  description = "Just run code-server in the background, don't fetch it from GitHub"
+  default     = false
+}
+
+variable "use_cached" {
+  type        = bool
+  description = "Uses cached copy code-server in the background, otherwise fetched it from GitHub"
+  default     = false
+}
+
 resource "coder_script" "code-server" {
   agent_id     = var.agent_id
   display_name = "code-server"
@@ -78,23 +102,39 @@ resource "coder_script" "code-server" {
   script = templatefile("${path.module}/run.sh", {
     VERSION : var.install_version,
     EXTENSIONS : join(",", var.extensions),
+    APP_NAME : var.display_name,
     PORT : var.port,
     LOG_PATH : var.log_path,
     INSTALL_PREFIX : var.install_prefix,
     // This is necessary otherwise the quotes are stripped!
     SETTINGS : replace(jsonencode(var.settings), "\"", "\\\""),
+    OFFLINE : var.offline,
+    USE_CACHED : var.use_cached,
   })
   run_on_start = true
+
+  lifecycle {
+    precondition {
+      condition     = !var.offline || length(var.extensions) == 0
+      error_message = "Offline mode does not allow extensions to be installed"
+    }
+
+    precondition {
+      condition     = !var.offline || !var.use_cached
+      error_message = "Offline and Use Cached can not be used together"
+    }
+  }
 }
 
 resource "coder_app" "code-server" {
   agent_id     = var.agent_id
-  slug         = "code-server"
+  slug         = var.slug
   display_name = var.display_name
   url          = "http://localhost:${var.port}/${var.folder != "" ? "?folder=${urlencode(var.folder)}" : ""}"
   icon         = "/icon/code.svg"
   subdomain    = false
   share        = var.share
+  order        = var.order
 
   healthcheck {
     url       = "http://localhost:${var.port}/healthz"

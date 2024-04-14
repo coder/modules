@@ -17,7 +17,7 @@ Customize the preselected parameter value:
 ```tf
 module "aws-region" {
   source  = "registry.coder.com/modules/aws-region/coder"
-  version = "1.0.0"
+  version = "1.0.10"
   default = "us-east-1"
 }
 
@@ -37,11 +37,13 @@ Change the display name and icon for a region using the corresponding maps:
 ```tf
 module "aws-region" {
   source  = "registry.coder.com/modules/aws-region/coder"
-  version = "1.0.0"
+  version = "1.0.10"
   default = "ap-south-1"
+
   custom_names = {
     "ap-south-1" : "Awesome Mumbai!"
   }
+
   custom_icons = {
     "ap-south-1" : "/emojis/1f33a.png"
   }
@@ -61,7 +63,7 @@ Hide the Asia Pacific regions Seoul and Osaka:
 ```tf
 module "aws-region" {
   source  = "registry.coder.com/modules/aws-region/coder"
-  version = "1.0.0"
+  version = "1.0.10"
   exclude = ["ap-northeast-2", "ap-northeast-3"]
 }
 

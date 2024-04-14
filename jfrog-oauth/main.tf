@@ -19,6 +19,12 @@ variable "jfrog_url" {
   }
 }
 
+variable "jfrog_server_id" {
+  type        = string
+  description = "The server ID of the JFrog instance for JFrog CLI configuration"
+  default     = "0"
+}
+
 variable "username_field" {
   type        = string
   description = "The field to use for the artifactory username. i.e. Coder username or email."
@@ -79,6 +85,7 @@ resource "coder_script" "jfrog" {
   script = templatefile("${path.module}/run.sh", {
     JFROG_URL : var.jfrog_url,
     JFROG_HOST : local.jfrog_host,
+    JFROG_SERVER_ID : var.jfrog_server_id,
     ARTIFACTORY_USERNAME : local.username,
     ARTIFACTORY_EMAIL : data.coder_workspace.me.owner_email,
     ARTIFACTORY_ACCESS_TOKEN : data.coder_external_auth.jfrog.access_token,
