@@ -95,6 +95,12 @@ variable "use_cached" {
   default     = false
 }
 
+variable "extensions_dir" {
+  type        = string
+  description = "Override the directory to store extensions in."
+  default     = ""
+}
+
 resource "coder_script" "code-server" {
   agent_id     = var.agent_id
   display_name = "code-server"
@@ -110,6 +116,7 @@ resource "coder_script" "code-server" {
     SETTINGS : replace(jsonencode(var.settings), "\"", "\\\""),
     OFFLINE : var.offline,
     USE_CACHED : var.use_cached,
+    EXTENSIONS_DIR : var.extensions_dir,
   })
   run_on_start = true
 
