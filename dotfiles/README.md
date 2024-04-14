@@ -61,6 +61,7 @@ module "dotfiles-root" {
   agent_id     = coder_agent.example.id
   user         = "root"
   dotfiles_uri = module.dotfiles.dotfiles_uri
+}
 ```
 
 ## Setting a default dotfiles repository
