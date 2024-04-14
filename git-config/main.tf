@@ -78,10 +78,12 @@ resource "coder_env" "git_author_email" {
   agent_id = var.agent_id
   name     = "GIT_AUTHOR_EMAIL"
   value    = coalesce(try(data.coder_parameter.user_email[0].value, ""), data.coder_workspace.me.owner_email)
+  count    = data.coder_workspace.me.owner_email != "" ? 1 : 0
 }
 
 resource "coder_env" "git_commmiter_email" {
   agent_id = var.agent_id
   name     = "GIT_COMMITTER_EMAIL"
   value    = coalesce(try(data.coder_parameter.user_email[0].value, ""), data.coder_workspace.me.owner_email)
+  count    = data.coder_workspace.me.owner_email != "" ? 1 : 0
 }
