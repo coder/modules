@@ -58,7 +58,7 @@ variable "latest" {
 
 variable "channel" {
   type        = string
-  description = "The channel to fetch the IDE version from."
+  description = "JetBrains IDE release channel. Valid values are release and eap."
   default     = "release"
   validation {
     condition     = can(regex("^(?:release|eap)$", var.channel))
