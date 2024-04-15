@@ -54,8 +54,3 @@ output "dotfiles_uri" {
   description = "Dotfiles URI"
   value       = data.coder_parameter.dotfiles_uri.value
 }
-
-output "dotfiles_default_uri" {
-  description = "Dotfiles Default URI"
-  value       = var.default_dotfiles_uri
-}
