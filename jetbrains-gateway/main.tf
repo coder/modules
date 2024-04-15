@@ -56,6 +56,16 @@ variable "latest" {
   default     = true
 }
 
+variable "channel" {
+  type        = string
+  description = "The channel to fetch the IDE version from."
+  default     = "release"
+  validation {
+    condition     = can(regex("^(?:release|eap)$", var.channel))
+    error_message = "The channel must be either release or eap."
+  }
+}
+
 variable "jetbrains_ide_versions" {
   type = map(object({
     build_number = string
@@ -132,7 +142,7 @@ variable "jetbrains_ides" {
 
 data "http" "jetbrains_ide_versions" {
   for_each = var.latest ? toset(var.jetbrains_ides) : toset([])
-  url      = "https://data.services.jetbrains.com/products/releases?code=${each.key}&latest=true&type=release"
+  url      = "https://data.services.jetbrains.com/products/releases?code=${each.key}&latest=true&type=${var.channel}"
 }
 
 locals {
