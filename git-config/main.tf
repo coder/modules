@@ -26,6 +26,11 @@ variable "allow_email_change" {
   default     = false
 }
 
+variable "coder_parameter_order" {
+  type        = number
+  description = "The order determines the position of a template parameter in the UI/CLI presentation. The lowest order is shown first and parameters with equal order are sorted by name (ascending order)."
+  default     = null
+}
 
 data "coder_workspace" "me" {}
 
@@ -34,6 +39,7 @@ data "coder_parameter" "user_email" {
   name         = "user_email"
   type         = "string"
   default      = ""
+  order        = var.coder_parameter_order != null ? var.coder_parameter_order + 0 : null
   description  = "Git user.email to be used for commits. Leave empty to default to Coder user's email."
   display_name = "Git config user.email"
   mutable      = true
@@ -44,6 +50,7 @@ data "coder_parameter" "username" {
   name         = "username"
   type         = "string"
   default      = ""
+  order        = var.coder_parameter_order != null ? var.coder_parameter_order + 1 : null
   description  = "Git user.name to be used for commits. Leave empty to default to Coder user's Full Name."
   display_name = "Full Name for Git config"
   mutable      = true
