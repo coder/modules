@@ -132,7 +132,7 @@ module "git-clone" {
   url      = "https://gitlab.example.com/coder/coder/-/tree/feat/example"
   git_providers = {
     "https://gitlab.example.com/" = {
-      tree_path = "gitlab"
+      provider = "gitlab"
     }
   }
 }
