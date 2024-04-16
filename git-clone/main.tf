@@ -29,7 +29,7 @@ variable "git_providers" {
   type = map(object({
     provider = string
   }))
-  description = "The set of git provider by the base url."
+  description = "A mapping of URLs to their git provider."
   default = {
     "https://github.com/" = {
       provider = "github"
