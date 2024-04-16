@@ -137,3 +137,19 @@ module "git-clone" {
   }
 }
 ```
+
+## Git clone with branch_name set
+
+Alternatively, you can set the `branch_name` attribute to clone a specific branch.
+
+For example, to clone the `feat/example` branch:
+
+```tf
+module "git-clone" {
+  source      = "registry.coder.com/modules/git-clone/coder"
+  version     = "1.0.11"
+  agent_id    = coder_agent.example.id
+  url         = "https://github.com/coder/coder"
+  branch_name = "feat/example"
+}
+```

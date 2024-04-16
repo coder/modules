@@ -44,6 +44,12 @@ variable "git_providers" {
   }
 }
 
+variable "branch_name" {
+  description = "The branch name to clone. If not provided, the default branch will be cloned."
+  type        = string
+  default     = ""
+}
+
 locals {
   # Remove query parameters and fragments from the URL
   url = replace(replace(var.url, "/\\?.*/", ""), "/#.*/", "")
@@ -54,9 +60,9 @@ locals {
   tree_path    = local.provider == "gitlab" ? "/-/tree/" : local.provider == "github" ? "/tree/" : ""
 
   # Remove tree and branch name from the URL
-  clone_url = local.tree_path != "" ? replace(local.url, "/${local.tree_path}.*/", "") : local.url
+  clone_url = var.branch_name == "" && local.tree_path != "" ? replace(local.url, "/${local.tree_path}.*/", "") : local.url
   # Extract the branch name from the URL
-  branch_name = local.tree_path != "" ? replace(replace(local.url, local.clone_url, ""), "/.*${local.tree_path}/", "") : ""
+  branch_name = var.branch_name == "" && local.tree_path != "" ? replace(replace(local.url, local.clone_url, ""), "/.*${local.tree_path}/", "") : var.branch_name
   # Extract the folder name from the URL
   folder_name = replace(basename(local.clone_url), ".git", "")
   # Construct the path to clone the repository

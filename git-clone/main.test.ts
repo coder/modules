@@ -207,4 +207,25 @@ describe("git-clone", async () => {
       "Cloning https://gitlab.com/mike.brew/repo-tests.log to ~/repo-tests.log on branch feat/branch...",
     ]);
   });
+
+  it("runs with github clone with branch_name set to feat/branch", async () => {
+    const url = "https://github.com/michaelbrewer/repo-tests.log";
+    const branch_name = "feat/branch";
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      url,
+      branch_name,
+    });
+    expect(state.outputs.repo_dir.value).toEqual("~/repo-tests.log");
+    expect(state.outputs.clone_url.value).toEqual(url);
+    expect(state.outputs.web_url.value).toEqual(url);
+    expect(state.outputs.branch_name.value).toEqual(branch_name);
+
+    const output = await executeScriptInContainer(state, "alpine/git");
+    expect(output.exitCode).toBe(0);
+    expect(output.stdout).toEqual([
+      "Creating directory ~/repo-tests.log...",
+      "Cloning https://github.com/michaelbrewer/repo-tests.log to ~/repo-tests.log on branch feat/branch...",
+    ]);
+  });
 });
