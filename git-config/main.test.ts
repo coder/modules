@@ -66,4 +66,34 @@ describe("git-config", async () => {
       { type: "coder_env", name: "git_commmiter_name" },
     ]);
   });
+
+  it("set custom order for coder_parameter for both fields", async () => {
+    const order = 20;
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      allow_username_change: "true",
+      allow_email_change: "true",
+      coder_parameter_order: order.toString(),
+    });
+    expect(state.resources).toHaveLength(5);
+    // user_email order is the same as the order
+    expect(state.resources[0].instances[0].attributes.order).toBe(order);
+    // username order is incremented by 1
+    // @ts-ignore: Object is possibly 'null'.
+    expect(state.resources[1].instances[0]?.attributes.order).toBe(order + 1);
+  });
+
+  it("set custom order for coder_parameter for just username", async () => {
+    const order = 30;
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      allow_email_change: "false",
+      allow_username_change: "true",
+      coder_parameter_order: order.toString(),
+    });
+    expect(state.resources).toHaveLength(4);
+    // user_email was not created
+    // username order is incremented by 1
+    expect(state.resources[0].instances[0].attributes.order).toBe(order + 1);
+  });
 });
