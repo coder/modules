@@ -53,7 +53,7 @@ variable "coder_parameter_order" {
 variable "latest" {
   type        = bool
   description = "Whether to fetch the latest version of the IDE."
-  default     = true
+  default     = false
 }
 
 variable "channel" {
@@ -61,7 +61,7 @@ variable "channel" {
   description = "JetBrains IDE release channel. Valid values are release and eap."
   default     = "release"
   validation {
-    condition     = can(regex("^(?:release|eap)$", var.channel))
+    condition     = can(regex("^(release|eap)$", var.channel))
     error_message = "The channel must be either release or eap."
   }
 }
