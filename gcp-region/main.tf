@@ -63,6 +63,12 @@ variable "single_zone_per_region" {
   type        = bool
 }
 
+variable "coder_parameter_order" {
+  type        = number
+  description = "The order determines the position of a template parameter in the UI/CLI presentation. The lowest order is shown first and parameters with equal order are sorted by name (ascending order)."
+  default     = null
+}
+
 locals {
   zones = {
     # US Central
@@ -715,6 +721,7 @@ data "coder_parameter" "region" {
   icon         = "/icon/gcp.png"
   mutable      = var.mutable
   default      = var.default != null && var.default != "" && (!var.gpu_only || try(local.zones[var.default].gpu, false)) ? var.default : null
+  order        = var.coder_parameter_order
   dynamic "option" {
     for_each = {
       for k, v in local.zones : k => v

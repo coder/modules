@@ -51,6 +51,12 @@ variable "exclude" {
   type        = list(string)
 }
 
+variable "coder_parameter_order" {
+  type        = number
+  description = "The order determines the position of a template parameter in the UI/CLI presentation. The lowest order is shown first and parameters with equal order are sorted by name (ascending order)."
+  default     = null
+}
+
 locals {
   # This is a static list because the regions don't change _that_
   # frequently and including the `aws_regions` data source requires
@@ -176,6 +182,7 @@ data "coder_parameter" "region" {
   display_name = var.display_name
   description  = var.description
   default      = var.default == "" ? null : var.default
+  order        = var.coder_parameter_order
   mutable      = var.mutable
   dynamic "option" {
     for_each = { for k, v in local.regions : k => v if !(contains(var.exclude, k)) }

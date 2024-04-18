@@ -30,8 +30,13 @@ variable "dotfiles_uri" {
 variable "user" {
   type        = string
   description = "The name of the user to apply the dotfiles to. (optional, applies to the current user by default)"
+  default     = null
+}
 
-  default = null
+variable "coder_parameter_order" {
+  type        = number
+  description = "The order determines the position of a template parameter in the UI/CLI presentation. The lowest order is shown first and parameters with equal order are sorted by name (ascending order)."
+  default     = null
 }
 
 data "coder_parameter" "dotfiles_uri" {
@@ -40,6 +45,7 @@ data "coder_parameter" "dotfiles_uri" {
   type         = "string"
   name         = "dotfiles_uri"
   display_name = "Dotfiles URL (optional)"
+  order        = var.coder_parameter_order
   default      = var.default_dotfiles_uri
   description  = "Enter a URL for a [dotfiles repository](https://dotfiles.github.io) to personalize your workspace"
   mutable      = true
@@ -65,9 +71,4 @@ resource "coder_script" "dotfiles" {
 output "dotfiles_uri" {
   description = "Dotfiles URI"
   value       = local.dotfiles_uri
-}
-
-output "dotfiles_default_uri" {
-  description = "Dotfiles Default URI"
-  value       = var.default_dotfiles_uri
 }
