@@ -14,7 +14,7 @@ This module allows you to automatically clone a repository by URL and skip if it
 ```tf
 module "git-clone" {
   source   = "registry.coder.com/modules/git-clone/coder"
-  version  = "1.0.2"
+  version  = "1.0.12"
   agent_id = coder_agent.example.id
   url      = "https://github.com/coder/coder"
 }
@@ -27,7 +27,7 @@ module "git-clone" {
 ```tf
 module "git-clone" {
   source   = "registry.coder.com/modules/git-clone/coder"
-  version  = "1.0.2"
+  version  = "1.0.12"
   agent_id = coder_agent.example.id
   url      = "https://github.com/coder/coder"
   base_dir = "~/projects/coder"
@@ -41,7 +41,7 @@ To use with [Git Authentication](https://coder.com/docs/v2/latest/admin/git-prov
 ```tf
 module "git-clone" {
   source   = "registry.coder.com/modules/git-clone/coder"
-  version  = "1.0.2"
+  version  = "1.0.12"
   agent_id = coder_agent.example.id
   url      = "https://github.com/coder/coder"
 }
@@ -66,7 +66,7 @@ data "coder_parameter" "git_repo" {
 # Clone the repository for branch `feat/example`
 module "git_clone" {
   source   = "registry.coder.com/modules/git-clone/coder"
-  version  = "1.0.11"
+  version  = "1.0.12"
   agent_id = coder_agent.example.id
   url      = data.coder_parameter.git_repo.value
 }
@@ -74,7 +74,7 @@ module "git_clone" {
 # Create a code-server instance for the cloned repository
 module "code-server" {
   source   = "registry.coder.com/modules/code-server/coder"
-  version  = "1.0.11"
+  version  = "1.0.12"
   agent_id = coder_agent.example.id
   order    = 1
   folder   = "/home/${local.username}/${module.git_clone.folder_name}"
@@ -98,7 +98,7 @@ Configuring `git-clone` for a self-hosted GitHub Enterprise Server running at `g
 ```tf
 module "git-clone" {
   source   = "registry.coder.com/modules/git-clone/coder"
-  version  = "1.0.11"
+  version  = "1.0.12"
   agent_id = coder_agent.example.id
   url      = "https://github.example.com/coder/coder/tree/feat/example"
   git_providers = {
@@ -116,7 +116,7 @@ To GitLab clone with a specific branch like `feat/example`
 ```tf
 module "git-clone" {
   source   = "registry.coder.com/modules/git-clone/coder"
-  version  = "1.0.11"
+  version  = "1.0.12"
   agent_id = coder_agent.example.id
   url      = "https://gitlab.com/coder/coder/-/tree/feat/example"
 }
@@ -127,7 +127,7 @@ Configuring `git-clone` for a self-hosted GitLab running at `gitlab.example.com`
 ```tf
 module "git-clone" {
   source   = "registry.coder.com/modules/git-clone/coder"
-  version  = "1.0.11"
+  version  = "1.0.12"
   agent_id = coder_agent.example.id
   url      = "https://gitlab.example.com/coder/coder/-/tree/feat/example"
   git_providers = {
@@ -147,7 +147,7 @@ For example, to clone the `feat/example` branch:
 ```tf
 module "git-clone" {
   source      = "registry.coder.com/modules/git-clone/coder"
-  version     = "1.0.11"
+  version     = "1.0.12"
   agent_id    = coder_agent.example.id
   url         = "https://github.com/coder/coder"
   branch_name = "feat/example"
