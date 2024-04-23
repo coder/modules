@@ -6,11 +6,10 @@ PATH=$PATH:~/.local/bin
 pip install --upgrade apache-airflow
 
 filename=~/airflow/airflow.db
-if ! [ -f $filename ] || ! [ -s $filename ]
-then
+if ! [ -f $filename ] || ! [ -s $filename ]; then
   airflow db init
 fi
 
-airflow webserver >${LOG_PATH} 2>&1 & 
+airflow webserver > ${LOG_PATH} 2>&1 &
 
-airflow users create -u admin -p admin -r Admin -e admin@admin.com -f Coder -l User 
+airflow users create -u admin -p admin -r Admin -e admin@admin.com -f Coder -l User

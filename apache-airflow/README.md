@@ -1,6 +1,6 @@
 ---
 display_name: airflow
-description: A module that adds Apache Airflow in your Coder template 
+description: A module that adds Apache Airflow in your Coder template
 icon: ../.icons/airflow.svg
 maintainer_github: nataindata
 verified: false
@@ -10,7 +10,6 @@ tags: [airflow, idea, web, helper]
 # airflow
 
 A module that adds Apache Airflow in your Coder template.
-
 
 ```tf
 module "airflow" {
@@ -29,9 +28,9 @@ Install the Dracula theme from [OpenVSX](https://open-vsx.org/):
 
 ```tf
 module "airflow" {
-  source     = "registry.coder.com/modules/airflow/coder"
-  version    = "1.0.2"
-  agent_id   = coder_agent.example.id
+  source   = "registry.coder.com/modules/airflow/coder"
+  version  = "1.0.2"
+  agent_id = coder_agent.example.id
   extensions = [
     "dracula-theme.theme-dracula"
   ]
@@ -49,8 +48,8 @@ module "airflow" {
   source     = "registry.coder.com/modules/airflow/coder"
   version    = "1.0.2"
   agent_id   = coder_agent.example.id
-  extensions = [ "dracula-theme.theme-dracula" ]
-  settings   = {
+  extensions = ["dracula-theme.theme-dracula"]
+  settings = {
     "workbench.colorTheme" = "Dracula"
   }
 }
