@@ -19,6 +19,11 @@ variable "resource_id" {
   description = "The ID of the primary Coder resource (e.g. VM)."
 }
 
+variable "admin_username" {
+  type    = string
+  default = "Administrator"
+}
+
 variable "admin_password" {
   type      = string
   default   = "coderRDP!"
@@ -35,9 +40,9 @@ resource "coder_script" "windows-rdp" {
           [string]$adminPassword
       )
       # Set admin password
-      Get-LocalUser -Name "Administrator" | Set-LocalUser -Password (ConvertTo-SecureString -AsPlainText $adminPassword -Force)
+      Get-LocalUser -Name "${var.admin_username}" | Set-LocalUser -Password (ConvertTo-SecureString -AsPlainText $adminPassword -Force)
       # Enable admin user
-      Get-LocalUser -Name "Administrator" | Enable-LocalUser
+      Get-LocalUser -Name "${var.admin_username}" | Enable-LocalUser
   }
 
   function Configure-RDP {
