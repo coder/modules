@@ -213,7 +213,7 @@ locals {
     }
   }
 
-  icon          = try(lookup(local.jetbrains_ides, data.coder_parameter.jetbrains_ide.value).icon, "/icon/gateway.svg")
+  icon          = local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].icon
   json_data     = var.latest ? jsondecode(data.http.jetbrains_ide_versions[data.coder_parameter.jetbrains_ide.value].response_body) : {}
   key           = var.latest ? keys(local.json_data)[0] : ""
   display_name  = local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].name
@@ -247,8 +247,8 @@ data "coder_workspace" "me" {}
 resource "coder_app" "gateway" {
   agent_id     = var.agent_id
   slug         = "gateway"
-  display_name = try(lookup(data.coder_parameter.jetbrains_ide.option, data.coder_parameter.jetbrains_ide.value).name, "JetBrains IDE")
-  icon         = try(lookup(data.coder_parameter.jetbrains_ide.option, data.coder_parameter.jetbrains_ide.value).icon, "/icon/gateway.svg")
+  display_name = local.display_name
+  icon         = local.icon
   external     = true
   order        = var.order
   url = join("", [
