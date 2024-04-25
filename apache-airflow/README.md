@@ -13,8 +13,9 @@ A module that adds Apache Airflow in your Coder template.
 
 ```tf
 module "airflow" {
-  source  = "registry.coder.com/modules/airflow/coder"
-  version = "1.0.2"
+  source   = "registry.coder.com/modules/apache-airflow/coder"
+  version  = "1.0.2"
+  agent_id = coder_agent.example.id
 }
 ```
 
@@ -28,7 +29,7 @@ Install the Dracula theme from [OpenVSX](https://open-vsx.org/):
 
 ```tf
 module "airflow" {
-  source   = "registry.coder.com/modules/airflow/coder"
+  source   = "registry.coder.com/modules/apache-airflow/coder"
   version  = "1.0.2"
   agent_id = coder_agent.example.id
   extensions = [
@@ -45,7 +46,7 @@ Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarte
 
 ```tf
 module "airflow" {
-  source     = "registry.coder.com/modules/airflow/coder"
+  source     = "registry.coder.com/modules/apache-airflow/coder"
   version    = "1.0.2"
   agent_id   = coder_agent.example.id
   extensions = ["dracula-theme.theme-dracula"]
@@ -61,7 +62,7 @@ Run code-server in the background, don't fetch it from GitHub:
 
 ```tf
 module "airflow" {
-  source   = "registry.coder.com/modules/airflow/coder"
+  source   = "registry.coder.com/modules/apache-airflow/coder"
   version  = "1.0.2"
   agent_id = coder_agent.example.id
   offline  = true
