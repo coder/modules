@@ -97,6 +97,30 @@ variable "settings" {
   default     = {}
 }
 
+variable "offline" {
+  type        = bool
+  description = "Just run code-server in the background, don't fetch it from GitHub"
+  default     = false
+}
+
+variable "use_cached" {
+  type        = bool
+  description = "Uses cached copy code-server in the background, otherwise fetched it from GitHub"
+  default     = false
+}
+
+variable "extensions_dir" {
+  type        = string
+  description = "Override the directory to store extensions in."
+  default     = ""
+}
+
+variable "auto_install_extensions" {
+  type        = bool
+  description = "Automatically install recommended extensions when code-server starts."
+  default     = false
+}
+
 resource "coder_script" "vscode-web" {
   agent_id     = var.agent_id
   display_name = "VS Code Web"
@@ -109,8 +133,25 @@ resource "coder_script" "vscode-web" {
     TELEMETRY_LEVEL : var.telemetry_level,
     // This is necessary otherwise the quotes are stripped!
     SETTINGS : replace(jsonencode(var.settings), "\"", "\\\""),
+    OFFLINE : var.offline,
+    USE_CACHED : var.use_cached,
+    EXTENSIONS_DIR : var.extensions_dir,
+    FOLDER : var.folder,
+    AUTO_INSTALL_EXTENSIONS : var.auto_install_extensions,
   })
   run_on_start = true
+
+  lifecycle {
+    precondition {
+      condition     = !var.offline || length(var.extensions) == 0
+      error_message = "Offline mode does not allow extensions to be installed"
+    }
+
+    precondition {
+      condition     = !var.offline || !var.use_cached
+      error_message = "Offline and Use Cached can not be used together"
+    }
+  }
 }
 
 resource "coder_app" "vscode-web" {
