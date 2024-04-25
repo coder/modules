@@ -71,14 +71,14 @@ for extension in "$${EXTENSIONLIST[@]}"; do
 done
 
 if [ "${AUTO_INSTALL_EXTENSIONS}" = true ]; then
-  WORKSPACE_DIR="$HOME/"
-  if [ -n "${FOLDER}" ]; then
-    WORKSPACE_DIR="${FOLDER}"
-  fi
-
   if ! command -v jq > /dev/null; then
     echo "jq is required to install extensions from a workspace file."
     exit 0
+  fi
+
+  WORKSPACE_DIR="$HOME"
+  if [ -n "${FOLDER}" ]; then
+    WORKSPACE_DIR="${FOLDER}"
   fi
 
   if [ -f "$WORKSPACE_DIR/.vscode/extensions.json" ]; then
