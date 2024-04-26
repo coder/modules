@@ -16,7 +16,7 @@ A module that adds Apache Airflow in your Coder template.
 module "airflow" {
   source   = "registry.coder.com/modules/apache-airflow/coder"
   version  = "1.0.13"
-  agent_id = coder_agent.example.id
+  agent_id = coder_agent.main.id
 }
 ```
 
