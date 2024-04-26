@@ -101,6 +101,12 @@ variable "extensions_dir" {
   default     = ""
 }
 
+variable "auto_install_extensions" {
+  type        = bool
+  description = "Automatically install recommended extensions when code-server starts."
+  default     = false
+}
+
 resource "coder_script" "code-server" {
   agent_id     = var.agent_id
   display_name = "code-server"
@@ -117,6 +123,8 @@ resource "coder_script" "code-server" {
     OFFLINE : var.offline,
     USE_CACHED : var.use_cached,
     EXTENSIONS_DIR : var.extensions_dir,
+    FOLDER : var.folder,
+    AUTO_INSTALL_EXTENSIONS : var.auto_install_extensions,
   })
   run_on_start = true
 

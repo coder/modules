@@ -14,7 +14,7 @@ This module adds a JetBrains Gateway Button to open any workspace with a single 
 ```tf
 module "jetbrains_gateway" {
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
-  version        = "1.0.11"
+  version        = "1.0.13"
   agent_id       = coder_agent.example.id
   agent_name     = "example"
   folder         = "/home/coder/example"
@@ -27,17 +27,48 @@ module "jetbrains_gateway" {
 
 ## Examples
 
-### Add GoLand and WebStorm with the default set to GoLand
+### Add GoLand and WebStorm as options with the default set to GoLand
 
 ```tf
 module "jetbrains_gateway" {
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
-  version        = "1.0.11"
+  version        = "1.0.13"
   agent_id       = coder_agent.example.id
   agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["GO", "WS"]
   default        = "GO"
+}
+```
+
+### Use the latest release version
+
+```tf
+module "jetbrains_gateway" {
+  source         = "registry.coder.com/modules/jetbrains-gateway/coder"
+  version        = "1.0.13"
+  agent_id       = coder_agent.example.id
+  agent_name     = "example"
+  folder         = "/home/coder/example"
+  jetbrains_ides = ["GO", "WS"]
+  default        = "GO"
+  latest         = true
+}
+```
+
+### Use the latest EAP version
+
+```tf
+module "jetbrains_gateway" {
+  source         = "registry.coder.com/modules/jetbrains-gateway/coder"
+  version        = "1.0.13"
+  agent_id       = coder_agent.example.id
+  agent_name     = "example"
+  folder         = "/home/coder/example"
+  jetbrains_ides = ["GO", "WS"]
+  default        = "GO"
+  latest         = true
+  channel        = "eap"
 }
 ```
 
