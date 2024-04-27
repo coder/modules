@@ -79,7 +79,7 @@ UPLOAD_RESPONSE=$(curl -L -s \
   -H "Authorization: Bearer $GITHUB_TOKEN" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/user/keys \
-  -d "{\"title\":\"$CODER_PUBLIC_KEY_NAME\",\"key\":\"nah\"}"
+  -d "{\"title\":\"$CODER_PUBLIC_KEY_NAME\",\"key\":\"$PUBLIC_KEY\"}"
 )
 UPLOAD_RESPONSE_STATUS=$(tail -n1 <<< "$UPLOAD_RESPONSE")
 UPLOAD_RESPONSE_BODY=$(sed \$d <<< "$UPLOAD_RESPONSE")
