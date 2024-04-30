@@ -14,10 +14,15 @@ Templates that utilize Github External Auth can automatically ensure that the Co
 # Example
 
 ```tf
+data "coder_external_auth" "github" {
+  id = "myauthid"
+}
+
 module "github-upload-public-key" {
   source   = "registry.coder.com/modules/github-upload-public-key/coder"
   version  = "1.0.13"
   agent_id = coder_agent.example.id
+  external_auth_id = data.coder_external_auth.github.id
 }
 ```
 

@@ -4,6 +4,7 @@ set -e
 
 CODER_ACCESS_URL="${CODER_ACCESS_URL}"
 CODER_OWNER_SESSION_TOKEN="${CODER_OWNER_SESSION_TOKEN}"
+GITHUB_EXTERNAL_AUTH_ID="${GITHUB_EXTERNAL_AUTH_ID}"
 
 if [ -z "$CODER_ACCESS_URL" ]; then
   echo "No coder access url specified!"
@@ -15,8 +16,13 @@ if [ -z "$CODER_OWNER_SESSION_TOKEN" ]; then
   exit 1
 fi
 
+if [ -z "$GITHUB_EXTERNAL_AUTH_ID" ]; then
+  echo "No GitHub external auth id specified!"
+  exit 1
+fi
+
 echo "Fetching GitHub token..."
-GITHUB_TOKEN=$(coder external-auth access-token github)
+GITHUB_TOKEN=$(coder external-auth access-token $GITHUB_EXTERNAL_AUTH_ID)
 if [ $? -ne 0 ]; then
   echo "Failed to fetch GitHub token!"
   exit 1
