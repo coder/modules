@@ -99,7 +99,7 @@ variable "settings" {
 
 variable "offline" {
   type        = bool
-  description = "Just run code-server in the background, don't fetch it from GitHub"
+  description = "Just run VS Code Web in the background, don't fetch it from GitHub"
   default     = false
 }
 
