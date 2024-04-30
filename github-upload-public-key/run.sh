@@ -15,11 +15,17 @@ if [ -z "$CODER_OWNER_SESSION_TOKEN" ]; then
   exit 1
 fi
 
-if [ -z "$GITHUB_TOKEN" ]; then
-  echo "No GITHUB_TOKEN in the workspace environment!"
-  echo "The user must be authenticated with Github before this script can be run."
+echo "Fetching GitHub token..."
+GITHUB_TOKEN=$(coder external-auth access-token github)
+if [ $? -ne 0 ]; then
+  echo "Failed to fetch GitHub token!"
   exit 1
 fi
+if [ -z "$GITHUB_TOKEN" ]; then
+  echo "No GitHub token found!"
+  exit 1
+fi
+echo "GitHub token found!"
 
 echo "Fetching Coder public SSH key..."
 PUBLIC_KEY_RESPONSE=$(curl -L -s \
