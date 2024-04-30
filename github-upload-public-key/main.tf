@@ -20,6 +20,8 @@ variable "external_auth_id" {
   default     = "github"
 }
 
+data "coder_workspace" "me" {}
+
 resource "coder_script" "github_upload_public_key" {
   agent_id = var.agent_id
   script = templatefile("${path.module}/run.sh", {
