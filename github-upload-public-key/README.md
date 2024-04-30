@@ -11,7 +11,7 @@ tags: [helper, git]
 
 Templates that utilize Github External Auth can automatically ensure that the Coder public key is uploaded to Github so that users can clone repositories without needing to upload the public key themselves.
 
-# Example 
+# Example
 
 ```tf
 module "github-upload-public-key" {

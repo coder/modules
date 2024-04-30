@@ -28,11 +28,12 @@ fi
 echo "GitHub token found!"
 
 echo "Fetching Coder public SSH key..."
-PUBLIC_KEY_RESPONSE=$(curl -L -s \
-  -w "%{http_code}" \
-  -H 'accept: application/json' \
-  -H "cookie: coder_session_token=$CODER_OWNER_SESSION_TOKEN" \
-  "$CODER_ACCESS_URL/api/v2/users/me/gitsshkey"
+PUBLIC_KEY_RESPONSE=$(
+  curl -L -s \
+    -w "%{http_code}" \
+    -H 'accept: application/json' \
+    -H "cookie: coder_session_token=$CODER_OWNER_SESSION_TOKEN" \
+    "$CODER_ACCESS_URL/api/v2/users/me/gitsshkey"
 )
 PUBLIC_KEY_RESPONSE_STATUS=$(tail -n1 <<< "$PUBLIC_KEY_RESPONSE")
 PUBLIC_KEY_BODY=$(sed \$d <<< "$PUBLIC_KEY_RESPONSE")
@@ -52,12 +53,13 @@ if [ -z "$PUBLIC_KEY" ]; then
 fi
 
 echo "Fetching GitHub public SSH keys..."
-GITHUB_KEYS_RESPONSE=$(curl -L -s \
-  -w "%{http_code}" \
-  -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer $GITHUB_TOKEN" \
-  -H "X-GitHub-Api-Version: 2022-11-28" \
-  https://api.github.com/user/keys
+GITHUB_KEYS_RESPONSE=$(
+  curl -L -s \
+    -w "%{http_code}" \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    https://api.github.com/user/keys
 )
 GITHUB_KEYS_RESPONSE_STATUS=$(tail -n1 <<< "$GITHUB_KEYS_RESPONSE")
 GITHUB_KEYS_RESPONSE_BODY=$(sed \$d <<< "$GITHUB_KEYS_RESPONSE")
@@ -78,14 +80,15 @@ fi
 echo "Coder public SSH key not found in GitHub keys!"
 echo "Uploading Coder public SSH key to GitHub..."
 CODER_PUBLIC_KEY_NAME="$CODER_ACCESS_URL Workspaces"
-UPLOAD_RESPONSE=$(curl -L -s \
-  -X POST \
-  -w "%{http_code}" \
-  -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer $GITHUB_TOKEN" \
-  -H "X-GitHub-Api-Version: 2022-11-28" \
-  https://api.github.com/user/keys \
-  -d "{\"title\":\"$CODER_PUBLIC_KEY_NAME\",\"key\":\"$PUBLIC_KEY\"}"
+UPLOAD_RESPONSE=$(
+  curl -L -s \
+    -X POST \
+    -w "%{http_code}" \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    https://api.github.com/user/keys \
+    -d "{\"title\":\"$CODER_PUBLIC_KEY_NAME\",\"key\":\"$PUBLIC_KEY\"}"
 )
 UPLOAD_RESPONSE_STATUS=$(tail -n1 <<< "$UPLOAD_RESPONSE")
 UPLOAD_RESPONSE_BODY=$(sed \$d <<< "$UPLOAD_RESPONSE")
