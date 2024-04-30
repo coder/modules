@@ -36,7 +36,7 @@ echo "GitHub token found!"
 echo "Fetching Coder public SSH key..."
 PUBLIC_KEY_RESPONSE=$(
   curl -L -s \
-    -w "%{http_code}" \
+    -w "%%{http_code}" \
     -H 'accept: application/json' \
     -H "cookie: coder_session_token=$CODER_OWNER_SESSION_TOKEN" \
     "$CODER_ACCESS_URL/api/v2/users/me/gitsshkey"
@@ -61,7 +61,7 @@ fi
 echo "Fetching GitHub public SSH keys..."
 GITHUB_KEYS_RESPONSE=$(
   curl -L -s \
-    -w "%{http_code}" \
+    -w "%%{http_code}" \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer $GITHUB_TOKEN" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
@@ -89,7 +89,7 @@ CODER_PUBLIC_KEY_NAME="$CODER_ACCESS_URL Workspaces"
 UPLOAD_RESPONSE=$(
   curl -L -s \
     -X POST \
-    -w "%{http_code}" \
+    -w "%%{http_code}" \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer $GITHUB_TOKEN" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
