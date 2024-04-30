@@ -2,7 +2,7 @@
 display_name: Github Upload Public Key
 description: Automates uploading Coder public key to Github so users don't have to.
 icon: ../.icons/github.svg
-maintainer_github: f0ssel
+maintainer_github: coder
 verified: true
 tags: [helper, git]
 ---
@@ -45,9 +45,9 @@ data "coder_external_auth" "github" {
 }
 
 module "github-upload-public-key" {
-  source   = "registry.coder.com/modules/github-upload-public-key/coder"
-  version  = "1.0.13"
-  agent_id = coder_agent.example.id
+  source           = "registry.coder.com/modules/github-upload-public-key/coder"
+  version          = "1.0.13"
+  agent_id         = coder_agent.example.id
   external_auth_id = data.coder_external_auth.github.id
 }
 ```
