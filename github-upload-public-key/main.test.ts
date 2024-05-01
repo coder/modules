@@ -24,8 +24,8 @@ describe("github-upload-public-key", async () => {
     let exec = await execContainer(id, ["bash", "-c", instance.script]);
     expect(exec.stdout).toContain("Coder public SSH key uploaded to GitHub!");
     expect(exec.exitCode).toBe(0);
-  // we need to increase timeout to pull the container
-  }, 10000);
+    // we need to increase timeout to pull the container
+  }, 15000);
 
   it("does nothing if one already exists", async () => {
     const { instance, id } = await setupContainer();
