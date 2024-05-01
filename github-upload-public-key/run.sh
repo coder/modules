@@ -4,7 +4,8 @@ set -e
 
 CODER_ACCESS_URL="${CODER_ACCESS_URL}"
 CODER_OWNER_SESSION_TOKEN="${CODER_OWNER_SESSION_TOKEN}"
-GITHUB_EXTERNAL_AUTH_ID="${GITHUB_EXTERNAL_AUTH_ID}"
+CODER_EXTERNAL_AUTH_ID="${CODER_EXTERNAL_AUTH_ID}"
+GITHUB_API_URL="${GITHUB_API_URL}"
 
 if [ -z "$CODER_ACCESS_URL" ]; then
   echo "No coder access url specified!"
@@ -16,13 +17,18 @@ if [ -z "$CODER_OWNER_SESSION_TOKEN" ]; then
   exit 1
 fi
 
-if [ -z "$GITHUB_EXTERNAL_AUTH_ID" ]; then
+if [ -z "$CODER_EXTERNAL_AUTH_ID" ]; then
   echo "No GitHub external auth id specified!"
   exit 1
 fi
 
+if [ -z "$GITHUB_API_URL" ]; then
+  echo "No GitHub API URL specified!"
+  exit 1
+fi
+
 echo "Fetching GitHub token..."
-GITHUB_TOKEN=$(coder external-auth access-token $GITHUB_EXTERNAL_AUTH_ID)
+GITHUB_TOKEN=$(coder external-auth access-token $CODER_EXTERNAL_AUTH_ID)
 if [ $? -ne 0 ]; then
   echo "Failed to fetch GitHub token!"
   exit 1
@@ -36,7 +42,7 @@ echo "GitHub token found!"
 echo "Fetching Coder public SSH key..."
 PUBLIC_KEY_RESPONSE=$(
   curl -L -s \
-    -w "%%{http_code}" \
+    -w "\n%%{http_code}" \
     -H 'accept: application/json' \
     -H "cookie: coder_session_token=$CODER_OWNER_SESSION_TOKEN" \
     "$CODER_ACCESS_URL/api/v2/users/me/gitsshkey"
@@ -61,11 +67,11 @@ fi
 echo "Fetching GitHub public SSH keys..."
 GITHUB_KEYS_RESPONSE=$(
   curl -L -s \
-    -w "%%{http_code}" \
+    -w "\n%%{http_code}" \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer $GITHUB_TOKEN" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
-    https://api.github.com/user/keys
+    $GITHUB_API_URL/user/keys
 )
 GITHUB_KEYS_RESPONSE_STATUS=$(tail -n1 <<< "$GITHUB_KEYS_RESPONSE")
 GITHUB_KEYS_RESPONSE_BODY=$(sed \$d <<< "$GITHUB_KEYS_RESPONSE")
@@ -89,11 +95,11 @@ CODER_PUBLIC_KEY_NAME="$CODER_ACCESS_URL Workspaces"
 UPLOAD_RESPONSE=$(
   curl -L -s \
     -X POST \
-    -w "%%{http_code}" \
+    -w "\n%%{http_code}" \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer $GITHUB_TOKEN" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
-    https://api.github.com/user/keys \
+    $GITHUB_API_URL/user/keys \
     -d "{\"title\":\"$CODER_PUBLIC_KEY_NAME\",\"key\":\"$PUBLIC_KEY\"}"
 )
 UPLOAD_RESPONSE_STATUS=$(tail -n1 <<< "$UPLOAD_RESPONSE")

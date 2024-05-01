@@ -10,6 +10,8 @@ To create a new module, clone this repository and run:
 
 A suite of test-helpers exists to run `terraform apply` on modules with variables, and test script output against containers.
 
+The testing suite must be able to run docker containers with the `--network=host` flag, which typically requires running the tests on linux as this flag does not apply to Docker Desktop for MacOS and Windows. MacOS users can work around this by using something like [Orbstack](https://orbstack.dev/) instead of Docker Desktop. 
+
 Reference existing `*.test.ts` files for implementation.
 
 ```shell
