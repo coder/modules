@@ -23,7 +23,7 @@ variable "external_auth_id" {
 variable "github_api_url" {
   type        = string
   description = "The URL of the GitHub instance."
-  default = "https://api.github.com"
+  default     = "https://api.github.com"
 }
 
 // Optional variables mostly for testing purposes, will normally come from data.coder_workspace.me
