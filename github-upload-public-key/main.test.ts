@@ -24,10 +24,12 @@ describe("github-upload-public-key", async () => {
     let exec = await execContainer(id, ["bash", "-c", instance.script]);
     expect(exec.stdout).toContain("Coder public SSH key uploaded to GitHub!");
     expect(exec.exitCode).toBe(0);
-  });
+  // we need to increase timeout to pull the container
+  }, 10000);
 
   it("does nothing if one already exists", async () => {
     const { instance, id } = await setupContainer();
+    // use keyword to make server return a existing key
     await writeCoder(id, "echo findkey");
     let exec = await execContainer(id, ["bash", "-c", instance.script]);
     expect(exec.stdout).toContain(
