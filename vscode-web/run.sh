@@ -27,7 +27,7 @@ fi
 if [ -f "$VSCODE_SERVER" ]; then
   if [ "${OFFLINE}" = true ] || [ "${USE_CACHED}" = true ]; then
     echo "🥳 Found a copy of VS Code Web"
-    run_code_server
+    run_vscode_web
     exit 0
   fi
 fi
