@@ -33,7 +33,7 @@ if [ -f "$VSCODE_SERVER" ]; then
 fi
 # Offline mode always expects a copy of vscode-server to be present
 if [ "${OFFLINE}" = true ]; then
-  echo "Failed to find a copy of code-server"
+  echo "Failed to find a copy of VS Code Web"
   exit 1
 fi
 
