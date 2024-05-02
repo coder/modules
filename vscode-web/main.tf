@@ -105,7 +105,7 @@ variable "offline" {
 
 variable "use_cached" {
   type        = bool
-  description = "Uses cached copy code-server in the background, otherwise fetched it from GitHub"
+  description = "Uses cached copy VS Code Web in the background, otherwise fetched it from GitHub"
   default     = false
 }
 
@@ -117,7 +117,7 @@ variable "extensions_dir" {
 
 variable "auto_install_extensions" {
   type        = bool
-  description = "Automatically install recommended extensions when code-server starts."
+  description = "Automatically install recommended extensions when VS Code Web starts."
   default     = false
 }
 
