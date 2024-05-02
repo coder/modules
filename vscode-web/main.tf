@@ -149,7 +149,7 @@ resource "coder_script" "vscode-web" {
 
     precondition {
       condition     = !var.offline || !var.use_cached
-      error_message = "Offline and Use Cached can not be used together"
+      error_message = "offline and use_cached can not be used together"
     }
   }
 }
