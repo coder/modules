@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-
 if [ -z "$CODER_ACCESS_URL" ]; then
   if [ -z "${CODER_ACCESS_URL}" ]; then
     echo "CODER_ACCESS_URL is empty!"
