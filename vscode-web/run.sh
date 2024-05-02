@@ -60,7 +60,7 @@ if [ $? -ne 0 ]; then
   echo "Failed to install Microsoft Visual Studio Code Server: $output"
   exit 1
 fi
-printf "$${BOLD}Microsoft Visual Studio Code Server has been installed.\n"
+printf "$${BOLD}VS Code Web has been installed.\n"
 
 # Install each extension...
 IFS=',' read -r -a EXTENSIONLIST <<< "$${EXTENSIONS}"
