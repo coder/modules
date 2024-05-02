@@ -10,7 +10,7 @@ if [ -n "${EXTENSIONS_DIR}" ]; then
   EXTENSION_ARG="--extensions-dir=${EXTENSIONS_DIR}"
 fi
 
-run_code_server() {
+run_vscode_web() {
   echo "👷 Running $VSCODE_SERVER serve-local --port ${PORT} --host 127.0.0.1 --accept-server-license-terms serve-local --without-connection-token --telemetry-level ${TELEMETRY_LEVEL} in the background..."
   echo "Check logs at ${LOG_PATH}!"
   "$VSCODE_SERVER" serve-local "$EXTENSION_ARG" --port "${PORT}" --host 127.0.0.1 --accept-server-license-terms serve-local --without-connection-token --telemetry-level "${TELEMETRY_LEVEL}" > "${LOG_PATH}" 2>&1 &
