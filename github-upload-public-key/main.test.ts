@@ -31,7 +31,9 @@ describe("github-upload-public-key", async () => {
       "-c",
       instance.script,
     ]);
-    expect(exec.stdout).toContain("Your Coder public key has been added to GitHub!");
+    expect(exec.stdout).toContain(
+      "Your Coder public key has been added to GitHub!",
+    );
     expect(exec.exitCode).toBe(0);
     // we need to increase timeout to pull the container
   }, 15000);
