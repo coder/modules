@@ -24,7 +24,7 @@ if [ ! -f ~/.vscode-server/data/Machine/settings.json ]; then
 fi
 
 # Check if vscode-server is already installed for offline or cached mode
-if [ -f "$VSCODE_SERVER" ]; then
+if [ -f "$VSCODE_WEB" ]; then
   if [ "${OFFLINE}" = true ] || [ "${USE_CACHED}" = true ]; then
     echo "🥳 Found a copy of VS Code Web"
     run_vscode_web
@@ -69,7 +69,7 @@ for extension in "$${EXTENSIONLIST[@]}"; do
     continue
   fi
   printf "🧩 Installing extension $${CODE}$extension$${RESET}...\n"
-  output=$($VSCODE_SERVER "$EXTENSION_ARG" --install-extension "$extension" --force)
+  output=$($VSCODE_WEB "$EXTENSION_ARG" --install-extension "$extension" --force)
   if [ $? -ne 0 ]; then
     echo "Failed to install extension: $extension: $output"
     exit 1
