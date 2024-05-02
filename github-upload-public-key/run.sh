@@ -3,22 +3,22 @@
 set -e
 
 if [ -z "$CODER_ACCESS_URL" ]; then
-  echo "No CODER_ACCESS_URL specified!"
+  echo "CODER_ACCESS_URL is empty!"
   exit 1
 fi
 
 if [ -z "$CODER_OWNER_SESSION_TOKEN" ]; then
-  echo "No CODER_OWNER_SESSION_TOKEN specified!"
+  echo "CODER_OWNER_SESSION_TOKEN is empty!"
   exit 1
 fi
 
 if [ -z "$CODER_EXTERNAL_AUTH_ID" ]; then
-  echo "No CODER_EXTERNAL_AUTH_ID specified!"
+  echo "CODER_EXTERNAL_AUTH_ID is empty!"
   exit 1
 fi
 
 if [ -z "$GITHUB_API_URL" ]; then
-  echo "No GITHUB_API_URL specified!"
+  echo "GITHUB_API_URL is empty!"
   exit 1
 fi
 
