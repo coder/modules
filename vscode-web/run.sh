@@ -2,7 +2,7 @@
 
 BOLD='\033[0;1m'
 EXTENSIONS=("${EXTENSIONS}")
-VSCODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
+VSCODE_WEB="${INSTALL_PREFIX}/bin/code-server"
 
 # Set extension directory
 EXTENSION_ARG=""
