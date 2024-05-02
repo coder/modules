@@ -31,7 +31,7 @@ describe("github-upload-public-key", async () => {
       "-c",
       instance.script,
     ]);
-    expect(exec.stdout).toContain("Coder public SSH key uploaded to GitHub!");
+    expect(exec.stdout).toContain("Your Coder public key has been added to GitHub!");
     expect(exec.exitCode).toBe(0);
     // we need to increase timeout to pull the container
   }, 15000);
@@ -51,7 +51,7 @@ describe("github-upload-public-key", async () => {
       instance.script,
     ]);
     expect(exec.stdout).toContain(
-      "Coder public SSH key is already uploaded to GitHub!",
+      "Your Coder public key is already on GitHub!",
     );
     expect(exec.exitCode).toBe(0);
   });
