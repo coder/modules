@@ -96,4 +96,4 @@ if [ "${AUTO_INSTALL_EXTENSIONS}" = true ]; then
   fi
 fi
 
-run_code_server
+run_vscode_web
