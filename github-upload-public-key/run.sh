@@ -3,23 +3,35 @@
 set -e
 
 if [ -z "$CODER_ACCESS_URL" ]; then
-  echo "CODER_ACCESS_URL is empty!"
-  exit 1
+  if [ -z "${CODER_ACCESS_URL}" ]; then
+    echo "CODER_ACCESS_URL is empty!"
+    exit 1
+  fi
+  CODER_ACCESS_URL=${CODER_ACCESS_URL}
 fi
 
 if [ -z "$CODER_OWNER_SESSION_TOKEN" ]; then
-  echo "CODER_OWNER_SESSION_TOKEN is empty!"
-  exit 1
+  if [ -z "${CODER_OWNER_SESSION_TOKEN}" ]; then
+    echo "CODER_OWNER_SESSION_TOKEN is empty!"
+    exit 1
+  fi
+  CODER_OWNER_SESSION_TOKEN=${CODER_OWNER_SESSION_TOKEN}
 fi
 
 if [ -z "$CODER_EXTERNAL_AUTH_ID" ]; then
-  echo "CODER_EXTERNAL_AUTH_ID is empty!"
-  exit 1
+  if [ -z "${CODER_EXTERNAL_AUTH_ID}" ]; then
+    echo "CODER_EXTERNAL_AUTH_ID is empty!"
+    exit 1
+  fi
+  CODER_EXTERNAL_AUTH_ID=${CODER_EXTERNAL_AUTH_ID}
 fi
 
 if [ -z "$GITHUB_API_URL" ]; then
-  echo "GITHUB_API_URL is empty!"
-  exit 1
+  if [ -z "${GITHUB_API_URL}" ]; then
+    echo "GITHUB_API_URL is empty!"
+    exit 1
+  fi
+  GITHUB_API_URL=${GITHUB_API_URL}
 fi
 
 echo "Fetching GitHub token..."
