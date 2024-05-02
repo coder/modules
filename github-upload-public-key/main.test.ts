@@ -19,19 +19,37 @@ describe("github-upload-public-key", async () => {
   });
 
   it("creates new key if one does not exist", async () => {
-    const { instance, id } = await setupContainer();
+    const { instance, id, server } = await setupContainer();
     await writeCoder(id, "echo foo");
-    let exec = await execContainer(id, ["bash", "-c", instance.script]);
+    let exec = await execContainer(id, [
+      "env",
+      "CODER_ACCESS_URL=" + server.url.toString().slice(0, -1),
+      "GITHUB_API_URL=" + server.url.toString().slice(0, -1),
+      "CODER_OWNER_SESSION_TOKEN=foo",
+      "CODER_EXTERNAL_AUTH_ID=github",
+      "bash",
+      "-c",
+      instance.script,
+    ]);
     expect(exec.stdout).toContain("Coder public SSH key uploaded to GitHub!");
     expect(exec.exitCode).toBe(0);
     // we need to increase timeout to pull the container
   }, 15000);
 
   it("does nothing if one already exists", async () => {
-    const { instance, id } = await setupContainer();
+    const { instance, id, server } = await setupContainer();
     // use keyword to make server return a existing key
     await writeCoder(id, "echo findkey");
-    let exec = await execContainer(id, ["bash", "-c", instance.script]);
+    let exec = await execContainer(id, [
+      "env",
+      "CODER_ACCESS_URL=" + server.url.toString().slice(0, -1),
+      "GITHUB_API_URL=" + server.url.toString().slice(0, -1),
+      "CODER_OWNER_SESSION_TOKEN=foo",
+      "CODER_EXTERNAL_AUTH_ID=github",
+      "bash",
+      "-c",
+      instance.script,
+    ]);
     expect(exec.stdout).toContain(
       "Coder public SSH key is already uploaded to GitHub!",
     );
@@ -46,15 +64,11 @@ const setupContainer = async (
   const server = await setupServer();
   const state = await runTerraformApply(import.meta.dir, {
     agent_id: "foo",
-    // trim the trailing slash on the URL
-    access_url: server.url.toString().slice(0, -1),
-    owner_session_token: "bar",
-    github_api_url: server.url.toString().slice(0, -1),
     ...vars,
   });
   const instance = findResourceInstance(state, "coder_script");
   const id = await runContainer(image);
-  return { id, instance };
+  return { id, instance, server };
 };
 
 const setupServer = async (): Promise<Server> => {
