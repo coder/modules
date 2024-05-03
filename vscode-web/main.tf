@@ -105,7 +105,7 @@ variable "offline" {
 
 variable "use_cached" {
   type        = bool
-  description = "Uses cached copy of VS Code Web in the background, otherwise fetches it from internet"
+  description = "Uses cached copy of VS Code Web in the background, otherwise fetches it from internet."
   default     = false
 }
 
