@@ -20,6 +20,12 @@ variable "folder" {
   default     = ""
 }
 
+variable "open_recent" {
+  type        = bool
+  description = "Open the most recent workspace or folder. Falls back to the folder if there is no recent workspace or folder to open."
+  default     = false
+}
+
 variable "order" {
   type        = number
   description = "The order determines the position of app in the UI presentation. The lowest order is shown first and apps with equal order are sorted by name (ascending order)."
@@ -35,21 +41,16 @@ resource "coder_app" "vscode" {
   slug         = "vscode"
   display_name = "VS Code Desktop"
   order        = var.order
-  url = var.folder != "" ? join("", [
-    "vscode://coder.coder-remote/open?owner=",
+  url = join("", [
+    "vscode://coder.coder-remote/open",
+    "?owner=",
     data.coder_workspace.me.owner,
     "&workspace=",
     data.coder_workspace.me.name,
-    "&folder=",
-    var.folder,
+    var.folder != "" ? join("", ["&folder=", var.folder]) : "",
+    var.open_recent ? "&openRecent" : "",
     "&url=",
     data.coder_workspace.me.access_url,
-    "&token=$SESSION_TOKEN",
-    ]) : join("", [
-    "vscode://coder.coder-remote/open?owner=",
-    data.coder_workspace.me.owner,
-    "&workspace=",
-    data.coder_workspace.me.name,
     "&token=$SESSION_TOKEN",
   ])
 }
