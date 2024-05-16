@@ -44,7 +44,7 @@ data "coder_parameter" "dotfiles_uri" {
 
   type         = "string"
   name         = "dotfiles_uri"
-  display_name = "Dotfiles URL (optional)"
+  display_name = "Dotfiles URL"
   order        = var.coder_parameter_order
   default      = var.default_dotfiles_uri
   description  = "Enter a URL for a [dotfiles repository](https://dotfiles.github.io) to personalize your workspace"
