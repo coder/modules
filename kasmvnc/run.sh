@@ -3,7 +3,7 @@
 # Check if desktop environment is installed
 if ! dpkg -s ${DESKTOP_ENVIRONMENT} &> /dev/null; then
   sudo apt-get update
-  DEBIAN_FRONTEND=noninteractive sudo apt-get install -y ${DESKTOP_ENVIRONMENT}
+  DEBIAN_FRONTEND=noninteractive sudo apt-get install -y ${DESKTOP_ENVIRONMENT} libdatetime-perl
 else
   echo "${DESKTOP_ENVIRONMENT} is already installed."
 fi
