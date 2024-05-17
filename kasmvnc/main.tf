@@ -26,7 +26,7 @@ variable "desktop_environment" {
   default     = "lxde"
 }
 
-variable "version" {
+variable "kasm_version" {
   type        = string
   description = "Version of KasmVNC to install."
   default     = "1.3.1"
@@ -39,7 +39,7 @@ resource "coder_script" "kasm_vnc" {
   script = templatefile("${path.module}/run.sh", {
     PORT : var.port,
     DESKTOP_ENVIRONMENT : var.desktop_environment,
-    VERSION : var.version
+    VERSION : var.kasm_version
   })
   run_on_start = true
 }
