@@ -10,13 +10,12 @@ fi
 
 # Check if vncserver is installed
 if ! dpkg -s kasmvncserver &> /dev/null; then
-  cd /tmp
   DISTRO=$(lsb_release -c -s)
   ARCH=$(dpkg --print-architecture)
-  wget -q https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_$${DISTRO}_${VERSION}_$${ARCH}.deb
-  sudo apt-get install -y ./kasmvncserver_*.deb
+  wget -q https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_$${DISTRO}_${VERSION}_$${ARCH}.deb -O /tmp/kasmvncserver.deb
+  sudo apt-get install -y /tmp/kasmvncserver.deb
   printf "🥳 KasmVNC v${VERSION} has been successfully installed!\n\n"
-  sudo rm -f ./kasmvncserver_*.deb
+  sudo rm -f /tmp/kasmvncserver.deb
 else
   echo "KasmVNC is already installed."
 fi
@@ -39,5 +38,6 @@ EOF"
 # and does not listen publicly on the VM
 echo -e "password\npassword\n" | vncpasswd -wo -u $USER
 
-# Start the server :)
-sudo -u $USER bash -c 'vncserver -select-de "${DESKTOP_ENVIRONMENT}" -disableBasicAuth'
+# Start the server
+printf "🚀 Starting KasmVNC server...\n"
+sudo -u $USER bash -c 'vncserver -select-de "${DESKTOP_ENVIRONMENT}" -disableBasicAuth' > /tmp/kassmvncserver.log 2>&1 &
