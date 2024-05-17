@@ -14,9 +14,9 @@ if ! dpkg -s kasmvncserver &> /dev/null; then
   DISTRO=$(lsb_release -c -s)
   ARCH=$(dpkg --print-architecture)
   wget -q https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_$${DISTRO}_${VERSION}_$${ARCH}.deb
-  sudo apt-get install -y ./kasvncserver_*.deb
+  sudo apt-get install -y ./kasmvncserver_*.deb
   printf "🥳 KasmVNC v${VERSION} has been successfully installed!\n\n"
-  rm ./kasvncserver_*.deb
+  sudo rm -f ./kasmvncserver_*.deb
 else
   echo "KasmVNC is already installed."
 fi
