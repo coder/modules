@@ -19,7 +19,7 @@ module "kasmvnc" {
 }
 ```
 
-> **Note:** This module only works on debian-based workspaces.
+> **Note:** This module only works on debian-based workspaces. It is recommended to use an image with a desktop environment pre-installed to speed up the installation process.
 
 ## Examples
 
