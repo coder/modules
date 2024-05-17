@@ -29,7 +29,7 @@ variable "desktop_environment" {
 variable "version" {
   type        = string
   description = "Version of KasmVNC to install."
-  default     = "1.2.0"
+  default     = "1.3.1"
 }
 
 resource "coder_script" "kasm_vnc" {

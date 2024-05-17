@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Check if desktop enivronment is installed
+# Check if desktop environment is installed
 if ! dpkg -s ${DESKTOP_ENVIRONMENT} &> /dev/null; then
   sudo apt-get update
   DEBIAN_FRONTEND=noninteractive sudo apt-get install -y ${DESKTOP_ENVIRONMENT}
