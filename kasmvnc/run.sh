@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 
 # Check if desktop enivronment is installed
-if ! dpkg -s ${DESKTOP_ENVIRONMENT} &>/dev/null; then
-    sudo apt-get update
-    DEBIAN_FRONTEND=noninteractive sudo apt-get install -y ${DESKTOP_ENVIRONMENT}
+if ! dpkg -s ${DESKTOP_ENVIRONMENT} &> /dev/null; then
+  sudo apt-get update
+  DEBIAN_FRONTEND=noninteractive sudo apt-get install -y ${DESKTOP_ENVIRONMENT}
 else
-    echo "${DESKTOP_ENVIRONMENT} is already installed."
+  echo "${DESKTOP_ENVIRONMENT} is already installed."
 fi
 
 # Check if vncserver is installed
-if ! dpkg -s kasmvncserver &>/dev/null; then
-    cd /tmp
-    wget https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_focal_${VERSION}_amd64.deb
-    sudo apt install -y ./kasmvncserver_focal_${VERSION}_amd64.deb
-    printf "🥳 KasmVNC v${VERSION} has been successfully installed!\n\n"
+if ! dpkg -s kasmvncserver &> /dev/null; then
+  cd /tmp
+  wget https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_focal_${VERSION}_amd64.deb
+  sudo apt install -y ./kasmvncserver_focal_${VERSION}_amd64.deb
+  printf "🥳 KasmVNC v${VERSION} has been successfully installed!\n\n"
 else
-    echo "KasmVNC is already installed."
+  echo "KasmVNC is already installed."
 fi
 
 sudo addgroup $USER ssl-cert
