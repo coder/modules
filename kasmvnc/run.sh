@@ -24,15 +24,15 @@ fi
 sudo addgroup $USER ssl-cert
 
 # Coder port-forwarding from dashboard only supports HTTP
-sudo bash -c 'cat > /etc/kasmvnc/kasmvnc.yaml <<EOF
+sudo bash -c "cat > /etc/kasmvnc/kasmvnc.yaml <<EOF
 network:
   protocol: http
-  websocekt_port: ${PORT}
+  websocket_port: ${PORT}
   ssl:
     require_ssl: false
   udp:
     public_ip: 127.0.0.1
-EOF'
+EOF"
 
 # This password is not used since we start the server without auth.
 # The server is protected via the Coder session token / tunnel
@@ -40,4 +40,4 @@ EOF'
 echo -e "password\npassword\n" | vncpasswd -wo -u $USER
 
 # Start the server :)
-sudo su -u $USER bash -c 'vncserver -select-de "${DESKTOP_ENVIRONMENT}" -disableBasicAuth'
+sudo -u $USER bash -c 'vncserver -select-de "${DESKTOP_ENVIRONMENT}" -disableBasicAuth'
