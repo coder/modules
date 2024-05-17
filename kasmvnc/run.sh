@@ -11,9 +11,12 @@ fi
 # Check if vncserver is installed
 if ! dpkg -s kasmvncserver &> /dev/null; then
   cd /tmp
-  wget https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_focal_${VERSION}_amd64.deb
-  sudo apt install -y ./kasmvncserver_focal_${VERSION}_amd64.deb
+  DISTRO=$(lsb_release -c -s)
+  ARCH=$(dpkg --print-architecture)
+  wget -q https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_$${DISTRO}_${VERSION}_$${ARCH}.deb
+  sudo apt-get install -y ./kasvncserver_*.deb
   printf "🥳 KasmVNC v${VERSION} has been successfully installed!\n\n"
+  rm ./kasvncserver_*.deb
 else
   echo "KasmVNC is already installed."
 fi
