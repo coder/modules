@@ -53,7 +53,7 @@ resource "coder_app" "kasm_vnc" {
   subdomain    = true
   share        = "owner"
   healthcheck {
-    url       = "http://localhost:${var.port}"
+    url       = "http://localhost:${var.port}/app"
     interval  = 5
     threshold = 5
   }
