@@ -4,60 +4,78 @@ description: A parameter with human region names and icons
 icon: ../.icons/azure.svg
 maintainer_github: coder
 verified: true
-tags: [helper, parameter, azure]
+tags: [helper, parameter, azure, regions]
 ---
 
 # Azure Region
 
-This module adds a parameter with all Azure regions. This allows developers to select the region closest to them.
+This module adds a parameter with all Azure regions, allowing developers to select the region closest to them.
+
+```tf
+module "azure_region" {
+  source  = "registry.coder.com/modules/azure-region/coder"
+  version = "1.0.12"
+  default = "eastus"
+}
+
+resource "azurem_resource_group" "example" {
+  location = module.azure_region.value
+}
+```
+
+![Azure Region Default](../.images/azure-default.png)
 
 ## Examples
 
-### Default region
-
-```hcl
-module "azure_region" {
-    source = "https://registry.coder.com/modules/azure-region"
-    default = "eastus"
-}
-
-provider "azure" {
-    region = module.azure_region.value
-    ...
-}
-```
-
 ### Customize existing regions
 
-Change the display name for a region:
+Change the display name and icon for a region using the corresponding maps:
 
-```hcl
+```tf
 module "azure-region" {
-    source = "https://registry.coder.com/modules/azure-region"
-    custom_names = {
-        "eastus": "Eastern United States!"
-    }
-    custom_icons = {
-        "eastus": "/icons/smiley.svg"
-    }
+  source  = "registry.coder.com/modules/azure-region/coder"
+  version = "1.0.12"
+  custom_names = {
+    "australia" : "Go Australia!"
+  }
+  custom_icons = {
+    "australia" : "/icons/smiley.svg"
+  }
 }
 
-provider "aws" {
-    region = module.aws_region.value
+resource "azurerm_resource_group" "example" {
+  location = module.azure_region.value
 }
 ```
+
+![Azure Region Custom](../.images/azure-custom.png)
 
 ### Exclude Regions
 
-Hide the `westus2` region:
+Hide all regions in Australia except australiacentral:
 
-```hcl
-module "aws-region" {
-    source = "https://registry.coder.com/modules/aws-region"
-    exclude = [ "westus2" ]
+```tf
+module "azure-region" {
+  source  = "registry.coder.com/modules/azure-region/coder"
+  version = "1.0.12"
+  exclude = [
+    "australia",
+    "australiacentral2",
+    "australiaeast",
+    "australiasoutheast"
+  ]
 }
 
-provider "aws" {
-    region = module.aws_region.value
+resource "azurerm_resource_group" "example" {
+  location = module.azure_region.value
 }
 ```
+
+![Azure Exclude](../.images/azure-exclude.png)
+
+## Related templates
+
+For a complete Azure template, see the following examples in the [Coder Registry](https://registry.coder.com/).
+
+- [Azure VM (Linux)](https://registry.coder.com/templates/azure-linux)
+- [Azure VM (Windows)](https://registry.coder.com/templates/azure-windows)

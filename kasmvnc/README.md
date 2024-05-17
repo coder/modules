@@ -17,7 +17,8 @@ Automatically install [KasmVNC](https://kasmweb.com/kasmvnc) in a workspace, and
 
    ```hcl
    module "kasmvnc" {
-     source   = "https://registry.coder.com/modules/kasmvnc"
+     source   = "registry.coder.com/modules/kasmvnc/coder"
+     version  = "1.0.0"
      agent_id = coder_agent.example.id
    }
 
@@ -27,7 +28,7 @@ Automatically install [KasmVNC](https://kasmweb.com/kasmvnc) in a workspace, and
 
    ```hcl
    module "kasmvnc" {
-     source              = "https://registry.coder.com/modules/kasmvnc"
+     source              = "registry.coder.com/modules/kasmvnc/coder"
      agent_id            = coder_agent.example.id
      version             = "1.0.0"
      desktop_environment = "mate"
@@ -35,5 +36,3 @@ Automatically install [KasmVNC](https://kasmweb.com/kasmvnc) in a workspace, and
    }
 
    ```
-
-![Screenshot of KasmVNC]() //TODO

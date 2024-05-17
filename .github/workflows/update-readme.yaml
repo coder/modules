@@ -1,0 +1,42 @@
+name: Update README on Tag
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  update-readme:
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get the latest tag
+        id: get-latest-tag
+        run: echo "TAG=$(git describe --tags --abbrev=0 | sed 's/^v//')" >> $GITHUB_OUTPUT
+
+      - name: Run update script
+        run: ./update-version.sh
+
+      - name: Create Pull Request
+        id: create-pr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: 'chore: bump version to ${{ env.TAG }} in README.md files'
+          title: 'chore: bump version to ${{ env.TAG }} in README.md files'
+          body: 'This is an auto-generated PR to update README.md files of all modules with the new tag ${{ env.TAG }}'
+          branch: 'update-readme-branch'
+          base: 'main'
+        env:
+          TAG: ${{ steps.get-latest-tag.outputs.TAG }}
+
+      - name: Auto-approve
+        uses: hmarr/auto-approve-action@v4
+        if: github.ref == 'refs/heads/update-readme-branch'

@@ -22,6 +22,12 @@ variable "description" {
 }
 
 variable "default" {
+  default     = null
+  description = "Default zone"
+  type        = string
+}
+
+variable "regions" {
   description = "List of GCP regions to include."
   type        = list(string)
   default     = ["us-central1"]
@@ -49,6 +55,18 @@ variable "custom_icons" {
   default     = {}
   description = "A map of custom icons for region IDs."
   type        = map(string)
+}
+
+variable "single_zone_per_region" {
+  default     = true
+  description = "Whether to only include a single zone per region."
+  type        = bool
+}
+
+variable "coder_parameter_order" {
+  type        = number
+  description = "The order determines the position of a template parameter in the UI/CLI presentation. The lowest order is shown first and parameters with equal order are sorted by name (ascending order)."
+  default     = null
 }
 
 locals {
@@ -343,17 +361,17 @@ locals {
     "europe-west2-a" = {
       gpu  = true
       name = "London, England (a)"
-      icon = "/emojis/1f173-1f1ff.png"
+      icon = "/emojis/1f1ec-1f1e7.png"
     }
     "europe-west2-b" = {
       gpu  = true
       name = "London, England (b)"
-      icon = "/emojis/1f173-1f1ff.png"
+      icon = "/emojis/1f1ec-1f1e7.png"
     }
     "europe-west2-c" = {
       gpu  = false
       name = "London, England (c)"
-      icon = "/emojis/1f173-1f1ff.png"
+      icon = "/emojis/1f1ec-1f1e7.png"
     }
 
     "europe-west3-b" = {
@@ -702,14 +720,17 @@ data "coder_parameter" "region" {
   description  = var.description
   icon         = "/icon/gcp.png"
   mutable      = var.mutable
+  default      = var.default != null && var.default != "" && (!var.gpu_only || try(local.zones[var.default].gpu, false)) ? var.default : null
+  order        = var.coder_parameter_order
   dynamic "option" {
     for_each = {
       for k, v in local.zones : k => v
-      if anytrue([for d in var.default : startswith(k, d)]) && (!var.gpu_only || v.gpu)
+      if anytrue([for d in var.regions : startswith(k, d)]) && (!var.gpu_only || v.gpu) && (!var.single_zone_per_region || endswith(k, "-a"))
     }
     content {
-      icon        = try(var.custom_icons[option.key], option.value.icon)
-      name        = try(var.custom_names[option.key], option.value.name)
+      icon = try(var.custom_icons[option.key], option.value.icon)
+      # if single_zone_per_region is true, remove the zone letter from the name
+      name        = try(var.custom_names[option.key], var.single_zone_per_region ? substr(option.value.name, 0, length(option.value.name) - 4) : option.value.name)
       description = option.key
       value       = option.key
     }
@@ -717,5 +738,11 @@ data "coder_parameter" "region" {
 }
 
 output "value" {
-  value = data.coder_parameter.region.value
+  description = "GCP zone identifier."
+  value       = data.coder_parameter.region.value
+}
+
+output "region" {
+  description = "GCP region identifier."
+  value       = substr(data.coder_parameter.region.value, 0, length(data.coder_parameter.region.value) - 2)
 }

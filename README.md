@@ -14,10 +14,11 @@ Modules extend Templates to create reusable components for your development envi
 
 e.g.
 
-```hcl
+```tf
 module "code-server" {
-    source = "https://registry.coder.com/modules/code-server"
-    agent_id = coder_agent.main.id
+  source   = "registry.coder.com/modules/code-server/coder"
+  version  = "1.0.2"
+  agent_id = coder_agent.main.id
 }
 ```
 
@@ -32,30 +33,4 @@ Check out the [Coder Registry](https://registry.coder.com) for instructions to i
 
 ## Contributing a Module
 
-To quickly start contributing with a new module, clone this repository and run:
-
-```sh
-./new.sh
-```
-
-Test a module by running an instance of Coder on your local machine:
-
-```bash
-coder server --in-memory
-```
-
-Create a template and edit it to include your development module:
-
-> *Info*
-> The Docker starter template is recommended for quick-iteration!
-
-```tf
-module "testing" {
-    source = "/home/user/coder/modules/my-new-module"
-}
-```
-
-Build a workspace and your module will be consumed! 🥳
-
-Open a pull-request with your module, a member of the Coder team will
-manually test it, and after-merge it will appear on the Registry.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for instructions on how to construct and publish a module to the [Coder Registry](https://registry.coder.com).
