@@ -13,11 +13,15 @@ describe("git-config", async () => {
   });
 
   it("can run apply allow_username_change and allow_email_change disabled", async () => {
-    const state = await runTerraformApply(import.meta.dir, {
-      agent_id: "foo",
-      allow_username_change: "false",
-      allow_email_change: "false",
-    });
+    const state = await runTerraformApply(
+      import.meta.dir,
+      {
+        agent_id: "foo",
+        allow_username_change: false,
+        allow_email_change: false,
+      },
+      {},
+    );
 
     const resources = state.resources;
     expect(resources).toHaveLength(3);
