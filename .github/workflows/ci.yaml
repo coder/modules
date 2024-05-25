@@ -21,7 +21,6 @@ jobs:
         with:
           bun-version: latest
       - name: Setup
-        run: terraform --version
         run: bun install
       - run: bun test
   pretty:
