@@ -20,12 +20,12 @@ describe("git-config", async () => {
     });
 
     const resources = state.resources;
-    expect(resources).toHaveLength(3);
     expect(resources).toMatchObject([
       { type: "coder_workspace", name: "me" },
       { type: "coder_env", name: "git_author_name" },
       { type: "coder_env", name: "git_commmiter_name" },
     ]);
+    expect(resources).toHaveLength(3);
   });
 
   it("can run apply allow_email_change enabled", async () => {
@@ -35,7 +35,6 @@ describe("git-config", async () => {
     });
 
     const resources = state.resources;
-    expect(resources).toHaveLength(5);
     expect(resources).toMatchObject([
       { type: "coder_parameter", name: "user_email" },
       { type: "coder_parameter", name: "username" },
@@ -43,6 +42,7 @@ describe("git-config", async () => {
       { type: "coder_env", name: "git_author_name" },
       { type: "coder_env", name: "git_commmiter_name" },
     ]);
+    expect(resources).toHaveLength(5);
   });
 
   it("can run apply allow_email_change enabled", async () => {
