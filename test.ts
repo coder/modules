@@ -2,12 +2,6 @@ import { readableStreamToText, spawn } from "bun";
 import { afterEach, expect, it } from "bun:test";
 import { readFile, unlink } from "fs/promises";
 
-function uuidv4() {
-  return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
-    (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
-  );
-}
-
 export const runContainer = async (
   image: string,
   init = "sleep infinity",
@@ -179,7 +173,7 @@ export const runTerraformApply = async (
   vars: Record<string, string>,
   env: Record<string, string> = {},
 ): Promise<TerraformState> => {
-  const stateFile = `${dir}/${uuidv4()}.tfstate`;
+  const stateFile = `${dir}/${crypto.randomUUID()}.tfstate`;
   Object.keys(vars).forEach((key) => (env[`TF_VAR_${key}`] = vars[key]));
   const proc = spawn(
     [
