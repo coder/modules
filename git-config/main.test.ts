@@ -20,9 +20,10 @@ describe("git-config", async () => {
     });
 
     const resources = state.resources;
-    expect(resources).toHaveLength(5);
+    expect(resources).toHaveLength(6);
     expect(resources).toMatchObject([
       { type: "coder_workspace", name: "me" },
+      { type: "coder_workspace_owner", name: "me" },
       { type: "coder_env", name: "git_author_email" },
       { type: "coder_env", name: "git_author_name" },
       { type: "coder_env", name: "git_commmiter_email" },
@@ -37,11 +38,12 @@ describe("git-config", async () => {
     });
 
     const resources = state.resources;
-    expect(resources).toHaveLength(7);
+    expect(resources).toHaveLength(8);
     expect(resources).toMatchObject([
       { type: "coder_parameter", name: "user_email" },
       { type: "coder_parameter", name: "username" },
       { type: "coder_workspace", name: "me" },
+      { type: "coder_workspace_owner", name: "me" },
       { type: "coder_env", name: "git_author_email" },
       { type: "coder_env", name: "git_author_name" },
       { type: "coder_env", name: "git_commmiter_email" },
@@ -61,9 +63,10 @@ describe("git-config", async () => {
     );
 
     const resources = state.resources;
-    expect(resources).toHaveLength(5);
+    expect(resources).toHaveLength(6);
     expect(resources).toMatchObject([
       { type: "coder_workspace", name: "me" },
+      { type: "coder_workspace_owner", name: "me" },
       { type: "coder_env", name: "git_author_email" },
       { type: "coder_env", name: "git_author_name" },
       { type: "coder_env", name: "git_commmiter_email" },
@@ -80,11 +83,12 @@ describe("git-config", async () => {
       coder_parameter_order: order.toString(),
     });
     const resources = state.resources;
-    expect(resources).toHaveLength(7);
+    expect(resources).toHaveLength(8);
     expect(resources).toMatchObject([
       { type: "coder_parameter", name: "user_email" },
       { type: "coder_parameter", name: "username" },
       { type: "coder_workspace", name: "me" },
+      { type: "coder_workspace_owner", name: "me" },
       { type: "coder_env", name: "git_author_email" },
       { type: "coder_env", name: "git_author_name" },
       { type: "coder_env", name: "git_commmiter_email" },
@@ -106,10 +110,11 @@ describe("git-config", async () => {
       coder_parameter_order: order.toString(),
     });
     const resources = state.resources;
-    expect(resources).toHaveLength(6);
+    expect(resources).toHaveLength(7);
     expect(resources).toMatchObject([
       { type: "coder_parameter", name: "username" },
       { type: "coder_workspace", name: "me" },
+      { type: "coder_workspace_owner", name: "me" },
       { type: "coder_env", name: "git_author_email" },
       { type: "coder_env", name: "git_author_name" },
       { type: "coder_env", name: "git_commmiter_email" },

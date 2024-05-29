@@ -4,7 +4,7 @@ terraform {
   required_providers {
     coder = {
       source  = "coder/coder"
-      version = ">= 0.22"
+      version = ">= 0.23"
     }
   }
 }
@@ -33,6 +33,7 @@ variable "coder_parameter_order" {
 }
 
 data "coder_workspace" "me" {}
+data "coder_workspace_owner" "me" {}
 
 data "coder_parameter" "user_email" {
   count        = var.allow_email_change ? 1 : 0
@@ -59,25 +60,25 @@ data "coder_parameter" "username" {
 resource "coder_env" "git_author_name" {
   agent_id = var.agent_id
   name     = "GIT_AUTHOR_NAME"
-  value    = coalesce(try(data.coder_parameter.username[0].value, ""), data.coder_workspace.me.owner_name, data.coder_workspace.me.owner)
+  value    = coalesce(try(data.coder_parameter.username[0].value, ""), data.coder_workspace_owner.me.full_name, data.coder_workspace_owner.me.name)
 }
 
 resource "coder_env" "git_commmiter_name" {
   agent_id = var.agent_id
   name     = "GIT_COMMITTER_NAME"
-  value    = coalesce(try(data.coder_parameter.username[0].value, ""), data.coder_workspace.me.owner_name, data.coder_workspace.me.owner)
+  value    = coalesce(try(data.coder_parameter.username[0].value, ""), data.coder_workspace_owner.me.full_name, data.coder_workspace_owner.me.name)
 }
 
 resource "coder_env" "git_author_email" {
   agent_id = var.agent_id
   name     = "GIT_AUTHOR_EMAIL"
-  value    = coalesce(try(data.coder_parameter.user_email[0].value, ""), data.coder_workspace.me.owner_email)
-  count    = data.coder_workspace.me.owner_email != "" ? 1 : 0
+  value    = coalesce(try(data.coder_parameter.user_email[0].value, ""), data.coder_workspace_owner.me.email)
+  count    = data.coder_workspace_owner.me.email != "" ? 1 : 0
 }
 
 resource "coder_env" "git_commmiter_email" {
   agent_id = var.agent_id
   name     = "GIT_COMMITTER_EMAIL"
-  value    = coalesce(try(data.coder_parameter.user_email[0].value, ""), data.coder_workspace.me.owner_email)
-  count    = data.coder_workspace.me.owner_email != "" ? 1 : 0
+  value    = coalesce(try(data.coder_parameter.user_email[0].value, ""), data.coder_workspace_owner.me.email)
+  count    = data.coder_workspace_owner.me.email != "" ? 1 : 0
 }
