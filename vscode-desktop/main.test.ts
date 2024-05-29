@@ -21,7 +21,9 @@ describe("vscode-desktop", async () => {
       "vscode://coder.coder-remote/open?owner=default&workspace=default&url=https://mydeployment.coder.com&token=$SESSION_TOKEN",
     );
 
-    const coder_app = state.resources.find((res) => res.type == "coder_app" && res.name == "vscode");
+    const coder_app = state.resources.find(
+      (res) => res.type == "coder_app" && res.name == "vscode",
+    );
     expect(coder_app).not.toBeNull();
     expect(coder_app.instances.length).toBe(1);
     expect(coder_app.instances[0].attributes.order).toBeNull();
@@ -75,7 +77,9 @@ describe("vscode-desktop", async () => {
       order: "22",
     });
 
-    const coder_app = state.resources.find((res) => res.type == "coder_app" && res.name == "vscode");
+    const coder_app = state.resources.find(
+      (res) => res.type == "coder_app" && res.name == "vscode",
+    );
     expect(coder_app).not.toBeNull();
     expect(coder_app.instances.length).toBe(1);
     expect(coder_app.instances[0].attributes.order).toBe(22);
