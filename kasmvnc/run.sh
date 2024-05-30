@@ -10,12 +10,13 @@ if [ -n "${WAIT_FOR_SCRIPT}" ]; then
   done
 fi
 
+PACKAGES="xfce4 xfce4-goodies libdatetime-perl"
 # Check if desktop environment is installed
 if ! dpkg -s $PACKAGES &> /dev/null; then
   sudo apt-get update
-  DEBIAN_FRONTEND=noninteractive sudo apt-get install -y xfce4 xfce4-goodies libdatetime-perl --no-install-recommends --no-install-suggests
+  DEBIAN_FRONTEND=noninteractive sudo apt-get install -y $PACKAGES --no-install-recommends --no-install-suggests
 else
-  echo "$PACKAGES is already installed."
+  echo "$PACKAGES are already installed."
 fi
 
 # Check if vncserver is installed
