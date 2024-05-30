@@ -3,7 +3,7 @@
 # check if there is a WAIT_FOR_SCRIPT env variable and if so, wait for it to be available
 
 # Wait for the startup script to complete
-if [ -n "$WAIT_FOR_SCRIPT" ]; then
+if [ -n "${WAIT_FOR_SCRIPT}" ]; then
   # This assumes that the script will create a file called /tmp/.coder-${WAIT_FOR_SCRIPT}.done
   while [ ! -f /tmp/.coder-${WAIT_FOR_SCRIPT}.done ]; do
     sleep 1
