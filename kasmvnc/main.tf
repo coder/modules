@@ -29,7 +29,7 @@ variable "kasm_version" {
 variable "wait_for_script" {
   type        = string
   description = "The script to wait for before running the KasmVNC script."
-  default     = ""  
+  default     = ""
 }
 
 resource "coder_script" "kasm_vnc" {
