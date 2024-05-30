@@ -23,7 +23,7 @@ variable "port" {
 variable "desktop_environment" {
   type        = string
   description = "The desktop environment to for KasmVNC (xfce, lxde, mate, etc)."
-  default     = "lxde"
+  default     = "xfce"
 }
 
 variable "kasm_version" {
