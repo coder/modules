@@ -51,4 +51,4 @@ echo -e "password\npassword\n" | vncpasswd -wo -u $USER
 
 # Start the server
 printf "🚀 Starting KasmVNC server...\n"
-sudo -u $USER bash -c 'vncserver -select-de xfce4 -disableBasicAuth' > /tmp/kassmvncserver.log 2>&1 &
+sudo -u $USER bash -c 'vncserver -select-de xfce -disableBasicAuth' > /tmp/kassmvncserver.log 2>&1 &
