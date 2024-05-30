@@ -10,9 +10,6 @@ CODE_SERVER="${INSTALL_PREFIX}/bin/code-server"
 EXTENSION_ARG=""
 if [ -n "${EXTENSIONS_DIR}" ]; then
   EXTENSION_ARG="--extensions-dir=${EXTENSIONS_DIR}"
-  EXTENSIONS_DIR="${EXTENSIONS_DIR}"
-else
-  EXTENSIONS_DIR="${INSTALL_PREFIX}/extensions"
 fi
 
 function run_code_server() {
@@ -30,7 +27,7 @@ fi
 
 # Check if code-server is already installed for offline or cached mode
 if [ -f "$CODE_SERVER" ]; then
-  if [ "${USE_CACHED}" = true ] && [ ! -d "$EXTENSIONS_DIR" ]; then
+  if [ "${USE_CACHED}" = true ] && [ -n "${EXTENSIONS_DIR}" ] && [ ! -d "${EXTENSIONS_DIR}" ]; then
     echo "No extensions have been installed yet..."
   elif [ "${OFFLINE}" = true ] || [ "${USE_CACHED}" = true ]; then
     echo "🥳 Found a copy of code-server"
