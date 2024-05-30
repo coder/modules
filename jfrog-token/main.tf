@@ -4,7 +4,7 @@ terraform {
   required_providers {
     coder = {
       source  = "coder/coder"
-      version = ">= 0.12.4"
+      version = ">= 0.23"
     }
     artifactory = {
       source  = "registry.terraform.io/jfrog/artifactory"
@@ -95,7 +95,7 @@ EOF
 
 locals {
   # The username field to use for artifactory
-  username   = var.username_field == "email" ? data.coder_workspace.me.owner_email : data.coder_workspace.me.owner
+  username   = var.username_field == "email" ? data.coder_workspace_owner.me.email : data.coder_workspace_owner.me.name
   jfrog_host = replace(var.jfrog_url, "https://", "")
 }
 
@@ -117,6 +117,7 @@ resource "artifactory_scoped_token" "me" {
 }
 
 data "coder_workspace" "me" {}
+data "coder_workspace_owner" "me" {}
 
 resource "coder_script" "jfrog" {
   agent_id     = var.agent_id
@@ -127,7 +128,7 @@ resource "coder_script" "jfrog" {
     JFROG_HOST : local.jfrog_host,
     JFROG_SERVER_ID : var.jfrog_server_id,
     ARTIFACTORY_USERNAME : local.username,
-    ARTIFACTORY_EMAIL : data.coder_workspace.me.owner_email,
+    ARTIFACTORY_EMAIL : data.coder_workspace_owner.me.email,
     ARTIFACTORY_ACCESS_TOKEN : artifactory_scoped_token.me.access_token,
     CONFIGURE_CODE_SERVER : var.configure_code_server,
     REPOSITORY_NPM : lookup(var.package_managers, "npm", ""),

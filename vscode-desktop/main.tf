@@ -4,7 +4,7 @@ terraform {
   required_providers {
     coder = {
       source  = "coder/coder"
-      version = ">= 0.17"
+      version = ">= 0.23"
     }
   }
 }
@@ -33,6 +33,7 @@ variable "order" {
 }
 
 data "coder_workspace" "me" {}
+data "coder_workspace_owner" "me" {}
 
 resource "coder_app" "vscode" {
   agent_id     = var.agent_id
@@ -44,7 +45,7 @@ resource "coder_app" "vscode" {
   url = join("", [
     "vscode://coder.coder-remote/open",
     "?owner=",
-    data.coder_workspace.me.owner,
+    data.coder_workspace_owner.me.name,
     "&workspace=",
     data.coder_workspace.me.name,
     var.folder != "" ? join("", ["&folder=", var.folder]) : "",

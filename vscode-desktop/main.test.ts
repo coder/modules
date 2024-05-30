@@ -21,8 +21,12 @@ describe("vscode-desktop", async () => {
       "vscode://coder.coder-remote/open?owner=default&workspace=default&url=https://mydeployment.coder.com&token=$SESSION_TOKEN",
     );
 
-    const resources: any = state.resources;
-    expect(resources[1].instances[0].attributes.order).toBeNull();
+    const coder_app = state.resources.find(
+      (res) => res.type == "coder_app" && res.name == "vscode",
+    );
+    expect(coder_app).not.toBeNull();
+    expect(coder_app.instances.length).toBe(1);
+    expect(coder_app.instances[0].attributes.order).toBeNull();
   });
 
   it("adds folder", async () => {
@@ -73,7 +77,11 @@ describe("vscode-desktop", async () => {
       order: "22",
     });
 
-    const resources: any = state.resources;
-    expect(resources[1].instances[0].attributes.order).toBe(22);
+    const coder_app = state.resources.find(
+      (res) => res.type == "coder_app" && res.name == "vscode",
+    );
+    expect(coder_app).not.toBeNull();
+    expect(coder_app.instances.length).toBe(1);
+    expect(coder_app.instances[0].attributes.order).toBe(22);
   });
 });

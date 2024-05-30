@@ -98,7 +98,7 @@ module "jfrog" {
   agent_id                 = coder_agent.example.id
   jfrog_url                = "https://XXXX.jfrog.io"
   artifactory_access_token = var.artifactory_access_token
-  token_description        = "Token for Coder workspace: ${data.coder_workspace.me.owner}/${data.coder_workspace.me.name}"
+  token_description        = "Token for Coder workspace: ${data.coder_workspace_owner.me.name}/${data.coder_workspace.me.name}"
   package_managers = {
     "npm" : "npm",
     "go" : "go",
