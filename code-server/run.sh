@@ -29,6 +29,8 @@ fi
 if [ -f "$CODE_SERVER" ]; then
   if [ "${USE_CACHED}" = true ] && [ -n "${EXTENSIONS_DIR}" ] && [ ! -d "${EXTENSIONS_DIR}" ]; then
     echo "No extensions have been installed yet..."
+  elif [ "${USE_CACHED}" = true ] && [ -z "${EXTENSIONS_DIR}" ]; then
+    echo "Checking if extensions needs to be installed..."
   elif [ "${OFFLINE}" = true ] || [ "${USE_CACHED}" = true ]; then
     echo "🥳 Found a copy of code-server"
     run_code_server
