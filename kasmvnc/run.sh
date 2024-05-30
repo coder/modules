@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 # Check if desktop environment is installed
-if ! dpkg -s ${DESKTOP_ENVIRONMENT} &> /dev/null; then
+if ! dpkg -s $PACKAGES &> /dev/null; then
   sudo apt-get update
-  DEBIAN_FRONTEND=noninteractive sudo apt-get install -y ${DESKTOP_ENVIRONMENT} libdatetime-perl
+  DEBIAN_FRONTEND=noninteractive sudo apt-get install -y xfce4 xfce4-goodies libdatetime-perl --no-install-recommends --no-install-suggests
 else
-  echo "${DESKTOP_ENVIRONMENT} is already installed."
+  echo "$PACKAGES is already installed."
 fi
 
 # Check if vncserver is installed
@@ -40,4 +40,4 @@ echo -e "password\npassword\n" | vncpasswd -wo -u $USER
 
 # Start the server
 printf "🚀 Starting KasmVNC server...\n"
-sudo -u $USER bash -c 'vncserver -select-de "${DESKTOP_ENVIRONMENT}" -disableBasicAuth' > /tmp/kassmvncserver.log 2>&1 &
+sudo -u $USER bash -c 'vncserver -select-de xfce4 -disableBasicAuth' > /tmp/kassmvncserver.log 2>&1 &
