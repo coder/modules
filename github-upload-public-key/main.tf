@@ -4,7 +4,7 @@ terraform {
   required_providers {
     coder = {
       source  = "coder/coder"
-      version = ">= 0.12"
+      version = ">= 0.23"
     }
   }
 }
@@ -27,11 +27,12 @@ variable "github_api_url" {
 }
 
 data "coder_workspace" "me" {}
+data "coder_workspace_owner" "me" {}
 
 resource "coder_script" "github_upload_public_key" {
   agent_id = var.agent_id
   script = templatefile("${path.module}/run.sh", {
-    CODER_OWNER_SESSION_TOKEN : data.coder_workspace.me.owner_session_token,
+    CODER_OWNER_SESSION_TOKEN : data.coder_workspace_owner.me.session_token,
     CODER_ACCESS_URL : data.coder_workspace.me.access_url,
     CODER_EXTERNAL_AUTH_ID : var.external_auth_id,
     GITHUB_API_URL : var.github_api_url,
