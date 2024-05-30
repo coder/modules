@@ -26,12 +26,19 @@ variable "kasm_version" {
   default     = "1.3.1"
 }
 
+variable "wait_for_script" {
+  type        = string
+  description = "The script to wait for before running the KasmVNC script."
+  default     = ""  
+}
+
 resource "coder_script" "kasm_vnc" {
   agent_id     = var.agent_id
   display_name = "KasmVNC"
   icon         = "/icon/kasmvnc.svg"
   script = templatefile("${path.module}/run.sh", {
     PORT : var.port,
+    WAIT_FOR_SCRIPT : var.wait_for_script,
     VERSION : var.kasm_version
   })
   run_on_start = true
