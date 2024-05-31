@@ -25,20 +25,14 @@ if [ ! -f ~/.local/share/code-server/User/settings.json ]; then
   echo "${SETTINGS}" > ~/.local/share/code-server/User/settings.json
 fi
 
-# Check if code-server is already installed for offline or cached mode
-if [ -f "$CODE_SERVER" ]; then
-  if [ "${USE_CACHED}" = true ] && [ -n "${EXTENSIONS_DIR}" ] && [ ! -d "${EXTENSIONS_DIR}" ]; then
-    echo "No extensions have been installed yet..."
-  elif [ "${USE_CACHED}" = true ] && [ -z "${EXTENSIONS_DIR}" ]; then
-    echo "Checking if extensions needs to be installed..."
-  elif [ "${OFFLINE}" = true ] || [ "${USE_CACHED}" = true ]; then
+# Check if code-server is already installed for offline
+if [ "${OFFLINE}" = true ]; then
+  if [ -f "$CODE_SERVER" ]; then
     echo "🥳 Found a copy of code-server"
     run_code_server
     exit 0
   fi
-fi
-# Offline mode always expects a copy of code-server to be present
-if [ "${OFFLINE}" = true ]; then
+  # Offline mode always expects a copy of code-server to be present
   echo "Failed to find a copy of code-server"
   exit 1
 fi
