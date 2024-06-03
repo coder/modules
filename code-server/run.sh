@@ -25,36 +25,37 @@ if [ ! -f ~/.local/share/code-server/User/settings.json ]; then
   echo "${SETTINGS}" > ~/.local/share/code-server/User/settings.json
 fi
 
-# Check if code-server is already installed for offline or cached mode
-if [ -f "$CODE_SERVER" ]; then
-  if [ "${OFFLINE}" = true ] || [ "${USE_CACHED}" = true ]; then
+# Check if code-server is already installed for offline
+if [ "${OFFLINE}" = true ]; then
+  if [ -f "$CODE_SERVER" ]; then
     echo "🥳 Found a copy of code-server"
     run_code_server
     exit 0
   fi
-fi
-# Offline mode always expects a copy of code-server to be present
-if [ "${OFFLINE}" = true ]; then
+  # Offline mode always expects a copy of code-server to be present
   echo "Failed to find a copy of code-server"
   exit 1
 fi
 
-printf "$${BOLD}Installing code-server!\n"
+# If there is no cached install OR we don't want to use a cached install
+if [ ! -f "$CODE_SERVER" ] || [ "${USE_CACHED}" != true ]; then
+  printf "$${BOLD}Installing code-server!\n"
 
-ARGS=(
-  "--method=standalone"
-  "--prefix=${INSTALL_PREFIX}"
-)
-if [ -n "${VERSION}" ]; then
-  ARGS+=("--version=${VERSION}")
-fi
+  ARGS=(
+    "--method=standalone"
+    "--prefix=${INSTALL_PREFIX}"
+  )
+  if [ -n "${VERSION}" ]; then
+    ARGS+=("--version=${VERSION}")
+  fi
 
-output=$(curl -fsSL https://code-server.dev/install.sh | sh -s -- "$${ARGS[@]}")
-if [ $? -ne 0 ]; then
-  echo "Failed to install code-server: $output"
-  exit 1
+  output=$(curl -fsSL https://code-server.dev/install.sh | sh -s -- "$${ARGS[@]}")
+  if [ $? -ne 0 ]; then
+    echo "Failed to install code-server: $output"
+    exit 1
+  fi
+  printf "🥳 code-server has been installed in ${INSTALL_PREFIX}\n\n"
 fi
-printf "🥳 code-server has been installed in ${INSTALL_PREFIX}\n\n"
 
 # Install each extension...
 IFS=',' read -r -a EXTENSIONLIST <<< "$${EXTENSIONS}"
