@@ -29,11 +29,15 @@ function extension_installed() {
   if [ ! -f "$EXTENSIONS_FILE" ]; then
     return 1
   fi
-  if grep -q "\"$1\"" "$EXTENSIONS_FILE"; then
-    echo "Extension $1 was found in $EXTENSIONS_FILE."
-    return 0
+  if ! command -v grep > /dev/null; then
+    return 1
   fi
-  return 1
+  if ! grep -q "\"$1\"" "$EXTENSIONS_FILE"; then
+    return 1
+  fi
+
+  echo "Extension $1 was found in $EXTENSIONS_FILE."
+  return 0
 }
 
 # Check if the settings file exists...
