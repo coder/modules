@@ -18,6 +18,21 @@ function run_code_server() {
   $CODE_SERVER "$EXTENSION_ARG" --auth none --port "${PORT}" --app-name "${APP_NAME}" > "${LOG_PATH}" 2>&1 &
 }
 
+function extension_installed() {
+  if [ -z "${EXTENSIONS_DIR}" ]; then
+    return 1
+  fi
+  EXTENSIONS_FILE="${EXTENSIONS_DIR}/extensions.json"
+  if [ ! -f "$EXTENSIONS_FILE" ]; then
+    return 1
+  fi
+  if grep -q "\"$1\"" "$EXTENSIONS_FILE"; then
+    echo "Extension $1 was found in $EXTENSIONS_FILE."
+    return 0
+  fi
+  return 1
+}
+
 # Check if the settings file exists...
 if [ ! -f ~/.local/share/code-server/User/settings.json ]; then
   echo "⚙️ Creating settings file..."
@@ -63,6 +78,9 @@ for extension in "$${EXTENSIONLIST[@]}"; do
   if [ -z "$extension" ]; then
     continue
   fi
+  if extension_installed "$extension"; then
+    continue
+  fi
   printf "🧩 Installing extension $${CODE}$extension$${RESET}...\n"
   output=$($CODE_SERVER "$EXTENSION_ARG" --install-extension "$extension")
   if [ $? -ne 0 ]; then
@@ -86,6 +104,9 @@ if [ "${AUTO_INSTALL_EXTENSIONS}" = true ]; then
     printf "🧩 Installing extensions from %s/.vscode/extensions.json...\n" "$WORKSPACE_DIR"
     extensions=$(jq -r '.recommendations[]' "$WORKSPACE_DIR"/.vscode/extensions.json)
     for extension in $extensions; do
+      if extension_installed "$extension"; then
+        continue
+      fi
       $CODE_SERVER "$EXTENSION_ARG" --install-extension "$extension"
     done
   fi
