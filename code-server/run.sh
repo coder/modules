@@ -19,6 +19,9 @@ function run_code_server() {
 }
 
 function extension_installed() {
+  if [ "${USE_CACHED}" != true ]; then
+    return 1
+  fi
   if [ -z "${EXTENSIONS_DIR}" ]; then
     return 1
   fi
