@@ -19,7 +19,7 @@ function run_code_server() {
 }
 
 function extension_installed() {
-  if [ "${USE_CACHED}" != true ]; then
+  if [ "${USE_CACHED_EXTENSIONS}" != true ]; then
     return 1
   fi
   if [ -z "${EXTENSIONS_DIR}" ]; then
@@ -89,7 +89,7 @@ for extension in "$${EXTENSIONLIST[@]}"; do
     continue
   fi
   printf "🧩 Installing extension $${CODE}$extension$${RESET}...\n"
-  output=$($CODE_SERVER "$EXTENSION_ARG" --install-extension "$extension")
+  output=$($CODE_SERVER "$EXTENSION_ARG" --force --install-extension "$extension")
   if [ $? -ne 0 ]; then
     echo "Failed to install extension: $extension: $output"
     exit 1
@@ -114,7 +114,7 @@ if [ "${AUTO_INSTALL_EXTENSIONS}" = true ]; then
       if extension_installed "$extension"; then
         continue
       fi
-      $CODE_SERVER "$EXTENSION_ARG" --install-extension "$extension"
+      $CODE_SERVER "$EXTENSION_ARG" --force --install-extension "$extension"
     done
   fi
 fi
