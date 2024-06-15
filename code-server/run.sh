@@ -66,6 +66,7 @@ function extension_installed() {
   fi
   for _extension in "$${EXTENSIONS_ARRAY[@]}"; do
     if [ "$_extension" == "$1" ]; then
+      echo "Extension $1 was already installed."
       return 0
     fi
   done
