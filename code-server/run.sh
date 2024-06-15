@@ -18,28 +18,6 @@ function run_code_server() {
   $CODE_SERVER "$EXTENSION_ARG" --auth none --port "${PORT}" --app-name "${APP_NAME}" > "${LOG_PATH}" 2>&1 &
 }
 
-function extension_installed() {
-  if [ "${USE_CACHED_EXTENSIONS}" != true ]; then
-    return 1
-  fi
-  if [ -z "${EXTENSIONS_DIR}" ]; then
-    return 1
-  fi
-  EXTENSIONS_FILE="${EXTENSIONS_DIR}/extensions.json"
-  if [ ! -f "$EXTENSIONS_FILE" ]; then
-    return 1
-  fi
-  if ! command -v grep > /dev/null; then
-    return 1
-  fi
-  if ! grep -q "\"$1\"" "$EXTENSIONS_FILE"; then
-    return 1
-  fi
-
-  echo "Extension $1 was found in $EXTENSIONS_FILE."
-  return 0
-}
-
 # Check if the settings file exists...
 if [ ! -f ~/.local/share/code-server/User/settings.json ]; then
   echo "⚙️ Creating settings file..."
@@ -78,6 +56,21 @@ if [ ! -f "$CODE_SERVER" ] || [ "${USE_CACHED}" != true ]; then
   fi
   printf "🥳 code-server has been installed in ${INSTALL_PREFIX}\n\n"
 fi
+
+# Get the list of installed extensions...
+LIST_EXTENSIONS=$($CODE_SERVER --list-extensions $EXTENSION_ARG)
+readarray -t EXTENSIONS_ARRAY <<< "$LIST_EXTENSIONS"
+function extension_installed() {
+  if [ "${USE_CACHED_EXTENSIONS}" != true ]; then
+    return 1
+  fi
+  for _extension in "$${EXTENSIONS_ARRAY[@]}"; do
+    if [ "$_extension" == "$1" ]; then
+      return 0
+    fi
+  done
+  return 1
+}
 
 # Install each extension...
 IFS=',' read -r -a EXTENSIONLIST <<< "$${EXTENSIONS}"
