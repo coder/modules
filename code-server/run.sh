@@ -25,36 +25,53 @@ if [ ! -f ~/.local/share/code-server/User/settings.json ]; then
   echo "${SETTINGS}" > ~/.local/share/code-server/User/settings.json
 fi
 
-# Check if code-server is already installed for offline or cached mode
-if [ -f "$CODE_SERVER" ]; then
-  if [ "${OFFLINE}" = true ] || [ "${USE_CACHED}" = true ]; then
+# Check if code-server is already installed for offline
+if [ "${OFFLINE}" = true ]; then
+  if [ -f "$CODE_SERVER" ]; then
     echo "🥳 Found a copy of code-server"
     run_code_server
     exit 0
   fi
-fi
-# Offline mode always expects a copy of code-server to be present
-if [ "${OFFLINE}" = true ]; then
+  # Offline mode always expects a copy of code-server to be present
   echo "Failed to find a copy of code-server"
   exit 1
 fi
 
-printf "$${BOLD}Installing code-server!\n"
+# If there is no cached install OR we don't want to use a cached install
+if [ ! -f "$CODE_SERVER" ] || [ "${USE_CACHED}" != true ]; then
+  printf "$${BOLD}Installing code-server!\n"
 
-ARGS=(
-  "--method=standalone"
-  "--prefix=${INSTALL_PREFIX}"
-)
-if [ -n "${VERSION}" ]; then
-  ARGS+=("--version=${VERSION}")
+  ARGS=(
+    "--method=standalone"
+    "--prefix=${INSTALL_PREFIX}"
+  )
+  if [ -n "${VERSION}" ]; then
+    ARGS+=("--version=${VERSION}")
+  fi
+
+  output=$(curl -fsSL https://code-server.dev/install.sh | sh -s -- "$${ARGS[@]}")
+  if [ $? -ne 0 ]; then
+    echo "Failed to install code-server: $output"
+    exit 1
+  fi
+  printf "🥳 code-server has been installed in ${INSTALL_PREFIX}\n\n"
 fi
 
-output=$(curl -fsSL https://code-server.dev/install.sh | sh -s -- "$${ARGS[@]}")
-if [ $? -ne 0 ]; then
-  echo "Failed to install code-server: $output"
-  exit 1
-fi
-printf "🥳 code-server has been installed in ${INSTALL_PREFIX}\n\n"
+# Get the list of installed extensions...
+LIST_EXTENSIONS=$($CODE_SERVER --list-extensions $EXTENSION_ARG)
+readarray -t EXTENSIONS_ARRAY <<< "$LIST_EXTENSIONS"
+function extension_installed() {
+  if [ "${USE_CACHED_EXTENSIONS}" != true ]; then
+    return 1
+  fi
+  for _extension in "$${EXTENSIONS_ARRAY[@]}"; do
+    if [ "$_extension" == "$1" ]; then
+      echo "Extension $1 was already installed."
+      return 0
+    fi
+  done
+  return 1
+}
 
 # Install each extension...
 IFS=',' read -r -a EXTENSIONLIST <<< "$${EXTENSIONS}"
@@ -62,8 +79,11 @@ for extension in "$${EXTENSIONLIST[@]}"; do
   if [ -z "$extension" ]; then
     continue
   fi
+  if extension_installed "$extension"; then
+    continue
+  fi
   printf "🧩 Installing extension $${CODE}$extension$${RESET}...\n"
-  output=$($CODE_SERVER "$EXTENSION_ARG" --install-extension "$extension")
+  output=$($CODE_SERVER "$EXTENSION_ARG" --force --install-extension "$extension")
   if [ $? -ne 0 ]; then
     echo "Failed to install extension: $extension: $output"
     exit 1
@@ -85,7 +105,10 @@ if [ "${AUTO_INSTALL_EXTENSIONS}" = true ]; then
     printf "🧩 Installing extensions from %s/.vscode/extensions.json...\n" "$WORKSPACE_DIR"
     extensions=$(jq -r '.recommendations[]' "$WORKSPACE_DIR"/.vscode/extensions.json)
     for extension in $extensions; do
-      $CODE_SERVER "$EXTENSION_ARG" --install-extension "$extension"
+      if extension_installed "$extension"; then
+        continue
+      fi
+      $CODE_SERVER "$EXTENSION_ARG" --force --install-extension "$extension"
     done
   fi
 fi

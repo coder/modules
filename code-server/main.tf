@@ -95,6 +95,12 @@ variable "use_cached" {
   default     = false
 }
 
+variable "use_cached_extensions" {
+  type        = bool
+  description = "Uses cached copy of extensions, otherwise do a forced upgrade"
+  default     = false
+}
+
 variable "extensions_dir" {
   type        = string
   description = "Override the directory to store extensions in."
@@ -122,6 +128,7 @@ resource "coder_script" "code-server" {
     SETTINGS : replace(jsonencode(var.settings), "\"", "\\\""),
     OFFLINE : var.offline,
     USE_CACHED : var.use_cached,
+    USE_CACHED_EXTENSIONS : var.use_cached_extensions,
     EXTENSIONS_DIR : var.extensions_dir,
     FOLDER : var.folder,
     AUTO_INSTALL_EXTENSIONS : var.auto_install_extensions,
