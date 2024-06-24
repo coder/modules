@@ -100,7 +100,7 @@ resource "coder_script" "windows-rdp" {
       CODER_PASSWORD : var.admin_password,
     }" | Set-Content "$root\coder.js"
     # Only inject the src if we have not before.
-    if ($isPatched -e $null) {
+    if ($isPatched -eq $null) {
       (Get-Content $devolutionsHtml).Replace('</app-root>', "</app-root>$patch") | Set-Content $devolutionsHtml
     }
   }
