@@ -103,7 +103,7 @@ ${templatefile("${path.module}/devolutions-patch.js", {
 '@ | Set-Content "$root\coder.js"
 
     # Only inject the src if we have not before.
-    $isPatched = Select-String -Path "$devolutionsHtml" -Pattern "$patch"
+    $isPatched = Select-String -Path "$devolutionsHtml" -Pattern "$patch" -SimpleMatch
     if ($isPatched -eq $null) {
       (Get-Content $devolutionsHtml).Replace('</app-root>', "</app-root>$patch") | Set-Content $devolutionsHtml
     }
