@@ -48,7 +48,7 @@ const formFieldEntries = {
     querySelector: "web-client-username-control input",
 
     /** @readonly */
-    value: "CODER_USERNAME",
+    value: "${CODER_USERNAME}",
   },
 
   /** @readonly */
@@ -57,7 +57,7 @@ const formFieldEntries = {
     querySelector: "web-client-password-control input",
 
     /** @readonly */
-    value: "CODER_PASSWORD",
+    value: "${CODER_PASSWORD}",
   },
 };
 
@@ -135,7 +135,7 @@ function setInputValue(inputField, inputText) {
           if (i === -1) {
             inputField.value = "";
           } else {
-            inputField.value = `${inputField.value}${currentChar}`;
+            inputField.value = `$${inputField.value}$${currentChar}`;
           }
 
           inputField.dispatchEvent(inputEvent);
@@ -184,7 +184,7 @@ async function autoSubmitForm(myForm) {
     // they're part of the form. Avoids CSS stacking context issues, maybe?
     /** @type {HTMLLIElement | null} */
     const protocolOption = document.querySelector(
-      `p-dropdownitem[ng-reflect-label="${PROTOCOL}"] li`,
+      `p-dropdownitem[ng-reflect-label="$${PROTOCOL}"] li`,
     );
 
     if (protocolOption === null) {
@@ -223,7 +223,7 @@ async function autoSubmitForm(myForm) {
 
       if (input === null) {
         throw new Error(
-          `Unable to element that matches query "${querySelector}"`,
+          `Unable to element that matches query "$${querySelector}"`,
         );
       }
 
@@ -332,7 +332,7 @@ function setupFormDetection() {
 function setupObscuringStyles() {
   const styleId = "coder-patch--styles";
 
-  const existingContainer = document.querySelector(`#${styleId}`);
+  const existingContainer = document.querySelector(`#$${styleId}`);
   if (existingContainer) {
     return;
   }
