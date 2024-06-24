@@ -94,12 +94,13 @@ resource "coder_script" "windows-rdp" {
     $devolutionsHtml = "$root\index.html"
     $patch = '<script defer id="coder-patch" src="coder.js"></script>'
     $isPatched = Select-String -Path "$devolutionsHtml" -Pattern "$patch"
+    # Always copy the file in case we change it.
+    "templatefile("${path.module}/devolutions-patch.js", {
+      CODER_USERNAME : var.admin_username,
+      CODER_PASSWORD : var.admin_password,
+    }" | Set-Content "$root\coder.js"
+    # Only inject the src if we have not before.
     if ($isPatched -e $null) {
-      "templatefile("${path.module}/devolutions-patch.js", {
-        CODER_USERNAME : var.admin_username,
-        CODER_PASSWORD : var.admin_password,
-      }" | Set-Content "$root\coder.js"
-      
       (Get-Content $devolutionsHtml).Replace('</app-root>', "</app-root>$patch") | Set-Content $devolutionsHtml
     }
   }
