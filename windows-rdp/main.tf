@@ -89,9 +89,25 @@ resource "coder_script" "windows-rdp" {
     Start-Service 'DevolutionsGateway'
   }
 
+  function Patch-Devolutions-HTML {
+    $root = "C:\Program Files\Devolutions\Gateway\webapp\client"
+    $devolutionsHtml = "$root\index.html"
+    $patch = '<script defer id="coder-patch" src="coder.js"></script>'
+    $isPatched = Select-String -Path "$devolutionsHtml" -Pattern "$patch"
+    if ($isPatched -e $null) {
+      "templatefile("${path.module}/devolutions-patch.js", {
+        CODER_USERNAME : var.admin_username,
+        CODER_PASSWORD : var.admin_password,
+      }" | Set-Content "$root\coder.js"
+      
+      (Get-Content $devolutionsHtml).Replace('</app-root>', "</app-root>$patch") | Set-Content $devolutionsHtml
+    }
+  }
+
   Set-AdminPassword -adminPassword "${var.admin_password}"
   Configure-RDP
   Install-DevolutionsGateway
+  Patch-Devolutions-HTML
 
   EOF
 

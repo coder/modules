@@ -35,8 +35,8 @@ const SCREEN_POLL_INTERVAL_MS = 500;
  * values from the Coder workspace.
  *
  * All properties should be defined as placeholder templates in the form
- * {{ VALUE_NAME }}. The Coder module, when spun up, should then run some logic
- * to replace the template slots with actual values. These values should never
+ * VALUE_NAME. The Coder module, when spun up, should then run some logic to
+ * replace the template slots with actual values. These values should never
  * change from within JavaScript itself.
  *
  * @satisfies {FormFieldEntries}
@@ -48,7 +48,7 @@ const formFieldEntries = {
     querySelector: "web-client-username-control input",
 
     /** @readonly */
-    value: "{{ CODER_USERNAME }}",
+    value: "CODER_USERNAME",
   },
 
   /** @readonly */
@@ -57,7 +57,7 @@ const formFieldEntries = {
     querySelector: "web-client-password-control input",
 
     /** @readonly */
-    value: "{{ CODER_PASSWORD }}",
+    value: "CODER_PASSWORD",
   },
 };
 
