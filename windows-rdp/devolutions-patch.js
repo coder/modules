@@ -426,19 +426,12 @@ function hideFormForInitialSubmission() {
       rootNode.style.setProperty("--coder-opacity-multiplier", "1");
     };
 
-    const timeoutId = window.setTimeout(() => {
-      restoreOpacity();
-      form.removeEventListener("submit", restoreOpacity);
-    }, 5_000);
-
-    form.addEventListener(
-      "submit",
-      () => {
-        restoreOpacity();
-        window.clearTimeout(timeoutId);
-      },
-      { once: true },
-    );
+    // If this file gets more complicated, it might make sense to set up the
+    // timeout and event listener so that if one triggers, it cancels the other,
+    // but having restoreOpacity run more than once is a no-op for right now.
+    // Not a big deal if these don't get cleaned up.
+    window.setTimeout(restoreOpacity, 5_000);
+    form.addEventListener("submit", restoreOpacity, { once: true });
   };
 
   intervalId = window.setInterval(
