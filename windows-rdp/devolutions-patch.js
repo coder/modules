@@ -359,41 +359,41 @@ function setupAlwaysOnStyles() {
 
 function hideFormForInitialSubmission() {
   const styleId = "coder-patch--styles-initial-submission";
-  const existingContainer = document.querySelector("#" + styleId);
-  if (existingContainer) {
-    return;
-  }
 
-  const styleContainer = document.createElement("style");
-  styleContainer.id = styleId;
-  styleContainer.innerHTML = `
-    /*
-       Have to use opacity instead of visibility, because the element still
-       needs to be interactive via the script so that it can be auto-filled.
-     */
-    :root {
+  /** @type {HTMLStyleElement | null} */
+  let styleContainer = document.querySelector("#" + styleId);
+  if (!styleContainer) {
+    styleContainer = document.createElement("style");
+    styleContainer.id = styleId;
+    styleContainer.innerHTML = `
       /*
-        Can be 0 or 1. Start off invisible to avoid risks of UI flickering, but
-        the rest of the function should be in charge of making the form
-        container visible again if something goes wrong during setup.
+        Have to use opacity instead of visibility, because the element still
+        needs to be interactive via the script so that it can be auto-filled.
       */
-      --coder-opacity-multiplier: 1;
-    }
+      :root {
+        /*
+          Can be 0 or 1. Start off invisible to avoid risks of UI flickering,
+          but the rest of the function should be in charge of making the form
+          container visible again if something goes wrong during setup.
+        */
+        --coder-opacity-multiplier: 1;
+      }
 
-    /* web-client-form is the container for the main session form */
-    web-client-form {
-      opacity: calc(100% * var(--coder-opacity-multiplier)) !important;
-    }
-  `;
+      /* web-client-form is the container for the main session form */
+      web-client-form {
+        opacity: calc(100% * var(--coder-opacity-multiplier)) !important;
+      }
+    `;
 
-  document.head.appendChild(styleContainer);
+    document.head.appendChild(styleContainer);
+  }
 
   // The root node being undefined should be physically impossible (if it's
   // undefined, the browser itself is busted), but we need to do a type check
   // here so that the rest of the function doesn't need to do type checks over
   // and over.
   const rootNode = document.querySelector(":root");
-  if (!(rootNode instanceof HTMLElement)) {
+  if (!(rootNode instanceof HTMLHtmlElement)) {
     styleContainer.innerHTML = "";
     return;
   }
