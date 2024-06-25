@@ -103,9 +103,9 @@ function setInputValue(inputField, inputText) {
     }, 3_000);
 
     const handleSuccessfulDispatch = () => {
-      resolve();
       window.clearTimeout(timeoutId);
       inputField.removeEventListener("input", handleSuccessfulDispatch);
+      resolve();
     };
 
     inputField.addEventListener("input", handleSuccessfulDispatch);
@@ -334,6 +334,8 @@ function hideFormForInitialSubmission() {
           Can be 0 or 1. Start off invisible to avoid risks of UI flickering,
           but the rest of the function should be in charge of making the form
           container visible again if something goes wrong during setup.
+
+          Double dollar sign needed to avoid Terraform script false positives
         */
         $${cssOpacityVariableName}: 0;
       }
@@ -346,6 +348,9 @@ function hideFormForInitialSubmission() {
        */
       web-client-form,
       body > div.p-overlay {
+        /*
+          Double dollar sign needed to avoid Terraform script false positives
+        */
         opacity: calc(100% * var($${cssOpacityVariableName})) !important;
       }
     `;
