@@ -427,18 +427,14 @@ function hideFormForInitialSubmission() {
   );
 }
 
-function setupFormOverrides() {
-  hideFormForInitialSubmission();
-  setupFormDetection();
-}
-
 // Always safe to call this immediately because even if the Angular app isn't
 // loaded by the time the function gets called, the CSS will always be globally
 // available for when Angular is finally ready
 setupAlwaysOnStyles();
+hideFormForInitialSubmission();
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", setupFormOverrides);
+  document.addEventListener("DOMContentLoaded", setupFormDetection);
 } else {
-  setupFormOverrides();
+  setupFormDetection();
 }
