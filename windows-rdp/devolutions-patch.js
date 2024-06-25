@@ -381,8 +381,14 @@ function hideFormForInitialSubmission() {
         $${cssOpacityVariableName}: 0;
       }
 
-      /* web-client-form is the container for the main session form */
-      web-client-form {
+      /*
+        web-client-form is the container for the main session form, while
+        the div is for the dropdown that is used for selecting the protocol.
+        The dropdown is not inside of the form for CSS styling reasons, so we
+        need to select both.
+       */
+      web-client-form,
+      body > div.p-overlay {
         opacity: calc(100% * var($${cssOpacityVariableName})) !important;
       }
     `;
