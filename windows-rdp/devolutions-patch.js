@@ -408,38 +408,15 @@ function hideFormForInitialSubmission() {
     rootNode.style.setProperty(opacityVariableName, "1");
   };
 
-  /** @type {number | undefined} */
-  let intervalId = undefined;
-  const pollingTimeoutMs = 5_000;
-  let pollAttempts = 0;
+  // If this file gets more complicated, it might make sense to set up the
+  // timeout and event listener so that if one triggers, it cancels the other,
+  // but having restoreOpacity run more than once is a no-op for right now.
+  // Not a big deal if these don't get cleaned up.
 
-  const checkIfSafeToHideForm = () => {
-    /** @type {HTMLFormElement | null} */
-    const form = document.querySelector("web-client-form > form");
-    if (form === null) {
-      pollAttempts++;
-      const elapsedTime = pollAttempts * SCREEN_POLL_INTERVAL_MS;
-
-      if (elapsedTime >= pollingTimeoutMs) {
-        restoreOpacity();
-        window.clearInterval(intervalId);
-      }
-
-      return;
-    }
-
-    // If this file gets more complicated, it might make sense to set up the
-    // timeout and event listener so that if one triggers, it cancels the other,
-    // but having restoreOpacity run more than once is a no-op for right now.
-    // Not a big deal if these don't get cleaned up.
-    window.setTimeout(restoreOpacity, 5_000);
-    form.addEventListener("submit", restoreOpacity, { once: true });
-  };
-
-  intervalId = window.setInterval(
-    checkIfSafeToHideForm,
-    SCREEN_POLL_INTERVAL_MS,
-  );
+  /** @type {HTMLFormElement | null} */
+  const form = document.querySelector("web-client-form > form");
+  form?.addEventListener("submit", restoreOpacity, { once: true });
+  window.setTimeout(restoreOpacity, 5_000);
 }
 
 function setupFormOverrides() {
