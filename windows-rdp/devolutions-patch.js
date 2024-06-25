@@ -16,6 +16,11 @@
  *   these characters so that it can inject Coder-specific values, so any
  *   template literal that uses the character actually needs to double up each
  *   of them
+ * - All the CSS should be written via custom style tags and the !important
+ *   directive (as much as that is a bad idea most of the time). We do not
+ *   control the Angular app, so we have to modify things from afar to ensure
+ *   that as Angular's internal state changes, it doesn't modify its HTML nodes
+ *   in a way that causes our custom styles to get wiped away.
  *
  * @typedef {Readonly<{ querySelector: string; value: string; }>} FormFieldEntry
  * @typedef {Readonly<Record<string, FormFieldEntry>>} FormFieldEntries
@@ -90,7 +95,7 @@ const formFieldEntries = {
 function setInputValue(inputField, inputText) {
   const continueEventName = "coder-patch--continue";
 
-  const promise = /** @type {Promise<void>} */ (
+  const keyboardInputPromise = /** @type {Promise<void>} */ (
     new Promise((resolve, reject) => {
       if (inputText === "") {
         resolve();
@@ -156,7 +161,7 @@ function setInputValue(inputField, inputText) {
     })
   );
 
-  return promise;
+  return keyboardInputPromise;
 }
 
 /**
@@ -274,8 +279,6 @@ function setupFormDetection() {
 
   /** @returns {void} */
   const onDynamicTabMutation = () => {
-    console.log("Ran on mutation!");
-
     /** @type {HTMLFormElement | null} */
     const latestForm = document.querySelector("web-client-form > form");
 
@@ -335,9 +338,8 @@ function setupFormDetection() {
  *
  * @returns {void}
  */
-function setupObscuringStyles() {
-  const styleId = "coder-patch--styles";
-
+function setupAlwaysOnStyles() {
+  const styleId = "coder-patch--styles-always-on";
   const existingContainer = document.querySelector("#" + styleId);
   if (existingContainer) {
     return;
@@ -355,10 +357,105 @@ function setupObscuringStyles() {
   document.head.appendChild(styleContainer);
 }
 
+function hideFormForInitialSubmission() {
+  const styleId = "coder-patch--styles-initial-submission";
+  const existingContainer = document.querySelector("#" + styleId);
+  if (existingContainer) {
+    return;
+  }
+
+  const styleContainer = document.createElement("style");
+  styleContainer.id = styleId;
+  styleContainer.innerHTML = `
+    /*
+       Have to use opacity instead of visibility, because the element still
+       needs to be interactive via the script so that it can be auto-filled.
+     */
+    :root {
+      /*
+        Can be 0 or 1. Start off invisible to avoid risks of UI flickering, but
+        the rest of the function should be in charge of making the form
+        container visible again if something goes wrong during setup.
+      */
+      --coder-opacity-multiplier: 1;
+    }
+
+    /* web-client-form is the container for the main session form */
+    web-client-form {
+      opacity: calc(100% * var(--coder-opacity-multiplier)) !important;
+    }
+  `;
+
+  document.head.appendChild(styleContainer);
+
+  // The root node being undefined should be physically impossible (if it's
+  // undefined, the browser itself is busted), but we need to do a type check
+  // here so that the rest of the function doesn't need to do type checks over
+  // and over.
+  const rootNode = document.querySelector(":root");
+  if (!(rootNode instanceof HTMLElement)) {
+    styleContainer.innerHTML = "";
+    return;
+  }
+
+  /** @type {number | undefined} */
+  let intervalId = undefined;
+  const maxScreenPolls = 3;
+  let pollAttempts = 0;
+
+  const checkIfSafeToHideForm = () => {
+    /** @type {HTMLFormElement | null} */
+    const form = document.querySelector("web-client-form > form");
+    if (form === null) {
+      pollAttempts++;
+      if (pollAttempts === maxScreenPolls) {
+        window.clearInterval(intervalId);
+      }
+
+      return;
+    }
+
+    // Now that we know the container exists, it's safe to hide it
+    rootNode.style.setProperty("--coder-opacity-multiplier", "0");
+
+    // It's safe to make the form visible preemptively because Devolutions
+    // outputs the Windows view through an HTML canvas that it overlays on top
+    // of the rest of the app. Even if the form isn't hidden at the style level,
+    // it will still be covered up.
+    const restoreOpacity = () => {
+      rootNode.style.setProperty("--coder-opacity-multiplier", "1");
+    };
+
+    const timeoutId = window.setTimeout(() => {
+      restoreOpacity();
+      form.removeEventListener("submit", restoreOpacity);
+    }, 5_000);
+
+    form.addEventListener(
+      "submit",
+      () => {
+        restoreOpacity();
+        window.clearTimeout(timeoutId);
+      },
+      { once: true },
+    );
+  };
+
+  intervalId = window.setInterval(
+    checkIfSafeToHideForm,
+    SCREEN_POLL_INTERVAL_MS,
+  );
+}
+
+function setupFormOverrides() {
+  hideFormForInitialSubmission();
+  setupFormDetection();
+}
+
 // Always safe to call setupObscuringStyles immediately because even if the
 // Angular app isn't loaded by the time the function gets called, the CSS will
 // always be globally available for when Angular is finally ready
-setupObscuringStyles();
+setupAlwaysOnStyles();
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", setupFormDetection);
