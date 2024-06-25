@@ -8,8 +8,14 @@
  * that you can take advantage of the @ts-check directive and get some type-
  * checking still.
  *
- * A lot of the HTML selectors in this file will look nonstandard. This is
- * because they are actually custom Angular components.
+ * Other notes about the weird ways this file is set up:
+ * - A lot of the HTML selectors in this file will look nonstandard. This is
+ *   because they are actually custom Angular components.
+ * - It is strongly advised that you avoid template literals that use the
+ *   placeholder syntax via the dollar sign. The Terraform script looks for
+ *   these characters so that it can inject Coder-specific values, so any
+ *   template literal that uses the character actually needs to double up each
+ *   of them
  *
  * @typedef {Readonly<{ querySelector: string; value: string; }>} FormFieldEntry
  * @typedef {Readonly<Record<string, FormFieldEntry>>} FormFieldEntries
@@ -135,7 +141,7 @@ function setInputValue(inputField, inputText) {
           if (i === -1) {
             inputField.value = "";
           } else {
-            inputField.value = `$${inputField.value}$${currentChar}`;
+            inputField.value = inputField.value + currentChar;
           }
 
           inputField.dispatchEvent(inputEvent);
@@ -171,7 +177,7 @@ function setInputValue(inputField, inputText) {
 async function autoSubmitForm(myForm) {
   const setProtocolValue = () => {
     /** @type {HTMLDivElement | null} */
-    const protocolDropdownTrigger = myForm.querySelector(`div[role="button"]`);
+    const protocolDropdownTrigger = myForm.querySelector('div[role="button"]');
     if (protocolDropdownTrigger === null) {
       throw new Error("No clickable trigger for setting protocol value");
     }
@@ -184,7 +190,7 @@ async function autoSubmitForm(myForm) {
     // they're part of the form. Avoids CSS stacking context issues, maybe?
     /** @type {HTMLLIElement | null} */
     const protocolOption = document.querySelector(
-      `p-dropdownitem[ng-reflect-label="$${PROTOCOL}"] li`,
+      'p-dropdownitem[ng-reflect-label="' + PROTOCOL + '" li',
     );
 
     if (protocolOption === null) {
@@ -223,7 +229,7 @@ async function autoSubmitForm(myForm) {
 
       if (input === null) {
         throw new Error(
-          `Unable to element that matches query "$${querySelector}"`,
+          'Unable to element that matches query "' + querySelector + '"',
         );
       }
 
@@ -332,7 +338,7 @@ function setupFormDetection() {
 function setupObscuringStyles() {
   const styleId = "coder-patch--styles";
 
-  const existingContainer = document.querySelector(`#$${styleId}`);
+  const existingContainer = document.querySelector("#" + styleId);
   if (existingContainer) {
     return;
   }
