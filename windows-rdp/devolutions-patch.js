@@ -195,7 +195,7 @@ async function autoSubmitForm(myForm) {
     // they're part of the form. Avoids CSS stacking context issues, maybe?
     /** @type {HTMLLIElement | null} */
     const protocolOption = document.querySelector(
-      'p-dropdownitem[ng-reflect-label="' + PROTOCOL + '" li',
+      'p-dropdownitem[ng-reflect-label="' + PROTOCOL + '"] li',
     );
 
     if (protocolOption === null) {
@@ -451,7 +451,7 @@ function setupFormOverrides() {
 setupAlwaysOnStyles();
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", setupFormDetection);
+  document.addEventListener("DOMContentLoaded", setupFormOverrides);
 } else {
-  setupFormDetection();
+  setupFormOverrides();
 }
