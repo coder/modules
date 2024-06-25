@@ -74,9 +74,9 @@ const formFieldEntries = {
 };
 
 /**
- * Handles typing in the values for the input form, dispatching each character
- * as an event. This function assumes that all characters in the input will be
- * UTF-8.
+ * Handles typing in the values for the input form. All values are written
+ * immediately, even though that would be physically impossible with a real
+ * keyboard.
  *
  * Note: this code will never break, but you might get warnings in the console
  * from Angular about unexpected value changes. Angular patches over a lot of
@@ -94,75 +94,32 @@ const formFieldEntries = {
  * @returns {Promise<void>}
  */
 function setInputValue(inputField, inputText) {
-  const continueEventName = "coder-patch--continue";
+  return new Promise((resolve, reject) => {
+    // Adding timeout for input event, even though we'll be dispatching it
+    // immediately, just in the off chance that something in the Angular app
+    // intercepts it or stops it from propagating properly
+    const timeoutId = window.setTimeout(() => {
+      reject(new Error("Input event did not get processed correctly in time."));
+    }, 3_000);
 
-  const keyboardInputPromise = /** @type {Promise<void>} */ (
-    new Promise((resolve, reject) => {
-      if (inputText === "") {
-        resolve();
-        return;
-      }
+    const handleSuccessfulDispatch = () => {
+      resolve();
+      window.clearTimeout(timeoutId);
+      inputField.removeEventListener("input", handleSuccessfulDispatch);
+    };
 
-      // -1 indicates a "pre-write" for clearing out the input before trying to
-      // write new text to it
-      let i = -1;
+    inputField.addEventListener("input", handleSuccessfulDispatch);
 
-      // requestAnimationFrame is not capable of giving back values of 0 for its
-      // task IDs. Good default value to ensure that we don't need if statements
-      // when trying to cancel anything
-      let currentAnimationId = 0;
+    // Code assumes that Angular will have an event handler in place to handle
+    // the new event
+    const inputEvent = new Event("input", {
+      bubbles: true,
+      cancelable: true,
+    });
 
-      // Super easy to pool the same event objects, because the events don't
-      // have any custom, context-specific values on them, and they're
-      // restricted to this one callback.
-      const continueEvent = new CustomEvent(continueEventName);
-      const inputEvent = new Event("input", {
-        bubbles: true,
-        cancelable: true,
-      });
-
-      /** @returns {void} */
-      const handleNextCharIndex = () => {
-        if (i === inputText.length) {
-          resolve();
-          return;
-        }
-
-        const currentChar = inputText[i];
-        if (i !== -1 && currentChar === undefined) {
-          throw new Error("Went out of bounds");
-        }
-
-        try {
-          inputField.addEventListener(
-            continueEventName,
-            () => {
-              i++;
-              currentAnimationId =
-                window.requestAnimationFrame(handleNextCharIndex);
-            },
-            { once: true },
-          );
-
-          if (i === -1) {
-            inputField.value = "";
-          } else {
-            inputField.value = inputField.value + currentChar;
-          }
-
-          inputField.dispatchEvent(inputEvent);
-          inputField.dispatchEvent(continueEvent);
-        } catch (err) {
-          cancelAnimationFrame(currentAnimationId);
-          reject(err);
-        }
-      };
-
-      currentAnimationId = window.requestAnimationFrame(handleNextCharIndex);
-    })
-  );
-
-  return keyboardInputPromise;
+    inputField.value = inputText;
+    inputField.dispatchEvent(inputEvent);
+  });
 }
 
 /**
