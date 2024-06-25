@@ -360,7 +360,7 @@ function setupAlwaysOnStyles() {
 
 function hideFormForInitialSubmission() {
   const styleId = "coder-patch--styles-initial-submission";
-  const opacityVariableName = "--coder-opacity-multiplier";
+  const cssOpacityVariableName = "--coder-opacity-multiplier";
 
   /** @type {HTMLStyleElement | null} */
   let styleContainer = document.querySelector("#" + styleId);
@@ -378,12 +378,12 @@ function hideFormForInitialSubmission() {
           but the rest of the function should be in charge of making the form
           container visible again if something goes wrong during setup.
         */
-        $${opacityVariableName}: 0;
+        $${cssOpacityVariableName}: 0;
       }
 
       /* web-client-form is the container for the main session form */
       web-client-form {
-        opacity: calc(100% * var($${opacityVariableName})) !important;
+        opacity: calc(100% * var($${cssOpacityVariableName})) !important;
       }
     `;
 
@@ -405,18 +405,26 @@ function hideFormForInitialSubmission() {
   // of the rest of the app. Even if the form isn't hidden at the style level,
   // it will still be covered up.
   const restoreOpacity = () => {
-    rootNode.style.setProperty(opacityVariableName, "1");
+    rootNode.style.setProperty(cssOpacityVariableName, "1");
   };
 
   // If this file gets more complicated, it might make sense to set up the
   // timeout and event listener so that if one triggers, it cancels the other,
   // but having restoreOpacity run more than once is a no-op for right now.
   // Not a big deal if these don't get cleaned up.
+  window.setTimeout(restoreOpacity, 5_000);
 
   /** @type {HTMLFormElement | null} */
   const form = document.querySelector("web-client-form > form");
-  form?.addEventListener("submit", restoreOpacity, { once: true });
-  window.setTimeout(restoreOpacity, 5_000);
+  form?.addEventListener(
+    "submit",
+    () => {
+      // Not restoring opacity right away just to give the HTML canvas a little
+      // bit of time to get spun up and cover up the main form
+      window.setTimeout(restoreOpacity, 1_000);
+    },
+    { once: true },
+  );
 }
 
 function setupFormOverrides() {
