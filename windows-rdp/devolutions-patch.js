@@ -395,7 +395,7 @@ function hideFormForInitialSubmission() {
   );
 }
 
-// Always safe to call this immediately because even if the Angular app isn't
+// Always safe to call these immediately because even if the Angular app isn't
 // loaded by the time the function gets called, the CSS will always be globally
 // available for when Angular is finally ready
 setupAlwaysOnStyles();
