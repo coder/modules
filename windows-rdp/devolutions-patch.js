@@ -15,7 +15,8 @@
  *   placeholder syntax via the dollar sign. The Terraform script looks for
  *   these characters so that it can inject Coder-specific values, so any
  *   template literal that uses the character actually needs to double up each
- *   of them
+ *   of them. There are already a few places in this file where it couldn't be
+ *   avoided, but it will save you some headache.
  * - All the CSS should be written via custom style tags and the !important
  *   directive (as much as that is a bad idea most of the time). We do not
  *   control the Angular app, so we have to modify things from afar to ensure
@@ -359,6 +360,7 @@ function setupAlwaysOnStyles() {
 
 function hideFormForInitialSubmission() {
   const styleId = "coder-patch--styles-initial-submission";
+  const opacityVariableName = "--coder-opacity-multiplier";
 
   /** @type {HTMLStyleElement | null} */
   let styleContainer = document.querySelector("#" + styleId);
@@ -376,12 +378,12 @@ function hideFormForInitialSubmission() {
           but the rest of the function should be in charge of making the form
           container visible again if something goes wrong during setup.
         */
-        --coder-opacity-multiplier: 1;
+        $${opacityVariableName}: 0;
       }
 
       /* web-client-form is the container for the main session form */
       web-client-form {
-        opacity: calc(100% * var(--coder-opacity-multiplier)) !important;
+        opacity: calc(100% * var($${opacityVariableName})) !important;
       }
     `;
 
@@ -398,9 +400,17 @@ function hideFormForInitialSubmission() {
     return;
   }
 
+  // It's safe to make the form visible preemptively because Devolutions
+  // outputs the Windows view through an HTML canvas that it overlays on top
+  // of the rest of the app. Even if the form isn't hidden at the style level,
+  // it will still be covered up.
+  const restoreOpacity = () => {
+    rootNode.style.setProperty(opacityVariableName, "1");
+  };
+
   /** @type {number | undefined} */
   let intervalId = undefined;
-  const maxScreenPolls = 3;
+  const pollingTimeoutMs = 5_000;
   let pollAttempts = 0;
 
   const checkIfSafeToHideForm = () => {
@@ -408,23 +418,15 @@ function hideFormForInitialSubmission() {
     const form = document.querySelector("web-client-form > form");
     if (form === null) {
       pollAttempts++;
-      if (pollAttempts === maxScreenPolls) {
+      const elapsedTime = pollAttempts * SCREEN_POLL_INTERVAL_MS;
+
+      if (elapsedTime >= pollingTimeoutMs) {
+        restoreOpacity();
         window.clearInterval(intervalId);
       }
 
       return;
     }
-
-    // Now that we know the container exists, it's safe to hide it
-    rootNode.style.setProperty("--coder-opacity-multiplier", "0");
-
-    // It's safe to make the form visible preemptively because Devolutions
-    // outputs the Windows view through an HTML canvas that it overlays on top
-    // of the rest of the app. Even if the form isn't hidden at the style level,
-    // it will still be covered up.
-    const restoreOpacity = () => {
-      rootNode.style.setProperty("--coder-opacity-multiplier", "1");
-    };
 
     // If this file gets more complicated, it might make sense to set up the
     // timeout and event listener so that if one triggers, it cancels the other,
