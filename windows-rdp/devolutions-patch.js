@@ -16,7 +16,7 @@
  *   these characters so that it can inject Coder-specific values, so any
  *   template literal that uses the character actually needs to double up each
  *   of them. There are already a few places in this file where it couldn't be
- *   avoided, but it will save you some headache.
+ *   avoided, but avoiding this as much as possible will save you some headache.
  * - All the CSS should be written via custom style tags and the !important
  *   directive (as much as that is a bad idea most of the time). We do not
  *   control the Angular app, so we have to modify things from afar to ensure
@@ -240,16 +240,12 @@ function setupFormDetection() {
     /** @type {HTMLFormElement | null} */
     const latestForm = document.querySelector("web-client-form > form");
 
-    if (latestForm === null) {
-      formValueFromLastMutation = null;
-      return;
-    }
-
     // Only try to auto-fill if we went from having no form on screen to
     // having a form on screen. That way, we don't accidentally override the
     // form if the user is trying to customize values, and this essentially
     // makes the script values function as default values
-    if (formValueFromLastMutation === null) {
+    const mounted = formValueFromLastMutation === null && latestForm !== null;
+    if (mounted) {
       autoSubmitForm(latestForm);
     }
 
@@ -364,7 +360,10 @@ function hideFormForInitialSubmission() {
   // and over.
   const rootNode = document.querySelector(":root");
   if (!(rootNode instanceof HTMLHtmlElement)) {
-    styleContainer.innerHTML = "";
+    // Remove the container entirely because if the browser is busted, who knows
+    // if the CSS variables can be applied correctly. Better to have something
+    // be a bit more ugly/painful to use, than have it be impossible to use
+    styleContainer.remove();
     return;
   }
 
@@ -380,6 +379,9 @@ function hideFormForInitialSubmission() {
   // timeout and event listener so that if one triggers, it cancels the other,
   // but having restoreOpacity run more than once is a no-op for right now.
   // Not a big deal if these don't get cleaned up.
+
+  // Have the form automatically reappear no matter what, so that if something
+  // does break, the user isn't left out to dry
   window.setTimeout(restoreOpacity, 5_000);
 
   /** @type {HTMLFormElement | null} */
