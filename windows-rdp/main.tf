@@ -56,57 +56,62 @@ resource "coder_script" "windows-rdp" {
   }
 
   function Install-DevolutionsGateway {
-    # Define the module name and version
-    $moduleName = "DevolutionsGateway"
-    $moduleVersion = "2024.1.5"
+      # Define the module name and version
+      $moduleName = "DevolutionsGateway"
+      $moduleVersion = "2024.1.5"
 
-    # Install the module with the specified version for all users
-    # This requires administrator privileges
-    Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force
+      try {
+          # Try to import the module directly
+          Import-Module $moduleName -ErrorAction Stop
+      } catch {
+          # If it fails, install and then import the module
+          Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force -Confirm:$false -SkipPublisherCheck
 
-    # Construct the module path for system-wide installation
-    $moduleBasePath = "C:\Windows\system32\config\systemprofile\Documents\PowerShell\Modules\$moduleName\$moduleVersion"
-    $modulePath = Join-Path -Path $moduleBasePath -ChildPath "$moduleName.psd1"
+          # Construct the module path for system-wide installation
+          $moduleBasePath = "C:\Windows\system32\config\systemprofile\Documents\PowerShell\Modules\$moduleName\$moduleVersion"
+          $modulePath = Join-Path -Path $moduleBasePath -ChildPath "$moduleName.psd1"
 
-    # Import the module using the full path
-    Import-Module $modulePath
-    Install-DGatewayPackage
+          # Import the module using the full path
+          Import-Module $modulePath
+      }
 
-    # Configure Devolutions Gateway
-    $Hostname = "localhost"
-    $HttpListener = New-DGatewayListener 'http://*:7171' 'http://*:7171'
-    $WebApp = New-DGatewayWebAppConfig -Enabled $true -Authentication None
-    $ConfigParams = @{
-      Hostname = $Hostname
-      Listeners = @($HttpListener)
-      WebApp = $WebApp
-    }
-    Set-DGatewayConfig @ConfigParams
-    New-DGatewayProvisionerKeyPair -Force
+      Install-DGatewayPackage
 
-    # Configure and start the Windows service
-    Set-Service 'DevolutionsGateway' -StartupType 'Automatic'
-    Start-Service 'DevolutionsGateway'
+      # Configure Devolutions Gateway
+      $Hostname = "localhost"
+      $HttpListener = New-DGatewayListener 'http://*:7171' 'http://*:7171'
+      $WebApp = New-DGatewayWebAppConfig -Enabled $true -Authentication None
+      $ConfigParams = @{
+          Hostname = $Hostname
+          Listeners = @($HttpListener)
+          WebApp = $WebApp
+      }
+      Set-DGatewayConfig @ConfigParams
+      New-DGatewayProvisionerKeyPair -Force
+
+      # Configure and start the Windows service
+      Set-Service 'DevolutionsGateway' -StartupType 'Automatic'
+      Start-Service 'DevolutionsGateway'
   }
 
   function Patch-Devolutions-HTML {
-    $root = "C:\Program Files\Devolutions\Gateway\webapp\client"
-    $devolutionsHtml = "$root\index.html"
-    $patch = '<script defer id="coder-patch" src="coder.js"></script>'
-    
-    # Always copy the file in case we change it.
-    @'
-${templatefile("${path.module}/devolutions-patch.js", {
-  CODER_USERNAME : var.admin_username,
-  CODER_PASSWORD : var.admin_password,
-})}
-'@ | Set-Content "$root\coder.js"
+      $root = "C:\Program Files\Devolutions\Gateway\webapp\client"
+      $devolutionsHtml = "$root\index.html"
+      $patch = '<script defer id="coder-patch" src="coder.js"></script>'
+      
+      # Always copy the file in case we change it.
+      @'
+  ${templatefile("${path.module}/devolutions-patch.js", {
+      CODER_USERNAME : var.admin_username,
+      CODER_PASSWORD : var.admin_password,
+  })}
+  '@ | Set-Content "$root\coder.js"
 
-    # Only inject the src if we have not before.
-    $isPatched = Select-String -Path "$devolutionsHtml" -Pattern "$patch" -SimpleMatch
-    if ($isPatched -eq $null) {
-      (Get-Content $devolutionsHtml).Replace('</app-root>', "</app-root>$patch") | Set-Content $devolutionsHtml
-    }
+      # Only inject the src if we have not before.
+      $isPatched = Select-String -Path "$devolutionsHtml" -Pattern "$patch" -SimpleMatch
+      if ($isPatched -eq $null) {
+          (Get-Content $devolutionsHtml).Replace('</app-root>', "</app-root>$patch") | Set-Content $devolutionsHtml
+      }
   }
 
   Set-AdminPassword -adminPassword "${var.admin_password}"
