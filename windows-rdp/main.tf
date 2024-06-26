@@ -60,12 +60,13 @@ resource "coder_script" "windows-rdp" {
       $moduleName = "DevolutionsGateway"
       $moduleVersion = "2024.1.5"
 
+      Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force -Confirm:$false -SkipPublisherCheck
+      
       try {
           # Try to import the module directly
           Import-Module $moduleName -ErrorAction Stop
       } catch {
           # If it fails, install and then import the module
-          Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force -Confirm:$false -SkipPublisherCheck
 
           # Construct the module path for system-wide installation
           $moduleBasePath = "C:\Windows\system32\config\systemprofile\Documents\PowerShell\Modules\$moduleName\$moduleVersion"
