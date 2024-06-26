@@ -29,8 +29,10 @@ export const runContainer = async (
   return containerID.trim();
 };
 
-// executeScriptInContainer finds the only "coder_script"
-// resource in the given state and runs it in a container.
+/**
+ * Finds the only "coder_script" resource in the given state and runs it in a
+ * container.
+ */
 export const executeScriptInContainer = async (
   state: TerraformState,
   image: string,
@@ -100,10 +102,11 @@ export interface CoderScriptAttributes {
   url: string;
 }
 
-// findResourceInstance finds the first instance of the given resource
-// type in the given state. If name is specified, it will only find
-// the instance with the given name.
-export const findResourceInstance = <T extends "coder_script" | string>(
+/**
+ * finds the first instance of the given resource type in the given state. If
+ * name is specified, it will only find the instance with the given name.
+ */
+export const findResourceInstance = <T extends string>(
   state: TerraformState,
   type: T,
   name?: string,
@@ -126,9 +129,10 @@ export const findResourceInstance = <T extends "coder_script" | string>(
   return resource.instances[0].attributes as any;
 };
 
-// testRequiredVariables creates a test-case
-// for each variable provided and ensures that
-// the apply fails without it.
+/**
+ * Creates a test-case for each variable provided and ensures that the apply
+ * fails without it.
+ */
 export const testRequiredVariables = (
   dir: string,
   vars: Record<string, string>,
@@ -160,9 +164,11 @@ export const testRequiredVariables = (
   });
 };
 
-// runTerraformApply runs terraform apply in the given directory
-// with the given variables. It is fine to run in parallel with
-// other instances of this function, as it uses a random state file.
+/**
+ * Runs terraform apply in the given directory with the given variables. It is
+ * fine to run in parallel with other instances of this function, as it uses a
+ * random state file.
+ */
 export const runTerraformApply = async <
   TVars extends Readonly<Record<string, string>>,
 >(
@@ -200,7 +206,9 @@ export const runTerraformApply = async <
   return JSON.parse(content);
 };
 
-// runTerraformInit runs terraform init in the given directory.
+/**
+ * Runs terraform init in the given directory.
+ */
 export const runTerraformInit = async (dir: string) => {
   const proc = spawn(["terraform", "init"], {
     cwd: dir,
