@@ -21,7 +21,7 @@ describe("vscode-desktop", async () => {
       "vscode://coder.coder-remote/open?owner=default&workspace=default&token=$SESSION_TOKEN",
     );
 
-    const resources: any = state.resources;
+    const resources = state.resources;
     expect(resources[1].instances[0].attributes.order).toBeNull();
   });
 
@@ -31,7 +31,7 @@ describe("vscode-desktop", async () => {
       order: "22",
     });
 
-    const resources: any = state.resources;
+    const resources = state.resources;
     expect(resources[1].instances[0].attributes.order).toBe(22);
   });
 });
