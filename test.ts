@@ -133,9 +133,9 @@ export const findResourceInstance = <T extends string>(
  * Creates a test-case for each variable provided and ensures that the apply
  * fails without it.
  */
-export const testRequiredVariables = (
+export const testRequiredVariables = <TVars extends Record<string, string>>(
   dir: string,
-  vars: Record<string, string>,
+  vars: TVars,
 ) => {
   // Ensures that all required variables are provided.
   it("required variables", async () => {

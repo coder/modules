@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it, test } from "bun:test";
+import { describe, expect, it, test } from "bun:test";
 import {
   executeScriptInContainer,
   runTerraformApply,
@@ -13,13 +13,11 @@ type TestVariables = Readonly<{
   admin_password?: string;
 }>;
 
-describe("Web RDP", () => {
-  beforeAll(async () => {
-    await runTerraformInit(import.meta.dir);
-    testRequiredVariables(import.meta.dir, {
-      agent_id: "foo",
-      resource_id: "bar",
-    });
+describe("Web RDP", async () => {
+  await runTerraformInit(import.meta.dir);
+  testRequiredVariables<TestVariables>(import.meta.dir, {
+    agent_id: "foo",
+    resource_id: "bar",
   });
 
   it("Installs the Devolutions Gateway Angular app locally on the machine", async () => {
@@ -27,6 +25,8 @@ describe("Web RDP", () => {
       agent_id: "foo",
       resource_id: "bar",
     });
+
+    throw new Error("Not implemented yet");
   });
 
   /**
