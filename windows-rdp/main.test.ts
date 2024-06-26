@@ -22,7 +22,18 @@ describe("Web RDP", () => {
     });
   });
 
-  it("Patches the Devolutions Angular app's .html file (after it has been bundled) to include an import for the custom JS file", async () => {
+  it("Installs the Devolutions Gateway Angular app locally on the machine", async () => {
+    const state = await runTerraformApply<TestVariables>(import.meta.dir, {
+      agent_id: "foo",
+      resource_id: "bar",
+    });
+  });
+
+  /**
+   * @todo Verify that the HTML file has been modified, and that the JS file is
+   * also part of the file system
+   */
+  it("Patches the Devolutions Angular app's .html file to include an import for the custom JS file", async () => {
     const state = await runTerraformApply<TestVariables>(import.meta.dir, {
       agent_id: "foo",
       resource_id: "bar",
@@ -31,7 +42,7 @@ describe("Web RDP", () => {
     throw new Error("Not implemented yet");
   });
 
-  it("Injects the Terraform username and password into the JS patch file", async () => {
+  it("Injects Terraform's username and password into the JS patch file", async () => {
     throw new Error("Not implemented yet");
 
     // Test that things work with the default username/password
