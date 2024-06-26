@@ -76,27 +76,22 @@ export const execContainer = async (
   };
 };
 
+type TerraformStateResource = {
+  type: string;
+  name: string;
+  provider: string;
+  instances: [{ attributes: Record<string, any> }];
+};
+
 export interface TerraformState {
   outputs: {
     [key: string]: {
       type: string;
       value: any;
     };
-  }
-  resources: [
-    {
-      type: string;
-      name: string;
-      provider: string;
-      instances: [
-        {
-          attributes: {
-            [key: string]: any;
-          };
-        },
-      ];
-    },
-  ];
+  };
+
+  resources: [TerraformStateResource, ...TerraformStateResource[]];
 }
 
 export interface CoderScriptAttributes {
@@ -168,9 +163,11 @@ export const testRequiredVariables = (
 // runTerraformApply runs terraform apply in the given directory
 // with the given variables. It is fine to run in parallel with
 // other instances of this function, as it uses a random state file.
-export const runTerraformApply = async (
+export const runTerraformApply = async <
+  TVars extends Readonly<Record<string, string>>,
+>(
   dir: string,
-  vars: Record<string, string>,
+  vars: TVars,
 ): Promise<TerraformState> => {
   const stateFile = `${dir}/${crypto.randomUUID()}.tfstate`;
   const env = {};
@@ -221,5 +218,5 @@ export const createJSONResponse = (obj: object, statusCode = 200): Response => {
       "Content-Type": "application/json",
     },
     status: statusCode,
-  })
-}
+  });
+};
