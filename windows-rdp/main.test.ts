@@ -53,7 +53,7 @@ describe("Web RDP", async () => {
     const lines = findWindowsRpdScript(state)
       .split("\n")
       .filter(Boolean)
-      .map((line) => line.trimStart());
+      .map((line) => line.trim());
 
     expect(lines).toEqual(
       expect.arrayContaining<string>([
