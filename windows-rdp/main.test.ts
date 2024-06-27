@@ -61,6 +61,12 @@ describe("Web RDP", async () => {
      * text to universal JSON text, and exposing it as a parsed JSON value. That
      * got to be a bit too much, though.
      *
+     * Regex is a little bit more verbose and pedantic than normal. Want to
+     * have some basic safety nets for validating the structure of the form
+     * entries variable after the JS file has had values injected. Really do
+     * not want the wildcard classes to overshoot and grab too much content,
+     * even if they're all set to lazy mode.
+     *
      * Written and tested via Regex101
      * @see {@link https://regex101.com/r/UMgQpv/2}
      */
