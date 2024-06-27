@@ -1,6 +1,5 @@
 import { describe, expect, it, test } from "bun:test";
 import {
-  JsonValue,
   TerraformState,
   executeScriptInContainer,
   runTerraformApply,
@@ -38,7 +37,6 @@ describe("Web RDP", async () => {
 
   it("Injects Terraform's username and password into the JS patch file", async () => {
     const findInstancesScript = (state: TerraformState): string | null => {
-      let instancesScript: string | null = null;
       for (const resource of state.resources) {
         if (resource.type !== "coder_script") {
           continue;
@@ -46,12 +44,12 @@ describe("Web RDP", async () => {
 
         for (const instance of resource.instances) {
           if (instance.attributes.display_name === "windows-rdp") {
-            instancesScript = instance.attributes.script;
+            return instance.attributes.script as string;
           }
         }
       }
 
-      return instancesScript;
+      return null;
     };
 
     /**
@@ -61,7 +59,7 @@ describe("Web RDP", async () => {
      * Tried going through the trouble of extracting out the form entries
      * variable from the main output, converting it from Prettier/JS-based JSON
      * text to universal JSON text, and exposing it as a parsed JSON value. That
-     * got to be too much, though.
+     * got to be a bit too much, though.
      *
      * Written and tested via Regex101
      * @see {@link https://regex101.com/r/UMgQpv/2}
