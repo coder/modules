@@ -1,7 +1,6 @@
-import { describe, expect, it, test } from "bun:test";
+import { describe, expect, it } from "bun:test";
 import {
   TerraformState,
-  executeScriptInContainer,
   runTerraformApply,
   runTerraformInit,
   testRequiredVariables,
@@ -13,6 +12,25 @@ type TestVariables = Readonly<{
   admin_username?: string;
   admin_password?: string;
 }>;
+
+function findWindowsRpdScript(state: TerraformState): string | null {
+  for (const resource of state.resources) {
+    const isRdpScriptResource =
+      resource.type === "coder_script" && resource.name === "windows-rdp";
+
+    if (!isRdpScriptResource) {
+      continue;
+    }
+
+    for (const instance of resource.instances) {
+      if (instance.attributes.display_name === "windows-rdp") {
+        return instance.attributes.script;
+      }
+    }
+  }
+
+  return null;
+}
 
 /**
  * @todo It would be nice if we had a way to verify that the Devolutions root
@@ -26,32 +44,28 @@ describe("Web RDP", async () => {
     resource_id: "bar",
   });
 
-  it("Installs the Devolutions Gateway Angular app locally on the machine", async () => {
+  it("Has the PowerShell script install Devolutions Gateway", async () => {
     const state = await runTerraformApply<TestVariables>(import.meta.dir, {
       agent_id: "foo",
       resource_id: "bar",
     });
 
-    throw new Error("Not implemented yet");
+    const lines = findWindowsRpdScript(state)
+      .split("\n")
+      .filter(Boolean)
+      .map((line) => line.trimStart());
+
+    expect(lines).toEqual(
+      expect.arrayContaining<string>([
+        '$moduleName = "DevolutionsGateway"',
+        // Devolutions does versioning in the format year.minor.patch
+        expect.stringMatching(/^\$moduleVersion = "\d{4}\.\d+\.\d+"$/),
+        "Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force",
+      ]),
+    );
   });
 
   it("Injects Terraform's username and password into the JS patch file", async () => {
-    const findInstancesScript = (state: TerraformState): string | null => {
-      for (const resource of state.resources) {
-        if (resource.type !== "coder_script") {
-          continue;
-        }
-
-        for (const instance of resource.instances) {
-          if (instance.attributes.display_name === "windows-rdp") {
-            return instance.attributes.script as string;
-          }
-        }
-      }
-
-      return null;
-    };
-
     /**
      * Using a regex as a quick-and-dirty way to get at the username and
      * password values.
@@ -82,35 +96,35 @@ describe("Web RDP", async () => {
       },
     );
 
-    const defaultInstancesScript = findInstancesScript(defaultState);
-    expect(defaultInstancesScript).toBeString();
+    const defaultRdpScript = findWindowsRpdScript(defaultState);
+    expect(defaultRdpScript).toBeString();
 
     const { username: defaultUsername, password: defaultPassword } =
-      formEntryValuesRe.exec(defaultInstancesScript)?.groups ?? {};
+      formEntryValuesRe.exec(defaultRdpScript)?.groups ?? {};
 
     expect(defaultUsername).toBe("Administrator");
     expect(defaultPassword).toBe("coderRDP!");
 
     // Test that custom usernames/passwords are also forwarded correctly
-    const userDefinedUsername = "crouton";
-    const userDefinedPassword = "VeryVeryVeryVeryVerySecurePassword97!";
+    const customAdminUsername = "crouton";
+    const customAdminPassword = "VeryVeryVeryVeryVerySecurePassword97!";
     const customizedState = await runTerraformApply<TestVariables>(
       import.meta.dir,
       {
         agent_id: "foo",
         resource_id: "bar",
-        admin_username: userDefinedUsername,
-        admin_password: userDefinedPassword,
+        admin_username: customAdminUsername,
+        admin_password: customAdminPassword,
       },
     );
 
-    const customInstancesScript = findInstancesScript(customizedState);
-    expect(customInstancesScript).toBeString();
+    const customRdpScript = findWindowsRpdScript(customizedState);
+    expect(customRdpScript).toBeString();
 
     const { username: customUsername, password: customPassword } =
-      formEntryValuesRe.exec(customInstancesScript)?.groups ?? {};
+      formEntryValuesRe.exec(customRdpScript)?.groups ?? {};
 
-    expect(customUsername).toBe(userDefinedUsername);
-    expect(customPassword).toBe(userDefinedPassword);
+    expect(customUsername).toBe(customAdminUsername);
+    expect(customPassword).toBe(customAdminPassword);
   });
 });
