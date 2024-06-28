@@ -34,7 +34,7 @@ resource "coder_script" "windows-rdp" {
   agent_id     = var.agent_id
   display_name = "windows-rdp"
   icon         = "https://svgur.com/i/158F.svg" # TODO: add to Coder icons
-  script       = <<EOF
+  script = <<EOF
   function Set-AdminPassword {
       param (
           [string]$adminPassword
@@ -62,6 +62,7 @@ resource "coder_script" "windows-rdp" {
 
     # Install the module with the specified version for all users
     # This requires administrator privileges
+    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
     Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force
 
     # Construct the module path for system-wide installation
@@ -116,7 +117,7 @@ ${templatefile("${path.module}/devolutions-patch.js", {
 
   EOF
 
-  run_on_start = true
+run_on_start = true
 }
 
 resource "coder_app" "windows-rdp" {
