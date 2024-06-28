@@ -13,7 +13,7 @@ type TestVariables = Readonly<{
   admin_password?: string;
 }>;
 
-function findWindowsRpdScript(state: TerraformState): string | null {
+function findWindowsRdpScript(state: TerraformState): string | null {
   for (const resource of state.resources) {
     const isRdpScriptResource =
       resource.type === "coder_script" && resource.name === "windows-rdp";
@@ -50,8 +50,8 @@ describe("Web RDP", async () => {
       resource_id: "bar",
     });
 
-    const lines = findWindowsRpdScript(state)
-      .split("\n")
+    const lines = findWindowsRdpScript(state)
+      ?.split("\n")
       .filter(Boolean)
       .map((line) => line.trim());
 
@@ -96,7 +96,7 @@ describe("Web RDP", async () => {
       },
     );
 
-    const defaultRdpScript = findWindowsRpdScript(defaultState);
+    const defaultRdpScript = findWindowsRdpScript(defaultState);
     expect(defaultRdpScript).toBeString();
 
     const { username: defaultUsername, password: defaultPassword } =
@@ -118,7 +118,7 @@ describe("Web RDP", async () => {
       },
     );
 
-    const customRdpScript = findWindowsRpdScript(customizedState);
+    const customRdpScript = findWindowsRdpScript(customizedState);
     expect(customRdpScript).toBeString();
 
     const { username: customUsername, password: customPassword } =
