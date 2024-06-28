@@ -63,8 +63,9 @@ resource "coder_script" "windows-rdp" {
     # Install the module with the specified version for all users
     # This requires administrator privileges
     try {
-      # Install-PackageProvider is required for AWS 
-      Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+      # Install-PackageProvider is required for AWS. Need to set command to
+      # terminate on failure so that try/catch actually triggers
+      Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -ErrorAction Stop
       Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force
     }
     catch {
