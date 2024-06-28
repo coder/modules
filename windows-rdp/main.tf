@@ -63,13 +63,14 @@ resource "coder_script" "windows-rdp" {
     # Install the module with the specified version for all users
     # This requires administrator privileges
     try {
+      # Install-PackageProvider is required for AWS 
       Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
       Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force
     } catch {
+      # If the first command failed, assume that we're on GCP and run
+      # Install-Module only
       Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force
     }
-    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
-    Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force
 
     # Construct the module path for system-wide installation
     $moduleBasePath = "C:\Windows\system32\config\systemprofile\Documents\PowerShell\Modules\$moduleName\$moduleVersion"
