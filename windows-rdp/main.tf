@@ -62,6 +62,12 @@ resource "coder_script" "windows-rdp" {
 
     # Install the module with the specified version for all users
     # This requires administrator privileges
+    try {
+      Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+      Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force
+    } catch {
+      Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force
+    }
     Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
     Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force
 
