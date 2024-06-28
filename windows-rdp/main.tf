@@ -66,7 +66,8 @@ resource "coder_script" "windows-rdp" {
       # Install-PackageProvider is required for AWS 
       Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
       Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force
-    } catch {
+    }
+    catch {
       # If the first command failed, assume that we're on GCP and run
       # Install-Module only
       Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force
