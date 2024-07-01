@@ -19,17 +19,11 @@ module "windows_rdp" {
   agent_id    = resource.coder_agent.main.id
   resource_id = resource.aws_instance.dev.id
 }
-module "windows_rdp" {
-  count       = data.coder_workspace.me.start_count
-  source      = "github.com/coder/modules//windows-rdp"
-  agent_id    = resource.coder_agent.main.id
-  resource_id = resource.google_compute_instance.dev[0].id
-}
 ```
 
 ## Video
 
-<-- Insert demo video here -->
+https://github.com/coder/modules/assets/28937484/fb5f4a55-7b69-4550-ab62-301e13a4be02
 
 ## Examples
 
