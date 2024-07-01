@@ -34,7 +34,7 @@ resource "coder_script" "windows-rdp" {
   agent_id     = var.agent_id
   display_name = "windows-rdp"
   icon         = "https://svgur.com/i/158F.svg" # TODO: add to Coder icons
-  script = templatefile("./windows-installation.tftpl", {
+  script = templatefile("${path.module}/./windows-installation.tftpl", {
     CODER_USERNAME : var.admin_username,
     CODER_PASSWORD : var.admin_password,
   })
