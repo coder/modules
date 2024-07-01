@@ -3,9 +3,9 @@ function Set-AdminPassword {
         [string]$adminPassword
     )
     # Set admin password
-    Get-LocalUser -Name "${var.admin_username}" | Set-LocalUser -Password (ConvertTo-SecureString -AsPlainText $adminPassword -Force)
+    Get-LocalUser -Name "${admin_username}" | Set-LocalUser -Password (ConvertTo-SecureString -AsPlainText $adminPassword -Force)
     # Enable admin user
-    Get-LocalUser -Name "${var.admin_username}" | Enable-LocalUser
+    Get-LocalUser -Name "${admin_username}" | Enable-LocalUser
 }
 
 function Configure-RDP {
@@ -69,10 +69,7 @@ $patch = '<script defer id="coder-patch" src="coder.js"></script>'
 
 # Always copy the file in case we change it.
 @'
-${templatefile("${path.module}/devolutions-patch.js", {
-CODER_USERNAME : var.admin_username,
-CODER_PASSWORD : var.admin_password,
-})}
+${patch_file_contents}
 '@ | Set-Content "$root\coder.js"
 
 # Only inject the src if we have not before.
@@ -82,7 +79,7 @@ if ($isPatched -eq $null) {
 }
 }
 
-Set-AdminPassword -adminPassword "${var.admin_password}"
+Set-AdminPassword -adminPassword "${admin_password}"
 Configure-RDP
 Install-DevolutionsGateway
 Patch-Devolutions-HTML

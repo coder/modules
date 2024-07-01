@@ -34,9 +34,14 @@ resource "coder_script" "windows-rdp" {
   agent_id     = var.agent_id
   display_name = "windows-rdp"
   icon         = "https://svgur.com/i/158F.svg" # TODO: add to Coder icons
+
   script = templatefile("${path.module}/windows-installation.tftpl", {
-    CODER_USERNAME = var.admin_username,
-    CODER_PASSWORD = var.admin_password,
+    admin_username = var.admin_username
+    admin_password = var.admin_password
+    patch_file_contents = templatefile("${path.module}/devolutions-patch.js", {
+      CODER_USERNAME = var.admin_username
+      CODER_PASSWORD = var.admin_password
+    })
   })
 
   run_on_start = true
