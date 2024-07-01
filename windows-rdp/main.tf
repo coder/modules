@@ -152,26 +152,3 @@ resource "coder_app" "rdp-docs" {
   url          = "https://coder.com/docs/v2/latest/ides/remote-desktops#rdp-desktop"
   external     = true
 }
-
-# For some reason this is not rendering, commented out for now
-# resource "coder_metadata" "rdp_details" {
-#   resource_id = var.resource_id
-#   daily_cost  = 0
-#   item {
-#     key   = "Host"
-#     value = "localhost"
-#   }
-#   item {
-#     key   = "Port"
-#     value = "3389"
-#   }
-#   item {
-#     key   = "Username"
-#     value = "Administrator"
-#   }
-#   item {
-#     key       = "Password"
-#     value     = var.admin_password
-#     sensitive = true
-#   }
-# }
