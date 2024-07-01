@@ -12,11 +12,10 @@
  * - A lot of the HTML selectors in this file will look nonstandard. This is
  *   because they are actually custom Angular components.
  * - It is strongly advised that you avoid template literals that use the
- *   placeholder syntax via the dollar sign. The Terraform script looks for
- *   these characters so that it can inject Coder-specific values, so any
- *   template literal that uses the character actually needs to double up each
- *   of them. There are already a few places in this file where it couldn't be
- *   avoided, but avoiding this as much as possible will save you some headache.
+ *   placeholder syntax via the dollar sign. The Terraform file is treating this
+ *   as a template file, and because it also uses a similar syntax, there's a
+ *   risk that some values will trigger false positives. If a template literal
+ *   must be used, be sure to use a double dollar sign to escape things.
  * - All the CSS should be written via custom style tags and the !important
  *   directive (as much as that is a bad idea most of the time). We do not
  *   control the Angular app, so we have to modify things from afar to ensure

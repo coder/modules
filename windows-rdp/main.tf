@@ -35,9 +35,13 @@ resource "coder_script" "windows-rdp" {
   display_name = "windows-rdp"
   icon         = "https://svgur.com/i/158F.svg" # TODO: add to Coder icons
 
-  script = templatefile("${path.module}/windows-installation.tftpl", {
+  script = templatefile("${path.module}/powershell-installation-script.tftpl", {
     admin_username = var.admin_username
     admin_password = var.admin_password
+
+    # Wanted to have this be in the powershell template file, but Terraform
+    # doesn't allow recursive calls to the templatefile function. Have to feed
+    # results of the JS template replace into the powershell template
     patch_file_contents = templatefile("${path.module}/devolutions-patch.js", {
       CODER_USERNAME = var.admin_username
       CODER_PASSWORD = var.admin_password
