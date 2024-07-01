@@ -56,6 +56,12 @@ variable "exclude" {
   type        = list(string)
 }
 
+variable "coder_parameter_order" {
+  type        = number
+  description = "The order determines the position of a template parameter in the UI/CLI presentation. The lowest order is shown first and parameters with equal order are sorted by name (ascending order)."
+  default     = null
+}
+
 locals {
   # https://www.exoscale.com/pricing/
 
@@ -257,6 +263,7 @@ data "coder_parameter" "instance_type" {
   display_name = var.display_name
   description  = var.description
   default      = var.default == "" ? null : var.default
+  order        = var.coder_parameter_order
   mutable      = var.mutable
   dynamic "option" {
     for_each = [for k, v in concat(

@@ -8,6 +8,7 @@ import {
   runTerraformApply,
   runTerraformInit,
   testRequiredVariables,
+  writeCoder,
 } from "../test";
 
 describe("slackme", async () => {
@@ -117,15 +118,6 @@ const setupContainer = async (
   const instance = findResourceInstance(state, "coder_script");
   const id = await runContainer(image);
   return { id, instance };
-};
-
-const writeCoder = async (id: string, script: string) => {
-  const exec = await execContainer(id, [
-    "sh",
-    "-c",
-    `echo '${script}' > /usr/bin/coder && chmod +x /usr/bin/coder`,
-  ]);
-  expect(exec.exitCode).toBe(0);
 };
 
 const assertSlackMessage = async (opts: {

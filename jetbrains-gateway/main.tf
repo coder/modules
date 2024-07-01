@@ -6,6 +6,10 @@ terraform {
       source  = "coder/coder"
       version = ">= 0.17"
     }
+    http = {
+      source  = "hashicorp/http"
+      version = ">= 3.0"
+    }
   }
 }
 
@@ -46,6 +50,22 @@ variable "coder_parameter_order" {
   default     = null
 }
 
+variable "latest" {
+  type        = bool
+  description = "Whether to fetch the latest version of the IDE."
+  default     = false
+}
+
+variable "channel" {
+  type        = string
+  description = "JetBrains IDE release channel. Valid values are release and eap."
+  default     = "release"
+  validation {
+    condition     = can(regex("^(release|eap)$", var.channel))
+    error_message = "The channel must be either release or eap."
+  }
+}
+
 variable "jetbrains_ide_versions" {
   type = map(object({
     build_number = string
@@ -54,36 +74,36 @@ variable "jetbrains_ide_versions" {
   description = "The set of versions for each jetbrains IDE"
   default = {
     "IU" = {
-      build_number = "233.14808.21"
-      version      = "2023.3.5"
+      build_number = "241.14494.240"
+      version      = "2024.1"
     }
     "PS" = {
-      build_number = "233.14808.18"
-      version      = "2023.3.5"
+      build_number = "241.14494.237"
+      version      = "2024.1"
     }
     "WS" = {
-      build_number = "233.14475.40"
-      version      = "2023.3.4"
+      build_number = "241.14494.235"
+      version      = "2024.1"
     }
     "PY" = {
-      build_number = "233.14475.56"
-      version      = "2023.3.4"
+      build_number = "241.14494.241"
+      version      = "2024.1"
     }
     "CL" = {
-      build_number = "233.14475.31"
-      version      = "2023.3.4"
+      build_number = "241.14494.288"
+      version      = "2024.1"
     }
     "GO" = {
-      build_number = "233.14808.20"
-      version      = "2023.3.5"
+      build_number = "241.14494.238"
+      version      = "2024.1"
     }
     "RM" = {
-      build_number = "233.14808.14"
-      version      = "2023.3.5"
+      build_number = "241.14494.234"
+      version      = "2024.1"
     }
     "RD" = {
-      build_number = "233.14475.66"
-      version      = "2023.3.4"
+      build_number = "241.14494.307"
+      version      = "2024.1"
     }
   }
   validation {
@@ -120,6 +140,11 @@ variable "jetbrains_ides" {
   }
 }
 
+data "http" "jetbrains_ide_versions" {
+  for_each = var.latest ? toset(var.jetbrains_ides) : toset([])
+  url      = "https://data.services.jetbrains.com/products/releases?code=${each.key}&latest=true&type=${var.channel}"
+}
+
 locals {
   jetbrains_ides = {
     "GO" = {
@@ -128,6 +153,7 @@ locals {
       identifier    = "GO",
       build_number  = var.jetbrains_ide_versions["GO"].build_number,
       download_link = "https://download.jetbrains.com/go/goland-${var.jetbrains_ide_versions["GO"].version}.tar.gz"
+      version       = var.jetbrains_ide_versions["GO"].version
     },
     "WS" = {
       icon          = "/icon/webstorm.svg",
@@ -135,6 +161,7 @@ locals {
       identifier    = "WS",
       build_number  = var.jetbrains_ide_versions["WS"].build_number,
       download_link = "https://download.jetbrains.com/webstorm/WebStorm-${var.jetbrains_ide_versions["WS"].version}.tar.gz"
+      version       = var.jetbrains_ide_versions["WS"].version
     },
     "IU" = {
       icon          = "/icon/intellij.svg",
@@ -142,6 +169,7 @@ locals {
       identifier    = "IU",
       build_number  = var.jetbrains_ide_versions["IU"].build_number,
       download_link = "https://download.jetbrains.com/idea/ideaIU-${var.jetbrains_ide_versions["IU"].version}.tar.gz"
+      version       = var.jetbrains_ide_versions["IU"].version
     },
     "PY" = {
       icon          = "/icon/pycharm.svg",
@@ -149,6 +177,7 @@ locals {
       identifier    = "PY",
       build_number  = var.jetbrains_ide_versions["PY"].build_number,
       download_link = "https://download.jetbrains.com/python/pycharm-professional-${var.jetbrains_ide_versions["PY"].version}.tar.gz"
+      version       = var.jetbrains_ide_versions["PY"].version
     },
     "CL" = {
       icon          = "/icon/clion.svg",
@@ -156,6 +185,7 @@ locals {
       identifier    = "CL",
       build_number  = var.jetbrains_ide_versions["CL"].build_number,
       download_link = "https://download.jetbrains.com/cpp/CLion-${var.jetbrains_ide_versions["CL"].version}.tar.gz"
+      version       = var.jetbrains_ide_versions["CL"].version
     },
     "PS" = {
       icon          = "/icon/phpstorm.svg",
@@ -163,6 +193,7 @@ locals {
       identifier    = "PS",
       build_number  = var.jetbrains_ide_versions["PS"].build_number,
       download_link = "https://download.jetbrains.com/webide/PhpStorm-${var.jetbrains_ide_versions["PS"].version}.tar.gz"
+      version       = var.jetbrains_ide_versions["PS"].version
     },
     "RM" = {
       icon          = "/icon/rubymine.svg",
@@ -170,6 +201,7 @@ locals {
       identifier    = "RM",
       build_number  = var.jetbrains_ide_versions["RM"].build_number,
       download_link = "https://download.jetbrains.com/ruby/RubyMine-${var.jetbrains_ide_versions["RM"].version}.tar.gz"
+      version       = var.jetbrains_ide_versions["RM"].version
     }
     "RD" = {
       icon          = "/icon/rider.svg",
@@ -177,8 +209,18 @@ locals {
       identifier    = "RD",
       build_number  = var.jetbrains_ide_versions["RD"].build_number,
       download_link = "https://download.jetbrains.com/rider/JetBrains.Rider-${var.jetbrains_ide_versions["RD"].version}.tar.gz"
+      version       = var.jetbrains_ide_versions["RD"].version
     }
   }
+
+  icon          = local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].icon
+  json_data     = var.latest ? jsondecode(data.http.jetbrains_ide_versions[data.coder_parameter.jetbrains_ide.value].response_body) : {}
+  key           = var.latest ? keys(local.json_data)[0] : ""
+  display_name  = local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].name
+  identifier    = data.coder_parameter.jetbrains_ide.value
+  download_link = var.latest ? local.json_data[local.key][0].downloads.linux.link : local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].download_link
+  build_number  = var.latest ? local.json_data[local.key][0].build : local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].build_number
+  version       = var.latest ? local.json_data[local.key][0].version : var.jetbrains_ide_versions[data.coder_parameter.jetbrains_ide.value].version
 }
 
 data "coder_parameter" "jetbrains_ide" {
@@ -193,9 +235,9 @@ data "coder_parameter" "jetbrains_ide" {
   dynamic "option" {
     for_each = var.jetbrains_ides
     content {
-      icon  = lookup(local.jetbrains_ides, option.value).icon
-      name  = lookup(local.jetbrains_ides, option.value).name
-      value = lookup(local.jetbrains_ides, option.value).identifier
+      icon  = local.jetbrains_ides[option.value].icon
+      name  = local.jetbrains_ides[option.value].name
+      value = option.value
     }
   }
 }
@@ -205,8 +247,8 @@ data "coder_workspace" "me" {}
 resource "coder_app" "gateway" {
   agent_id     = var.agent_id
   slug         = "gateway"
-  display_name = try(lookup(local.jetbrains_ides, data.coder_parameter.jetbrains_ide.value).name, "JetBrains IDE")
-  icon         = try(lookup(local.jetbrains_ides, data.coder_parameter.jetbrains_ide.value).icon, "/icon/gateway.svg")
+  display_name = local.display_name
+  icon         = local.icon
   external     = true
   order        = var.order
   url = join("", [
@@ -221,36 +263,36 @@ resource "coder_app" "gateway" {
     "&token=",
     "$SESSION_TOKEN",
     "&ide_product_code=",
-    local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].identifier,
+    data.coder_parameter.jetbrains_ide.value,
     "&ide_build_number=",
-    local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].build_number,
+    local.build_number,
     "&ide_download_link=",
-    local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].download_link
+    local.download_link,
   ])
 }
 
 output "identifier" {
-  value = data.coder_parameter.jetbrains_ide.value
+  value = local.identifier
 }
 
-output "name" {
-  value = coder_app.gateway.display_name
+output "display_name" {
+  value = local.display_name
 }
 
 output "icon" {
-  value = coder_app.gateway.icon
+  value = local.icon
 }
 
 output "download_link" {
-  value = lookup(local.jetbrains_ides, data.coder_parameter.jetbrains_ide.value).download_link
+  value = local.download_link
 }
 
 output "build_number" {
-  value = lookup(local.jetbrains_ides, data.coder_parameter.jetbrains_ide.value).build_number
+  value = local.build_number
 }
 
 output "version" {
-  value = var.jetbrains_ide_versions[data.coder_parameter.jetbrains_ide.value].version
+  value = local.version
 }
 
 output "url" {

@@ -78,6 +78,14 @@ export const execContainer = async (
   };
 };
 
+type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonValue[]
+  | { [key: string]: JsonValue };
+
 type TerraformStateResource = {
   type: string;
   name: string;
@@ -170,14 +178,19 @@ export const testRequiredVariables = <TVars extends Record<string, string>>(
  * random state file.
  */
 export const runTerraformApply = async <
-  TVars extends Readonly<Record<string, string>>,
+  TVars extends Readonly<Record<string, string | boolean>>,
 >(
   dir: string,
   vars: TVars,
+  env?: Record<string, string>,
 ): Promise<TerraformState> => {
   const stateFile = `${dir}/${crypto.randomUUID()}.tfstate`;
-  const env = {};
-  Object.keys(vars).forEach((key) => (env[`TF_VAR_${key}`] = vars[key]));
+
+  const combinedEnv = env === undefined ? {} : { ...env };
+  for (const [key, value] of Object.entries(vars)) {
+    combinedEnv[`TF_VAR_${key}`] = String(value);
+  }
+
   const proc = spawn(
     [
       "terraform",
@@ -191,16 +204,18 @@ export const runTerraformApply = async <
     ],
     {
       cwd: dir,
-      env,
+      env: combinedEnv,
       stderr: "pipe",
       stdout: "pipe",
     },
   );
+
   const text = await readableStreamToText(proc.stderr);
   const exitCode = await proc.exited;
   if (exitCode !== 0) {
     throw new Error(text);
   }
+
   const content = await readFile(stateFile, "utf8");
   await unlink(stateFile);
   return JSON.parse(content);
@@ -227,4 +242,13 @@ export const createJSONResponse = (obj: object, statusCode = 200): Response => {
     },
     status: statusCode,
   });
+};
+
+export const writeCoder = async (id: string, script: string) => {
+  const exec = await execContainer(id, [
+    "sh",
+    "-c",
+    `echo '${script}' > /usr/bin/coder && chmod +x /usr/bin/coder`,
+  ]);
+  expect(exec.exitCode).toBe(0);
 };
