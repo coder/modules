@@ -1,25 +1,40 @@
 ---
 display_name: Windows RDP
-description: RDP Server and Web Client powered by Devolutions
+description: RDP Server and Web Client, powered by Devolutions Gateway
 icon: ../.icons/desktop.svg
 maintainer_github: coder
-verified: false
+verified: true
 tags: [windows, rdp, web, desktop]
 ---
 
 # Windows RDP
 
-Enable Remote Desktop + a web based client on Windows workspaces, powered by [devolutions-gateway](https://github.com/Devolutions/devolutions-gateway)
+Enable Remote Desktop + a web based client on Windows workspaces, powered by [devolutions-gateway](https://github.com/Devolutions/devolutions-gateway).
 
-[![Web RDP on Windows](https://cdn.loom.com/sessions/thumbnails/a5d98c7007a7417fb572aba1acf8d538-with-play.gif)](https://www.loom.com/share/a5d98c7007a7417fb572aba1acf8d538)
+## Video
+
+<-- Insert demo video here -->
 
 ## Usage
 
+For AWS:
+
 ```tf
 module "windows_rdp" {
-  count = data.coder_workspace.me.start_count
-  source = "github.com/coder/modules//windows-rdp?ref=web-rdp"
-  agent_id = resource.coder_agent.main.id
+  count       = data.coder_workspace.me.start_count
+  source      = "github.com/coder/modules//windows-rdp"
+  agent_id    = resource.coder_agent.main.id
+  resource_id = resource.aws_instance.dev.id
+}
+```
+
+For Google Cloud:
+
+```tf
+module "windows_rdp" {
+  count       = data.coder_workspace.me.start_count
+  source      = "github.com/coder/modules//windows-rdp"
+  agent_id    = resource.coder_agent.main.id
   resource_id = resource.google_compute_instance.dev[0].id
 }
 ```
@@ -30,6 +45,4 @@ module "windows_rdp" {
 
 ## Roadmap
 
-- [ ] Test on additional cloud providers
-- [ ] Automatically establish web RDP session when users click "web RDP"
-  > This may require forking [the webapp from devolutions-gateway](https://github.com/Devolutions/devolutions-gateway/tree/master/webapp), modifying `webapp/`, building, and specifying a new [static root path](https://github.com/Devolutions/devolutions-gateway/blob/a884cbb8ff313496fb3d4072e67ef75350c40c03/devolutions-gateway/tests/config.rs#L271). Ideally we can upstream this functionality.
+- [ ] Test on Microsoft Azure.
