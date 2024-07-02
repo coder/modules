@@ -56,7 +56,7 @@ resource "coder_app" "windows-rdp" {
   slug         = "web-rdp"
   display_name = "Web RDP"
   url          = "http://localhost:7171"
-  icon         = "https://svgur.com/i/158F.svg"
+  icon         = "/icon/desktop.svg"
   subdomain    = true
 
   healthcheck {
