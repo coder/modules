@@ -71,6 +71,6 @@ resource "coder_app" "rdp-docs" {
   display_name = "Local RDP"
   slug         = "rdp-docs"
   icon         = "https://raw.githubusercontent.com/matifali/logos/main/windows.svg"
-  url          = "https://coder.com/docs/v2/latest/ides/remote-desktops#rdp-desktop"
+  url          = "https://coder.com/docs/ides/remote-desktops#rdp-desktop"
   external     = true
 }
