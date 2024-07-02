@@ -14,7 +14,7 @@ Automatically install [code-server](https://github.com/coder/code-server) in a w
 ```tf
 module "code-server" {
   source   = "registry.coder.com/modules/code-server/coder"
-  version  = "1.0.15"
+  version  = "1.0.16"
   agent_id = coder_agent.example.id
 }
 ```
@@ -28,7 +28,7 @@ module "code-server" {
 ```tf
 module "code-server" {
   source          = "registry.coder.com/modules/code-server/coder"
-  version         = "1.0.15"
+  version         = "1.0.16"
   agent_id        = coder_agent.example.id
   install_version = "4.8.3"
 }
@@ -41,7 +41,7 @@ Install the Dracula theme from [OpenVSX](https://open-vsx.org/):
 ```tf
 module "code-server" {
   source   = "registry.coder.com/modules/code-server/coder"
-  version  = "1.0.15"
+  version  = "1.0.16"
   agent_id = coder_agent.example.id
   extensions = [
     "dracula-theme.theme-dracula"
@@ -58,7 +58,7 @@ Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarte
 ```tf
 module "code-server" {
   source     = "registry.coder.com/modules/code-server/coder"
-  version    = "1.0.15"
+  version    = "1.0.16"
   agent_id   = coder_agent.example.id
   extensions = ["dracula-theme.theme-dracula"]
   settings = {
@@ -74,7 +74,7 @@ Just run code-server in the background, don't fetch it from GitHub:
 ```tf
 module "code-server" {
   source     = "registry.coder.com/modules/code-server/coder"
-  version    = "1.0.15"
+  version    = "1.0.16"
   agent_id   = coder_agent.example.id
   extensions = ["dracula-theme.theme-dracula", "ms-azuretools.vscode-docker"]
 }
@@ -89,7 +89,7 @@ Run an existing copy of code-server if found, otherwise download from GitHub:
 ```tf
 module "code-server" {
   source     = "registry.coder.com/modules/code-server/coder"
-  version    = "1.0.15"
+  version    = "1.0.16"
   agent_id   = coder_agent.example.id
   use_cached = true
   extensions = ["dracula-theme.theme-dracula", "ms-azuretools.vscode-docker"]
@@ -101,7 +101,7 @@ Just run code-server in the background, don't fetch it from GitHub:
 ```tf
 module "code-server" {
   source   = "registry.coder.com/modules/code-server/coder"
-  version  = "1.0.15"
+  version  = "1.0.16"
   agent_id = coder_agent.example.id
   offline  = true
 }
