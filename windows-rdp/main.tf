@@ -33,7 +33,7 @@ variable "admin_password" {
 resource "coder_script" "windows-rdp" {
   agent_id     = var.agent_id
   display_name = "windows-rdp"
-  icon         = "https://svgur.com/i/158F.svg" # TODO: add to Coder icons
+  icon         = "/icon/desktop.svg"
 
   script = templatefile("${path.module}/powershell-installation-script.tftpl", {
     admin_username = var.admin_username
