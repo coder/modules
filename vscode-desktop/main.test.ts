@@ -43,7 +43,7 @@ describe("vscode-desktop", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
       folder: "/foo/bar",
-      open_recent: true,
+      open_recent: "true",
     });
     expect(state.outputs.vscode_url.value).toBe(
       "vscode://coder.coder-remote/open?owner=default&workspace=default&folder=/foo/bar&openRecent&url=https://mydeployment.coder.com&token=$SESSION_TOKEN",
@@ -54,7 +54,7 @@ describe("vscode-desktop", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
       folder: "/foo/bar",
-      openRecent: false,
+      openRecent: "false",
     });
     expect(state.outputs.vscode_url.value).toBe(
       "vscode://coder.coder-remote/open?owner=default&workspace=default&folder=/foo/bar&url=https://mydeployment.coder.com&token=$SESSION_TOKEN",
@@ -64,7 +64,7 @@ describe("vscode-desktop", async () => {
   it("adds open_recent", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
-      open_recent: true,
+      open_recent: "true",
     });
     expect(state.outputs.vscode_url.value).toBe(
       "vscode://coder.coder-remote/open?owner=default&workspace=default&openRecent&url=https://mydeployment.coder.com&token=$SESSION_TOKEN",

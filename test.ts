@@ -29,8 +29,10 @@ export const runContainer = async (
   return containerID.trim();
 };
 
-// executeScriptInContainer finds the only "coder_script"
-// resource in the given state and runs it in a container.
+/**
+ * Finds the only "coder_script" resource in the given state and runs it in a
+ * container.
+ */
 export const executeScriptInContainer = async (
   state: TerraformState,
   image: string,
@@ -76,27 +78,30 @@ export const execContainer = async (
   };
 };
 
+type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonValue[]
+  | { [key: string]: JsonValue };
+
+type TerraformStateResource = {
+  type: string;
+  name: string;
+  provider: string;
+  instances: [{ attributes: Record<string, any> }];
+};
+
 export interface TerraformState {
   outputs: {
     [key: string]: {
       type: string;
       value: any;
     };
-  }
-  resources: [
-    {
-      type: string;
-      name: string;
-      provider: string;
-      instances: [
-        {
-          attributes: {
-            [key: string]: any;
-          };
-        },
-      ];
-    },
-  ];
+  };
+
+  resources: [TerraformStateResource, ...TerraformStateResource[]];
 }
 
 export interface CoderScriptAttributes {
@@ -105,10 +110,11 @@ export interface CoderScriptAttributes {
   url: string;
 }
 
-// findResourceInstance finds the first instance of the given resource
-// type in the given state. If name is specified, it will only find
-// the instance with the given name.
-export const findResourceInstance = <T extends "coder_script" | string>(
+/**
+ * finds the first instance of the given resource type in the given state. If
+ * name is specified, it will only find the instance with the given name.
+ */
+export const findResourceInstance = <T extends string>(
   state: TerraformState,
   type: T,
   name?: string,
@@ -131,12 +137,13 @@ export const findResourceInstance = <T extends "coder_script" | string>(
   return resource.instances[0].attributes as any;
 };
 
-// testRequiredVariables creates a test-case
-// for each variable provided and ensures that
-// the apply fails without it.
-export const testRequiredVariables = (
+/**
+ * Creates a test-case for each variable provided and ensures that the apply
+ * fails without it.
+ */
+export const testRequiredVariables = <TVars extends Record<string, string>>(
   dir: string,
-  vars: Record<string, string>,
+  vars: TVars,
 ) => {
   // Ensures that all required variables are provided.
   it("required variables", async () => {
@@ -165,16 +172,25 @@ export const testRequiredVariables = (
   });
 };
 
-// runTerraformApply runs terraform apply in the given directory
-// with the given variables. It is fine to run in parallel with
-// other instances of this function, as it uses a random state file.
-export const runTerraformApply = async (
+/**
+ * Runs terraform apply in the given directory with the given variables. It is
+ * fine to run in parallel with other instances of this function, as it uses a
+ * random state file.
+ */
+export const runTerraformApply = async <
+  TVars extends Readonly<Record<string, string | boolean>>,
+>(
   dir: string,
-  vars: Record<string, string>,
-  env: Record<string, string> = {},
+  vars: TVars,
+  env?: Record<string, string>,
 ): Promise<TerraformState> => {
   const stateFile = `${dir}/${crypto.randomUUID()}.tfstate`;
-  Object.keys(vars).forEach((key) => (env[`TF_VAR_${key}`] = vars[key]));
+
+  const combinedEnv = env === undefined ? {} : { ...env };
+  for (const [key, value] of Object.entries(vars)) {
+    combinedEnv[`TF_VAR_${key}`] = String(value);
+  }
+
   const proc = spawn(
     [
       "terraform",
@@ -188,22 +204,26 @@ export const runTerraformApply = async (
     ],
     {
       cwd: dir,
-      env,
+      env: combinedEnv,
       stderr: "pipe",
       stdout: "pipe",
     },
   );
+
   const text = await readableStreamToText(proc.stderr);
   const exitCode = await proc.exited;
   if (exitCode !== 0) {
     throw new Error(text);
   }
+
   const content = await readFile(stateFile, "utf8");
   await unlink(stateFile);
   return JSON.parse(content);
 };
 
-// runTerraformInit runs terraform init in the given directory.
+/**
+ * Runs terraform init in the given directory.
+ */
 export const runTerraformInit = async (dir: string) => {
   const proc = spawn(["terraform", "init"], {
     cwd: dir,
@@ -221,8 +241,8 @@ export const createJSONResponse = (obj: object, statusCode = 200): Response => {
       "Content-Type": "application/json",
     },
     status: statusCode,
-  })
-}
+  });
+};
 
 export const writeCoder = async (id: string, script: string) => {
   const exec = await execContainer(id, [
