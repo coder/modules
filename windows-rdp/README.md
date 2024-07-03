@@ -24,7 +24,7 @@ module "windows_rdp" {
 
 ## Video
 
-[![Video](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://github.com/coder/modules/assets/28937484/fb5f4a55-7b69-4550-ab62-301e13a4be02)
+[![Video](../.icons/desktop.svg)](https://github.com/coder/modules/assets/28937484/fb5f4a55-7b69-4550-ab62-301e13a4be02)
 
 ## Examples
 
