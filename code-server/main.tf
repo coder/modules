@@ -113,6 +113,15 @@ variable "auto_install_extensions" {
   default     = false
 }
 
+variable "subdomain" {
+  type        = bool
+  description = <<-EOT
+    Determines whether the app will be accessed via it's own subdomain or whether it will be accessed via a path on Coder.
+    If wildcards have not been setup by the administrator then apps with "subdomain" set to true will not be accessible.
+  EOT
+  default     = false
+}
+
 resource "coder_script" "code-server" {
   agent_id     = var.agent_id
   display_name = "code-server"
@@ -154,7 +163,7 @@ resource "coder_app" "code-server" {
   display_name = var.display_name
   url          = "http://localhost:${var.port}/${var.folder != "" ? "?folder=${urlencode(var.folder)}" : ""}"
   icon         = "/icon/code.svg"
-  subdomain    = false
+  subdomain    = var.subdomain
   share        = var.share
   order        = var.order
 
