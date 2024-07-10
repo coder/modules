@@ -24,16 +24,7 @@ module "windows_rdp" {
 
 ## Video
 
-<video controls="" muted="" preload="metadata" style="width: 100%; aspect-ratio: auto;">
-  <source src="https://github.com/coder/modules/assets/28937484/fb5f4a55-7b69-4550-ab62-301e13a4be02" type="video/webm">
-
-  <p>
-    Your browser does not support GitHub's video format.
-    <a href="https://github.com/coder/modules/assets/28937484/fb5f4a55-7b69-4550-ab62-301e13a4be02">
-      Click here to try downloading the file.
-    </a>
-  </p>
-</video>
+[![Video](./video-thumbnails/video-thumbnail.png)](https://github.com/coder/modules/assets/28937484/fb5f4a55-7b69-4550-ab62-301e13a4be02)
 
 ## Examples
 
