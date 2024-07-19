@@ -23,7 +23,10 @@ function findWindowsRdpScript(state: TerraformState): string | null {
     }
 
     for (const instance of resource.instances) {
-      if (instance.attributes.display_name === "windows-rdp") {
+      if (
+        instance.attributes.display_name === "windows-rdp" &&
+        typeof instance.attributes.script === "string"
+      ) {
         return instance.attributes.script;
       }
     }
