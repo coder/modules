@@ -149,19 +149,25 @@ export const testRequiredVariables = <TVars extends Record<string, string>>(
   it("required variables", async () => {
     await runTerraformApply(dir, vars);
   });
+
   const varNames = Object.keys(vars);
   varNames.forEach((varName) => {
     // Ensures that every variable provided is required!
     it("missing variable " + varName, async () => {
-      const localVars = {};
+      const localVars: Record<string, string> = {};
       varNames.forEach((otherVarName) => {
         if (otherVarName !== varName) {
           localVars[otherVarName] = vars[otherVarName];
         }
       });
+
       try {
         await runTerraformApply(dir, localVars);
       } catch (ex) {
+        if (!(ex instanceof Error)) {
+          throw new Error("Unknown error generated");
+        }
+
         expect(ex.message).toContain(
           `input variable \"${varName}\" is not set`,
         );

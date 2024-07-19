@@ -24,9 +24,10 @@ describe("vscode-desktop", async () => {
     const coder_app = state.resources.find(
       (res) => res.type == "coder_app" && res.name == "vscode",
     );
+
     expect(coder_app).not.toBeNull();
-    expect(coder_app.instances.length).toBe(1);
-    expect(coder_app.instances[0].attributes.order).toBeNull();
+    expect(coder_app?.instances.length).toBe(1);
+    expect(coder_app?.instances[0].attributes.order).toBeNull();
   });
 
   it("adds folder", async () => {
@@ -80,8 +81,9 @@ describe("vscode-desktop", async () => {
     const coder_app = state.resources.find(
       (res) => res.type == "coder_app" && res.name == "vscode",
     );
+
     expect(coder_app).not.toBeNull();
-    expect(coder_app.instances.length).toBe(1);
-    expect(coder_app.instances[0].attributes.order).toBe(22);
+    expect(coder_app?.instances.length).toBe(1);
+    expect(coder_app?.instances[0].attributes.order).toBe(22);
   });
 });
