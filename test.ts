@@ -90,17 +90,21 @@ type TerraformStateResource = {
   type: string;
   name: string;
   provider: string;
-  instances: [{ attributes: Record<string, JsonValue> }];
+
+  instances: [
+    {
+      attributes: Record<string, JsonValue>;
+    },
+  ];
+};
+
+type TerraformOutput = {
+  type: string;
+  value: JsonValue;
 };
 
 export interface TerraformState {
-  outputs: {
-    [key: string]: {
-      type: string;
-      value: any;
-    };
-  };
-
+  outputs: Record<string, TerraformOutput>;
   resources: [TerraformStateResource, ...TerraformStateResource[]];
 }
 
