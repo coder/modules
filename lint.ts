@@ -5,14 +5,15 @@ import grayMatter from "gray-matter";
 
 const files = await readdir(".", { withFileTypes: true });
 const dirs = files.filter(
-  (f) => f.isDirectory() && !f.name.startsWith(".") && f.name !== "node_modules"
+  (f) =>
+    f.isDirectory() && !f.name.startsWith(".") && f.name !== "node_modules",
 );
 
 let badExit = false;
 
 // error reports an error to the console and sets badExit to true
 // so that the process will exit with a non-zero exit code.
-const error = (...data: any[]) => {
+const error = (...data: unknown[]) => {
   console.error(...data);
   badExit = true;
 };
@@ -22,7 +23,7 @@ const verifyCodeBlocks = (
   res = {
     codeIsTF: false,
     codeIsHCL: false,
-  }
+  },
 ) => {
   for (const token of tokens) {
     // Check in-depth.
@@ -30,7 +31,12 @@ const verifyCodeBlocks = (
       verifyCodeBlocks(token.items, res);
       continue;
     }
+
     if (token.type === "list_item") {
+      if (token.tokens === undefined) {
+        throw new Error("Tokens are missing for type list_item");
+      }
+
       verifyCodeBlocks(token.tokens, res);
       continue;
     }
@@ -80,8 +86,9 @@ for (const dir of dirs) {
   if (!data.maintainer_github) {
     error(dir.name, "missing maintainer_github");
   }
+
   try {
-    await stat(path.join(".", dir.name, data.icon));
+    await stat(path.join(".", dir.name, data.icon ?? ""));
   } catch (ex) {
     error(dir.name, "icon does not exist", data.icon);
   }
