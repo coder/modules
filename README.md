@@ -3,14 +3,14 @@
   Modules
   </h1>
 
-[Registry](https://registry.coder.com) | [Coder Docs](https://coder.com/docs) | [Why Coder](https://coder.com/why) | [Coder Enterprise](https://coder.com/docs/v2/latest/enterprise)
+[Module Registry](https://registry.coder.com) | [Coder Docs](https://coder.com/docs) | [Why Coder](https://coder.com/why) | [Coder Enterprise](https://coder.com/docs/v2/latest/enterprise)
 
 [![discord](https://img.shields.io/discord/747933592273027093?label=discord)](https://discord.gg/coder)
 [![license](https://img.shields.io/github/license/coder/modules)](./LICENSE)
 
 </div>
 
-Modules extend Templates to create reusable components for your development environment.
+Modules extend Coder Templates to create reusable components for your development environment.
 
 e.g.
 
