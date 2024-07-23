@@ -10,7 +10,7 @@ terraform {
 }
 
 variable "share" {
-  type = string 
+  type        = string
   description = "The share level of the Coder app. Either 'owner' | 'authenticated' | 'public' "
 }
 

@@ -43,7 +43,7 @@ describe("Web RDP", async () => {
   testRequiredVariables<TestVariables>(import.meta.dir, {
     agent_id: "foo",
     resource_id: "bar",
-    share: "owner"
+    share: "owner",
   });
 
   it("Has the PowerShell script install Devolutions Gateway", async () => {
@@ -96,7 +96,7 @@ describe("Web RDP", async () => {
       {
         agent_id: "foo",
         resource_id: "bar",
-        share: "owner"
+        share: "owner",
       },
     );
 
