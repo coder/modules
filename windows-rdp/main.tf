@@ -9,6 +9,11 @@ terraform {
   }
 }
 
+variable "share" {
+  type = string 
+  description = "The share level of the Coder app. Either 'owner' | 'authenticated' | 'public' "
+}
+
 variable "agent_id" {
   type        = string
   description = "The ID of a Coder agent."
@@ -53,6 +58,7 @@ resource "coder_script" "windows-rdp" {
 
 resource "coder_app" "windows-rdp" {
   agent_id     = var.agent_id
+  share        = var.share
   slug         = "web-rdp"
   display_name = "Web RDP"
   url          = "http://localhost:7171"
