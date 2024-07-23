@@ -10,9 +10,12 @@ terraform {
 }
 
 variable "share" {
-  type        = string
-  description = "The share level of the Coder app. Either 'owner' | 'authenticated' | 'public' "
-  default     = "owner"
+  type    = string
+  default = "owner"
+  validation {
+    condition     = var.share == "owner" || var.share == "authenticated" || var.share == "public"
+    error_message = "Incorrect value. Please set either 'owner', 'authenticated', or 'public'."
+  }
 }
 
 variable "agent_id" {
