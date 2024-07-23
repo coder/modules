@@ -12,6 +12,7 @@ terraform {
 variable "share" {
   type        = string
   description = "The share level of the Coder app. Either 'owner' | 'authenticated' | 'public' "
+  default     = "owner"
 }
 
 variable "agent_id" {

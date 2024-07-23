@@ -7,9 +7,9 @@ import {
 } from "../test";
 
 type TestVariables = Readonly<{
-  share: string;
   agent_id: string;
   resource_id: string;
+  share?: string;
   admin_username?: string;
   admin_password?: string;
 }>;
@@ -43,12 +43,10 @@ describe("Web RDP", async () => {
   testRequiredVariables<TestVariables>(import.meta.dir, {
     agent_id: "foo",
     resource_id: "bar",
-    share: "owner",
   });
 
   it("Has the PowerShell script install Devolutions Gateway", async () => {
     const state = await runTerraformApply<TestVariables>(import.meta.dir, {
-      share: "owner",
       agent_id: "foo",
       resource_id: "bar",
     });
@@ -96,7 +94,6 @@ describe("Web RDP", async () => {
       {
         agent_id: "foo",
         resource_id: "bar",
-        share: "owner",
       },
     );
 
@@ -115,7 +112,6 @@ describe("Web RDP", async () => {
     const customizedState = await runTerraformApply<TestVariables>(
       import.meta.dir,
       {
-        share: "owner",
         agent_id: "foo",
         resource_id: "bar",
         admin_username: customAdminUsername,
