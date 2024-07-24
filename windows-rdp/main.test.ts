@@ -9,6 +9,7 @@ import {
 type TestVariables = Readonly<{
   agent_id: string;
   resource_id: string;
+  share?: string;
   admin_username?: string;
   admin_password?: string;
 }>;
