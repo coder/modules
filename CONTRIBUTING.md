@@ -53,14 +53,14 @@ module "example" {
 ## Releases
 
 > [!WARNING]
-> Version numbers are very important for publishing to Terraform. If the version number is incorrect in any way, there is a risk that some modules could stop working.
+> When creating a new release, make sure that your new version number is fully accurate. If a version number is incorrect or does not exist, we may end up serving incorrect/old data for our various tools and providers.
 
 Much of our release process is automated. To cut a new release:
 
 1. Navigate to [GitHub's Releases page](https://github.com/coder/modules/releases)
 2. Click "Draft a new release"
 3. Click the "Choose a tag" button and type a new release number in the format `v<major>.<minor>.<patch>` (e.g., `v1.18.0`). Then click "Create new tag".
-4. Click the "Generate release notes" button, and clean up the resulting README. Be sure to clean up any notes that would not be relevant to end-users (e.g., bumping dependencies).
+4. Click the "Generate release notes" button, and clean up the resulting README. Be sure to remove any notes that would not be relevant to end-users (e.g., bumping dependencies).
 5. Once everything looks good, click the "Publish release" button.
 
 Once the release has been cut, a script will run to check whether there are any modules that will require that the new release number be published to Terraform. If there are any, a new pull request will automatically be generated. Be sure to approve this PR and merge it into the `main` branch.
@@ -71,4 +71,4 @@ Following that, our automated processes will handle publishing new data for [`re
 2. Publishing new data to the [Coder Registry](https://registry.coder.com)
 
 > [!NOTE]
-> Some data in `registry.coder.com` is fetched on demand from the Module repo's main branch. As such, some changes will be made almost immediately, while others may require some time.
+> Some data in `registry.coder.com` is fetched on demand from the Module repo's main branch. This data should be updated almost immediately after a new release, but other changes will take some time to propagate.
