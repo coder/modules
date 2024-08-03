@@ -24,7 +24,10 @@ function findWindowsRdpScript(state: TerraformState): string | null {
     }
 
     for (const instance of resource.instances) {
-      if (instance.attributes.display_name === "windows-rdp") {
+      if (
+        instance.attributes.display_name === "windows-rdp" &&
+        typeof instance.attributes.script === "string"
+      ) {
         return instance.attributes.script;
       }
     }
@@ -100,11 +103,11 @@ describe("Web RDP", async () => {
     const defaultRdpScript = findWindowsRdpScript(defaultState);
     expect(defaultRdpScript).toBeString();
 
-    const { username: defaultUsername, password: defaultPassword } =
-      formEntryValuesRe.exec(defaultRdpScript)?.groups ?? {};
+    const defaultResultsGroup =
+      formEntryValuesRe.exec(defaultRdpScript ?? "")?.groups ?? {};
 
-    expect(defaultUsername).toBe("Administrator");
-    expect(defaultPassword).toBe("coderRDP!");
+    expect(defaultResultsGroup.username).toBe("Administrator");
+    expect(defaultResultsGroup.password).toBe("coderRDP!");
 
     // Test that custom usernames/passwords are also forwarded correctly
     const customAdminUsername = "crouton";
@@ -122,10 +125,10 @@ describe("Web RDP", async () => {
     const customRdpScript = findWindowsRdpScript(customizedState);
     expect(customRdpScript).toBeString();
 
-    const { username: customUsername, password: customPassword } =
-      formEntryValuesRe.exec(customRdpScript)?.groups ?? {};
+    const customResultsGroup =
+      formEntryValuesRe.exec(customRdpScript ?? "")?.groups ?? {};
 
-    expect(customUsername).toBe(customAdminUsername);
-    expect(customPassword).toBe(customAdminPassword);
+    expect(customResultsGroup.username).toBe(customAdminUsername);
+    expect(customResultsGroup.password).toBe(customAdminPassword);
   });
 });
