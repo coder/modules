@@ -74,7 +74,7 @@ resource "coder_script" "dotfiles" {
 }
 
 resource "coder_app" "dotfiles" {
-  count        = var.manual_update
+  count        = var.manual_update ? 1 : 0
   agent_id     = var.agent_id
   display_name = "Update Dotfiles"
   slug         = "dotfiles"
