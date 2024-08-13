@@ -79,7 +79,7 @@ resource "coder_app" "dotfiles" {
   display_name = "Update Dotfiles"
   slug         = "dotfiles"
   icon         = "/icon/dotfiles.svg"
-  command      = templatefile("${path.module}/run.sh", {
+  command = templatefile("${path.module}/run.sh", {
     DOTFILES_URI : local.dotfiles_uri,
     DOTFILES_USER : local.user
   })
