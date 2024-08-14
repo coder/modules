@@ -76,7 +76,7 @@ resource "coder_script" "dotfiles" {
 resource "coder_app" "dotfiles" {
   count        = var.manual_update ? 1 : 0
   agent_id     = var.agent_id
-  display_name = "Update Dotfiles"
+  display_name = "Refresh Dotfiles"
   slug         = "dotfiles"
   icon         = "/icon/dotfiles.svg"
   command = templatefile("${path.module}/run.sh", {
