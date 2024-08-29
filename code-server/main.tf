@@ -143,7 +143,7 @@ resource "coder_script" "code-server" {
     AUTO_INSTALL_EXTENSIONS : var.auto_install_extensions,
     # SERVER_BASE_PATH : "/",
     SERVER_BASE_PATH : format("/%s/%s.%s/apps/vscode-web/",
-    data.coder_workspace_owner.name, data.coder_workspace.name, "main"),
+    data.coder_workspace_owner.name, data.coder_workspace.name, var.agent_id),
   })
   run_on_start = true
 
