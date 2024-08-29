@@ -130,6 +130,9 @@ variable "subdomain" {
   default     = true
 }
 
+data "coder_workspace_owner" "me" {}
+data "coder_workspace" "me" {}
+
 resource "coder_script" "vscode-web" {
   agent_id     = var.agent_id
   display_name = "VS Code Web"
