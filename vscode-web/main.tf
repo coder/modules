@@ -150,6 +150,7 @@ resource "coder_script" "vscode-web" {
     EXTENSIONS_DIR : var.extensions_dir,
     FOLDER : var.folder,
     AUTO_INSTALL_EXTENSIONS : var.auto_install_extensions,
+    // TODO: This assumes the agent is called "main"
     SERVER_BASE_PATH : format("/@%s/%s.%s/apps/vscode-web/",
     data.coder_workspace_owner.me.name, data.coder_workspace.me.name, "main"),
   })
@@ -173,10 +174,7 @@ resource "coder_app" "vscode-web" {
   slug         = var.slug
   display_name = var.display_name
 
-  // @Emyrk/code-server.main/apps/vscode-web/
-  // -> Coder -> "/"
-
-  url       = var.folder == "http://localhost:${var.port}/@Emyrk/code-server.main/apps/vscode-web/"
+  url       = var.folder == "" ? "http://localhost:${var.port}" : "http://localhost:${var.port}?folder=${var.folder}"
   icon      = "/icon/code.svg"
   subdomain = var.subdomain
   share     = var.share
