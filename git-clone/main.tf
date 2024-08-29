@@ -50,7 +50,7 @@ variable "branch_name" {
   default     = ""
 }
 
-variable "dest_folder" {
+variable "dest_dir" {
   description = "The destination folder to clone the repository into."
   type        = string
   default     = ""
@@ -70,7 +70,7 @@ locals {
   # Extract the branch name from the URL
   branch_name = var.branch_name == "" && local.tree_path != "" ? replace(replace(local.url, local.clone_url, ""), "/.*${local.tree_path}/", "") : var.branch_name
   # Extract the folder name from the URL
-  folder_name = var.dest_folder == "" ? replace(basename(local.clone_url), ".git", "") : var.dest_folder
+  folder_name = var.dest_dir == "" ? replace(basename(local.clone_url), ".git", "") : var.dest_dir
   # Construct the path to clone the repository
   clone_path = var.base_dir != "" ? join("/", [var.base_dir, local.folder_name]) : join("/", ["~", local.folder_name])
   # Construct the web URL
