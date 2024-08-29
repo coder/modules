@@ -121,6 +121,15 @@ variable "auto_install_extensions" {
   default     = false
 }
 
+variable "subdomain" {
+  type        = bool
+  description = <<-EOT
+    Determines whether the app will be accessed via it's own subdomain or whether it will be accessed via a path on Coder.
+    If wildcards have not been setup by the administrator then apps with "subdomain" set to true will not be accessible.
+  EOT
+  default     = true
+}
+
 resource "coder_script" "vscode-web" {
   agent_id     = var.agent_id
   display_name = "VS Code Web"
@@ -160,7 +169,7 @@ resource "coder_app" "vscode-web" {
   display_name = var.display_name
   url          = var.folder == "" ? "http://localhost:${var.port}" : "http://localhost:${var.port}?folder=${var.folder}"
   icon         = "/icon/code.svg"
-  subdomain    = true
+  subdomain    = var.subdomain
   share        = var.share
   order        = var.order
 
