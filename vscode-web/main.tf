@@ -172,11 +172,15 @@ resource "coder_app" "vscode-web" {
   agent_id     = var.agent_id
   slug         = var.slug
   display_name = var.display_name
-  url          = var.folder == "" ? "http://localhost:${var.port}" : "http://localhost:${var.port}?folder=${var.folder}"
-  icon         = "/icon/code.svg"
-  subdomain    = var.subdomain
-  share        = var.share
-  order        = var.order
+
+  // @Emyrk/code-server.main/apps/vscode-web/
+  // -> Coder -> "/"
+
+  url       = var.folder == "http://localhost:${var.port}/@Emyrk/code-server.main/apps/vscode-web/"
+  icon      = "/icon/code.svg"
+  subdomain = var.subdomain
+  share     = var.share
+  order     = var.order
 
   healthcheck {
     url       = "http://localhost:${var.port}/healthz"
