@@ -14,6 +14,24 @@ variable "agent_id" {
   description = "The ID of a Coder agent."
 }
 
+variable "workspace_name" {
+  type = string
+  default = ""
+  description = "Set this and owner_name to serve filebrowser from subdirectory."
+}
+
+variable "owner_name" {
+  type = string
+  default = ""
+  description = "Set this and workspace_name to serve filebrowser from subdirectory."
+}
+
+variable "resource_name" {
+  type = string
+  default = "main"
+  description = "The name of the main deployment. (Used to build the subdirectory of the module.)"
+}
+
 variable "database_path" {
   type        = string
   description = "The path to the filebrowser database."
@@ -67,7 +85,10 @@ resource "coder_script" "filebrowser" {
     PORT : var.port,
     FOLDER : var.folder,
     LOG_PATH : var.log_path,
-    DB_PATH : var.database_path
+    DB_PATH : var.database_path,
+    WORKSPACE_NAME : var.workspace_name,
+    OWNER_NAME : var.owner_name,
+    RESOURCE_NAME : var.resource_name
   })
   run_on_start = true
 }
@@ -78,7 +99,7 @@ resource "coder_app" "filebrowser" {
   display_name = "File Browser"
   url          = "http://localhost:${var.port}"
   icon         = "https://raw.githubusercontent.com/filebrowser/logo/master/icon_raw.svg"
-  subdomain    = true
+  subdomain    = var.owner_name == "" && var.workspace_name == ""
   share        = var.share
   order        = var.order
 }

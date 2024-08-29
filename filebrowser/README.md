@@ -44,3 +44,16 @@ module "filebrowser" {
   database_path = ".config/filebrowser.db"
 }
 ```
+
+### Serve from the same domain (no subdomain)
+
+Make sure to set both workspace_name and owner_name.
+
+```tf
+module "filebrowser" {
+  source         = "registry.coder.com/modules/filebrowser/coder"
+  agent_id       = coder_agent.main.id
+  workspace_name = data.coder_workspace.me.name
+  owner_name     = data.coder_workspace_owner.me.name
+}
+```
