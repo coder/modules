@@ -82,8 +82,8 @@ resource "coder_script" "filebrowser" {
     FOLDER : var.folder,
     LOG_PATH : var.log_path,
     DB_PATH : var.database_path,
-    WORKSPACE_NAME : var.workspace_name,
-    OWNER_NAME : var.owner_name,
+    WORKSPACE_NAME : data.coder_workspace.me.name,
+    OWNER_NAME : data.coder_workspace_owner.me.name,
     AGENT_NAME : var.agent_name
     SUBDOMAIN : var.subdomain
   })
