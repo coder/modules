@@ -26,10 +26,10 @@ variable "owner_name" {
   description = "Set this and workspace_name to serve filebrowser from subdirectory."
 }
 
-variable "resource_name" {
+variable "agent_name" {
   type = string
-  default = "main"
-  description = "The name of the main deployment. (Used to build the subdirectory of the module.)"
+  default = ""
+  description = "The name of the main deployment. (Used to build the subpath for coder_app.)"
 }
 
 variable "database_path" {
