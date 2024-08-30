@@ -100,7 +100,7 @@ resource "coder_app" "filebrowser" {
   display_name = "File Browser"
   url          = "http://localhost:${var.port}"
   icon         = "https://raw.githubusercontent.com/filebrowser/logo/master/icon_raw.svg"
-  subdomain    = var.owner_name == "" && var.workspace_name == ""
+  subdomain    = var.subdomain
   share        = var.share
   order        = var.order
 }
