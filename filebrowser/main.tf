@@ -88,7 +88,8 @@ resource "coder_script" "filebrowser" {
     DB_PATH : var.database_path,
     WORKSPACE_NAME : var.workspace_name,
     OWNER_NAME : var.owner_name,
-    RESOURCE_NAME : var.resource_name
+    AGENT_NAME : var.agent_name
+    SUBDOMAIN : var.subdomain
   })
   run_on_start = true
 }
