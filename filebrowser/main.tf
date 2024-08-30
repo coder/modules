@@ -18,10 +18,8 @@ data "coder_workspace" "me" {
   count = var.subdomain
 }
 
-variable "owner_name" {
-  type = string
-  default = ""
-  description = "Set this and workspace_name to serve filebrowser from subdirectory."
+data "coder_workspace_owner" "me" {
+  count = var.subdomain
 }
 
 variable "agent_name" {
