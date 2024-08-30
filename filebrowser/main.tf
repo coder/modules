@@ -14,10 +14,8 @@ variable "agent_id" {
   description = "The ID of a Coder agent."
 }
 
-variable "workspace_name" {
-  type = string
-  default = ""
-  description = "Set this and owner_name to serve filebrowser from subdirectory."
+data "coder_workspace" "me" {
+  count = var.subdomain
 }
 
 variable "owner_name" {
