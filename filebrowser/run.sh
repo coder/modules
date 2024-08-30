@@ -17,8 +17,8 @@ if [ "${DB_PATH}" != "filebrowser.db" ]; then
   DB_FLAG=" -d ${DB_PATH}"
 fi
 
-# set baseurl if subdomain = false (owner_name and workspace_name is set), else reset to "" for use with subdomain = true
-if [ "${OWNER_NAME}" != "" ] && [ "${WORKSPACE_NAME}" != "" ]; then
+# set baseurl if subdomain = false
+if [ "${SUBDOMAIN}" == "false" ]; then
   filebrowser config set --baseurl "/@${OWNER_NAME}/${WORKSPACE_NAME}.${RESOURCE_NAME}/apps/filebrowser" > ${LOG_PATH} 2>&1
 else
   filebrowser config set --baseurl "" > ${LOG_PATH} 2>&1
