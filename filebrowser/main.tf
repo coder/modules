@@ -82,10 +82,9 @@ resource "coder_script" "filebrowser" {
     FOLDER : var.folder,
     LOG_PATH : var.log_path,
     DB_PATH : var.database_path,
-    WORKSPACE_NAME : data.coder_workspace.me.name,
-    OWNER_NAME : data.coder_workspace_owner.me.name,
-    AGENT_NAME : var.agent_name
-    SUBDOMAIN : var.subdomain
+    SUBDOMAIN : var.subdomain,
+    SERVER_BASE_PATH : format("/@%s/%s.%s/apps/vscode-web/",
+    data.coder_workspace_owner.me.name, data.coder_workspace.me.name, var.agent_name),
   })
   run_on_start = true
 }

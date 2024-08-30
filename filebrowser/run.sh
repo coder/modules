@@ -19,7 +19,7 @@ fi
 
 # set baseurl if subdomain = false
 if [ "${SUBDOMAIN}" == "false" ]; then
-  filebrowser config set --baseurl "/@${OWNER_NAME}/${WORKSPACE_NAME}.${RESOURCE_NAME}/apps/filebrowser" > ${LOG_PATH} 2>&1
+  filebrowser config set --baseurl "${SERVER_BASE_PATH}" > ${LOG_PATH} 2>&1
 else
   filebrowser config set --baseurl "" > ${LOG_PATH} 2>&1
 fi
