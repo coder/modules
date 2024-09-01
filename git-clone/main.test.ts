@@ -79,6 +79,22 @@ describe("git-clone", async () => {
     expect(state.outputs.branch_name.value).toEqual("");
   });
 
+  it("repo_dir should match base_dir/folder_name", async () => {
+    const url = "git@github.com:coder/coder.git";
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      base_dir: "/tmp",
+      folder_name: "foo",
+      url,
+    });
+    expect(state.outputs.repo_dir.value).toEqual("/tmp/foo");
+    expect(state.outputs.folder_name.value).toEqual("foo");
+    expect(state.outputs.clone_url.value).toEqual(url);
+    const https_url = "https://github.com/coder/coder.git";
+    expect(state.outputs.web_url.value).toEqual(https_url);
+    expect(state.outputs.branch_name.value).toEqual("");
+  });
+
   it("branch_name should not include query string", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",

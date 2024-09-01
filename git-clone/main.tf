@@ -50,6 +50,12 @@ variable "branch_name" {
   default     = ""
 }
 
+variable "folder_name" {
+  description = "The destination folder to clone the repository into."
+  type        = string
+  default     = ""
+}
+
 locals {
   # Remove query parameters and fragments from the URL
   url = replace(replace(var.url, "/\\?.*/", ""), "/#.*/", "")
@@ -64,7 +70,7 @@ locals {
   # Extract the branch name from the URL
   branch_name = var.branch_name == "" && local.tree_path != "" ? replace(replace(local.url, local.clone_url, ""), "/.*${local.tree_path}/", "") : var.branch_name
   # Extract the folder name from the URL
-  folder_name = replace(basename(local.clone_url), ".git", "")
+  folder_name = var.folder_name == "" ? replace(basename(local.clone_url), ".git", "") : var.folder_name
   # Construct the path to clone the repository
   clone_path = var.base_dir != "" ? join("/", [var.base_dir, local.folder_name]) : join("/", ["~", local.folder_name])
   # Construct the web URL
