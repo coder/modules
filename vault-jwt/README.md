@@ -55,7 +55,7 @@ module "vault" {
 }
 ```
 
-### Configure Vault integration with a role from your OIDC provider
+### Configure Vault integration with a role from your OIDC provider by mapping the workspace owner's group to a Vault role
 
 ```tf
 data "coder_workspace_owner" "me" {}
