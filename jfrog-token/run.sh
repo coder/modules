@@ -2,6 +2,21 @@
 
 BOLD='\033[0;1m'
 
+func not_configured(){
+  type=$1
+  echo "🤔 no $type repository is set, skipping $type configuration."
+  echo "You can configure a $type repository by providing a key for '$type' in the 'package_managers' input."
+}
+
+func done(){
+  echo "🥳 Configuration complete!"
+}
+
+func register_docker(){
+  repo=$1
+  echo -n "${ARTIFACTORY_ACCESS_TOKEN}" | docker login "$repo" --username ${ARTIFACTORY_USERNAME} --password-stdin
+}
+
 # check if JFrog CLI is already installed
 if command -v jf > /dev/null 2>&1; then
   echo "✅ JFrog CLI is already installed, skipping installation."
@@ -11,8 +26,7 @@ else
   sudo chmod 755 /usr/local/bin/jf
 fi
 
-# The jf CLI checks $CI when determining whether to use interactive
-# flows.
+# The jf CLI checks $CI when determining whether to use interactive flows.
 export CI=true
 # Authenticate JFrog CLI with Artifactory.
 echo "${ARTIFACTORY_ACCESS_TOKEN}" | jf c add --access-token-stdin --url "${JFROG_URL}" --overwrite "${JFROG_SERVER_ID}"
@@ -20,52 +34,47 @@ echo "${ARTIFACTORY_ACCESS_TOKEN}" | jf c add --access-token-stdin --url "${JFRO
 jf c use "${JFROG_SERVER_ID}"
 
 # Configure npm to use the Artifactory "npm" repository.
-if [ -z "${REPOSITORY_NPM}" ]; then
-  echo "🤔 no npm repository is set, skipping npm configuration."
-  echo "You can configure an npm repository by providing the a key for 'npm' in the 'package_managers' input."
+if [ -z "${HAS_NPM}" ]; then
+  not_configured npm
 else
   echo "📦 Configuring npm..."
   jf npmc --global --repo-resolve "${REPOSITORY_NPM}"
   cat << EOF > ~/.npmrc
-email=${ARTIFACTORY_EMAIL}
-registry=${JFROG_URL}/artifactory/api/npm/${REPOSITORY_NPM}
+${NPMRC}
 EOF
-  echo "//${JFROG_HOST}/artifactory/api/npm/${REPOSITORY_NPM}/:_authToken=${ARTIFACTORY_ACCESS_TOKEN}" >> ~/.npmrc
+  echo "🥳 Configuration complete!"
 fi
 
 # Configure the `pip` to use the Artifactory "python" repository.
-if [ -z "${REPOSITORY_PYPI}" ]; then
-  echo "🤔 no pypi repository is set, skipping pip configuration."
-  echo "You can configure a pypi repository by providing the a key for 'pypi' in the 'package_managers' input."
+if [ -z "${HAS_PYPI}" ]; then
+  not_configured pypi
 else
   echo "🐍 Configuring pip..."
   jf pipc --global --repo-resolve "${REPOSITORY_PYPI}"
   mkdir -p ~/.pip
   cat << EOF > ~/.pip/pip.conf
-[global]
-index-url = https://${ARTIFACTORY_USERNAME}:${ARTIFACTORY_ACCESS_TOKEN}@${JFROG_HOST}/artifactory/api/pypi/${REPOSITORY_PYPI}/simple
+${PIP_CONF}
 EOF
+  echo "🥳 Configuration complete!"
 fi
 
 # Configure Artifactory "go" repository.
-if [ -z "${REPOSITORY_GO}" ]; then
-  echo "🤔 no go repository is set, skipping go configuration."
-  echo "You can configure a go repository by providing the a key for 'go' in the 'package_managers' input."
+if [ -z "${HAS_GO}" ]; then
+  not_configured go
 else
   echo "🐹 Configuring go..."
   jf goc --global --repo-resolve "${REPOSITORY_GO}"
+  echo "🥳 Configuration complete!"
 fi
-echo "🥳 Configuration complete!"
 
 # Configure the JFrog CLI to use the Artifactory "docker" repository.
-if [ -z "${REPOSITORY_DOCKER}" ]; then
-  echo "🤔 no docker repository is set, skipping docker configuration."
-  echo "You can configure a docker repository by providing the a key for 'docker' in the 'package_managers' input."
+if [ -z "${HAS_DOCKER}" ]; then
+  not_configured docker
 else
   if command -v docker > /dev/null 2>&1; then
     echo "🔑 Configuring 🐳 docker credentials..."
     mkdir -p ~/.docker
-    echo -n "${ARTIFACTORY_ACCESS_TOKEN}" | docker login ${JFROG_HOST} --username ${ARTIFACTORY_USERNAME} --password-stdin
+    ${REGISTER_DOCKER}
   else
     echo "🤔 no docker is installed, skipping docker configuration."
   fi
