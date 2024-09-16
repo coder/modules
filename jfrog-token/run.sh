@@ -2,17 +2,17 @@
 
 BOLD='\033[0;1m'
 
-func not_configured(){
+not_configured(){
   type=$1
   echo "🤔 no $type repository is set, skipping $type configuration."
   echo "You can configure a $type repository by providing a key for '$type' in the 'package_managers' input."
 }
 
-func done(){
+config_complete(){
   echo "🥳 Configuration complete!"
 }
 
-func register_docker(){
+register_docker(){
   repo=$1
   echo -n "${ARTIFACTORY_ACCESS_TOKEN}" | docker login "$repo" --username ${ARTIFACTORY_USERNAME} --password-stdin
 }
@@ -42,7 +42,7 @@ else
   cat << EOF > ~/.npmrc
 ${NPMRC}
 EOF
-  echo "🥳 Configuration complete!"
+  config_complete
 fi
 
 # Configure the `pip` to use the Artifactory "python" repository.
@@ -55,7 +55,7 @@ else
   cat << EOF > ~/.pip/pip.conf
 ${PIP_CONF}
 EOF
-  echo "🥳 Configuration complete!"
+  config_complete
 fi
 
 # Configure Artifactory "go" repository.
@@ -64,7 +64,7 @@ if [ -z "${HAS_GO}" ]; then
 else
   echo "🐹 Configuring go..."
   jf goc --global --repo-resolve "${REPOSITORY_GO}"
-  echo "🥳 Configuration complete!"
+  config_complete
 fi
 
 # Configure the JFrog CLI to use the Artifactory "docker" repository.
