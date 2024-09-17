@@ -97,7 +97,7 @@ resource "coder_app" "filebrowser" {
   agent_id     = var.agent_id
   slug         = "filebrowser"
   display_name = "File Browser"
-  url          = "http://localhost:${var.port}"
+  url          = "http://localhost:${var.port}/files"
   icon         = "https://raw.githubusercontent.com/filebrowser/logo/master/icon_raw.svg"
   subdomain    = var.subdomain
   share        = var.share
