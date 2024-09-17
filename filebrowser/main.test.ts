@@ -88,4 +88,26 @@ describe("filebrowser", async () => {
       "📝 Logs at /tmp/filebrowser.log",
     ]);
   });
+
+  it("runs with subdomain=false", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+      subdomain: false,
+    });
+    const output = await executeScriptInContainer(state, "alpine");
+    expect(output.exitCode).toBe(0);
+    expect(output.stdout).toEqual([
+      "\u001B[0;1mInstalling filebrowser ",
+      "",
+      "🥳 Installation complete! ",
+      "",
+      "👷 Starting filebrowser in background... ",
+      "",
+      "📂 Serving /root at http://localhost:13339 ",
+      "",
+      "Running 'filebrowser --noauth --root /root --port 13339' ",
+      "",
+      "📝 Logs at /tmp/filebrowser.log",
+    ]);
+  });
 });

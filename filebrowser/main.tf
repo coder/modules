@@ -14,13 +14,9 @@ variable "agent_id" {
   description = "The ID of a Coder agent."
 }
 
-data "coder_workspace" "me" {
-  count = var.subdomain
-}
+data "coder_workspace" "me" {}
 
-data "coder_workspace_owner" "me" {
-  count = var.subdomain
-}
+data "coder_workspace_owner" "me" {}
 
 variable "agent_name" {
   type = string
