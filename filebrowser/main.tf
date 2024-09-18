@@ -19,7 +19,7 @@ data "coder_workspace" "me" {}
 data "coder_workspace_owner" "me" {}
 
 variable "agent_name" {
-  type = string
+  type        = string
   description = "The name of the main deployment. (Used to build the subpath for coder_app.)"
 }
 
