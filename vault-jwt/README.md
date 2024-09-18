@@ -10,7 +10,7 @@ tags: [helper, integration, vault, jwt, oidc]
 
 # Hashicorp Vault Integration (JWT)
 
-This module lets you authenticate with [Hashicorp Vault](https://www.vaultproject.io/) in your Coder workspaces using a [JWT](https://developer.hashicorp.com/vault/docs/auth/jwt#jwt-authentication) from Coder's OIDC provider.
+This module lets you authenticate with [Hashicorp Vault](https://www.vaultproject.io/) in your Coder workspaces using a [JWT](https://developer.hashicorp.com/vault/docs/auth/jwt#jwt-authentication) from Coder's [OIDC authentication method](https://coder.com/docs/admin/auth#openid-connect).
 
 ```tf
 module "vault" {
