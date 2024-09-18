@@ -11,11 +11,13 @@ describe("filebrowser", async () => {
 
   testRequiredVariables(import.meta.dir, {
     agent_id: "foo",
+    agent_name: "main",
   });
 
   it("fails with wrong database_path", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
+      agent_name: "main",
       database_path: "nofb",
     }).catch((e) => {
       if (!e.message.startsWith("\nError: Invalid value for variable")) {
@@ -27,6 +29,7 @@ describe("filebrowser", async () => {
   it("runs with default", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
+      agent_name: "main",
     });
     const output = await executeScriptInContainer(state, "alpine");
     expect(output.exitCode).toBe(0);
@@ -48,6 +51,7 @@ describe("filebrowser", async () => {
   it("runs with database_path var", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
+      agent_name: "main",
       database_path: ".config/filebrowser.db",
     });
     const output = await executeScriptInContainer(state, "alpine");
@@ -70,6 +74,7 @@ describe("filebrowser", async () => {
   it("runs with folder var", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
+      agent_name: "main",
       folder: "/home/coder/project",
     });
     const output = await executeScriptInContainer(state, "alpine");
@@ -92,6 +97,7 @@ describe("filebrowser", async () => {
   it("runs with subdomain=false", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
+      agent_name: "main",
       subdomain: false,
     });
     const output = await executeScriptInContainer(state, "alpine");

@@ -13,9 +13,10 @@ A file browser for your workspace.
 
 ```tf
 module "filebrowser" {
-  source   = "registry.coder.com/modules/filebrowser/coder"
-  version  = "1.0.8"
-  agent_id = coder_agent.example.id
+  source     = "registry.coder.com/modules/filebrowser/coder"
+  version    = "1.0.8"
+  agent_id   = coder_agent.example.id
+  agent_name = "main"
 }
 ```
 
@@ -27,10 +28,11 @@ module "filebrowser" {
 
 ```tf
 module "filebrowser" {
-  source   = "registry.coder.com/modules/filebrowser/coder"
-  version  = "1.0.8"
-  agent_id = coder_agent.example.id
-  folder   = "/home/coder/project"
+  source     = "registry.coder.com/modules/filebrowser/coder"
+  version    = "1.0.8"
+  agent_id   = coder_agent.example.id
+  agent_name = "main"
+  folder     = "/home/coder/project"
 }
 ```
 
@@ -41,6 +43,7 @@ module "filebrowser" {
   source        = "registry.coder.com/modules/filebrowser/coder"
   version       = "1.0.8"
   agent_id      = coder_agent.example.id
+  agent_name    = "main"
   database_path = ".config/filebrowser.db"
 }
 ```
@@ -50,8 +53,8 @@ module "filebrowser" {
 ```tf
 module "filebrowser" {
   source     = "registry.coder.com/modules/filebrowser/coder"
-  agent_id   = coder_agent.main.id
-  subdomain  = false
+  agent_id   = coder_agent.example.id
   agent_name = "main"
+  subdomain  = false
 }
 ```
