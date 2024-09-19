@@ -38,7 +38,7 @@ data "coder_workspace_owner" "me" {}
 resource "coder_app" "cursor" {
   agent_id     = var.agent_id
   external     = true
-  icon         = "/icon/code.svg"
+  icon         = "/icon/cursor.svg"
   slug         = "cursor"
   display_name = "Cursor IDE"
   order        = var.order
