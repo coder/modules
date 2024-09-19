@@ -22,7 +22,7 @@ describe("cursor", async () => {
     );
 
     const coder_app = state.resources.find(
-      (res) => res.type == "coder_app" && res.name == "cursor",
+      (res) => res.type === "coder_app" && res.name === "cursor",
     );
 
     expect(coder_app).not.toBeNull();
@@ -79,7 +79,7 @@ describe("cursor", async () => {
     });
 
     const coder_app = state.resources.find(
-      (res) => res.type == "coder_app" && res.name == "cursor",
+      (res) => res.type === "coder_app" && res.name === "cursor",
     );
 
     expect(coder_app).not.toBeNull();
