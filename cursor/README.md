@@ -16,7 +16,7 @@ Uses the [Coder Remote VS Code Extension](https://github.com/coder/cursor-coder)
 ```tf
 module "cursor" {
   source   = "registry.coder.com/modules/cursor/coder"
-  version  = "1.0.15"
+  version  = "1.0.18"
   agent_id = coder_agent.example.id
 }
 ```
@@ -28,7 +28,7 @@ module "cursor" {
 ```tf
 module "cursor" {
   source   = "registry.coder.com/modules/cursor/coder"
-  version  = "1.0.15"
+  version  = "1.0.18"
   agent_id = coder_agent.example.id
   folder   = "/home/coder/project"
 }
