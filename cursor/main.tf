@@ -35,15 +35,15 @@ variable "order" {
 data "coder_workspace" "me" {}
 data "coder_workspace_owner" "me" {}
 
-resource "coder_app" "vscode" {
+resource "coder_app" "cursor" {
   agent_id     = var.agent_id
   external     = true
   icon         = "/icon/code.svg"
-  slug         = "vscode"
-  display_name = "VS Code Desktop"
+  slug         = "cursor"
+  display_name = "Cursor IDE"
   order        = var.order
   url = join("", [
-    "vscode://coder.coder-remote/open",
+    "cursor://coder.coder-remote/open",
     "?owner=",
     data.coder_workspace_owner.me.name,
     "&workspace=",
@@ -56,7 +56,7 @@ resource "coder_app" "vscode" {
   ])
 }
 
-output "vscode_url" {
-  value       = coder_app.vscode.url
-  description = "VS Code Desktop URL."
+output "cursor_url" {
+  value       = coder_app.cursor.url
+  description = "Cursor IDE Desktop URL."
 }
