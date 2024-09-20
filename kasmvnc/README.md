@@ -9,7 +9,7 @@ tags: [helper, vnc, desktop]
 
 # KasmVNC
 
-Automatically install [KasmVNC](https://kasmweb.com/kasmvnc) in a workspace, and create an app to access it via the dashboard. Add latest version of KasmVNC with [`xfce`](https://xfce.org/) desktop environment.
+Automatically install [KasmVNC](https://kasmweb.com/kasmvnc) in a workspace, and create an app to access it via the dashboard.
 
 ```tf
 module "kasmvnc" {
@@ -19,4 +19,4 @@ module "kasmvnc" {
 }
 ```
 
-> **Note:** This module only works on debian-based workspaces. It is recommended to use an image with a desktop environment pre-installed to speed up the installation process.
+> **Note:** This module only works on workspaces with a pre-installed desktop environment.

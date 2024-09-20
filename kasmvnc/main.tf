@@ -26,10 +26,13 @@ variable "kasm_version" {
   default     = "1.3.1"
 }
 
-variable "wait_for_script" {
+variable "desktop_environment" {
   type        = string
-  description = "The script to wait for before running the KasmVNC script."
-  default     = ""
+  description = "Specifies the desktop environment of the workspace. This should be pre-installed on the workspace."
+  validation {
+    condition     = contains(["xfce", "kde", "gnome", "lxde", "lxqt", "xfce"], var.desktop_environment)
+    error_message = "Invalid desktop environment. Please specify a valid desktop environment."
+  }
 }
 
 resource "coder_script" "kasm_vnc" {
@@ -38,7 +41,7 @@ resource "coder_script" "kasm_vnc" {
   icon         = "/icon/kasmvnc.svg"
   script = templatefile("${path.module}/run.sh", {
     PORT : var.port,
-    WAIT_FOR_SCRIPT : var.wait_for_script,
+    DESKTOP_ENVIRONMENT : var.desktop_environment,
     VERSION : var.kasm_version
   })
   run_on_start = true
