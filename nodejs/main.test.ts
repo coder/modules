@@ -1,4 +1,4 @@
-import { describe, expect, it } from "bun:test";
+import { describe } from "bun:test";
 import { runTerraformInit, testRequiredVariables } from "../test";
 
 describe("nodejs", async () => {

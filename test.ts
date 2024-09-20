@@ -1,6 +1,6 @@
 import { readableStreamToText, spawn } from "bun";
-import { afterEach, expect, it } from "bun:test";
-import { readFile, unlink } from "fs/promises";
+import { expect, it } from "bun:test";
+import { readFile, unlink } from "node:fs/promises";
 
 export const runContainer = async (
   image: string,
@@ -21,7 +21,8 @@ export const runContainer = async (
     "-c",
     init,
   ]);
-  let containerID = await readableStreamToText(proc.stdout);
+
+  const containerID = await readableStreamToText(proc.stdout);
   const exitCode = await proc.exited;
   if (exitCode !== 0) {
     throw new Error(containerID);
@@ -36,7 +37,7 @@ export const runContainer = async (
 export const executeScriptInContainer = async (
   state: TerraformState,
   image: string,
-  shell: string = "sh",
+  shell = "sh",
 ): Promise<{
   exitCode: number;
   stdout: string[];
@@ -155,15 +156,15 @@ export const testRequiredVariables = <TVars extends Record<string, string>>(
   });
 
   const varNames = Object.keys(vars);
-  varNames.forEach((varName) => {
+  for (const varName of varNames) {
     // Ensures that every variable provided is required!
-    it("missing variable " + varName, async () => {
+    it(`missing variable ${varName}`, async () => {
       const localVars: Record<string, string> = {};
-      varNames.forEach((otherVarName) => {
+      for (const otherVarName of varNames) {
         if (otherVarName !== varName) {
           localVars[otherVarName] = vars[otherVarName];
         }
-      });
+      }
 
       try {
         await runTerraformApply(dir, localVars);
@@ -179,7 +180,7 @@ export const testRequiredVariables = <TVars extends Record<string, string>>(
       }
       throw new Error(`${varName} is not a required variable!`);
     });
-  });
+  }
 };
 
 /**

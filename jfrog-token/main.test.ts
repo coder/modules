@@ -34,7 +34,7 @@ describe("jfrog-token", async () => {
 
   testRequiredVariables(import.meta.dir, {
     agent_id: "some-agent-id",
-    jfrog_url: "http://" + fakeFrogHost.hostname + ":" + fakeFrogHost.port,
+    jfrog_url: `http://${fakeFrogHost.hostname}:${fakeFrogHost.port}`,
     artifactory_access_token: "XXXX",
     package_managers: "{}",
   });

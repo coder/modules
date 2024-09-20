@@ -1,10 +1,8 @@
-import { serve } from "bun";
+/**
+ * @todo Add more tests
+ */
 import { describe } from "bun:test";
-import {
-  createJSONResponse,
-  runTerraformInit,
-  testRequiredVariables,
-} from "../test";
+import { runTerraformInit, testRequiredVariables } from "../test";
 
 describe("jfrog-oauth", async () => {
   await runTerraformInit(import.meta.dir);
@@ -15,5 +13,3 @@ describe("jfrog-oauth", async () => {
     package_managers: "{}",
   });
 });
-
-//TODO add more tests
