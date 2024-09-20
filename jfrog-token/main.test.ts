@@ -7,8 +7,24 @@ import {
   runTerraformApply,
   testRequiredVariables,
 } from "../test";
+import { Test } from "test";
 
 describe("jfrog-token", async () => {
+  type TestVariables = {
+    agent_id: string;
+    jfrog_url: string;
+    artifactory_access_token: string;
+    package_managers: string;
+
+    token_description?: string;
+    check_license?: boolean;
+    refreshable?: boolean;
+    expires_in?: number;
+    username_field?: string;
+    jfrog_server_id?: string;
+    configure_code_server?: boolean;
+  };
+
   await runTerraformInit(import.meta.dir);
 
   // Run a fake JFrog server so the provider can initialize
@@ -34,11 +50,13 @@ describe("jfrog-token", async () => {
     port: 0,
   });
 
-  const fakeFrogHostAndPort = `${fakeFrogHost.hostname}:${fakeFrogHost.port}`;
-  const fakeFrogUrl = `http://${fakeFrogHostAndPort}`;
+  const fakeFrogApi = `${fakeFrogHost.hostname}:${fakeFrogHost.port}/artifactory/api`;
+  const fakeFrogUrl = `http://${fakeFrogHost.hostname}:${fakeFrogHost.port}`;
+  const user = "default";
+  const token = "xxx";
 
   it("can run apply with required variables", async () => {
-    testRequiredVariables(import.meta.dir, {
+    testRequiredVariables<TestVariables>(import.meta.dir, {
       agent_id: "some-agent-id",
       jfrog_url: fakeFrogUrl,
       artifactory_access_token: "XXXX",
@@ -47,7 +65,7 @@ describe("jfrog-token", async () => {
   });
 
   it("generates an npmrc with scoped repos", async () => {
-    const state = await runTerraformApply(import.meta.dir, {
+    const state = await runTerraformApply<TestVariables>(import.meta.dir, {
       agent_id: "some-agent-id",
       jfrog_url: fakeFrogUrl,
       artifactory_access_token: "XXXX",
@@ -57,13 +75,13 @@ describe("jfrog-token", async () => {
     });
     const coderScript = findResourceInstance(state, "coder_script");
     const npmrcStanza = `cat << EOF > ~/.npmrc
-email=default@example.com
-registry=${fakeFrogUrl}/artifactory/api/npm/global
-//${fakeFrogHostAndPort}/artifactory/api/npm/global/:_authToken=xxx
-@foo:registry=${fakeFrogUrl}/artifactory/api/npm/foo
-//${fakeFrogHostAndPort}/artifactory/api/npm/foo/:_authToken=xxx
-@bar:registry=${fakeFrogUrl}/artifactory/api/npm/bar
-//${fakeFrogHostAndPort}/artifactory/api/npm/bar/:_authToken=xxx
+email=${user}@example.com
+registry=http://${fakeFrogApi}/npm/global
+//${fakeFrogApi}/npm/global/:_authToken=xxx
+@foo:registry=http://${fakeFrogApi}/npm/foo
+//${fakeFrogApi}/npm/foo/:_authToken=xxx
+@bar:registry=http://${fakeFrogApi}/npm/bar
+//${fakeFrogApi}/npm/bar/:_authToken=xxx
 
 EOF`;
     expect(coderScript.script).toContain(npmrcStanza);
@@ -76,7 +94,7 @@ EOF`;
   });
 
   it("generates a pip config with extra-indexes", async () => {
-    const state = await runTerraformApply(import.meta.dir, {
+    const state = await runTerraformApply<TestVariables>(import.meta.dir, {
       agent_id: "some-agent-id",
       jfrog_url: fakeFrogUrl,
       artifactory_access_token: "XXXX",
@@ -87,10 +105,10 @@ EOF`;
     const coderScript = findResourceInstance(state, "coder_script");
     const pipStanza = `cat << EOF > ~/.pip/pip.conf
 [global]
-index-url = https://default:xxx@${fakeFrogHostAndPort}/artifactory/api/pypi/global/simple
+index-url = https://${user}:${token}@${fakeFrogApi}/pypi/global/simple
 extra-index-url =
-    https://default:xxx@${fakeFrogHostAndPort}/artifactory/api/pypi/foo/simple
-    https://default:xxx@${fakeFrogHostAndPort}/artifactory/api/pypi/bar/simple
+    https://${user}:${token}@${fakeFrogApi}/pypi/foo/simple
+    https://${user}:${token}@${fakeFrogApi}/pypi/bar/simple
 
 EOF`;
     expect(coderScript.script).toContain(pipStanza);
@@ -103,7 +121,7 @@ EOF`;
   });
 
   it("registers multiple docker repos", async () => {
-    const state = await runTerraformApply(import.meta.dir, {
+    const state = await runTerraformApply<TestVariables>(import.meta.dir, {
       agent_id: "some-agent-id",
       jfrog_url: fakeFrogUrl,
       artifactory_access_token: "XXXX",
@@ -112,9 +130,9 @@ EOF`;
       }),
     });
     const coderScript = findResourceInstance(state, "coder_script");
-    const dockerStanza = `register_docker "foo.jfrog.io"
-register_docker "bar.jfrog.io"
-register_docker "baz.jfrog.io"`;
+    const dockerStanza = ["foo", "bar", "baz"]
+      .map((r) => `register_docker "${r}.jfrog.io"`)
+      .join("\n");
     expect(coderScript.script).toContain(dockerStanza);
     expect(coderScript.script).toContain(
       'if [ -z "YES" ]; then\n  not_configured docker',
@@ -122,7 +140,7 @@ register_docker "baz.jfrog.io"`;
   });
 
   it("sets goproxy with multiple repos", async () => {
-    const state = await runTerraformApply(import.meta.dir, {
+    const state = await runTerraformApply<TestVariables>(import.meta.dir, {
       agent_id: "some-agent-id",
       jfrog_url: fakeFrogUrl,
       artifactory_access_token: "XXXX",
@@ -131,7 +149,9 @@ register_docker "baz.jfrog.io"`;
       }),
     });
     const proxyEnv = findResourceInstance(state, "coder_env", "goproxy");
-    const proxies = `https://default:xxx@${fakeFrogHostAndPort}/artifactory/api/go/foo,https://default:xxx@${fakeFrogHostAndPort}/artifactory/api/go/bar,https://default:xxx@${fakeFrogHostAndPort}/artifactory/api/go/baz`;
+    const proxies = ["foo", "bar", "baz"]
+      .map((r) => `https://${user}:${token}@${fakeFrogApi}/go/${r}`)
+      .join(",");
     expect(proxyEnv["value"]).toEqual(proxies);
 
     const coderScript = findResourceInstance(state, "coder_script");
