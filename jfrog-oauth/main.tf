@@ -112,7 +112,7 @@ resource "coder_script" "jfrog" {
   display_name = "jfrog"
   icon         = "/icon/jfrog.svg"
   script = templatefile("${path.module}/run.sh", merge(
-    local.common_values, 
+    local.common_values,
     {
       CONFIGURE_CODE_SERVER = var.configure_code_server
       HAS_NPM               = length(var.package_managers.npm) == 0 ? "" : "YES"
