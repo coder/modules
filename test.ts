@@ -115,6 +115,9 @@ export interface CoderScriptAttributes {
   url: string;
 }
 
+export type ResourceInstance<T extends string = string> =
+  T extends "coder_script" ? CoderScriptAttributes : Record<string, string>;
+
 /**
  * finds the first instance of the given resource type in the given state. If
  * name is specified, it will only find the instance with the given name.
@@ -123,10 +126,7 @@ export const findResourceInstance = <T extends string>(
   state: TerraformState,
   type: T,
   name?: string,
-  // if type is "coder_script" return CoderScriptAttributes
-): T extends "coder_script"
-  ? CoderScriptAttributes
-  : Record<string, string> => {
+): ResourceInstance<T> => {
   const resource = state.resources.find(
     (resource) =>
       resource.type === type && (name ? resource.name === name : true),
@@ -139,7 +139,8 @@ export const findResourceInstance = <T extends string>(
       `Resource ${type} has ${resource.instances.length} instances`,
     );
   }
-  return resource.instances[0].attributes as any;
+
+  return resource.instances[0].attributes as ResourceInstance<T>;
 };
 
 /**
