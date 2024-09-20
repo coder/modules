@@ -7,7 +7,6 @@ import {
   runTerraformApply,
   testRequiredVariables,
 } from "../test";
-import { Test } from "test";
 
 describe("jfrog-token", async () => {
   type TestVariables = {
