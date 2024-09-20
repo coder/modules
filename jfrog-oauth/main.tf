@@ -74,7 +74,7 @@ variable "package_managers" {
 locals {
   # The username field to use for artifactory
   username   = var.username_field == "email" ? data.coder_workspace_owner.me.email : data.coder_workspace_owner.me.name
-  jfrog_host = replace(var.jfrog_url, "https://", "")
+  jfrog_host = split("://", var.jfrog_url)[1]
   common_values = {
     JFROG_URL                = var.jfrog_url
     JFROG_HOST               = local.jfrog_host
@@ -114,7 +114,7 @@ resource "coder_script" "jfrog" {
   script = templatefile("${path.module}/run.sh", merge(
     local.common_values, 
     {
-      CONFIGURE_CODE_SERVER    = var.configure_code_server
+      CONFIGURE_CODE_SERVER = var.configure_code_server
       HAS_NPM               = length(var.package_managers.npm) == 0 ? "" : "YES"
       NPMRC                 = local.npmrc
       REPOSITORY_NPM        = try(element(var.package_managers.npm, 0), "")
@@ -157,7 +157,7 @@ resource "coder_env" "goproxy" {
   name     = "GOPROXY"
   value = join(",", [
     for repo in var.package_managers.go :
-    "https://${local.username}:${artifactory_scoped_token.me.access_token}@${local.jfrog_host}/artifactory/api/go/${repo}"
+    "https://${local.username}:${data.coder_external_auth.jfrog.access_token}@${local.jfrog_host}/artifactory/api/go/${repo}"
   ])
 }
 
