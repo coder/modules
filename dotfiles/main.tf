@@ -41,7 +41,7 @@ variable "coder_parameter_order" {
 
 variable "manual_update" {
   type        = bool
-  description = "Choose whether to enable a Coder app to refresh dotfiles on demand. This will add a button to workspace page to refresh dotfiles on demand."
+  description = "If true, this adds a button to workspace page to refresh dotfiles on demand."
   default     = false
 }
 
