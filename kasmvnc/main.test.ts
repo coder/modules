@@ -22,7 +22,7 @@ describe("Kasm VNC", async () => {
     desktop_environment: "gnome",
   });
 
-  it("Successfully installs for all expected Kasm versions", async () => {
+  it("Successfully installs for all expected Kasm desktop versions", async () => {
     for (const v of allowedDesktopEnvs) {
       const applyWithEnv = () => {
         runTerraformApply<TestVariables>(import.meta.dir, {
