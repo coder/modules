@@ -67,8 +67,12 @@ registry=${fakeFrogUrl}/artifactory/api/npm/global
 
 EOF`;
     expect(coderScript.script).toContain(npmrcStanza);
-    expect(coderScript.script).toContain('jf npmc --global --repo-resolve "global"');
-    expect(coderScript.script).toContain('if [ -z "YES" ]; then\n  not_configured npm');
+    expect(coderScript.script).toContain(
+      'jf npmc --global --repo-resolve "global"',
+    );
+    expect(coderScript.script).toContain(
+      'if [ -z "YES" ]; then\n  not_configured npm',
+    );
   });
 
   it("generates a pip config with extra-indexes", async () => {
@@ -90,8 +94,12 @@ extra-index-url =
 
 EOF`;
     expect(coderScript.script).toContain(pipStanza);
-    expect(coderScript.script).toContain('jf pipc --global --repo-resolve "global"');
-    expect(coderScript.script).toContain('if [ -z "YES" ]; then\n  not_configured pypi');
+    expect(coderScript.script).toContain(
+      'jf pipc --global --repo-resolve "global"',
+    );
+    expect(coderScript.script).toContain(
+      'if [ -z "YES" ]; then\n  not_configured pypi',
+    );
   });
 
   it("registers multiple docker repos", async () => {
@@ -108,7 +116,9 @@ EOF`;
 register_docker "bar.jfrog.io"
 register_docker "baz.jfrog.io"`;
     expect(coderScript.script).toContain(dockerStanza);
-    expect(coderScript.script).toContain('if [ -z "YES" ]; then\n  not_configured docker');
+    expect(coderScript.script).toContain(
+      'if [ -z "YES" ]; then\n  not_configured docker',
+    );
   });
 
   it("sets goproxy with multiple repos", async () => {
@@ -123,9 +133,13 @@ register_docker "baz.jfrog.io"`;
     const proxyEnv = findResourceInstance(state, "coder_env", "goproxy");
     const proxies = `https://default:xxx@${fakeFrogHostAndPort}/artifactory/api/go/foo,https://default:xxx@${fakeFrogHostAndPort}/artifactory/api/go/bar,https://default:xxx@${fakeFrogHostAndPort}/artifactory/api/go/baz`;
     expect(proxyEnv["value"]).toEqual(proxies);
-    
+
     const coderScript = findResourceInstance(state, "coder_script");
-    expect(coderScript.script).toContain('jf goc --global --repo-resolve "foo"');
-    expect(coderScript.script).toContain('if [ -z "YES" ]; then\n  not_configured go');
+    expect(coderScript.script).toContain(
+      'jf goc --global --repo-resolve "foo"',
+    );
+    expect(coderScript.script).toContain(
+      'if [ -z "YES" ]; then\n  not_configured go',
+    );
   });
 });

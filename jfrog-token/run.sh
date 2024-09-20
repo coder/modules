@@ -2,17 +2,17 @@
 
 BOLD='\033[0;1m'
 
-not_configured(){
+not_configured() {
   type=$1
   echo "🤔 no $type repository is set, skipping $type configuration."
   echo "You can configure a $type repository by providing a key for '$type' in the 'package_managers' input."
 }
 
-config_complete(){
+config_complete() {
   echo "🥳 Configuration complete!"
 }
 
-register_docker(){
+register_docker() {
   repo=$1
   echo -n "${ARTIFACTORY_ACCESS_TOKEN}" | docker login "$repo" --username ${ARTIFACTORY_USERNAME} --password-stdin
 }
