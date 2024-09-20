@@ -153,3 +153,20 @@ module "git-clone" {
   branch_name = "feat/example"
 }
 ```
+
+## Git clone with different destination folder
+
+By default, the repository will be cloned into a folder matching the repository name. You can use the `folder_name` attribute to change the name of the destination folder to something else.
+
+For example, this will clone into the `~/projects/coder/coder-dev` folder:
+
+```tf
+module "git-clone" {
+  source      = "registry.coder.com/modules/git-clone/coder"
+  version     = "1.0.12"
+  agent_id    = coder_agent.example.id
+  url         = "https://github.com/coder/coder"
+  folder_name = "coder-dev"
+  base_dir    = "~/projects/coder"
+}
+```

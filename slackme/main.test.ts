@@ -126,7 +126,10 @@ const assertSlackMessage = async (opts: {
   durationMS?: number;
   output: string;
 }) => {
-  let url: URL;
+  // Have to use non-null assertion because TS can't tell when the fetch
+  // function will run
+  let url!: URL;
+
   const fakeSlackHost = serve({
     fetch: (req) => {
       url = new URL(req.url);
@@ -138,15 +141,16 @@ const assertSlackMessage = async (opts: {
     },
     port: 0,
   });
+
   const { instance, id } = await setupContainer(
     "alpine/curl",
-    opts.format && {
-      slack_message: opts.format,
-    },
+    opts.format ? { slack_message: opts.format } : undefined,
   );
+
   await writeCoder(id, "echo 'token'");
   let exec = await execContainer(id, ["sh", "-c", instance.script]);
   expect(exec.exitCode).toBe(0);
+
   exec = await execContainer(id, [
     "sh",
     "-c",
@@ -154,6 +158,7 @@ const assertSlackMessage = async (opts: {
       fakeSlackHost.hostname
     }:${fakeSlackHost.port}" slackme ${opts.command}`,
   ]);
+
   expect(exec.stderr.trim()).toBe("");
   expect(url.pathname).toEqual("/api/chat.postMessage");
   expect(url.searchParams.get("channel")).toEqual("token");

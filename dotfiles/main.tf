@@ -39,9 +39,14 @@ variable "coder_parameter_order" {
   default     = null
 }
 
-data "coder_parameter" "dotfiles_uri" {
-  count = var.dotfiles_uri == null ? 1 : 0
+variable "manual_update" {
+  type        = bool
+  description = "If true, this adds a button to workspace page to refresh dotfiles on demand."
+  default     = false
+}
 
+data "coder_parameter" "dotfiles_uri" {
+  count        = var.dotfiles_uri == null ? 1 : 0
   type         = "string"
   name         = "dotfiles_uri"
   display_name = "Dotfiles URL"
@@ -66,6 +71,18 @@ resource "coder_script" "dotfiles" {
   display_name = "Dotfiles"
   icon         = "/icon/dotfiles.svg"
   run_on_start = true
+}
+
+resource "coder_app" "dotfiles" {
+  count        = var.manual_update ? 1 : 0
+  agent_id     = var.agent_id
+  display_name = "Refresh Dotfiles"
+  slug         = "dotfiles"
+  icon         = "/icon/dotfiles.svg"
+  command = templatefile("${path.module}/run.sh", {
+    DOTFILES_URI : local.dotfiles_uri,
+    DOTFILES_USER : local.user
+  })
 }
 
 output "dotfiles_uri" {
