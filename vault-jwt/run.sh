@@ -43,22 +43,22 @@ install() {
     printf "Unsupported architecture: $${ARCH}\n"
     return 1
   fi
-  # Fetch the latest version of Vault if INSTALL_VERSION is 'latest'
-  if [ "$${INSTALL_VERSION}" = "latest" ]; then
+  # Fetch the latest version of Vault if VAULT_CLI_VERSION is 'latest'
+  if [ "$${VAULT_CLI_VERSION}" = "latest" ]; then
     LATEST_VERSION=$(curl -s https://releases.hashicorp.com/vault/ | grep -v 'rc' | grep -oE 'vault/[0-9]+\.[0-9]+\.[0-9]+' | sed 's/vault\///' | sort -V | tail -n 1)
     printf "Latest version of Vault is %s.\n\n" "$${LATEST_VERSION}"
     if [ -z "$${LATEST_VERSION}" ]; then
       printf "Failed to determine the latest Vault version.\n"
       return 1
     fi
-    INSTALL_VERSION=$${LATEST_VERSION}
+    VAULT_CLI_VERSION=$${VAULT_CLI_VERSION}
   fi
 
   # Check if the vault CLI is installed and has the correct version
   installation_needed=1
   if command -v vault > /dev/null 2>&1; then
     CURRENT_VERSION=$(vault version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
-    if [ "$${CURRENT_VERSION}" = "$${INSTALL_VERSION}" ]; then
+    if [ "$${CURRENT_VERSION}" = "$${VAULT_CLI_VERSION}" ]; then
       printf "Vault version %s is already installed and up-to-date.\n\n" "$${CURRENT_VERSION}"
       installation_needed=0
     fi
@@ -69,9 +69,9 @@ install() {
     if [ -z "$${CURRENT_VERSION}" ]; then
       printf "Installing Vault CLI ...\n\n"
     else
-      printf "Upgrading Vault CLI from version %s to %s ...\n\n" "$${CURRENT_VERSION}" "${INSTALL_VERSION}"
+      printf "Upgrading Vault CLI from version %s to %s ...\n\n" "$${CURRENT_VERSION}" "${VAULT_CLI_VERSION}"
     fi
-    fetch vault.zip "https://releases.hashicorp.com/vault/$${INSTALL_VERSION}/vault_$${INSTALL_VERSION}_linux_$${ARCH}.zip"
+    fetch vault.zip "https://releases.hashicorp.com/vault/$${VAULT_CLI_VERSION}/vault_$${VAULT_CLI_VERSION}_linux_$${ARCH}.zip"
     if [ $? -ne 0 ]; then
       printf "Failed to download Vault.\n"
       return 1

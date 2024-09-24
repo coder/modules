@@ -46,9 +46,9 @@ resource "coder_script" "vault" {
   display_name = "Vault (GitHub)"
   icon         = "/icon/vault.svg"
   script = templatefile("${path.module}/run.sh", {
-    CODER_OIDC_ACCESS_TOKEN : data.coder_workspace_owner.me.oidc_token,
+    CODER_OIDC_ACCESS_TOKEN : data.coder_workspace_owner.me.oidc_access_token,
     VAULT_JWT_AUTH_PATH : var.vault_jwt_auth_path,
-    VAULT_ROLE : var.vault_jwt_role,
+    VAULT_JWT_ROLE : var.vault_jwt_role,
     VAULT_CLI_VERSION : var.vault_cli_version,
   })
   run_on_start       = true
