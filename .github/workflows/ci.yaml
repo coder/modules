@@ -37,4 +37,13 @@ jobs:
       - name: typos-action
         uses: crate-ci/typos@v1.17.2
       - name: Lint
-        run: bun lint
+        run: |
+          bun lint
+          # check for version changes
+          ./update-version.sh
+          if [[ `git status --porcelain` ]]; then
+            echo "Version mismatch. Please run ./update-version.sh"
+            exit 1
+          else
+            echo "No changes detected."
+          fi
