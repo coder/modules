@@ -24,7 +24,7 @@ variable "agent_name" {
   default     = ""
   validation {
     # If subdomain is true, then agent_name must be set.
-    condition     = var.subdomain ? var.agent_name != "" : true
+    condition     = var.subdomain || var.agent_name != ""
     error_message = "The agent_name must be set."
   }
 }
