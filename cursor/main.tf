@@ -40,7 +40,7 @@ resource "coder_app" "cursor" {
   external     = true
   icon         = "/icon/cursor.svg"
   slug         = "cursor"
-  display_name = "Cursor IDE"
+  display_name = "Cursor Desktop"
   order        = var.order
   url = join("", [
     "cursor://coder.coder-remote/open",
