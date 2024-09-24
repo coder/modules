@@ -27,7 +27,7 @@ jobs:
 
       - name: Create Pull Request
         id: create-pr
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v7
         with:
           commit-message: 'chore: bump version to ${{ env.TAG }} in README.md files'
           title: 'chore: bump version to ${{ env.TAG }} in README.md files'
