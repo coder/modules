@@ -107,6 +107,6 @@ rm -rf "$TMP"
 
 # Authenticate with Vault
 printf "🔑 Authenticating with Vault ...\n\n"
-echo "$${CODER_OIDC_ACCESS_TOKEN}" | vault write auth/$${VAULT_JWT_AUTH_PATH}/login role=$${VAULT_JWT_ROLE} jwt=-
+echo "$${CODER_OIDC_ACCESS_TOKEN}" | vault write auth/"$${VAULT_JWT_AUTH_PATH}"/login role="$${VAULT_JWT_ROLE}" jwt=-
 printf "🥳 Vault authentication complete!\n\n"
 printf "You can now use Vault CLI to access secrets.\n"
