@@ -53,23 +53,51 @@ variable "configure_code_server" {
 }
 
 variable "package_managers" {
-  type        = map(string)
-  description = <<EOF
-A map of package manager names to their respective artifactory repositories.
-For example:
-    {
-      "npm": "YOUR_NPM_REPO_KEY",
-      "go": "YOUR_GO_REPO_KEY",
-      "pypi": "YOUR_PYPI_REPO_KEY",
-      "docker": "YOUR_DOCKER_REPO_KEY"
-    }
-EOF
+  type = object({
+    npm    = optional(list(string), [])
+    go     = optional(list(string), [])
+    pypi   = optional(list(string), [])
+    docker = optional(list(string), [])
+  })
+  description = <<-EOF
+    A map of package manager names to their respective artifactory repositories. Unused package managers can be omitted.
+    For example:
+      {
+        npm    = ["GLOBAL_NPM_REPO_KEY", "@SCOPED:NPM_REPO_KEY"]
+        go     = ["YOUR_GO_REPO_KEY", "ANOTHER_GO_REPO_KEY"]
+        pypi   = ["YOUR_PYPI_REPO_KEY", "ANOTHER_PYPI_REPO_KEY"]
+        docker = ["YOUR_DOCKER_REPO_KEY", "ANOTHER_DOCKER_REPO_KEY"]
+      }
+  EOF
 }
 
 locals {
   # The username field to use for artifactory
   username   = var.username_field == "email" ? data.coder_workspace_owner.me.email : data.coder_workspace_owner.me.name
-  jfrog_host = replace(var.jfrog_url, "https://", "")
+  jfrog_host = split("://", var.jfrog_url)[1]
+  common_values = {
+    JFROG_URL                = var.jfrog_url
+    JFROG_HOST               = local.jfrog_host
+    JFROG_SERVER_ID          = var.jfrog_server_id
+    ARTIFACTORY_USERNAME     = local.username
+    ARTIFACTORY_EMAIL        = data.coder_workspace_owner.me.email
+    ARTIFACTORY_ACCESS_TOKEN = data.coder_external_auth.jfrog.access_token
+  }
+  npmrc = templatefile(
+    "${path.module}/.npmrc.tftpl",
+    merge(
+      local.common_values,
+      {
+        REPOS = [
+          for r in var.package_managers.npm :
+          strcontains(r, ":") ? zipmap(["SCOPE", "NAME"], ["${split(":", r)[0]}:", split(":", r)[1]]) : { SCOPE = "", NAME = r }
+        ]
+      }
+    )
+  )
+  pip_conf = templatefile(
+    "${path.module}/pip.conf.tftpl", merge(local.common_values, { REPOS = var.package_managers.pypi })
+  )
 }
 
 data "coder_workspace" "me" {}
@@ -83,19 +111,22 @@ resource "coder_script" "jfrog" {
   agent_id     = var.agent_id
   display_name = "jfrog"
   icon         = "/icon/jfrog.svg"
-  script = templatefile("${path.module}/run.sh", {
-    JFROG_URL : var.jfrog_url,
-    JFROG_HOST : local.jfrog_host,
-    JFROG_SERVER_ID : var.jfrog_server_id,
-    ARTIFACTORY_USERNAME : local.username,
-    ARTIFACTORY_EMAIL : data.coder_workspace_owner.me.email,
-    ARTIFACTORY_ACCESS_TOKEN : data.coder_external_auth.jfrog.access_token,
-    CONFIGURE_CODE_SERVER : var.configure_code_server,
-    REPOSITORY_NPM : lookup(var.package_managers, "npm", ""),
-    REPOSITORY_GO : lookup(var.package_managers, "go", ""),
-    REPOSITORY_PYPI : lookup(var.package_managers, "pypi", ""),
-    REPOSITORY_DOCKER : lookup(var.package_managers, "docker", ""),
-  })
+  script = templatefile("${path.module}/run.sh", merge(
+    local.common_values,
+    {
+      CONFIGURE_CODE_SERVER = var.configure_code_server
+      HAS_NPM               = length(var.package_managers.npm) == 0 ? "" : "YES"
+      NPMRC                 = local.npmrc
+      REPOSITORY_NPM        = try(element(var.package_managers.npm, 0), "")
+      HAS_GO                = length(var.package_managers.go) == 0 ? "" : "YES"
+      REPOSITORY_GO         = try(element(var.package_managers.go, 0), "")
+      HAS_PYPI              = length(var.package_managers.pypi) == 0 ? "" : "YES"
+      PIP_CONF              = local.pip_conf
+      REPOSITORY_PYPI       = try(element(var.package_managers.pypi, 0), "")
+      HAS_DOCKER            = length(var.package_managers.docker) == 0 ? "" : "YES"
+      REGISTER_DOCKER       = join("\n", formatlist("register_docker \"%s\"", var.package_managers.docker))
+    }
+  ))
   run_on_start = true
 }
 
@@ -121,10 +152,13 @@ resource "coder_env" "jfrog_ide_store_connection" {
 }
 
 resource "coder_env" "goproxy" {
-  count    = lookup(var.package_managers, "go", "") == "" ? 0 : 1
+  count    = length(var.package_managers.go) == 0 ? 0 : 1
   agent_id = var.agent_id
   name     = "GOPROXY"
-  value    = "https://${local.username}:${data.coder_external_auth.jfrog.access_token}@${local.jfrog_host}/artifactory/api/go/${lookup(var.package_managers, "go", "")}"
+  value = join(",", [
+    for repo in var.package_managers.go :
+    "https://${local.username}:${data.coder_external_auth.jfrog.access_token}@${local.jfrog_host}/artifactory/api/go/${repo}"
+  ])
 }
 
 output "access_token" {
