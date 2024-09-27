@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
+    "module": "nodenext",
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "nodenext",

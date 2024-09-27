@@ -108,6 +108,8 @@ export interface TerraformState {
   resources: [TerraformStateResource, ...TerraformStateResource[]];
 }
 
+type TerraformVariables = Record<string, JsonValue>;
+
 export interface CoderScriptAttributes {
   script: string;
   agent_id: string;
@@ -145,9 +147,9 @@ export const findResourceInstance = <T extends string>(
  * Creates a test-case for each variable provided and ensures that the apply
  * fails without it.
  */
-export const testRequiredVariables = <TVars extends Record<string, string>>(
+export const testRequiredVariables = <TVars extends TerraformVariables>(
   dir: string,
-  vars: TVars,
+  vars: Readonly<TVars>,
 ) => {
   // Ensures that all required variables are provided.
   it("required variables", async () => {
@@ -158,7 +160,7 @@ export const testRequiredVariables = <TVars extends Record<string, string>>(
   varNames.forEach((varName) => {
     // Ensures that every variable provided is required!
     it("missing variable " + varName, async () => {
-      const localVars: Record<string, string> = {};
+      const localVars: TerraformVariables = {};
       varNames.forEach((otherVarName) => {
         if (otherVarName !== varName) {
           localVars[otherVarName] = vars[otherVarName];
@@ -187,11 +189,9 @@ export const testRequiredVariables = <TVars extends Record<string, string>>(
  * fine to run in parallel with other instances of this function, as it uses a
  * random state file.
  */
-export const runTerraformApply = async <
-  TVars extends Readonly<Record<string, string | boolean>>,
->(
+export const runTerraformApply = async <TVars extends TerraformVariables>(
   dir: string,
-  vars: TVars,
+  vars: Readonly<TVars>,
   env?: Record<string, string>,
 ): Promise<TerraformState> => {
   const stateFile = `${dir}/${crypto.randomUUID()}.tfstate`;
