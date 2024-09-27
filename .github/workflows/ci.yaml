@@ -37,7 +37,7 @@ jobs:
       - name: Format
         run: bun fmt:ci
       - name: typos-action
-        uses: crate-ci/typos@v1.17.2
+        uses: crate-ci/typos@v1.24.6
       - name: Lint
         run: bun lint
       - name: Check version
