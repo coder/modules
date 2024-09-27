@@ -10,7 +10,7 @@ tags: [helper, integration, vault, jwt, oidc]
 
 # Hashicorp Vault Integration (JWT)
 
-This module lets you authenticate with [Hashicorp Vault](https://www.vaultproject.io/) in your Coder workspaces using a [JWT](https://developer.hashicorp.com/vault/docs/auth/jwt#jwt-authentication) from Coder's [OIDC authentication method](https://coder.com/docs/admin/auth#openid-connect).
+This module lets you authenticate with [Hashicorp Vault](https://www.vaultproject.io/) in your Coder workspaces by reusing the [OIDC](https://coder.com/docs/admin/auth#openid-connect) access token from Coder's OIDC authentication method. This requires configuring the Vault [JWT/OIDC](https://developer.hashicorp.com/vault/docs/auth/jwt#configuration) auth method.
 
 ```tf
 module "vault" {
@@ -34,15 +34,9 @@ or using the Vault API:
 curl -H "X-Vault-Token: ${VAULT_TOKEN}" -X GET "${VAULT_ADDR}/v1/coder/secrets/data/coder"
 ```
 
-![Vault login](#)
-
-## Configuration
-
-To configure the Vault module, you must set up a Vault JWT auth method. See the [Vault documentation](https://developer.hashicorp.com/vault/docs/auth/jwt#configuration) for more information.
-
 ## Examples
 
-### Configure Vault integration with a non standard auth path
+### Configure Vault integration with a non standard auth path (default is "jwt")
 
 ```tf
 module "vault" {
@@ -55,7 +49,7 @@ module "vault" {
 }
 ```
 
-### Configure Vault integration with a role from your OIDC provider by mapping the workspace owner's group to a Vault role
+### Map workspace owner's group to a Vault role
 
 ```tf
 data "coder_workspace_owner" "me" {}
@@ -69,7 +63,7 @@ module "vault" {
 }
 ```
 
-### Configure Vault integration and install a specific version of the Vault CLI
+### Install a specific version of the Vault CLI
 
 ```tf
 module "vault" {
