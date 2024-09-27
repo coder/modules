@@ -1,10 +1,5 @@
-import { describe, expect, it } from "bun:test";
-import {
-  executeScriptInContainer,
-  runTerraformApply,
-  runTerraformInit,
-  testRequiredVariables,
-} from "../test";
+import { describe } from "bun:test";
+import { runTerraformInit, testRequiredVariables } from "../test";
 
 describe("coder-login", async () => {
   await runTerraformInit(import.meta.dir);

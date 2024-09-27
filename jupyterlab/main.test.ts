@@ -1,20 +1,20 @@
 import { describe, expect, it } from "bun:test";
 import {
+  execContainer,
   executeScriptInContainer,
+  findResourceInstance,
+  runContainer,
   runTerraformApply,
   runTerraformInit,
   testRequiredVariables,
-  findResourceInstance,
-  runContainer,
-  TerraformState,
-  execContainer,
+  type TerraformState,
 } from "../test";
 
 // executes the coder script after installing pip
 const executeScriptInContainerWithPip = async (
   state: TerraformState,
   image: string,
-  shell: string = "sh",
+  shell = "sh",
 ): Promise<{
   exitCode: number;
   stdout: string[];

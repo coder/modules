@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import {
-  TerraformState,
+  type TerraformState,
   runTerraformApply,
   runTerraformInit,
   testRequiredVariables,

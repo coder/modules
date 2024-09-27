@@ -1,6 +1,6 @@
 import { readableStreamToText, spawn } from "bun";
-import { afterEach, expect, it } from "bun:test";
-import { readFile, unlink } from "fs/promises";
+import { expect, it } from "bun:test";
+import { readFile, unlink } from "node:fs/promises";
 
 export const runContainer = async (
   image: string,
@@ -21,7 +21,8 @@ export const runContainer = async (
     "-c",
     init,
   ]);
-  let containerID = await readableStreamToText(proc.stdout);
+
+  const containerID = await readableStreamToText(proc.stdout);
   const exitCode = await proc.exited;
   if (exitCode !== 0) {
     throw new Error(containerID);
@@ -36,7 +37,7 @@ export const runContainer = async (
 export const executeScriptInContainer = async (
   state: TerraformState,
   image: string,
-  shell: string = "sh",
+  shell = "sh",
 ): Promise<{
   exitCode: number;
   stdout: string[];
@@ -116,6 +117,9 @@ export interface CoderScriptAttributes {
   url: string;
 }
 
+export type ResourceInstance<T extends string = string> =
+  T extends "coder_script" ? CoderScriptAttributes : Record<string, string>;
+
 /**
  * finds the first instance of the given resource type in the given state. If
  * name is specified, it will only find the instance with the given name.
@@ -124,10 +128,7 @@ export const findResourceInstance = <T extends string>(
   state: TerraformState,
   type: T,
   name?: string,
-  // if type is "coder_script" return CoderScriptAttributes
-): T extends "coder_script"
-  ? CoderScriptAttributes
-  : Record<string, string> => {
+): ResourceInstance<T> => {
   const resource = state.resources.find(
     (resource) =>
       resource.type === type && (name ? resource.name === name : true),
@@ -140,7 +141,8 @@ export const findResourceInstance = <T extends string>(
       `Resource ${type} has ${resource.instances.length} instances`,
     );
   }
-  return resource.instances[0].attributes as any;
+
+  return resource.instances[0].attributes as ResourceInstance<T>;
 };
 
 /**
@@ -157,15 +159,15 @@ export const testRequiredVariables = <TVars extends TerraformVariables>(
   });
 
   const varNames = Object.keys(vars);
-  varNames.forEach((varName) => {
+  for (const varName of varNames) {
     // Ensures that every variable provided is required!
-    it("missing variable " + varName, async () => {
+    it(`missing variable: ${varName}`, async () => {
       const localVars: TerraformVariables = {};
-      varNames.forEach((otherVarName) => {
+      for (const otherVarName of varNames) {
         if (otherVarName !== varName) {
           localVars[otherVarName] = vars[otherVarName];
         }
-      });
+      }
 
       try {
         await runTerraformApply(dir, localVars);
@@ -181,7 +183,7 @@ export const testRequiredVariables = <TVars extends TerraformVariables>(
       }
       throw new Error(`${varName} is not a required variable!`);
     });
-  });
+  }
 };
 
 /**

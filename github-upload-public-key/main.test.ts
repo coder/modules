@@ -1,3 +1,4 @@
+import { type Server, serve } from "bun";
 import { describe, expect, it } from "bun:test";
 import {
   createJSONResponse,
@@ -9,7 +10,6 @@ import {
   testRequiredVariables,
   writeCoder,
 } from "../test";
-import { Server, serve } from "bun";
 
 describe("github-upload-public-key", async () => {
   await runTerraformInit(import.meta.dir);
@@ -21,10 +21,12 @@ describe("github-upload-public-key", async () => {
   it("creates new key if one does not exist", async () => {
     const { instance, id, server } = await setupContainer();
     await writeCoder(id, "echo foo");
-    let exec = await execContainer(id, [
+
+    const url = server.url.toString().slice(0, -1);
+    const exec = await execContainer(id, [
       "env",
-      "CODER_ACCESS_URL=" + server.url.toString().slice(0, -1),
-      "GITHUB_API_URL=" + server.url.toString().slice(0, -1),
+      `CODER_ACCESS_URL=${url}`,
+      `GITHUB_API_URL=${url}`,
       "CODER_OWNER_SESSION_TOKEN=foo",
       "CODER_EXTERNAL_AUTH_ID=github",
       "bash",
@@ -42,10 +44,12 @@ describe("github-upload-public-key", async () => {
     const { instance, id, server } = await setupContainer();
     // use keyword to make server return a existing key
     await writeCoder(id, "echo findkey");
-    let exec = await execContainer(id, [
+
+    const url = server.url.toString().slice(0, -1);
+    const exec = await execContainer(id, [
       "env",
-      "CODER_ACCESS_URL=" + server.url.toString().slice(0, -1),
-      "GITHUB_API_URL=" + server.url.toString().slice(0, -1),
+      `CODER_ACCESS_URL=${url}`,
+      `GITHUB_API_URL=${url}`,
       "CODER_OWNER_SESSION_TOKEN=foo",
       "CODER_EXTERNAL_AUTH_ID=github",
       "bash",
@@ -95,7 +99,7 @@ const setupServer = async (): Promise<Server> => {
         }
 
         // case: key already exists
-        if (req.headers.get("Authorization") == "Bearer findkey") {
+        if (req.headers.get("Authorization") === "Bearer findkey") {
           return createJSONResponse([
             {
               key: "foo",

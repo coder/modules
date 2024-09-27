@@ -72,7 +72,7 @@ executed`,
   it("formats execution with milliseconds", async () => {
     await assertSlackMessage({
       command: "echo test",
-      format: `$COMMAND took $DURATION`,
+      format: "$COMMAND took $DURATION",
       durationMS: 150,
       output: "echo test took 150ms",
     });
@@ -81,7 +81,7 @@ executed`,
   it("formats execution with seconds", async () => {
     await assertSlackMessage({
       command: "echo test",
-      format: `$COMMAND took $DURATION`,
+      format: "$COMMAND took $DURATION",
       durationMS: 15000,
       output: "echo test took 15.0s",
     });
@@ -90,7 +90,7 @@ executed`,
   it("formats execution with minutes", async () => {
     await assertSlackMessage({
       command: "echo test",
-      format: `$COMMAND took $DURATION`,
+      format: "$COMMAND took $DURATION",
       durationMS: 120000,
       output: "echo test took 2m 0.0s",
     });
@@ -99,7 +99,7 @@ executed`,
   it("formats execution with hours", async () => {
     await assertSlackMessage({
       command: "echo test",
-      format: `$COMMAND took $DURATION`,
+      format: "$COMMAND took $DURATION",
       durationMS: 60000 * 60,
       output: "echo test took 1hr 0m 0.0s",
     });

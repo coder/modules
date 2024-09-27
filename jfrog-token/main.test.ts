@@ -151,7 +151,7 @@ EOF`;
     const proxies = ["foo", "bar", "baz"]
       .map((r) => `https://${user}:${token}@${fakeFrogApi}/go/${r}`)
       .join(",");
-    expect(proxyEnv["value"]).toEqual(proxies);
+    expect(proxyEnv.value).toEqual(proxies);
 
     const coderScript = findResourceInstance(state, "coder_script");
     expect(coderScript.script).toContain(
