@@ -27,6 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Needed to get tags
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
@@ -38,3 +40,16 @@ jobs:
         uses: crate-ci/typos@v1.17.2
       - name: Lint
         run: bun lint
+      - name: Check version
+        shell: bash
+        run: |
+          # check for version changes
+          ./update-version.sh
+          # Check if any changes were made in README.md files
+          if [[ -n "$(git status --porcelain -- '**/README.md')" ]]; then
+            echo "Version mismatch detected. Please run ./update-version.sh and commit the updated README.md files."
+            git diff -- '**/README.md' 
+            exit 1
+          else
+            echo "No version mismatch detected. All versions are up to date."
+          fi
