@@ -21,6 +21,12 @@ data "coder_workspace_owner" "me" {}
 variable "agent_name" {
   type        = string
   description = "The name of the main deployment. (Used to build the subpath for coder_app.)"
+  default     = ""
+  validation {
+    # If subdomain is false, then agent_name must be set.
+    condition     = var.subdomain || var.agent_name != ""
+    error_message = "The agent_name must be set."
+  }
 }
 
 variable "database_path" {

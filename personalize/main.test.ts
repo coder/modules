@@ -1,13 +1,9 @@
-import { readableStreamToText, spawn } from "bun";
 import { describe, expect, it } from "bun:test";
 import {
   executeScriptInContainer,
   runTerraformApply,
   runTerraformInit,
   testRequiredVariables,
-  runContainer,
-  execContainer,
-  findResourceInstance,
 } from "../test";
 
 describe("personalize", async () => {
