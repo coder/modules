@@ -243,6 +243,7 @@ data "coder_parameter" "jetbrains_ide" {
 }
 
 data "coder_workspace" "me" {}
+data "coder_workspace_owner" "me" {}
 
 resource "coder_app" "gateway" {
   agent_id     = var.agent_id
@@ -254,6 +255,8 @@ resource "coder_app" "gateway" {
   url = join("", [
     "jetbrains-gateway://connect#type=coder&workspace=",
     data.coder_workspace.me.name,
+    "&owner=",
+    data.coder_workspace_owner.me.name,
     "&agent=",
     var.agent_name,
     "&folder=",
