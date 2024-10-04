@@ -16,7 +16,7 @@ check_installed() {
 install_deb() {
   local url=$1
   wget $url -O /tmp/kasmvncserver.deb
-  sudo apt-get install ./kasmvncserver_*.deb -y
+  sudo apt-get install /tmp/kasmvncserver_*.deb -y
   sudo adduser $USER ssl-cert
   rm /tmp/kasmvncserver.deb
 }
