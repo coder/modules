@@ -27,8 +27,8 @@ install_rpm_oracle8() {
   wget $url -O /tmp/kasmvncserver.rpm
   sudo dnf config-manager --set-enabled ol8_codeready_builder
   sudo dnf install oracle-epel-release-el8 -y
-  sudo dnf localinstall ./kasmvncserver_*.rpm -y
-  sudo usermod -a -G kasmvnc-cert $USER
+  sudo dnf localinstall /tmp/kasmvncserver.rpm -y
+  sudo usermod -aG kasmvnc-cert $USER
   rm /tmp/kasmvncserver.rpm
 }
 
@@ -37,8 +37,8 @@ install_rpm_centos7() {
   local url=$1
   wget $url -O /tmp/kasmvncserver.rpm
   sudo yum install epel-release -y
-  sudo yum install ./kasmvncserver_*.rpm -y
-  sudo usermod -a -G kasmvnc-cert $USER
+  sudo yum install /tmp/kasmvncserver.rpm -y
+  sudo usermod -aG kasmvnc-cert $USER
   rm /tmp/kasmvncserver.rpm
 }
 
