@@ -69,9 +69,17 @@ echo "Detected Architecture: $arch"
 
 # Map arch to package arch
 if [[ "$arch" == "x86_64" ]]; then
-  arch="x86_64"
+  if [[ "$distro" == "ubuntu" || "$distro" == "debian" || "$distro" == "kali" ]]; then
+    arch="amd64"
+  else
+    arch="x86_64"
+  fi
 elif [[ "$arch" == "aarch64" || "$arch" == "arm64" ]]; then
-  arch="aarch64"
+  if [[ "$distro" == "ubuntu" || "$distro" == "debian" || "$distro" == "kali" ]]; then
+    arch="arm64"
+  else
+    arch="aarch64"
+  fi
 else
   echo "Unsupported architecture: $arch"
   exit 1
