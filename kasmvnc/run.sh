@@ -82,14 +82,14 @@ if ! check_installed; then
   case $distro in
     ubuntu | debian | kali)
       case $version in
-        "18.04")
-          install_deb "https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_bionic_${VERSION}_$${arch}.deb"
-          ;;
         "20.04")
           install_deb "https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_focal_${VERSION}_$${arch}.deb"
           ;;
         "22.04")
           install_deb "https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_jammy_${VERSION}_$${arch}.deb"
+          ;;
+        "24.04")
+          install_deb "https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvncserver_noble_${VERSION}_$${arch}.deb"
           ;;
         *)
           echo "Unsupported Ubuntu/Debian/Kali version: $${version}"
@@ -113,7 +113,7 @@ if ! check_installed; then
       fi
       ;;
     alpine)
-      if [[ "$version" == "3.17" || "$version" == "3.18" || "$version" == "3.19" ]]; then
+      if [[ "$version" == "3.17" || "$version" == "3.18" || "$version" == "3.19" || "$version" == "3.20" ]]; then
         install_alpine "https://github.com/kasmtech/KasmVNC/releases/download/v${VERSION}/kasmvnc.alpine_$${version}_$${arch}.tgz"
       else
         echo "Unsupported Alpine version: $${version}"
