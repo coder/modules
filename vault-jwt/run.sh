@@ -51,7 +51,7 @@ install() {
       printf "Failed to determine the latest Vault version.\n"
       return 1
     fi
-    VAULT_CLI_VERSION=$${VAULT_CLI_VERSION}
+    VAULT_CLI_VERSION=$${LATEST_VERSION}
   fi
 
   # Check if the vault CLI is installed and has the correct version
