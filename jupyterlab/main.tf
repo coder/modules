@@ -40,12 +40,9 @@ variable "share" {
 }
 
 variable "subdomain" {
-  type    = bool
-  default = true
-  validation {
-    condition     = var.share == "owner" || var.share == "authenticated" || var.share == "public"
-    error_message = "Incorrect value. Please set either 'owner', 'authenticated', or 'public'."
-  }
+  type        = bool
+  description = "Determines whether JupyterLab will be accessed via it's own subdomain or whether it will be accessed via a path on Coder."
+  default     = true
 }
 
 variable "order" {
@@ -84,4 +81,3 @@ resource "coder_app" "jupyterlab" {
       threshold = 10
     }
   }
-}
