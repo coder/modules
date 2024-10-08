@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-if [ -n "$BASE_URL" ]
+if [ -n "${BASE_URL}" ]
 then
     BASE_URL="--ServerApp.base_url=${BASE_URL}"
 fi
@@ -25,8 +25,8 @@ else
   printf "%s\n\n" "🥳 jupyterlab is already installed"
 fi
 
-echo "👷 Starting jupyterlab in background..."
-echo "check logs at ${LOG_PATH}"
+printf "👷 Starting jupyterlab in background..."
+printf "check logs at ${LOG_PATH}"
 $HOME/.local/bin/jupyter-lab --no-browser \
     "$BASE_URL" \
     --ServerApp.ip='*' \

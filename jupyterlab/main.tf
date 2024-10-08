@@ -65,7 +65,7 @@ resource "coder_script" "jupyterlab" {
 
 resource "coder_app" "jupyterlab" {
   agent_id     = var.agent_id
-  slug         = "jupyterlab" # sync with with end of subdomain URL
+  slug         = "jupyterlab" # sync with the usage in URL
   display_name = "JupyterLab"
   url          = var.subdomain ? "http://localhost:${var.port}/@${data.coder_workspace_owner.me.name}/${data.coder_workspace.me.name}/apps/jupyterlab" : "http://localhost:${var.port}"
   icon         = "/icon/jupyter.svg"
