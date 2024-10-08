@@ -81,4 +81,3 @@ resource "coder_app" "jupyterlab" {
       threshold = 10
     }
   }
-}
