@@ -1,5 +1,10 @@
 #!/usr/bin/env sh
 
+if [ -n "$BASE_URL" ]
+then
+    BASE_URL="--ServerApp.base_url=${BASE_URL}"
+fi
+
 BOLD='\033[0;1m'
 
 printf "$${BOLD}Installing jupyterlab!\n"
@@ -15,11 +20,17 @@ if ! command -v jupyterlab > /dev/null 2>&1; then
   fi
   # install jupyterlab
   pipx install -q jupyterlab
-  echo "🥳 jupyterlab has been installed\n\n"
+  printf "%s\n\n" "🥳 jupyterlab has been installed"
 else
-  echo "🥳 jupyterlab is already installed\n\n"
+  printf "%s\n\n" "🥳 jupyterlab is already installed"
 fi
 
 echo "👷 Starting jupyterlab in background..."
 echo "check logs at ${LOG_PATH}"
-$HOME/.local/bin/jupyter-lab --ServerApp.ip='0.0.0.0' --ServerApp.port=${PORT} --no-browser --ServerApp.token='' --ServerApp.password='' > ${LOG_PATH} 2>&1 &
+$HOME/.local/bin/jupyter-lab --no-browser \
+    "$BASE_URL" \
+    --ServerApp.ip='*' \
+    --ServerApp.port="${PORT}" \
+    --ServerApp.token='' \
+    --ServerApp.password='' \
+    > "${LOG_PATH}" 2>&1 &
