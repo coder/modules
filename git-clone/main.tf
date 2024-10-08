@@ -34,7 +34,13 @@ variable "git_providers" {
     "https://github.com/" = {
       provider = "github"
     },
+    "git@github.com:" = {
+      provider = "github"
+    },
     "https://gitlab.com/" = {
+      provider = "gitlab"
+    },
+    "git@gitlab.com:" = {
       provider = "gitlab"
     },
   }
