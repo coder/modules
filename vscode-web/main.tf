@@ -121,6 +121,18 @@ variable "auto_install_extensions" {
   default     = false
 }
 
+variable "subdomain" {
+  type        = bool
+  description = <<-EOT
+    Determines whether the app will be accessed via it's own subdomain or whether it will be accessed via a path on Coder.
+    If wildcards have not been setup by the administrator then apps with "subdomain" set to true will not be accessible.
+  EOT
+  default     = true
+}
+
+data "coder_workspace_owner" "me" {}
+data "coder_workspace" "me" {}
+
 resource "coder_script" "vscode-web" {
   agent_id     = var.agent_id
   display_name = "VS Code Web"
@@ -138,6 +150,9 @@ resource "coder_script" "vscode-web" {
     EXTENSIONS_DIR : var.extensions_dir,
     FOLDER : var.folder,
     AUTO_INSTALL_EXTENSIONS : var.auto_install_extensions,
+    // TODO: This assumes the agent is called "main"
+    SERVER_BASE_PATH : format("/@%s/%s.%s/apps/vscode-web/",
+    data.coder_workspace_owner.me.name, data.coder_workspace.me.name, "main"),
   })
   run_on_start = true
 
@@ -158,11 +173,12 @@ resource "coder_app" "vscode-web" {
   agent_id     = var.agent_id
   slug         = var.slug
   display_name = var.display_name
-  url          = var.folder == "" ? "http://localhost:${var.port}" : "http://localhost:${var.port}?folder=${var.folder}"
-  icon         = "/icon/code.svg"
-  subdomain    = true
-  share        = var.share
-  order        = var.order
+
+  url       = var.folder == "" ? "http://localhost:${var.port}" : "http://localhost:${var.port}?folder=${var.folder}"
+  icon      = "/icon/code.svg"
+  subdomain = var.subdomain
+  share     = var.share
+  order     = var.order
 
   healthcheck {
     url       = "http://localhost:${var.port}/healthz"
