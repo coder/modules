@@ -9,6 +9,9 @@ terraform {
   }
 }
 
+data "coder_workspace" "me" {}
+data "coder_workspace_owner" "me" {}
+
 # Add required variables for your modules and remove any unneeded variables
 variable "agent_id" {
   type        = string
@@ -36,6 +39,12 @@ variable "share" {
   }
 }
 
+variable "subdomain" {
+  type        = bool
+  description = "Determines whether JupyterLab will be accessed via it's own subdomain or whether it will be accessed via a path on Coder."
+  default     = true
+}
+
 variable "order" {
   type        = number
   description = "The order determines the position of app in the UI presentation. The lowest order is shown first and apps with equal order are sorted by name (ascending order)."
@@ -49,17 +58,26 @@ resource "coder_script" "jupyterlab" {
   script = templatefile("${path.module}/run.sh", {
     LOG_PATH : var.log_path,
     PORT : var.port
+    BASE_URL : var.subdomain ? "http://localhost:${var.port}/@${data.coder_workspace_owner.me.name}/${data.coder_workspace.me.name}/apps/jupyterlab" : ""
   })
   run_on_start = true
 }
 
 resource "coder_app" "jupyterlab" {
   agent_id     = var.agent_id
-  slug         = "jupyterlab"
+  slug         = "jupyterlab" # sync with with end of subdomain URL
   display_name = "JupyterLab"
-  url          = "http://localhost:${var.port}"
+  url          = var.subdomain ? "http://localhost:${var.port}/@${data.coder_workspace_owner.me.name}/${data.coder_workspace.me.name}/apps/jupyterlab" : "http://localhost:${var.port}"
   icon         = "/icon/jupyter.svg"
-  subdomain    = true
+  subdomain    = var.subdomain
   share        = var.share
   order        = var.order
-}
+
+  dynamic "healthcheck" {
+    for_each = var.subdomain ? toset([true]) : toset([])
+    content {
+      url       = "http://localhost:${var.port}/@${data.coder_workspace_owner.me.name}/${data.coder_workspace.me.name}/apps/jupyterlab"
+      interval  = 6
+      threshold = 10
+    }
+  }
