@@ -72,3 +72,4 @@ resource "coder_app" "jupyterlab" {
   subdomain    = var.subdomain
   share        = var.share
   order        = var.order
+}
