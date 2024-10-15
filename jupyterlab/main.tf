@@ -72,12 +72,3 @@ resource "coder_app" "jupyterlab" {
   subdomain    = var.subdomain
   share        = var.share
   order        = var.order
-
-  dynamic "healthcheck" {
-    for_each = var.subdomain ? toset([true]) : toset([])
-    content {
-      url       = "http://localhost:${var.port}/@${data.coder_workspace_owner.me.name}/${data.coder_workspace.me.name}/apps/jupyterlab"
-      interval  = 6
-      threshold = 10
-    }
-  }
