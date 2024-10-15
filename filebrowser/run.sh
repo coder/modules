@@ -18,7 +18,7 @@ if [ "${DB_PATH}" != "filebrowser.db" ]; then
 fi
 
 # set baseurl to be able to run if sudomain=false; if subdomain=true the SERVER_BASE_PATH value will be ""
-filebrowser config set --baseurl "${SERVER_BASE_PATH}" > ${LOG_PATH} 2>&1
+filebrowser config set --baseurl "${SERVER_BASE_PATH}"$${DB_FLAG} > ${LOG_PATH} 2>&1
 
 printf "📂 Serving $${ROOT_DIR} at http://localhost:${PORT} \n\n"
 
