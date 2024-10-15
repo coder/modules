@@ -1,8 +1,7 @@
 #!/usr/bin/env sh
 
-if [ -n "${BASE_URL}" ]
-then
-    BASE_URL="--ServerApp.base_url=${BASE_URL}"
+if [ -n "${BASE_URL}" ]; then
+  BASE_URL="--ServerApp.base_url=${BASE_URL}"
 fi
 
 BOLD='\033[0;1m'
@@ -28,9 +27,9 @@ fi
 printf "👷 Starting jupyterlab in background..."
 printf "check logs at ${LOG_PATH}"
 $HOME/.local/bin/jupyter-lab --no-browser \
-    "$BASE_URL" \
-    --ServerApp.ip='*' \
-    --ServerApp.port="${PORT}" \
-    --ServerApp.token='' \
-    --ServerApp.password='' \
-    > "${LOG_PATH}" 2>&1 &
+  "$BASE_URL" \
+  --ServerApp.ip='*' \
+  --ServerApp.port="${PORT}" \
+  --ServerApp.token='' \
+  --ServerApp.password='' \
+  > "${LOG_PATH}" 2>&1 &
