@@ -78,19 +78,19 @@ done
 if [ "${AUTO_INSTALL_EXTENSIONS}" = true ]; then
   if ! command -v jq > /dev/null; then
     echo "jq is required to install extensions from a workspace file."
-  fi
+  else
+   WORKSPACE_DIR="$HOME"
+   if [ -n "${FOLDER}" ]; then
+     WORKSPACE_DIR="${FOLDER}"
+   fi
 
-  WORKSPACE_DIR="$HOME"
-  if [ -n "${FOLDER}" ]; then
-    WORKSPACE_DIR="${FOLDER}"
-  fi
-
-  if [ -f "$WORKSPACE_DIR/.vscode/extensions.json" ]; then
-    printf "🧩 Installing extensions from %s/.vscode/extensions.json...\n" "$WORKSPACE_DIR"
-    extensions=$(jq -r '.recommendations[]' "$WORKSPACE_DIR"/.vscode/extensions.json)
-    for extension in $extensions; do
-      $VSCODE_WEB "$EXTENSION_ARG" --install-extension "$extension" --force
-    done
+   if [ -f "$WORKSPACE_DIR/.vscode/extensions.json" ]; then
+     printf "🧩 Installing extensions from %s/.vscode/extensions.json...\n" "$WORKSPACE_DIR"
+     extensions=$(jq -r '.recommendations[]' "$WORKSPACE_DIR"/.vscode/extensions.json)
+     for extension in $extensions; do
+       $VSCODE_WEB "$EXTENSION_ARG" --install-extension "$extension" --force
+     done
+   fi
   fi
 fi
 
