@@ -20,4 +20,4 @@ module "kasmvnc" {
 }
 ```
 
-> **Note:** This module only works on workspaces with a pre-installed desktop environment.
+> **Note:** This module only works on workspaces with a pre-installed desktop environment. As an example base image you can use `codercom/enterprise-desktop` image.
