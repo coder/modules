@@ -12,10 +12,26 @@ check_installed() {
   fi
 }
 
+# Function to download a file using wget, curl, or busybox as a fallback
+download_file() {
+  local url=$1
+  local output=$2
+  if command -v wget &> /dev/null; then
+    wget $url -O $output
+  elif command -v curl &> /dev/null; then
+    curl -L $url -o $output
+  elif command -v busybox &> /dev/null; then
+    busybox wget -O $output $url
+  else
+    echo "Neither wget, curl, nor busybox is installed. Please install one of them to proceed."
+    exit 1
+  fi
+}
+
 # Function to install kasmvncserver for debian-based distros
 install_deb() {
   local url=$1
-  wget $url -O /tmp/kasmvncserver.deb
+  download_file $url /tmp/kasmvncserver.deb
   sudo apt-get install --yes --no-install-recommends --no-install-suggests /tmp/kasmvncserver.deb
   sudo adduser $USER ssl-cert
   rm /tmp/kasmvncserver.deb
@@ -24,7 +40,7 @@ install_deb() {
 # Function to install kasmvncserver for Oracle 8
 install_rpm_oracle8() {
   local url=$1
-  wget $url -O /tmp/kasmvncserver.rpm
+  download_file $url /tmp/kasmvncserver.rpm
   sudo dnf config-manager --set-enabled ol8_codeready_builder
   sudo dnf install oracle-epel-release-el8 -y
   sudo dnf localinstall /tmp/kasmvncserver.rpm -y
@@ -35,7 +51,7 @@ install_rpm_oracle8() {
 # Function to install kasmvncserver for CentOS 7
 install_rpm_centos7() {
   local url=$1
-  wget $url -O /tmp/kasmvncserver.rpm
+  download_file $url /tmp/kasmvncserver.rpm
   sudo yum install epel-release -y
   sudo yum install /tmp/kasmvncserver.rpm -y
   sudo usermod -aG kasmvnc-cert $USER
@@ -45,7 +61,7 @@ install_rpm_centos7() {
 # Function to install kasmvncserver for rpm-based distros
 install_rpm() {
   local url=$1
-  wget $url -O /tmp/kasmvncserver.rpm
+  download_file $url /tmp/kasmvncserver.rpm
   sudo rpm -i /tmp/kasmvncserver.rpm
   rm /tmp/kasmvncserver.rpm
 }
@@ -53,7 +69,7 @@ install_rpm() {
 # Function to install kasmvncserver for Alpine Linux
 install_alpine() {
   local url=$1
-  wget $url -O /tmp/kasmvncserver.tgz
+  download_file $url /tmp/kasmvncserver.tgz
   tar -xzf /tmp/kasmvncserver.tgz -C /usr/local/bin/
   rm /tmp/kasmvncserver.tgz
 }
