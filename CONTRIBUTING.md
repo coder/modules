@@ -47,6 +47,7 @@ You can test a module locally by updating the source as follows
 ```tf
 module "example" {
   source = "git::https://github.com/<USERNAME>/<REPO>.git//<MODULE-NAME>?ref=<BRANCH-NAME>"
+  # You may need to remove the 'version' field, it is incompatible with some sources.
 }
 ```
 
