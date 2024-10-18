@@ -14,7 +14,7 @@ A file browser for your workspace.
 ```tf
 module "filebrowser" {
   source   = "registry.coder.com/modules/filebrowser/coder"
-  version  = "1.0.20"
+  version  = "1.0.22"
   agent_id = coder_agent.example.id
 }
 ```
@@ -28,7 +28,7 @@ module "filebrowser" {
 ```tf
 module "filebrowser" {
   source   = "registry.coder.com/modules/filebrowser/coder"
-  version  = "1.0.20"
+  version  = "1.0.22"
   agent_id = coder_agent.example.id
   folder   = "/home/coder/project"
 }
@@ -39,7 +39,7 @@ module "filebrowser" {
 ```tf
 module "filebrowser" {
   source        = "registry.coder.com/modules/filebrowser/coder"
-  version       = "1.0.20"
+  version       = "1.0.22"
   agent_id      = coder_agent.example.id
   database_path = ".config/filebrowser.db"
 }
