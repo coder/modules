@@ -19,7 +19,7 @@ download_file() {
   if command -v wget &> /dev/null; then
     wget $url -O $output
   elif command -v curl &> /dev/null; then
-    curl -L $url -o $output
+    curl -fsSL $url -o $output
   elif command -v busybox &> /dev/null; then
     busybox wget -O $output $url
   else
