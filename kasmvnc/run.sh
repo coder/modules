@@ -33,7 +33,7 @@ install_deb() {
   local url=$1
   download_file $url /tmp/kasmvncserver.deb
   sudo apt-get update
-  sudo apt-get install --yes --no-install-recommends --no-install-suggests /tmp/kasmvncserver.deb
+  DEBIAN_FRONTEND=noninteractive sudo apt-get install --yes -qq --no-install-recommends --no-install-suggests /tmp/kasmvncserver.deb
   sudo adduser $USER ssl-cert
   rm /tmp/kasmvncserver.deb
 }
