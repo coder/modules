@@ -32,6 +32,7 @@ download_file() {
 install_deb() {
   local url=$1
   download_file $url /tmp/kasmvncserver.deb
+  sudo apt-get update
   sudo apt-get install --yes --no-install-recommends --no-install-suggests /tmp/kasmvncserver.deb
   sudo adduser $USER ssl-cert
   rm /tmp/kasmvncserver.deb
@@ -103,6 +104,7 @@ fi
 
 # Check if vncserver is installed, and install if not
 if ! check_installed; then
+  echo "Installing KASM version: ${VERSION}"
   case $distro in
     ubuntu | debian | kali)
       case $version in
