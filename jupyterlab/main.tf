@@ -41,7 +41,7 @@ variable "share" {
 
 variable "subdomain" {
   type        = bool
-  description = "Determines whether JupyterLab will be accessed via it's own subdomain or whether it will be accessed via a path on Coder."
+  description = "Determines whether JupyterLab will be accessed via its own subdomain or whether it will be accessed via a path on Coder."
   default     = true
 }
 
