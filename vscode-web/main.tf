@@ -150,9 +150,8 @@ resource "coder_script" "vscode-web" {
     EXTENSIONS_DIR : var.extensions_dir,
     FOLDER : var.folder,
     AUTO_INSTALL_EXTENSIONS : var.auto_install_extensions,
-    // TODO: This assumes the agent is called "main"
-    SERVER_BASE_PATH : format("/@%s/%s.%s/apps/vscode-web/",
-    data.coder_workspace_owner.me.name, data.coder_workspace.me.name, "main"),
+    SERVER_BASE_PATH : var.subdomain ? "" : format("/@%s/%s/apps/vscode-web/",
+    data.coder_workspace_owner.me.name, data.coder_workspace.me.name),
   })
   run_on_start = true
 
