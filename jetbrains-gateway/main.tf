@@ -18,6 +18,12 @@ variable "agent_id" {
   description = "The ID of a Coder agent."
 }
 
+variable "slug" {
+  type        = string
+  description = "The slug for the coder_app. Allows resuing the module with the same template."
+  default     = "gateway"
+}
+
 variable "agent_name" {
   type        = string
   description = "Agent name."
@@ -247,7 +253,7 @@ data "coder_workspace_owner" "me" {}
 
 resource "coder_app" "gateway" {
   agent_id     = var.agent_id
-  slug         = "gateway"
+  slug         = var.slug
   display_name = local.display_name
   icon         = local.icon
   external     = true
