@@ -187,5 +187,5 @@ resource "coder_app" "vscode-web" {
 locals {
   server_base_path = var.subdomain ? "" : format("/@%s/%s/apps/%s/", data.coder_workspace_owner.me.name, data.coder_workspace.me.name, var.slug)
   url              = var.folder == "" ? "http://localhost:${var.port}${local.server_base_path}" : "http://localhost:${var.port}${local.server_base_path}?folder=${var.folder}"
-  healthcheck_url   = var.subdomain ? "http://localhost:${var.port}/healthz" : "http://localhost:${var.port}${local.server_base_path}/healthz"  
+  healthcheck_url  = var.subdomain ? "http://localhost:${var.port}/healthz" : "http://localhost:${var.port}${local.server_base_path}/healthz"
 }
