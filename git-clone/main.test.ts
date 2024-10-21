@@ -72,7 +72,7 @@ describe("git-clone", async () => {
       url,
     });
     expect(state.outputs.repo_dir.value).toEqual("/tmp/coder");
-    expect(state.outputs.git_provider.value).toEqual("");
+    expect(state.outputs.git_provider.value).toEqual("github");
     expect(state.outputs.clone_url.value).toEqual(url);
     const https_url = "https://github.com/coder/coder.git";
     expect(state.outputs.web_url.value).toEqual(https_url);
