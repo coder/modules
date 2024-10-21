@@ -10,10 +10,16 @@ if [ -n "${EXTENSIONS_DIR}" ]; then
   EXTENSION_ARG="--extensions-dir=${EXTENSIONS_DIR}"
 fi
 
+# Set extension directory
+SERVER_BASE_PATH_ARG=""
+if [ -n "${SERVER_BASE_PATH}" ]; then
+  SERVER_BASE_PATH_ARG="--server-base-path=${SERVER_BASE_PATH}"
+fi
+
 run_vscode_web() {
-  echo "👷 Running $VSCODE_WEB serve-local $EXTENSION_ARG --port ${PORT} --host 127.0.0.1 --accept-server-license-terms --without-connection-token --telemetry-level ${TELEMETRY_LEVEL} in the background..."
+  echo "👷 Running $VSCODE_WEB serve-local $EXTENSION_ARG $SERVER_BASE_PATH_ARG --port ${PORT} --host 127.0.0.1 --accept-server-license-terms --without-connection-token --telemetry-level ${TELEMETRY_LEVEL} in the background..."
   echo "Check logs at ${LOG_PATH}!"
-  "$VSCODE_WEB" serve-local "$EXTENSION_ARG" --port "${PORT}" --host 127.0.0.1 --accept-server-license-terms --without-connection-token --telemetry-level "${TELEMETRY_LEVEL}" > "${LOG_PATH}" 2>&1 &
+  "$VSCODE_WEB" serve-local "$EXTENSION_ARG" "$SERVER_BASE_PATH_ARG" --port "${PORT}" --host 127.0.0.1 --accept-server-license-terms --without-connection-token --telemetry-level "${TELEMETRY_LEVEL}" > "${LOG_PATH}" 2>&1 &
 }
 
 # Check if the settings file exists...
