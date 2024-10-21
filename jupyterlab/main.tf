@@ -58,7 +58,7 @@ resource "coder_script" "jupyterlab" {
   script = templatefile("${path.module}/run.sh", {
     LOG_PATH : var.log_path,
     PORT : var.port
-    BASE_URL : var.subdomain ? "http://localhost:${var.port}/@${data.coder_workspace_owner.me.name}/${data.coder_workspace.me.name}/apps/jupyterlab" : ""
+    BASE_URL : var.subdomain ? "" : "/@${data.coder_workspace_owner.me.name}/${data.coder_workspace.me.name}/apps/jupyterlab""
   })
   run_on_start = true
 }
