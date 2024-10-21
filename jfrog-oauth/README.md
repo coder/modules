@@ -17,15 +17,16 @@ Install the JF CLI and authenticate package managers with Artifactory using OAut
 ```tf
 module "jfrog" {
   source         = "registry.coder.com/modules/jfrog-oauth/coder"
-  version        = "1.0.15"
+  version        = "1.0.19"
   agent_id       = coder_agent.example.id
   jfrog_url      = "https://example.jfrog.io"
   username_field = "username" # If you are using GitHub to login to both Coder and Artifactory, use username_field = "username"
 
   package_managers = {
-    "npm" : "npm",
-    "go" : "go",
-    "pypi" : "pypi"
+    npm    = ["npm", "@scoped:npm-scoped"]
+    go     = ["go", "another-go-repo"]
+    pypi   = ["pypi", "extra-index-pypi"]
+    docker = ["example-docker-staging.jfrog.io", "example-docker-production.jfrog.io"]
   }
 }
 ```
@@ -44,13 +45,13 @@ Configure the Python pip package manager to fetch packages from Artifactory whil
 ```tf
 module "jfrog" {
   source         = "registry.coder.com/modules/jfrog-oauth/coder"
-  version        = "1.0.15"
+  version        = "1.0.19"
   agent_id       = coder_agent.example.id
   jfrog_url      = "https://example.jfrog.io"
   username_field = "email"
 
   package_managers = {
-    "pypi" : "pypi"
+    pypi = ["pypi"]
   }
 }
 ```
@@ -72,15 +73,15 @@ The [JFrog extension](https://open-vsx.org/extension/JFrog/jfrog-vscode-extensio
 ```tf
 module "jfrog" {
   source                = "registry.coder.com/modules/jfrog-oauth/coder"
-  version               = "1.0.15"
+  version               = "1.0.19"
   agent_id              = coder_agent.example.id
   jfrog_url             = "https://example.jfrog.io"
   username_field        = "username" # If you are using GitHub to login to both Coder and Artifactory, use username_field = "username"
   configure_code_server = true       # Add JFrog extension configuration for code-server
   package_managers = {
-    "npm" : "npm",
-    "go" : "go",
-    "pypi" : "pypi"
+    npm  = ["npm"]
+    go   = ["go"]
+    pypi = ["pypi"]
   }
 }
 ```

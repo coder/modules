@@ -1,6 +1,6 @@
 import { readableStreamToText, spawn } from "bun";
-import { afterEach, expect, it } from "bun:test";
-import { readFile, unlink } from "fs/promises";
+import { expect, it } from "bun:test";
+import { readFile, unlink } from "node:fs/promises";
 
 export const runContainer = async (
   image: string,
@@ -21,7 +21,8 @@ export const runContainer = async (
     "-c",
     init,
   ]);
-  let containerID = await readableStreamToText(proc.stdout);
+
+  const containerID = await readableStreamToText(proc.stdout);
   const exitCode = await proc.exited;
   if (exitCode !== 0) {
     throw new Error(containerID);
@@ -36,7 +37,7 @@ export const runContainer = async (
 export const executeScriptInContainer = async (
   state: TerraformState,
   image: string,
-  shell: string = "sh",
+  shell = "sh",
 ): Promise<{
   exitCode: number;
   stdout: string[];
@@ -108,11 +109,16 @@ export interface TerraformState {
   resources: [TerraformStateResource, ...TerraformStateResource[]];
 }
 
+type TerraformVariables = Record<string, JsonValue>;
+
 export interface CoderScriptAttributes {
   script: string;
   agent_id: string;
   url: string;
 }
+
+export type ResourceInstance<T extends string = string> =
+  T extends "coder_script" ? CoderScriptAttributes : Record<string, string>;
 
 /**
  * finds the first instance of the given resource type in the given state. If
@@ -122,10 +128,7 @@ export const findResourceInstance = <T extends string>(
   state: TerraformState,
   type: T,
   name?: string,
-  // if type is "coder_script" return CoderScriptAttributes
-): T extends "coder_script"
-  ? CoderScriptAttributes
-  : Record<string, string> => {
+): ResourceInstance<T> => {
   const resource = state.resources.find(
     (resource) =>
       resource.type === type && (name ? resource.name === name : true),
@@ -138,16 +141,17 @@ export const findResourceInstance = <T extends string>(
       `Resource ${type} has ${resource.instances.length} instances`,
     );
   }
-  return resource.instances[0].attributes as any;
+
+  return resource.instances[0].attributes as ResourceInstance<T>;
 };
 
 /**
  * Creates a test-case for each variable provided and ensures that the apply
  * fails without it.
  */
-export const testRequiredVariables = <TVars extends Record<string, string>>(
+export const testRequiredVariables = <TVars extends TerraformVariables>(
   dir: string,
-  vars: TVars,
+  vars: Readonly<TVars>,
 ) => {
   // Ensures that all required variables are provided.
   it("required variables", async () => {
@@ -155,15 +159,15 @@ export const testRequiredVariables = <TVars extends Record<string, string>>(
   });
 
   const varNames = Object.keys(vars);
-  varNames.forEach((varName) => {
+  for (const varName of varNames) {
     // Ensures that every variable provided is required!
-    it("missing variable " + varName, async () => {
-      const localVars: Record<string, string> = {};
-      varNames.forEach((otherVarName) => {
+    it(`missing variable: ${varName}`, async () => {
+      const localVars: TerraformVariables = {};
+      for (const otherVarName of varNames) {
         if (otherVarName !== varName) {
           localVars[otherVarName] = vars[otherVarName];
         }
-      });
+      }
 
       try {
         await runTerraformApply(dir, localVars);
@@ -179,7 +183,7 @@ export const testRequiredVariables = <TVars extends Record<string, string>>(
       }
       throw new Error(`${varName} is not a required variable!`);
     });
-  });
+  }
 };
 
 /**
@@ -187,11 +191,9 @@ export const testRequiredVariables = <TVars extends Record<string, string>>(
  * fine to run in parallel with other instances of this function, as it uses a
  * random state file.
  */
-export const runTerraformApply = async <
-  TVars extends Readonly<Record<string, string | boolean>>,
->(
+export const runTerraformApply = async <TVars extends TerraformVariables>(
   dir: string,
-  vars: TVars,
+  vars: Readonly<TVars>,
   env?: Record<string, string>,
 ): Promise<TerraformState> => {
   const stateFile = `${dir}/${crypto.randomUUID()}.tfstate`;

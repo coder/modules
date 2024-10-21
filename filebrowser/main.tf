@@ -14,6 +14,21 @@ variable "agent_id" {
   description = "The ID of a Coder agent."
 }
 
+data "coder_workspace" "me" {}
+
+data "coder_workspace_owner" "me" {}
+
+variable "agent_name" {
+  type        = string
+  description = "The name of the main deployment. (Used to build the subpath for coder_app.)"
+  default     = ""
+  validation {
+    # If subdomain is false, then agent_name must be set.
+    condition     = var.subdomain || var.agent_name != ""
+    error_message = "The agent_name must be set."
+  }
+}
+
 variable "database_path" {
   type        = string
   description = "The path to the filebrowser database."
@@ -58,6 +73,15 @@ variable "order" {
   default     = null
 }
 
+variable "subdomain" {
+  type        = bool
+  description = <<-EOT
+    Determines whether the app will be accessed via it's own subdomain or whether it will be accessed via a path on Coder.
+    If wildcards have not been setup by the administrator then apps with "subdomain" set to true will not be accessible.
+  EOT
+  default     = true
+}
+
 resource "coder_script" "filebrowser" {
   agent_id     = var.agent_id
   display_name = "File Browser"
@@ -67,7 +91,9 @@ resource "coder_script" "filebrowser" {
     PORT : var.port,
     FOLDER : var.folder,
     LOG_PATH : var.log_path,
-    DB_PATH : var.database_path
+    DB_PATH : var.database_path,
+    SUBDOMAIN : var.subdomain,
+    SERVER_BASE_PATH : var.subdomain ? "" : format("/@%s/%s.%s/apps/filebrowser", data.coder_workspace_owner.me.name, data.coder_workspace.me.name, var.agent_name),
   })
   run_on_start = true
 }
@@ -78,7 +104,7 @@ resource "coder_app" "filebrowser" {
   display_name = "File Browser"
   url          = "http://localhost:${var.port}"
   icon         = "https://raw.githubusercontent.com/filebrowser/logo/master/icon_raw.svg"
-  subdomain    = true
+  subdomain    = var.subdomain
   share        = var.share
   order        = var.order
 }
