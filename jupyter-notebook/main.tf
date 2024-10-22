@@ -90,6 +90,10 @@ resource "coder_app" "jupyter-notebook" {
     threshold = 6
   }
 }
+
+data "coder_workspace_owner" "me" {}
+data "coder_workspace" "me" {}
+
 locals {
   server_base_path = var.subdomain ? "" : format(var.agent_name != null ? "/@%s/%s.%s/apps/%s" : "/@%s/%s/apps/%s", data.coder_workspace_owner.me.name, data.coder_workspace.me.name, var.agent_name, var.slug)
   url              = "http://localhost:${var.port}${local.server_base_path}"
