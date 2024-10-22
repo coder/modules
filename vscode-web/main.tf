@@ -191,7 +191,7 @@ resource "coder_app" "vscode-web" {
 }
 
 locals {
-  server_base_path = var.subdomain ? "" : format(var.agent_name != null ? "/@%s/%s.%s/apps/%s" : "/@%s/%s/apps/%s", data.coder_workspace_owner.me.name, data.coder_workspace.me.name, var.agent_name, var.slug)
+  server_base_path = var.subdomain ? "" : format("/@%s/%s%s/apps/%s", data.coder_workspace_owner.me.name, data.coder_workspace.me.name, var.agent_name != null ? ".${var.agent_name}" : "", var.slug)
   url              = var.folder == "" ? "http://localhost:${var.port}${local.server_base_path}" : "http://localhost:${var.port}${local.server_base_path}?folder=${var.folder}"
   healthcheck_url  = "http://localhost:${var.port}${local.server_base_path}/healthz"
 }

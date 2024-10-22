@@ -52,7 +52,7 @@ resource "coder_app" "vscode" {
     "vscode://coder.coder-remote/open?owner=%s&workspace=%s%s%s&url=%s&token=$SESSION_TOKEN",
     data.coder_workspace_owner.me.name,
     data.coder_workspace.me.name,
-    var.folder != "" ? format("&folder=%s", var.folder) : "",
+    var.folder != "" ? "&folder=${var.folder}" : "",
     var.open_recent ? "&openRecent" : "",
     data.coder_workspace.me.access_url
   )
