@@ -53,23 +53,23 @@ const SCREEN_POLL_INTERVAL_MS = 500;
  * @satisfies {FormFieldEntries}
  */
 const formFieldEntries = {
-	/** @readonly */
-	username: {
-		/** @readonly */
-		querySelector: "web-client-username-control input",
+  /** @readonly */
+  username: {
+    /** @readonly */
+    querySelector: "web-client-username-control input",
 
-		/** @readonly */
-		value: "${CODER_USERNAME}",
-	},
+    /** @readonly */
+    value: "${CODER_USERNAME}",
+  },
 
-	/** @readonly */
-	password: {
-		/** @readonly */
-		querySelector: "web-client-password-control input",
+  /** @readonly */
+  password: {
+    /** @readonly */
+    querySelector: "web-client-password-control input",
 
-		/** @readonly */
-		value: "${CODER_PASSWORD}",
-	},
+    /** @readonly */
+    value: "${CODER_PASSWORD}",
+  },
 };
 
 /**
@@ -93,32 +93,32 @@ const formFieldEntries = {
  * @returns {Promise<void>}
  */
 function setInputValue(inputField, inputText) {
-	return new Promise((resolve, reject) => {
-		// Adding timeout for input event, even though we'll be dispatching it
-		// immediately, just in the off chance that something in the Angular app
-		// intercepts it or stops it from propagating properly
-		const timeoutId = window.setTimeout(() => {
-			reject(new Error("Input event did not get processed correctly in time."));
-		}, 3_000);
+  return new Promise((resolve, reject) => {
+    // Adding timeout for input event, even though we'll be dispatching it
+    // immediately, just in the off chance that something in the Angular app
+    // intercepts it or stops it from propagating properly
+    const timeoutId = window.setTimeout(() => {
+      reject(new Error("Input event did not get processed correctly in time."));
+    }, 3_000);
 
-		const handleSuccessfulDispatch = () => {
-			window.clearTimeout(timeoutId);
-			inputField.removeEventListener("input", handleSuccessfulDispatch);
-			resolve();
-		};
+    const handleSuccessfulDispatch = () => {
+      window.clearTimeout(timeoutId);
+      inputField.removeEventListener("input", handleSuccessfulDispatch);
+      resolve();
+    };
 
-		inputField.addEventListener("input", handleSuccessfulDispatch);
+    inputField.addEventListener("input", handleSuccessfulDispatch);
 
-		// Code assumes that Angular will have an event handler in place to handle
-		// the new event
-		const inputEvent = new Event("input", {
-			bubbles: true,
-			cancelable: true,
-		});
+    // Code assumes that Angular will have an event handler in place to handle
+    // the new event
+    const inputEvent = new Event("input", {
+      bubbles: true,
+      cancelable: true,
+    });
 
-		inputField.value = inputText;
-		inputField.dispatchEvent(inputEvent);
-	});
+    inputField.value = inputText;
+    inputField.dispatchEvent(inputEvent);
+  });
 }
 
 /**
@@ -137,91 +137,91 @@ function setInputValue(inputField, inputText) {
  * @returns {Promise<void>}
  */
 async function autoSubmitForm(myForm) {
-	const setProtocolValue = () => {
-		/** @type {HTMLDivElement | null} */
-		const protocolDropdownTrigger = myForm.querySelector('div[role="button"]');
-		if (protocolDropdownTrigger === null) {
-			throw new Error("No clickable trigger for setting protocol value");
-		}
+  const setProtocolValue = () => {
+    /** @type {HTMLDivElement | null} */
+    const protocolDropdownTrigger = myForm.querySelector('div[role="button"]');
+    if (protocolDropdownTrigger === null) {
+      throw new Error("No clickable trigger for setting protocol value");
+    }
 
-		protocolDropdownTrigger.click();
+    protocolDropdownTrigger.click();
 
-		// Can't use form as container for querying the list of dropdown options,
-		// because the elements don't actually exist inside the form. They're placed
-		// in the top level of the HTML doc, and repositioned to make it look like
-		// they're part of the form. Avoids CSS stacking context issues, maybe?
-		/** @type {HTMLLIElement | null} */
-		const protocolOption = document.querySelector(
-			`p-dropdownitem[ng-reflect-label="${PROTOCOL}"] li`,
-		);
+    // Can't use form as container for querying the list of dropdown options,
+    // because the elements don't actually exist inside the form. They're placed
+    // in the top level of the HTML doc, and repositioned to make it look like
+    // they're part of the form. Avoids CSS stacking context issues, maybe?
+    /** @type {HTMLLIElement | null} */
+    const protocolOption = document.querySelector(
+      'p-dropdownitem[ng-reflect-label="' + PROTOCOL + '"] li',
+    );
 
-		if (protocolOption === null) {
-			throw new Error(
-				"Unable to find protocol option on screen that matches desired protocol",
-			);
-		}
+    if (protocolOption === null) {
+      throw new Error(
+        "Unable to find protocol option on screen that matches desired protocol",
+      );
+    }
 
-		protocolOption.click();
-	};
+    protocolOption.click();
+  };
 
-	const setHostname = () => {
-		/** @type {HTMLInputElement | null} */
-		const hostnameInput = myForm.querySelector("p-autocomplete#hostname input");
+  const setHostname = () => {
+    /** @type {HTMLInputElement | null} */
+    const hostnameInput = myForm.querySelector("p-autocomplete#hostname input");
 
-		if (hostnameInput === null) {
-			throw new Error("Unable to find field for adding hostname");
-		}
+    if (hostnameInput === null) {
+      throw new Error("Unable to find field for adding hostname");
+    }
 
-		return setInputValue(hostnameInput, HOSTNAME);
-	};
+    return setInputValue(hostnameInput, HOSTNAME);
+  };
 
-	const setCoderFormFieldValues = async () => {
-		// The RDP form will not appear on screen unless the dropdown is set to use
-		// the RDP protocol
-		const rdpSubsection = myForm.querySelector("rdp-form");
-		if (rdpSubsection === null) {
-			throw new Error(
-				"Unable to find RDP subsection. Is the value of the protocol set to RDP?",
-			);
-		}
+  const setCoderFormFieldValues = async () => {
+    // The RDP form will not appear on screen unless the dropdown is set to use
+    // the RDP protocol
+    const rdpSubsection = myForm.querySelector("rdp-form");
+    if (rdpSubsection === null) {
+      throw new Error(
+        "Unable to find RDP subsection. Is the value of the protocol set to RDP?",
+      );
+    }
 
-		for (const { value, querySelector } of Object.values(formFieldEntries)) {
-			/** @type {HTMLInputElement | null} */
-			const input = document.querySelector(querySelector);
+    for (const { value, querySelector } of Object.values(formFieldEntries)) {
+      /** @type {HTMLInputElement | null} */
+      const input = document.querySelector(querySelector);
 
-			if (input === null) {
-				throw new Error(
-					`Unable to element that matches query "${querySelector}"`,
-				);
-			}
+      if (input === null) {
+        throw new Error(
+          'Unable to element that matches query "' + querySelector + '"',
+        );
+      }
 
-			await setInputValue(input, value);
-		}
-	};
+      await setInputValue(input, value);
+    }
+  };
 
-	const triggerSubmission = () => {
-		/** @type {HTMLButtonElement | null} */
-		const submitButton = myForm.querySelector(
-			'p-button[ng-reflect-type="submit"] button',
-		);
+  const triggerSubmission = () => {
+    /** @type {HTMLButtonElement | null} */
+    const submitButton = myForm.querySelector(
+      'p-button[ng-reflect-type="submit"] button',
+    );
 
-		if (submitButton === null) {
-			throw new Error("Unable to find submission button");
-		}
+    if (submitButton === null) {
+      throw new Error("Unable to find submission button");
+    }
 
-		if (submitButton.disabled) {
-			throw new Error(
-				"Unable to submit form because submit button is disabled. Are all fields filled out correctly?",
-			);
-		}
+    if (submitButton.disabled) {
+      throw new Error(
+        "Unable to submit form because submit button is disabled. Are all fields filled out correctly?",
+      );
+    }
 
-		submitButton.click();
-	};
+    submitButton.click();
+  };
 
-	setProtocolValue();
-	await setHostname();
-	await setCoderFormFieldValues();
-	triggerSubmission();
+  setProtocolValue();
+  await setHostname();
+  await setCoderFormFieldValues();
+  triggerSubmission();
 }
 
 /**
@@ -231,58 +231,58 @@ async function autoSubmitForm(myForm) {
  * @returns {void}
  */
 function setupFormDetection() {
-	/** @type {HTMLFormElement | null} */
-	let formValueFromLastMutation = null;
+  /** @type {HTMLFormElement | null} */
+  let formValueFromLastMutation = null;
 
-	/** @returns {void} */
-	const onDynamicTabMutation = () => {
-		/** @type {HTMLFormElement | null} */
-		const latestForm = document.querySelector("web-client-form > form");
+  /** @returns {void} */
+  const onDynamicTabMutation = () => {
+    /** @type {HTMLFormElement | null} */
+    const latestForm = document.querySelector("web-client-form > form");
 
-		// Only try to auto-fill if we went from having no form on screen to
-		// having a form on screen. That way, we don't accidentally override the
-		// form if the user is trying to customize values, and this essentially
-		// makes the script values function as default values
-		const mounted = formValueFromLastMutation === null && latestForm !== null;
-		if (mounted) {
-			autoSubmitForm(latestForm);
-		}
+    // Only try to auto-fill if we went from having no form on screen to
+    // having a form on screen. That way, we don't accidentally override the
+    // form if the user is trying to customize values, and this essentially
+    // makes the script values function as default values
+    const mounted = formValueFromLastMutation === null && latestForm !== null;
+    if (mounted) {
+      autoSubmitForm(latestForm);
+    }
 
-		formValueFromLastMutation = latestForm;
-	};
+    formValueFromLastMutation = latestForm;
+  };
 
-	/** @type {number | undefined} */
-	let pollingId = undefined;
+  /** @type {number | undefined} */
+  let pollingId = undefined;
 
-	/** @returns {void} */
-	const checkScreenForDynamicTab = () => {
-		const dynamicTab = document.querySelector("web-client-dynamic-tab");
+  /** @returns {void} */
+  const checkScreenForDynamicTab = () => {
+    const dynamicTab = document.querySelector("web-client-dynamic-tab");
 
-		// Keep polling until the main content container is on screen
-		if (dynamicTab === null) {
-			return;
-		}
+    // Keep polling until the main content container is on screen
+    if (dynamicTab === null) {
+      return;
+    }
 
-		window.clearInterval(pollingId);
+    window.clearInterval(pollingId);
 
-		// Call the mutation callback manually, to ensure it runs at least once
-		onDynamicTabMutation();
+    // Call the mutation callback manually, to ensure it runs at least once
+    onDynamicTabMutation();
 
-		// Having the mutation observer is kind of an extra safety net that isn't
-		// really expected to run that often. Most of the content in the dynamic
-		// tab is being rendered through Canvas, which won't trigger any mutations
-		// that the observer can detect
-		const dynamicTabObserver = new MutationObserver(onDynamicTabMutation);
-		dynamicTabObserver.observe(dynamicTab, {
-			subtree: true,
-			childList: true,
-		});
-	};
+    // Having the mutation observer is kind of an extra safety net that isn't
+    // really expected to run that often. Most of the content in the dynamic
+    // tab is being rendered through Canvas, which won't trigger any mutations
+    // that the observer can detect
+    const dynamicTabObserver = new MutationObserver(onDynamicTabMutation);
+    dynamicTabObserver.observe(dynamicTab, {
+      subtree: true,
+      childList: true,
+    });
+  };
 
-	pollingId = window.setInterval(
-		checkScreenForDynamicTab,
-		SCREEN_POLL_INTERVAL_MS,
-	);
+  pollingId = window.setInterval(
+    checkScreenForDynamicTab,
+    SCREEN_POLL_INTERVAL_MS,
+  );
 }
 
 /**
@@ -292,34 +292,34 @@ function setupFormDetection() {
  * @returns {void}
  */
 function setupAlwaysOnStyles() {
-	const styleId = "coder-patch--styles-always-on";
-	const existingContainer = document.querySelector(`#${styleId}`);
-	if (existingContainer) {
-		return;
-	}
+  const styleId = "coder-patch--styles-always-on";
+  const existingContainer = document.querySelector("#" + styleId);
+  if (existingContainer) {
+    return;
+  }
 
-	const styleContainer = document.createElement("style");
-	styleContainer.id = styleId;
-	styleContainer.innerHTML = `
+  const styleContainer = document.createElement("style");
+  styleContainer.id = styleId;
+  styleContainer.innerHTML = `
     /* app-menu corresponds to the sidebar of the default view. */
     app-menu {
       display: none !important;
     }
   `;
 
-	document.head.appendChild(styleContainer);
+  document.head.appendChild(styleContainer);
 }
 
 function hideFormForInitialSubmission() {
-	const styleId = "coder-patch--styles-initial-submission";
-	const cssOpacityVariableName = "--coder-opacity-multiplier";
+  const styleId = "coder-patch--styles-initial-submission";
+  const cssOpacityVariableName = "--coder-opacity-multiplier";
 
-	/** @type {HTMLStyleElement | null} */
-	let styleContainer = document.querySelector(`#${styleId}`);
-	if (!styleContainer) {
-		styleContainer = document.createElement("style");
-		styleContainer.id = styleId;
-		styleContainer.innerHTML = `
+  /** @type {HTMLStyleElement | null} */
+  let styleContainer = document.querySelector("#" + styleId);
+  if (!styleContainer) {
+    styleContainer = document.createElement("style");
+    styleContainer.id = styleId;
+    styleContainer.innerHTML = `
       /*
         Have to use opacity instead of visibility, because the element still
         needs to be interactive via the script so that it can be auto-filled.
@@ -350,50 +350,50 @@ function hideFormForInitialSubmission() {
       }
     `;
 
-		document.head.appendChild(styleContainer);
-	}
+    document.head.appendChild(styleContainer);
+  }
 
-	// The root node being undefined should be physically impossible (if it's
-	// undefined, the browser itself is busted), but we need to do a type check
-	// here so that the rest of the function doesn't need to do type checks over
-	// and over.
-	const rootNode = document.querySelector(":root");
-	if (!(rootNode instanceof HTMLHtmlElement)) {
-		// Remove the container entirely because if the browser is busted, who knows
-		// if the CSS variables can be applied correctly. Better to have something
-		// be a bit more ugly/painful to use, than have it be impossible to use
-		styleContainer.remove();
-		return;
-	}
+  // The root node being undefined should be physically impossible (if it's
+  // undefined, the browser itself is busted), but we need to do a type check
+  // here so that the rest of the function doesn't need to do type checks over
+  // and over.
+  const rootNode = document.querySelector(":root");
+  if (!(rootNode instanceof HTMLHtmlElement)) {
+    // Remove the container entirely because if the browser is busted, who knows
+    // if the CSS variables can be applied correctly. Better to have something
+    // be a bit more ugly/painful to use, than have it be impossible to use
+    styleContainer.remove();
+    return;
+  }
 
-	// It's safe to make the form visible preemptively because Devolutions
-	// outputs the Windows view through an HTML canvas that it overlays on top
-	// of the rest of the app. Even if the form isn't hidden at the style level,
-	// it will still be covered up.
-	const restoreOpacity = () => {
-		rootNode.style.setProperty(cssOpacityVariableName, "1");
-	};
+  // It's safe to make the form visible preemptively because Devolutions
+  // outputs the Windows view through an HTML canvas that it overlays on top
+  // of the rest of the app. Even if the form isn't hidden at the style level,
+  // it will still be covered up.
+  const restoreOpacity = () => {
+    rootNode.style.setProperty(cssOpacityVariableName, "1");
+  };
 
-	// If this file gets more complicated, it might make sense to set up the
-	// timeout and event listener so that if one triggers, it cancels the other,
-	// but having restoreOpacity run more than once is a no-op for right now.
-	// Not a big deal if these don't get cleaned up.
+  // If this file gets more complicated, it might make sense to set up the
+  // timeout and event listener so that if one triggers, it cancels the other,
+  // but having restoreOpacity run more than once is a no-op for right now.
+  // Not a big deal if these don't get cleaned up.
 
-	// Have the form automatically reappear no matter what, so that if something
-	// does break, the user isn't left out to dry
-	window.setTimeout(restoreOpacity, 5_000);
+  // Have the form automatically reappear no matter what, so that if something
+  // does break, the user isn't left out to dry
+  window.setTimeout(restoreOpacity, 5_000);
 
-	/** @type {HTMLFormElement | null} */
-	const form = document.querySelector("web-client-form > form");
-	form?.addEventListener(
-		"submit",
-		() => {
-			// Not restoring opacity right away just to give the HTML canvas a little
-			// bit of time to get spun up and cover up the main form
-			window.setTimeout(restoreOpacity, 1_000);
-		},
-		{ once: true },
-	);
+  /** @type {HTMLFormElement | null} */
+  const form = document.querySelector("web-client-form > form");
+  form?.addEventListener(
+    "submit",
+    () => {
+      // Not restoring opacity right away just to give the HTML canvas a little
+      // bit of time to get spun up and cover up the main form
+      window.setTimeout(restoreOpacity, 1_000);
+    },
+    { once: true },
+  );
 }
 
 // Always safe to call these immediately because even if the Angular app isn't
@@ -403,7 +403,7 @@ setupAlwaysOnStyles();
 hideFormForInitialSubmission();
 
 if (document.readyState === "loading") {
-	document.addEventListener("DOMContentLoaded", setupFormDetection);
+  document.addEventListener("DOMContentLoaded", setupFormDetection);
 } else {
-	setupFormDetection();
+  setupFormDetection();
 }
