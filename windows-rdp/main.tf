@@ -39,6 +39,18 @@ variable "admin_password" {
   sensitive = true
 }
 
+variable "port" {
+  type        = number
+  description = "The port to run the Devolutions Gateway on."
+  default     = 7171
+}
+
+variable "slug" {
+  type        = string
+  description = "The slug of the coder_app resource."
+  default     = "web-rdp"
+}
+
 resource "coder_script" "windows-rdp" {
   agent_id     = var.agent_id
   display_name = "windows-rdp"
@@ -47,6 +59,7 @@ resource "coder_script" "windows-rdp" {
   script = templatefile("${path.module}/powershell-installation-script.tftpl", {
     admin_username = var.admin_username
     admin_password = var.admin_password
+    port           = var.port
 
     # Wanted to have this be in the powershell template file, but Terraform
     # doesn't allow recursive calls to the templatefile function. Have to feed
@@ -63,14 +76,14 @@ resource "coder_script" "windows-rdp" {
 resource "coder_app" "windows-rdp" {
   agent_id     = var.agent_id
   share        = var.share
-  slug         = "web-rdp"
+  slug         = var.slug
   display_name = "Web RDP"
-  url          = "http://localhost:7171"
+  url          = "http://localhost:${var.port}"
   icon         = "/icon/desktop.svg"
   subdomain    = true
 
   healthcheck {
-    url       = "http://localhost:7171"
+    url       = "http://localhost:${var.port}"
     interval  = 5
     threshold = 15
   }
@@ -80,7 +93,7 @@ resource "coder_app" "rdp-docs" {
   agent_id     = var.agent_id
   display_name = "Local RDP"
   slug         = "rdp-docs"
-  icon         = "https://raw.githubusercontent.com/matifali/logos/main/windows.svg"
-  url          = "https://coder.com/docs/ides/remote-desktops#rdp-desktop"
+  icon         = "/icon/windows.svg"
+  url          = "https://coder.com/docs/user-guides/workspace-access/remote-desktops#rdp-desktop"
   external     = true
 }

@@ -47,7 +47,7 @@ Install-DGatewayPackage
 
 # Configure Devolutions Gateway
 $Hostname = "localhost"
-$HttpListener = New-DGatewayListener 'http://*:7171' 'http://*:7171'
+$HttpListener = New-DGatewayListener "http://*:${port}" "http://*:${port}"
 $WebApp = New-DGatewayWebAppConfig -Enabled $true -Authentication None
 $ConfigParams = @{
     Hostname = $Hostname

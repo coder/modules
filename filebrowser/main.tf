@@ -20,13 +20,8 @@ data "coder_workspace_owner" "me" {}
 
 variable "agent_name" {
   type        = string
-  description = "The name of the main deployment. (Used to build the subpath for coder_app.)"
-  default     = ""
-  validation {
-    # If subdomain is false, then agent_name must be set.
-    condition     = var.subdomain || var.agent_name != ""
-    error_message = "The agent_name must be set."
-  }
+  description = "The name of the coder_agent resource. (Only required if subdomain is false and the template uses multiple agents.)"
+  default     = null
 }
 
 variable "database_path" {
@@ -73,6 +68,12 @@ variable "order" {
   default     = null
 }
 
+variable "slug" {
+  type        = string
+  description = "The slug of the coder_app resource."
+  default     = "filebrowser"
+}
+
 variable "subdomain" {
   type        = bool
   description = <<-EOT
@@ -85,7 +86,7 @@ variable "subdomain" {
 resource "coder_script" "filebrowser" {
   agent_id     = var.agent_id
   display_name = "File Browser"
-  icon         = "https://raw.githubusercontent.com/filebrowser/logo/master/icon_raw.svg"
+  icon         = "/icon/filebrowser.svg"
   script = templatefile("${path.module}/run.sh", {
     LOG_PATH : var.log_path,
     PORT : var.port,
@@ -93,18 +94,30 @@ resource "coder_script" "filebrowser" {
     LOG_PATH : var.log_path,
     DB_PATH : var.database_path,
     SUBDOMAIN : var.subdomain,
-    SERVER_BASE_PATH : var.subdomain ? "" : format("/@%s/%s.%s/apps/filebrowser", data.coder_workspace_owner.me.name, data.coder_workspace.me.name, var.agent_name),
+    SERVER_BASE_PATH : local.server_base_path
   })
   run_on_start = true
 }
 
 resource "coder_app" "filebrowser" {
   agent_id     = var.agent_id
-  slug         = "filebrowser"
+  slug         = var.slug
   display_name = "File Browser"
-  url          = "http://localhost:${var.port}"
-  icon         = "https://raw.githubusercontent.com/filebrowser/logo/master/icon_raw.svg"
+  url          = local.url
+  icon         = "/icon/filebrowser.svg"
   subdomain    = var.subdomain
   share        = var.share
   order        = var.order
+
+  healthcheck {
+    url       = local.healthcheck_url
+    interval  = 5
+    threshold = 6
+  }
+}
+
+locals {
+  server_base_path = var.subdomain ? "" : format(var.agent_name != null ? "/@%s/%s.%s/apps/%s" : "/@%s/%s/apps/%s", data.coder_workspace_owner.me.name, data.coder_workspace.me.name, var.agent_name, var.slug)
+  url              = "http://localhost:${var.port}${local.server_base_path}"
+  healthcheck_url  = "http://localhost:${var.port}${local.server_base_path}/health"
 }

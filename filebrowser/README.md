@@ -14,7 +14,7 @@ A file browser for your workspace.
 ```tf
 module "filebrowser" {
   source   = "registry.coder.com/modules/filebrowser/coder"
-  version  = "1.0.22"
+  version  = "1.0.23"
   agent_id = coder_agent.example.id
 }
 ```
@@ -28,7 +28,7 @@ module "filebrowser" {
 ```tf
 module "filebrowser" {
   source   = "registry.coder.com/modules/filebrowser/coder"
-  version  = "1.0.22"
+  version  = "1.0.23"
   agent_id = coder_agent.example.id
   folder   = "/home/coder/project"
 }
@@ -39,17 +39,29 @@ module "filebrowser" {
 ```tf
 module "filebrowser" {
   source        = "registry.coder.com/modules/filebrowser/coder"
-  version       = "1.0.22"
+  version       = "1.0.23"
   agent_id      = coder_agent.example.id
   database_path = ".config/filebrowser.db"
 }
 ```
 
-### Serve from the same domain (no subdomain)
+### Serve on a subpath (no wildcard subdomain)
+
+```tf
+module "filebrowser" {
+  source    = "registry.coder.com/modules/filebrowser/coder"
+  version   = "1.0.23"
+  agent_id  = coder_agent.example.id
+  subdomain = false
+}
+```
+
+### Serve on a subpath with a specific agent name (multiple agents)
 
 ```tf
 module "filebrowser" {
   source     = "registry.coder.com/modules/filebrowser/coder"
+  version    = "1.0.23"
   agent_id   = coder_agent.example.id
   agent_name = "main"
   subdomain  = false

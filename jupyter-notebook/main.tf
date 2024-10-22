@@ -42,9 +42,30 @@ variable "order" {
   default     = null
 }
 
+variable "agent_name" {
+  type        = string
+  description = "The name of the coder_agent resource. (Only required if subdomain is false and the template uses multiple agents.)"
+  default     = null
+}
+
+variable "slug" {
+  type        = string
+  description = "The slug of the coder_app resource."
+  default     = "jupyter-notebook"
+}
+
+variable "subdomain" {
+  type        = bool
+  description = <<-EOT
+    Determines whether the app will be accessed via it's own subdomain or whether it will be accessed via a path on Coder.
+    If wildcards have not been setup by the administrator then apps with "subdomain" set to true will not be accessible.
+  EOT
+  default     = true
+}
+
 resource "coder_script" "jupyter-notebook" {
   agent_id     = var.agent_id
-  display_name = "jupyter-notebook"
+  display_name = "Jupyter Notebook"
   icon         = "/icon/jupyter.svg"
   script = templatefile("${path.module}/run.sh", {
     LOG_PATH : var.log_path,
@@ -55,11 +76,22 @@ resource "coder_script" "jupyter-notebook" {
 
 resource "coder_app" "jupyter-notebook" {
   agent_id     = var.agent_id
-  slug         = "jupyter-notebook"
+  slug         = var.slug
   display_name = "Jupyter Notebook"
-  url          = "http://localhost:${var.port}"
+  url          = local.url
   icon         = "/icon/jupyter.svg"
   subdomain    = true
   share        = var.share
   order        = var.order
+
+  healthcheck {
+    url       = local.healthcheck_url
+    interval  = 5
+    threshold = 6
+  }
+}
+locals {
+  server_base_path = var.subdomain ? "" : format(var.agent_name != null ? "/@%s/%s.%s/apps/%s" : "/@%s/%s/apps/%s", data.coder_workspace_owner.me.name, data.coder_workspace.me.name, var.agent_name, var.slug)
+  url              = "http://localhost:${var.port}${local.server_base_path}"
+  healthcheck_url  = "http://localhost:${var.port}${local.server_base_path}/api"
 }

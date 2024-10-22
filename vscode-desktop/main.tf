@@ -20,6 +20,12 @@ variable "folder" {
   default     = ""
 }
 
+variable "slug" {
+  type        = string
+  description = "The slug of the coder_app resource."
+  default     = "vscode-desktop"
+}
+
 variable "open_recent" {
   type        = bool
   description = "Open the most recent workspace or folder. Falls back to the folder if there is no recent workspace or folder to open."
@@ -39,21 +45,17 @@ resource "coder_app" "vscode" {
   agent_id     = var.agent_id
   external     = true
   icon         = "/icon/code.svg"
-  slug         = "vscode"
+  slug         = var.slug
   display_name = "VS Code Desktop"
   order        = var.order
-  url = join("", [
-    "vscode://coder.coder-remote/open",
-    "?owner=",
+  url = format(
+    "vscode://coder.coder-remote/open?owner=%s&workspace=%s%s%s&url=%s&token=$SESSION_TOKEN",
     data.coder_workspace_owner.me.name,
-    "&workspace=",
     data.coder_workspace.me.name,
-    var.folder != "" ? join("", ["&folder=", var.folder]) : "",
+    var.folder != "" ? format("&folder=%s", var.folder) : "",
     var.open_recent ? "&openRecent" : "",
-    "&url=",
-    data.coder_workspace.me.access_url,
-    "&token=$SESSION_TOKEN",
-  ])
+    data.coder_workspace.me.access_url
+  )
 }
 
 output "vscode_url" {

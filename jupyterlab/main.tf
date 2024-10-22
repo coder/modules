@@ -41,7 +41,10 @@ variable "share" {
 
 variable "subdomain" {
   type        = bool
-  description = "Determines whether JupyterLab will be accessed via its own subdomain or whether it will be accessed via a path on Coder."
+  description = <<-EOT
+    Determines whether the app will be accessed via it's own subdomain or whether it will be accessed via a path on Coder.
+    If wildcards have not been setup by the administrator then apps with "subdomain" set to true will not be accessible.
+  EOT
   default     = true
 }
 
@@ -51,6 +54,18 @@ variable "order" {
   default     = null
 }
 
+variable "agent_name" {
+  type        = string
+  description = "The name of the coder_agent resource. (Only required if subdomain is false and the template uses multiple agents.)"
+  default     = null
+}
+
+variable "slug" {
+  type        = string
+  description = "The slug of the coder_app resource."
+  default     = "jupyterlab"
+}
+
 resource "coder_script" "jupyterlab" {
   agent_id     = var.agent_id
   display_name = "jupyterlab"
@@ -58,18 +73,24 @@ resource "coder_script" "jupyterlab" {
   script = templatefile("${path.module}/run.sh", {
     LOG_PATH : var.log_path,
     PORT : var.port
-    BASE_URL : var.subdomain ? "" : "/@${data.coder_workspace_owner.me.name}/${data.coder_workspace.me.name}/apps/jupyterlab"
+    BASE_URL : local.server_base_path
   })
   run_on_start = true
 }
 
 resource "coder_app" "jupyterlab" {
   agent_id     = var.agent_id
-  slug         = "jupyterlab" # sync with the usage in URL
+  slug         = var.slug
   display_name = "JupyterLab"
-  url          = var.subdomain ? "http://localhost:${var.port}" : "http://localhost:${var.port}/@${data.coder_workspace_owner.me.name}/${data.coder_workspace.me.name}/apps/jupyterlab"
+  url          = local.url
   icon         = "/icon/jupyter.svg"
   subdomain    = var.subdomain
   share        = var.share
   order        = var.order
+}
+
+locals {
+  server_base_path = var.subdomain ? "" : format(var.agent_name != null ? "/@%s/%s.%s/apps/%s" : "/@%s/%s/apps/%s", data.coder_workspace_owner.me.name, data.coder_workspace.me.name, var.agent_name, var.slug)
+  url              = "http://localhost:${var.port}${local.server_base_path}"
+  healthcheck_url  = "http://localhost:${var.port}${local.server_base_path}/api"
 }

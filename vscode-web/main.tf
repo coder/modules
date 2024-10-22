@@ -130,6 +130,12 @@ variable "subdomain" {
   default     = true
 }
 
+variable "agent_name" {
+  type        = string
+  description = "The name of the coder_agent resource. (Only required if subdomain is false and the template uses multiple agents.)"
+  default     = null
+}
+
 data "coder_workspace_owner" "me" {}
 data "coder_workspace" "me" {}
 
@@ -185,7 +191,7 @@ resource "coder_app" "vscode-web" {
 }
 
 locals {
-  server_base_path = var.subdomain ? "" : format("/@%s/%s/apps/%s/", data.coder_workspace_owner.me.name, data.coder_workspace.me.name, var.slug)
+  server_base_path = var.subdomain ? "" : format(var.agent_name != null ? "/@%s/%s.%s/apps/%s" : "/@%s/%s/apps/%s", data.coder_workspace_owner.me.name, data.coder_workspace.me.name, var.agent_name, var.slug)
   url              = var.folder == "" ? "http://localhost:${var.port}${local.server_base_path}" : "http://localhost:${var.port}${local.server_base_path}?folder=${var.folder}"
-  healthcheck_url  = var.subdomain ? "http://localhost:${var.port}/healthz" : "http://localhost:${var.port}${local.server_base_path}/healthz"
+  healthcheck_url  = "http://localhost:${var.port}${local.server_base_path}/healthz"
 }

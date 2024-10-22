@@ -20,13 +20,13 @@ variable "agent_id" {
 
 variable "slug" {
   type        = string
-  description = "The slug for the coder_app. Allows resuing the module with the same template."
+  description = "The slug for the coder_app resource."
   default     = "gateway"
 }
 
 variable "agent_name" {
   type        = string
-  description = "Agent name."
+  description = "The name of the coder_agent resource."
 }
 
 variable "folder" {
@@ -258,26 +258,18 @@ resource "coder_app" "gateway" {
   icon         = local.icon
   external     = true
   order        = var.order
-  url = join("", [
-    "jetbrains-gateway://connect#type=coder&workspace=",
+  url = format(
+    "jetbrains-gateway://connect#type=coder&workspace=%s&owner=%s&agent=%s&folder=%s&url=%s&token=%s&ide_product_code=%s&ide_build_number=%s&ide_download_link=%s",
     data.coder_workspace.me.name,
-    "&owner=",
     data.coder_workspace_owner.me.name,
-    "&agent=",
     var.agent_name,
-    "&folder=",
     var.folder,
-    "&url=",
     data.coder_workspace.me.access_url,
-    "&token=",
     "$SESSION_TOKEN",
-    "&ide_product_code=",
     data.coder_parameter.jetbrains_ide.value,
-    "&ide_build_number=",
     local.build_number,
-    "&ide_download_link=",
-    local.download_link,
-  ])
+    local.download_link
+  )
 }
 
 output "identifier" {
