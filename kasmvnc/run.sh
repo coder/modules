@@ -75,35 +75,35 @@ install_alpine() {
   rm /tmp/kasmvncserver.tgz
 }
 
-# Detect system information
-distro=$(grep "^ID=" /etc/os-release | awk -F= '{print $2}')
-version=$(grep "^VERSION_ID=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')
-arch=$(uname -m)
-
-echo "Detected Distribution: $distro"
-echo "Detected Version: $version"
-echo "Detected Architecture: $arch"
-
-# Map arch to package arch
-if [[ "$arch" == "x86_64" ]]; then
-  if [[ "$distro" == "ubuntu" || "$distro" == "debian" || "$distro" == "kali" ]]; then
-    arch="amd64"
-  else
-    arch="x86_64"
-  fi
-elif [[ "$arch" == "aarch64" || "$arch" == "arm64" ]]; then
-  if [[ "$distro" == "ubuntu" || "$distro" == "debian" || "$distro" == "kali" ]]; then
-    arch="arm64"
-  else
-    arch="aarch64"
-  fi
-else
-  echo "Unsupported architecture: $arch"
-  exit 1
-fi
-
 # Check if vncserver is installed, and install if not
 if ! check_installed; then
+  # Detect system information
+  distro=$(grep "^ID=" /etc/os-release | awk -F= '{print $2}')
+  version=$(grep "^VERSION_ID=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')
+  arch=$(uname -m)
+
+  echo "Detected Distribution: $distro"
+  echo "Detected Version: $version"
+  echo "Detected Architecture: $arch"
+
+  # Map arch to package arch
+  if [[ "$arch" == "x86_64" ]]; then
+    if [[ "$distro" == "ubuntu" || "$distro" == "debian" || "$distro" == "kali" ]]; then
+      arch="amd64"
+    else
+      arch="x86_64"
+    fi
+  elif [[ "$arch" == "aarch64" || "$arch" == "arm64" ]]; then
+    if [[ "$distro" == "ubuntu" || "$distro" == "debian" || "$distro" == "kali" ]]; then
+      arch="arm64"
+    else
+      arch="aarch64"
+    fi
+  else
+    echo "Unsupported architecture: $arch"
+    exit 1
+  fi
+
   echo "Installing KASM version: ${VERSION}"
   case $distro in
     ubuntu | debian | kali)
@@ -158,8 +158,11 @@ else
   echo "vncserver already installed. Skipping installation."
 fi
 
-# Coder port-forwarding from dashboard only supports HTTP
-sudo bash -c "cat > /etc/kasmvnc/kasmvnc.yaml <<EOF
+# if sudo is not available, create the config file as the current user .vnc/kasmvnc.yaml
+config_path="~/.vnc/kasmvnc.yaml"
+[ sudo -n true ] 2> /dev/null && config_path="/etc/kasmvnc/kasmvnc.yaml"
+
+sudo bash -c "cat > $config_path <<EOF
 network:
   protocol: http
   websocket_port: ${PORT}
@@ -176,4 +179,8 @@ echo -e "password\npassword\n" | vncpasswd -wo -u $USER
 
 # Start the server
 printf "🚀 Starting KasmVNC server...\n"
-sudo -u $USER bash -c "vncserver -select-de ${DESKTOP_ENVIRONMENT} -disableBasicAuth" > /tmp/kasmvncserver.log 2>&1 &
+if sudo -n true 2> /dev/null; then
+  sudo -u $USER bash -c "vncserver -select-de ${DESKTOP_ENVIRONMENT} -disableBasicAuth" > /tmp/kasmvncserver.log 2>&1 &
+else
+  vncserver -select-de ${DESKTOP_ENVIRONMENT} -disableBasicAuth > /tmp/kasmvncserver.log 2>&1 &
+fi
