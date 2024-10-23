@@ -159,9 +159,8 @@ else
 fi
 
 # create the config file as the current user .vnc/kasmvnc.yaml
-config_path="~/.vnc/kasmvnc.yaml"
-
-tee $config_path > /dev/null <<EOF
+mkdir -p "$HOME/.vnc"  # Ensure the directory exists
+cat > "$HOME/.vnc/kasmvnc.yaml" <<EOF
 network:
   protocol: http
   websocket_port: ${PORT}
