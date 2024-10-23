@@ -155,14 +155,13 @@ if ! check_installed; then
       ;;
   esac
 else
-  echo "vncserver already installed. Skipping installation."
+  echo "A binary with name vncserver already installed. Skipping installation."
 fi
 
-# if sudo is not available, create the config file as the current user .vnc/kasmvnc.yaml
+# create the config file as the current user .vnc/kasmvnc.yaml
 config_path="~/.vnc/kasmvnc.yaml"
-[ sudo -n true ] 2> /dev/null && config_path="/etc/kasmvnc/kasmvnc.yaml"
 
-sudo bash -c "cat > $config_path <<EOF
+tee $config_path > /dev/null <<EOF
 network:
   protocol: http
   websocket_port: ${PORT}
@@ -170,7 +169,7 @@ network:
     require_ssl: false
   udp:
     public_ip: 127.0.0.1
-EOF"
+EOF
 
 # This password is not used since we start the server without auth.
 # The server is protected via the Coder session token / tunnel
@@ -179,8 +178,4 @@ echo -e "password\npassword\n" | vncpasswd -wo -u $USER
 
 # Start the server
 printf "🚀 Starting KasmVNC server...\n"
-if sudo -n true 2> /dev/null; then
-  sudo -u $USER bash -c "vncserver -select-de ${DESKTOP_ENVIRONMENT} -disableBasicAuth" > /tmp/kasmvncserver.log 2>&1 &
-else
-  vncserver -select-de ${DESKTOP_ENVIRONMENT} -disableBasicAuth > /tmp/kasmvncserver.log 2>&1 &
-fi
+vncserver -select-de ${DESKTOP_ENVIRONMENT} -disableBasicAuth > /tmp/kasmvncserver.log 2>&1 &
