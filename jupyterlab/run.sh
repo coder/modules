@@ -9,7 +9,7 @@ BOLD='\033[0;1m'
 printf "$${BOLD}Installing jupyterlab!\n"
 
 # check if jupyterlab is installed
-if ! command -v jupyterlab > /dev/null 2>&1; then
+if ! command -v jupyter-lab > /dev/null 2>&1; then
   # install jupyterlab
   # check if pipx is installed
   if ! command -v pipx > /dev/null 2>&1; then
