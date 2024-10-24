@@ -161,7 +161,7 @@ else
   echo "vncserver already installed. Skipping installation."
 fi
 
-tee "$HOME/.vnc/kasmvnc.yaml" > /dev/null << EOF
+cat <<EOF > "$HOME/.vnc/kasmvnc.yaml"
 network:
   protocol: http
   websocket_port: ${PORT}
