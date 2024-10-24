@@ -76,7 +76,7 @@ install_deb() {
 install_rpm() {
   local url=$1
   download_file "$url" /tmp/kasmvncserver.rpm
-  sudo rpm -i /tmp/kasmvncserver.rpm
+  sudo dnf localinstall /tmp/kasmvncserver.rpm
   rm /tmp/kasmvncserver.rpm
 }
 
@@ -116,7 +116,7 @@ echo "Detected Architecture: $arch"
 case "$arch" in
   x86_64)
     if [[ "$distro" =~ ^(ubuntu|debian|kali)$ ]]; then
-    	arch="amd64"
+      arch="amd64"
     fi
     ;;
   aarch64 | arm64)
@@ -161,7 +161,7 @@ else
   echo "vncserver already installed. Skipping installation."
 fi
 
-cat <<EOF > "$HOME/.vnc/kasmvnc.yaml"
+cat << EOF > "$HOME/.vnc/kasmvnc.yaml"
 network:
   protocol: http
   websocket_port: ${PORT}
