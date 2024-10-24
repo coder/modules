@@ -181,10 +181,11 @@ echo -e "password\npassword\n" | vncpasswd -wo -u "$USER"
 # Start the server
 printf "🚀 Starting KasmVNC server...\n"
 vncserver -select-de "${DESKTOP_ENVIRONMENT}" -disableBasicAuth > /tmp/kasmvncserver.log 2>&1 &
+pid=$!
 
 # Wait for server to start
 sleep 5
-if ! pgrep -f vncserver > /dev/null; then
+if ps -p $pid | grep -q "^$pid"; then
   echo "ERROR: Failed to start KasmVNC server. Check logs at /tmp/kasmvncserver.log"
   grep -v '^[[:space:]]*$' /tmp/kasmvncserver.log
   exit 1
