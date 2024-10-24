@@ -5,7 +5,7 @@
 # Function to check if vncserver is already installed
 check_installed() {
   if command -v vncserver &> /dev/null; then
-    echo "vncserver is already installed."
+    echo "A binary with name vncserver already installed."
     return 0 # Don't exit, just indicate it's installed
   else
     return 1 # Indicates not installed
@@ -155,7 +155,7 @@ if ! check_installed; then
       ;;
   esac
 else
-  echo "A binary with name vncserver already installed. Skipping installation."
+  echo "Skipping installation."
 fi
 
 # create the config file as the current user .vnc/kasmvnc.yaml
@@ -166,6 +166,7 @@ network:
   websocket_port: ${PORT}
   ssl:
     require_ssl: false
+    pem_certificate: /etc/ssl/certs/ssl-cert-snakeoil.pem
   udp:
     public_ip: 127.0.0.1
 EOF
