@@ -185,9 +185,9 @@ pid=$!
 
 # Wait for server to start
 sleep 5
+grep -v '^[[:space:]]*$' /tmp/kasmvncserver.log | tail -n 10
 if ps -p $pid | grep -q "^$pid"; then
-  echo "ERROR: Failed to start KasmVNC server. Check logs at /tmp/kasmvncserver.log"
-  grep -v '^[[:space:]]*$' /tmp/kasmvncserver.log
+  echo "ERROR: Failed to start KasmVNC server. Check full logs at /tmp/kasmvncserver.log"
   exit 1
 fi
 printf "🚀 KasmVNC server started successfully!\n"
