@@ -188,4 +188,4 @@ if ! pgrep -f vncserver > /dev/null; then
   echo "ERROR: Failed to start KasmVNC server. Check logs at /tmp/kasmvncserver.log"
   exit 1
 fi
-printf "🚀 Starting KasmVNC server started successfully!\n"
+printf "🚀 KasmVNC server started successfully!\n"
