@@ -186,6 +186,7 @@ vncserver -select-de "${DESKTOP_ENVIRONMENT}" -disableBasicAuth > /tmp/kasmvncse
 sleep 5
 if ! pgrep -f vncserver > /dev/null; then
   echo "ERROR: Failed to start KasmVNC server. Check logs at /tmp/kasmvncserver.log"
+  grep -v '^[[:space:]]*$' /tmp/kasmvncserver.log
   exit 1
 fi
 printf "🚀 KasmVNC server started successfully!\n"
