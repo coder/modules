@@ -34,7 +34,7 @@ install_deb() {
   download_file $url /tmp/kasmvncserver.deb
   sudo apt-get update
   DEBIAN_FRONTEND=noninteractive sudo apt-get install --yes -qq --no-install-recommends --no-install-suggests /tmp/kasmvncserver.deb
-  sudo adduser $USER ssl-cert
+  sudo addgroup $USER ssl-cert
   rm /tmp/kasmvncserver.deb
 }
 
@@ -159,16 +159,11 @@ else
 fi
 
 # create the config file as the current user .vnc/kasmvnc.yaml
+# There is already a config file in the image at /etc/kasmvnc/kasmvnc.yaml, but we need to set the websocket port
 mkdir -p "$HOME/.vnc"  # Ensure the directory exists
 cat > "$HOME/.vnc/kasmvnc.yaml" <<EOF
 network:
-  protocol: http
   websocket_port: ${PORT}
-  ssl:
-    require_ssl: false
-    pem_certificate: /etc/ssl/certs/ssl-cert-snakeoil.pem
-  udp:
-    public_ip: 127.0.0.1
 EOF
 
 # This password is not used since we start the server without auth.
