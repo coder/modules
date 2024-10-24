@@ -99,6 +99,8 @@ arch="$(uname -m)"
 if [[ "$ID" == "ol" ]]; then
   distro="oracle"
   distro_version="$${distro_version%%.*}"
+elif [[ "$ID" == "fedora" ]]; then
+  distro_version="$(grep -oP '\(\K[\w ]+' /etc/fedora-release | tr '[:upper:]' '[:lower:]' | tr -d ' ')"
 fi
 
 echo "Detected Distribution: $distro"
