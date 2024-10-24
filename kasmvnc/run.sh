@@ -20,17 +20,21 @@ download_file() {
   local download_tool
 
   if command -v curl &> /dev/null; then
-    download_tool="curl -fsSL"
+    # shellcheck disable=SC2034
+    download_tool=(curl -fsSL)
   elif command -v wget &> /dev/null; then
-    download_tool="wget -q -O-"
+    # shellcheck disable=SC2034
+    download_tool=(wget -q -O-)
   elif command -v busybox &> /dev/null; then
-    download_tool="busybox wget -O-"
+    # shellcheck disable=SC2034
+    download_tool=(busybox wget -O-)
   else
     echo "ERROR: No download tool available (curl, wget, or busybox required)"
     exit 1
   fi
 
-  $download_tool "$url" > "$output" || {
+  # shellcheck disable=SC2288
+  "$${download_tool[@]}" "$url" > "$output" || {
     echo "ERROR: Failed to download $url"
     exit 1
   }
