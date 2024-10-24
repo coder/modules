@@ -159,6 +159,8 @@ network:
   websocket_port: ${PORT}
   ssl:
     require_ssl: false
+    pem_certificate:
+    pem_key:
   udp:
     public_ip: 127.0.0.1
 EOF
