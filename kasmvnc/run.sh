@@ -111,7 +111,9 @@ echo "Detected Architecture: $arch"
 # Map arch to package arch
 case "$arch" in
   x86_64)
-    [[ "$distro" =~ ^(ubuntu|debian|kali)$ ]] && arch="amd64" || arch="x86_64"
+    if [[ "$distro" =~ ^(ubuntu|debian|kali)$ ]]; then
+    	arch="amd64"
+    fi
     ;;
   aarch64 | arm64)
     [[ "$distro" =~ ^(ubuntu|debian|kali)$ ]] && arch="arm64" || arch="aarch64"
