@@ -158,9 +158,22 @@ else
   echo "Skipping installation."
 fi
 
-# create the config file as the current user .vnc/kasmvnc.yaml
-# There is already a config file in the image at /etc/kasmvnc/kasmvnc.yaml, but we need to set the websocket port
-mkdir -p "$HOME/.vnc"  # Ensure the directory exists
+# Try to create /etc/kasmvnc/kasmvnc.yaml system-wide
+# we don't fail as some images might be missing sudo permissions
+sudo mkdir -p /etc/kasmvnc || true
+sudo bash -c "cat > /etc/kasmvnc/kasmvnc.yaml <<EOF
+network:
+  protocol: http
+  websocket_port: ${PORT}
+  ssl:
+    require_ssl: false
+  udp:
+    public_ip: 127.0.0.1
+EOF" || true
+
+
+# There could already be a config file in the image at /etc/kasmvnc/kasmvnc.yaml, but we need to set the websocket port
+mkdir -p "$HOME/.vnc"
 cat > "$HOME/.vnc/kasmvnc.yaml" <<EOF
 network:
   websocket_port: ${PORT}
