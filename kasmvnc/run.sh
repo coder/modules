@@ -84,12 +84,6 @@ install_alpine() {
   rm /tmp/kasmvncserver.tgz
 }
 
-# Check for sudo (required)
-if ! command -v sudo &> /dev/null; then
-  echo "ERROR: Required command 'sudo' not found"
-  exit 1
-fi
-
 # Detect system information
 if [[ ! -f /etc/os-release ]]; then
   echo "ERROR: Cannot detect OS: /etc/os-release not found"
@@ -128,6 +122,12 @@ esac
 
 # Check if vncserver is installed, and install if not
 if ! check_installed; then
+  # Check for sudo (required)
+  if ! command -v sudo &> /dev/null; then
+    echo "ERROR: Required command 'sudo' not found"
+    exit 1
+  fi
+
   base_url="https://github.com/kasmtech/KasmVNC/releases/download/v${KASM_VERSION}"
 
   echo "Installing KASM version: ${KASM_VERSION}"
