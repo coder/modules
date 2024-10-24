@@ -50,7 +50,7 @@ add_user_to_group() {
   elif command -v adduser &> /dev/null; then
     sudo adduser "$user" "$group"
   else
-    echo "ERROR: At least one of 'adduser'(Debian) 'usermod'(RHEL) is required"
+    echo "ERROR: At least one of 'adduser' or 'usermod' is required"
     exit 1
   fi
 }
