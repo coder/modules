@@ -34,7 +34,7 @@ install_deb() {
   download_file $url /tmp/kasmvncserver.deb
   sudo apt-get update
   DEBIAN_FRONTEND=noninteractive sudo apt-get install --yes -qq --no-install-recommends --no-install-suggests /tmp/kasmvncserver.deb
-  sudo addgroup $USER ssl-cert
+  sudo usermod -aG ssl-cert $USER
   rm /tmp/kasmvncserver.deb
 }
 
@@ -176,7 +176,14 @@ EOF" || true
 mkdir -p "$HOME/.vnc"
 cat > "$HOME/.vnc/kasmvnc.yaml" <<EOF
 network:
+  protocol: http
   websocket_port: ${PORT}
+  ssl:
+    require_ssl: false
+    pem_certificate:
+    pem_key:
+  udp:
+    public_ip: 127.0.0.1
 EOF
 
 # This password is not used since we start the server without auth.
