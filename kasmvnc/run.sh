@@ -153,13 +153,10 @@ else
   echo "vncserver already installed. Skipping installation."
 fi
 
-# Coder port-forwarding from dashboard only supports HTTP
-sudo tee /etc/kasmvnc/kasmvnc.yaml > /dev/null << EOF
+tee "$HOME/.vnc/kasmvnc.yaml" > /dev/null << EOF
 network:
   protocol: http
   websocket_port: ${PORT}
-  ssl:
-    require_ssl: false
   udp:
     public_ip: 127.0.0.1
 EOF
