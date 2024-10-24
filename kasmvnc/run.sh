@@ -172,7 +172,7 @@ echo -e "password\npassword\n" | vncpasswd -wo -u "$USER"
 # Start the server
 printf "🚀 Starting KasmVNC server...\n"
 # shellcheck disable=SC2024
-sudo -u "$USER" bash -c "vncserver -select-de ${DESKTOP_ENVIRONMENT} -disableBasicAuth" > /tmp/kasmvncserver.log 2>&1 &
+vncserver -select-de "${DESKTOP_ENVIRONMENT}" -disableBasicAuth > /tmp/kasmvncserver.log 2>&1 &
 
 # Wait for server to start
 sleep 5
