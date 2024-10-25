@@ -147,9 +147,9 @@ esac
 
 # Check if vncserver is installed, and install if not
 if ! check_installed; then
-  # Check for sudo (required)
-  if ! command -v sudo &> /dev/null; then
-    echo "ERROR: Required command 'sudo' not found"
+  # Check for NOPASSWD sudo (required)
+  if ! command -v sudo &>/dev/null || ! sudo -n true 2>/dev/null; then
+    echo "ERROR: sudo NOPASSWD access required!"
     exit 1
   fi
 
@@ -178,7 +178,19 @@ else
   echo "vncserver already installed. Skipping installation."
 fi
 
-cat << EOF > "$HOME/.vnc/kasmvnc.yaml"
+if command -v sudo &>/dev/null && sudo -n true 2>/dev/null; then
+  kasm_config_file="/etc/kasmvnc/kasmvnc.yaml"
+  SUDO=sudo
+else
+  kasm_config_file="$HOME/.vnc/kasmvnc.yaml"
+  SUDO=
+  mkdir -p "$HOME/.vnc"
+  echo "WARNING: Sudo access not available, using user config dir!"
+  echo "WARNING: This may prevent custom user KasmVNC settings from applying!"
+fi
+
+echo "Writing KasmVNC config to $kasm_config_file"
+$SUDO tee "$kasm_config_file" > /dev/null <<EOF
 network:
   protocol: http
   websocket_port: ${PORT}
