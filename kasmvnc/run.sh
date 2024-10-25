@@ -186,7 +186,7 @@ else
   SUDO=
 
   echo "WARNING: Sudo access not available, using user config dir!"
-  
+
   if [[ -f "$kasm_config_file" ]]; then
     echo "WARNING: Custom user KasmVNC config exists, not overwriting!"
     echo "WARNIGN: Ensure that you manually configure the appropriate settings."
