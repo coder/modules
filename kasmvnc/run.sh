@@ -58,8 +58,10 @@ add_user_to_group() {
 # Function to install kasmvncserver for debian-based distros
 install_deb() {
   local url=$1
-  download_file "$url" /tmp/kasmvncserver.deb
-  # Define the directory to check
+  local kasmdeb="/tmp/kasmvncserver.deb"
+
+  download_file "$url" "$kasmdeb"
+  
   CACHE_DIR="/var/lib/apt/lists/partial"
   # Check if the directory exists and was modified in the last 60 minutes
   if [[ ! -d "$CACHE_DIR" ]] || ! find "$CACHE_DIR" -mmin -60 -print -quit &> /dev/null; then
@@ -67,25 +69,57 @@ install_deb() {
     # Update package cache with a 300-second timeout for dpkg lock
     sudo apt-get -o DPkg::Lock::Timeout=300 -qq update
   fi
-  DEBIAN_FRONTEND=noninteractive sudo apt-get -o DPkg::Lock::Timeout=300 install --yes -qq --no-install-recommends --no-install-suggests /tmp/kasmvncserver.deb
+
+  DEBIAN_FRONTEND=noninteractive sudo apt-get -o DPkg::Lock::Timeout=300 install --yes -qq --no-install-recommends --no-install-suggests "$kasmdeb"
+  rm "$kasmdeb"
+
   add_user_to_group "$USER" ssl-cert
-  rm /tmp/kasmvncserver.deb
 }
 
 # Function to install kasmvncserver for rpm-based distros
 install_rpm() {
   local url=$1
-  download_file "$url" /tmp/kasmvncserver.rpm
-  sudo dnf localinstall /tmp/kasmvncserver.rpm
-  rm /tmp/kasmvncserver.rpm
+  local kasmrpm="/tmp/kasmvncserver.rpm"
+  local package_manager
+
+  if command -v dnf &> /dev/null; then
+    # shellcheck disable=SC2034
+    package_manager=(dnf localinstall -y)
+  elif command -v zypper &> /dev/null; then
+    # shellcheck disable=SC2034
+    package_manager=(zypper install -y)
+  elif command -v yum &> /dev/null; then
+    # shellcheck disable=SC2034
+    package_manager=(yum localinstall -y)
+  elif command -v rpm &> /dev/null; then
+    # Do we need to manually handle missing dependencies?
+    # shellcheck disable=SC2034
+    package_manager=(rpm -i)
+  else
+    echo "ERROR: No supported package manager available (dnf, zypper, yum, or rpm required)"
+    exit 1
+  fi
+
+  download_file "$url" "$kasmrpm"
+
+  # shellcheck disable=SC2288
+  sudo "$${package_manager[@]}" "$kasmrpm" || {
+    echo "ERROR: Failed to install $kasmrpm"
+    exit 1
+  }
+
+  rm "$kasmrpm"
 }
 
 # Function to install kasmvncserver for Alpine Linux
 install_alpine() {
   local url=$1
-  download_file "$url" /tmp/kasmvncserver.tgz
-  tar -xzf /tmp/kasmvncserver.tgz -C /usr/local/bin/
-  rm /tmp/kasmvncserver.tgz
+  local kasmtgz="/tmp/kasmvncserver.tgz"
+
+  download_file "$url" "$kasmtgz"
+  
+  tar -xzf "$kasmtgz" -C /usr/local/bin/
+  rm "$kasmtgz"
 }
 
 # Detect system information
