@@ -40,21 +40,6 @@ download_file() {
   }
 }
 
-# Add user to group using available commands
-add_user_to_group() {
-  local user="$1"
-  local group="$2"
-
-  if command -v usermod &> /dev/null; then
-    sudo usermod -aG "$group" "$user"
-  elif command -v adduser &> /dev/null; then
-    sudo adduser "$user" "$group"
-  else
-    echo "ERROR: At least one of 'adduser' or 'usermod' is required"
-    exit 1
-  fi
-}
-
 # Function to install kasmvncserver for debian-based distros
 install_deb() {
   local url=$1
@@ -72,8 +57,6 @@ install_deb() {
 
   DEBIAN_FRONTEND=noninteractive sudo apt-get -o DPkg::Lock::Timeout=300 install --yes -qq --no-install-recommends --no-install-suggests "$kasmdeb"
   rm "$kasmdeb"
-
-  add_user_to_group "$USER" ssl-cert
 }
 
 # Function to install kasmvncserver for rpm-based distros
@@ -117,7 +100,7 @@ install_alpine() {
   local kasmtgz="/tmp/kasmvncserver.tgz"
 
   download_file "$url" "$kasmtgz"
-  
+
   tar -xzf "$kasmtgz" -C /usr/local/bin/
   rm "$kasmtgz"
 }
