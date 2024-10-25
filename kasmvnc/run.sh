@@ -136,8 +136,13 @@ case "$arch" in
       arch="amd64"
     fi
     ;;
-  aarch64 | arm64)
-    [[ "$distro" =~ ^(ubuntu|debian|kali)$ ]] && arch="arm64" || arch="aarch64"
+  aarch64)
+    if [[ "$distro" =~ ^(ubuntu|debian|kali)$ ]]; then
+      arch="arm64"
+    fi
+    ;;
+  arm64)
+    :  # This is effectively a noop
     ;;
   *)
     echo "ERROR: Unsupported architecture: $arch"
