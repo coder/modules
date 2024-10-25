@@ -46,7 +46,7 @@ install_deb() {
   local kasmdeb="/tmp/kasmvncserver.deb"
 
   download_file "$url" "$kasmdeb"
-  
+
   CACHE_DIR="/var/lib/apt/lists/partial"
   # Check if the directory exists and was modified in the last 60 minutes
   if [[ ! -d "$CACHE_DIR" ]] || ! find "$CACHE_DIR" -mmin -60 -print -quit &> /dev/null; then
@@ -148,7 +148,7 @@ esac
 # Check if vncserver is installed, and install if not
 if ! check_installed; then
   # Check for NOPASSWD sudo (required)
-  if ! command -v sudo &>/dev/null || ! sudo -n true 2>/dev/null; then
+  if ! command -v sudo &> /dev/null || ! sudo -n true 2> /dev/null; then
     echo "ERROR: sudo NOPASSWD access required!"
     exit 1
   fi
@@ -178,7 +178,7 @@ else
   echo "vncserver already installed. Skipping installation."
 fi
 
-if command -v sudo &>/dev/null && sudo -n true 2>/dev/null; then
+if command -v sudo &> /dev/null && sudo -n true 2> /dev/null; then
   kasm_config_file="/etc/kasmvnc/kasmvnc.yaml"
   SUDO=sudo
 else
@@ -190,7 +190,7 @@ else
 fi
 
 echo "Writing KasmVNC config to $kasm_config_file"
-$SUDO tee "$kasm_config_file" > /dev/null <<EOF
+$SUDO tee "$kasm_config_file" > /dev/null << EOF
 network:
   protocol: http
   websocket_port: ${PORT}
