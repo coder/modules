@@ -189,7 +189,7 @@ else
 
   if [[ -f "$kasm_config_file" ]]; then
     echo "WARNING: Custom user KasmVNC config exists, not overwriting!"
-    echo "WARNIGN: Ensure that you manually configure the appropriate settings."
+    echo "WARNING: Ensure that you manually configure the appropriate settings."
     kasm_config_file="/dev/stderr"
   else
     echo "WARNING: This may prevent custom user KasmVNC settings from applying!"
