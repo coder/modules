@@ -142,7 +142,7 @@ case "$arch" in
     fi
     ;;
   arm64)
-    :  # This is effectively a noop
+    : # This is effectively a noop
     ;;
   *)
     echo "ERROR: Unsupported architecture: $arch"
