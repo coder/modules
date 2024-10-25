@@ -184,9 +184,17 @@ if command -v sudo &> /dev/null && sudo -n true 2> /dev/null; then
 else
   kasm_config_file="$HOME/.vnc/kasmvnc.yaml"
   SUDO=
-  mkdir -p "$HOME/.vnc"
+
   echo "WARNING: Sudo access not available, using user config dir!"
-  echo "WARNING: This may prevent custom user KasmVNC settings from applying!"
+  
+  if [[ -f "$kasm_config_file" ]]; then
+    echo "WARNING: Custom user KasmVNC config exists, not overwriting!"
+    echo "WARNIGN: Ensure that you manually configure the appropriate settings."
+    kasm_config_file="/dev/stderr"
+  else
+    echo "WARNING: This may prevent custom user KasmVNC settings from applying!"
+    mkdir -p "$HOME/.vnc"
+  fi
 fi
 
 echo "Writing KasmVNC config to $kasm_config_file"
