@@ -151,7 +151,7 @@ variable "releases_base_link" {
   description = ""
   default     = "https://data.services.jetbrains.com"
   validation {
-    condition     = can(regex("^(https?:\/\/)?[0-9a-zA-Z]+\.[-_0-9a-zA-Z]+\.[0-9a-zA-Z]+$", var.releases_base_link))
+    condition     = can(regex("^https?://.+$", var.releases_base_link))
     error_message = "The releases_base_link must be a valid HTTP/S address."
   }
 }
@@ -161,7 +161,7 @@ variable "download_base_link" {
   description = ""
   default     = "https://download.jetbrains.com"
   validation {
-    condition     = can(regex("^(https?:\/\/)?[0-9a-zA-Z]+\.[-_0-9a-zA-Z]+\.[0-9a-zA-Z]+$", var.download_base_link))
+    condition     = can(regex("^https?://.+$", var.download_base_link))
     error_message = "The download_base_link must be a valid HTTP/S address."
   }
 }
