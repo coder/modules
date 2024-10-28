@@ -6,7 +6,7 @@ BOLD='\033[0;1m'
 if command -v filebrowser &> /dev/null; then
     printf "🥳 Filebrowser is already installed. Skipping installation.\n\n$"
 else
-    printf "${BOLD}Installing Filebrowser...\n\n"
+    printf "$${BOLD}Installing Filebrowser...\n\n"
 
     # Install Filebrowser
     if curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash; then
