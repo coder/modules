@@ -76,15 +76,15 @@ module "jetbrains_gateway" {
 
 ```tf
 module "jetbrains_gateway" {
-  source                = "registry.coder.com/modules/jetbrains-gateway/coder"
-  version               = "1.0.21"
-  agent_id              = coder_agent.example.id
-  agent_name            = "example"
-  folder                = "/home/coder/example"
-  jetbrains_ides        = ["GO", "WS"]
-  releases_base_link    = "https://releases.internal.site/"
-  download_base_link    = "https://download.internal.site/"
-  default               = "GO"
+  source             = "registry.coder.com/modules/jetbrains-gateway/coder"
+  version            = "1.0.21"
+  agent_id           = coder_agent.example.id
+  agent_name         = "example"
+  folder             = "/home/coder/example"
+  jetbrains_ides     = ["GO", "WS"]
+  releases_base_link = "https://releases.internal.site/"
+  download_base_link = "https://download.internal.site/"
+  default            = "GO"
 }
 ```
 
