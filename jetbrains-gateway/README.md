@@ -74,6 +74,8 @@ module "jetbrains_gateway" {
 
 ### Custom base link
 
+Due to the highest priority of the `ide_download_link` parameter in the `(jetbrains-gateway://...` within IDEA, the pre-configured download address will be overridden when using [IDEA's offline mode](https://www.jetbrains.com/help/idea/fully-offline-mode.html). Therefore, it is necessary to configure the `download_base_link` parameter for the `jetbrains_gateway` module to change the value of `ide_download_link`.
+
 ```tf
 module "jetbrains_gateway" {
   source             = "registry.coder.com/modules/jetbrains-gateway/coder"
