@@ -42,7 +42,7 @@ resource "coder_script" "kasm_vnc" {
   script = templatefile("${path.module}/run.sh", {
     PORT : var.port,
     DESKTOP_ENVIRONMENT : var.desktop_environment,
-    VERSION : var.kasm_version
+    KASM_VERSION : var.kasm_version
   })
   run_on_start = true
 }
