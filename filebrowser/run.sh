@@ -2,20 +2,14 @@
 
 BOLD='\033[0;1m'
 
-# Check if filebrowser is installed
-if command -v filebrowser &> /dev/null; then
-    printf "🥳 Filebrowser is already installed. Skipping installation.\n\n$"
-else
-    printf "$${BOLD}Installing Filebrowser...\n\n"
+printf "$${BOLD}Installing filebrowser \n\n"
 
-    # Install Filebrowser
-    if curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash; then
-        printf "🥳 Installation complete! Filebrowser is now installed.\n\n"
-    else
-        printf "❌ Installation failed! Please check the logs.\n\n"
-        exit 1
-    fi
+# Check if filebrowser is installed
+if ! command -v filebrowser &> /dev/null; then
+  curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
 fi
+
+printf "🥳 Installation complete! \n\n"
 
 printf "👷 Starting filebrowser in background... \n\n"
 
