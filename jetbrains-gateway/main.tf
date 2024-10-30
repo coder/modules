@@ -146,9 +146,29 @@ variable "jetbrains_ides" {
   }
 }
 
+variable "releases_base_link" {
+  type        = string
+  description = ""
+  default     = "https://data.services.jetbrains.com"
+  validation {
+    condition     = can(regex("^https?://.+$", var.releases_base_link))
+    error_message = "The releases_base_link must be a valid HTTP/S address."
+  }
+}
+
+variable "download_base_link" {
+  type        = string
+  description = ""
+  default     = "https://download.jetbrains.com"
+  validation {
+    condition     = can(regex("^https?://.+$", var.download_base_link))
+    error_message = "The download_base_link must be a valid HTTP/S address."
+  }
+}
+
 data "http" "jetbrains_ide_versions" {
   for_each = var.latest ? toset(var.jetbrains_ides) : toset([])
-  url      = "https://data.services.jetbrains.com/products/releases?code=${each.key}&latest=true&type=${var.channel}"
+  url      = "${var.releases_base_link}/products/releases?code=${each.key}&latest=true&type=${var.channel}"
 }
 
 locals {
@@ -158,7 +178,7 @@ locals {
       name          = "GoLand",
       identifier    = "GO",
       build_number  = var.jetbrains_ide_versions["GO"].build_number,
-      download_link = "https://download.jetbrains.com/go/goland-${var.jetbrains_ide_versions["GO"].version}.tar.gz"
+      download_link = "${var.download_base_link}/go/goland-${var.jetbrains_ide_versions["GO"].version}.tar.gz"
       version       = var.jetbrains_ide_versions["GO"].version
     },
     "WS" = {
@@ -166,7 +186,7 @@ locals {
       name          = "WebStorm",
       identifier    = "WS",
       build_number  = var.jetbrains_ide_versions["WS"].build_number,
-      download_link = "https://download.jetbrains.com/webstorm/WebStorm-${var.jetbrains_ide_versions["WS"].version}.tar.gz"
+      download_link = "${var.download_base_link}/webstorm/WebStorm-${var.jetbrains_ide_versions["WS"].version}.tar.gz"
       version       = var.jetbrains_ide_versions["WS"].version
     },
     "IU" = {
@@ -174,7 +194,7 @@ locals {
       name          = "IntelliJ IDEA Ultimate",
       identifier    = "IU",
       build_number  = var.jetbrains_ide_versions["IU"].build_number,
-      download_link = "https://download.jetbrains.com/idea/ideaIU-${var.jetbrains_ide_versions["IU"].version}.tar.gz"
+      download_link = "${var.download_base_link}/idea/ideaIU-${var.jetbrains_ide_versions["IU"].version}.tar.gz"
       version       = var.jetbrains_ide_versions["IU"].version
     },
     "PY" = {
@@ -182,7 +202,7 @@ locals {
       name          = "PyCharm Professional",
       identifier    = "PY",
       build_number  = var.jetbrains_ide_versions["PY"].build_number,
-      download_link = "https://download.jetbrains.com/python/pycharm-professional-${var.jetbrains_ide_versions["PY"].version}.tar.gz"
+      download_link = "${var.download_base_link}/python/pycharm-professional-${var.jetbrains_ide_versions["PY"].version}.tar.gz"
       version       = var.jetbrains_ide_versions["PY"].version
     },
     "CL" = {
@@ -190,7 +210,7 @@ locals {
       name          = "CLion",
       identifier    = "CL",
       build_number  = var.jetbrains_ide_versions["CL"].build_number,
-      download_link = "https://download.jetbrains.com/cpp/CLion-${var.jetbrains_ide_versions["CL"].version}.tar.gz"
+      download_link = "${var.download_base_link}/cpp/CLion-${var.jetbrains_ide_versions["CL"].version}.tar.gz"
       version       = var.jetbrains_ide_versions["CL"].version
     },
     "PS" = {
@@ -198,7 +218,7 @@ locals {
       name          = "PhpStorm",
       identifier    = "PS",
       build_number  = var.jetbrains_ide_versions["PS"].build_number,
-      download_link = "https://download.jetbrains.com/webide/PhpStorm-${var.jetbrains_ide_versions["PS"].version}.tar.gz"
+      download_link = "${var.download_base_link}/webide/PhpStorm-${var.jetbrains_ide_versions["PS"].version}.tar.gz"
       version       = var.jetbrains_ide_versions["PS"].version
     },
     "RM" = {
@@ -206,7 +226,7 @@ locals {
       name          = "RubyMine",
       identifier    = "RM",
       build_number  = var.jetbrains_ide_versions["RM"].build_number,
-      download_link = "https://download.jetbrains.com/ruby/RubyMine-${var.jetbrains_ide_versions["RM"].version}.tar.gz"
+      download_link = "${var.download_base_link}/ruby/RubyMine-${var.jetbrains_ide_versions["RM"].version}.tar.gz"
       version       = var.jetbrains_ide_versions["RM"].version
     }
     "RD" = {
@@ -214,7 +234,7 @@ locals {
       name          = "Rider",
       identifier    = "RD",
       build_number  = var.jetbrains_ide_versions["RD"].build_number,
-      download_link = "https://download.jetbrains.com/rider/JetBrains.Rider-${var.jetbrains_ide_versions["RD"].version}.tar.gz"
+      download_link = "${var.download_base_link}/rider/JetBrains.Rider-${var.jetbrains_ide_versions["RD"].version}.tar.gz"
       version       = var.jetbrains_ide_versions["RD"].version
     }
   }
