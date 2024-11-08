@@ -276,7 +276,7 @@ data "coder_workspace_owner" "me" {}
 resource "coder_app" "gateway" {
   for_each     = local.default_ide_map
   agent_id     = var.agent_id
-  slug         = "${var.slug}_${each.key}"
+  slug         = "${var.slug}-${lower(each.key)}"
   display_name = each.value.name
   icon         = each.value.icon
   external     = true
