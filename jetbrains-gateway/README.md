@@ -19,7 +19,7 @@ module "jetbrains_gateway" {
   agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["CL", "GO", "IU", "PY", "WS"]
-  default        = "GO"
+  default        = ["GO"]
 }
 ```
 
@@ -37,7 +37,7 @@ module "jetbrains_gateway" {
   agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["GO", "WS"]
-  default        = "GO"
+  default        = ["GO"]
 }
 ```
 
@@ -51,7 +51,7 @@ module "jetbrains_gateway" {
   agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["GO", "WS"]
-  default        = "GO"
+  default        = ["GO"]
   latest         = true
 }
 ```
@@ -66,13 +66,27 @@ module "jetbrains_gateway" {
   agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["GO", "WS"]
-  default        = "GO"
+  default        = ["GO"]
   latest         = true
   channel        = "eap"
 }
 ```
 
-### Custom base link
+### Add Multiple IDEs with the default set to GoLand
+
+```tf
+module "jetbrains_gateway" {
+  source         = "registry.coder.com/modules/jetbrains-gateway/coder"
+  version        = "1.0.23"
+  agent_id       = coder_agent.example.id
+  agent_name     = "example"
+  folder         = "/home/coder/example"
+  jetbrains_ides = ["GO", "WS", "RD", "PY"]
+  default        = ["GO", "PY"]
+}
+```
+
+### Custom release download link
 
 Due to the highest priority of the `ide_download_link` parameter in the `(jetbrains-gateway://...` within IDEA, the pre-configured download address will be overridden when using [IDEA's offline mode](https://www.jetbrains.com/help/idea/fully-offline-mode.html). Therefore, it is necessary to configure the `download_base_link` parameter for the `jetbrains_gateway` module to change the value of `ide_download_link`.
 
@@ -86,7 +100,7 @@ module "jetbrains_gateway" {
   jetbrains_ides     = ["GO", "WS"]
   releases_base_link = "https://releases.internal.site/"
   download_base_link = "https://download.internal.site/"
-  default            = "GO"
+  default            = ["GO"]
 }
 ```
 

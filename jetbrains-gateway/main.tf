@@ -20,7 +20,7 @@ variable "agent_id" {
 
 variable "slug" {
   type        = string
-  description = "The slug for the coder_app. Allows resuing the module with the same template."
+  description = "The slug for the coder_app"
   default     = "gateway"
 }
 
@@ -39,9 +39,9 @@ variable "folder" {
 }
 
 variable "default" {
-  default     = ""
-  type        = string
-  description = "Default IDE"
+  default     = []
+  type        = list(string)
+  description = "Default IDEs to be added to the Workspace page."
 }
 
 variable "order" {
@@ -166,6 +166,12 @@ variable "download_base_link" {
   }
 }
 
+variable "provide_options" {
+  type        = bool
+  description = "Whether to provide coder_parameter options."
+  default     = true
+}
+
 data "http" "jetbrains_ide_versions" {
   for_each = var.latest ? toset(var.jetbrains_ides) : toset([])
   url      = "${var.releases_base_link}/products/releases?code=${each.key}&latest=true&type=${var.channel}"
@@ -239,23 +245,19 @@ locals {
     }
   }
 
-  icon          = local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].icon
-  json_data     = var.latest ? jsondecode(data.http.jetbrains_ide_versions[data.coder_parameter.jetbrains_ide.value].response_body) : {}
-  key           = var.latest ? keys(local.json_data)[0] : ""
-  display_name  = local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].name
-  identifier    = data.coder_parameter.jetbrains_ide.value
-  download_link = var.latest ? local.json_data[local.key][0].downloads.linux.link : local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].download_link
-  build_number  = var.latest ? local.json_data[local.key][0].build : local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].build_number
-  version       = var.latest ? local.json_data[local.key][0].version : var.jetbrains_ide_versions[data.coder_parameter.jetbrains_ide.value].version
+  default_ide_map = {
+    for ide in var.default : ide => local.jetbrains_ides[ide]
+  }
 }
 
 data "coder_parameter" "jetbrains_ide" {
+  for_each     = local.default_ide_map
   type         = "string"
-  name         = "jetbrains_ide"
-  display_name = "JetBrains IDE"
+  name         = "jetbrains_ide_${each.key}"
+  display_name = "JetBrains IDE ${each.key}"
   icon         = "/icon/gateway.svg"
   mutable      = true
-  default      = var.default == "" ? var.jetbrains_ides[0] : var.default
+  default      = each.key
   order        = var.coder_parameter_order
 
   dynamic "option" {
@@ -272,10 +274,11 @@ data "coder_workspace" "me" {}
 data "coder_workspace_owner" "me" {}
 
 resource "coder_app" "gateway" {
+  for_each     = local.default_ide_map
   agent_id     = var.agent_id
-  slug         = var.slug
-  display_name = local.display_name
-  icon         = local.icon
+  slug         = "${var.slug}_${each.key}"
+  display_name = each.value.name
+  icon         = each.value.icon
   external     = true
   order        = var.order
   url = join("", [
@@ -292,38 +295,23 @@ resource "coder_app" "gateway" {
     "&token=",
     "$SESSION_TOKEN",
     "&ide_product_code=",
-    data.coder_parameter.jetbrains_ide.value,
+    each.key,
     "&ide_build_number=",
-    local.build_number,
+    each.value.build_number,
     "&ide_download_link=",
-    local.download_link,
+    each.value.download_link,
   ])
 }
 
-output "identifier" {
-  value = local.identifier
-}
-
-output "display_name" {
-  value = local.display_name
-}
-
-output "icon" {
-  value = local.icon
-}
-
-output "download_link" {
-  value = local.download_link
-}
-
-output "build_number" {
-  value = local.build_number
-}
-
-output "version" {
-  value = local.version
-}
-
-output "url" {
-  value = coder_app.gateway.url
+output "coder_apps" {
+  value = {
+    for key, app in coder_app.gateway : key => {
+      identifier    = key
+      display_name  = app.display_name
+      icon          = app.icon
+      download_link = app.url
+      build_number  = app.build_number
+      version       = app.version
+    }
+  }
 }
