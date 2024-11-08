@@ -308,10 +308,10 @@ output "coder_apps" {
     for key, app in coder_app.gateway : key => {
       identifier    = key
       display_name  = app.display_name
-      icon          = app.icon
-      download_link = app.url
-      build_number  = app.build_number
-      version       = app.version
+      icon          = local.jetbrains_ides[key].icon
+      download_link = local.jetbrains_ides[key].download_link
+      build_number  = local.jetbrains_ides[key].build_number
+      version       = local.jetbrains_ides[key].version
     }
   }
 }
