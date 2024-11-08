@@ -253,8 +253,8 @@ locals {
 data "coder_parameter" "jetbrains_ide" {
   for_each     = local.default_ide_map
   type         = "string"
-  name         = "jetbrains_ide_${each.key}"
-  display_name = "JetBrains IDE ${each.key}"
+  name         = "jetbrains_ide_${index(each.key) + 1}"
+  display_name = "JetBrains IDE ${index(each.key) + 1}"
   icon         = "/icon/gateway.svg"
   mutable      = true
   default      = each.key
