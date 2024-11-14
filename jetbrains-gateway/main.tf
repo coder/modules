@@ -307,7 +307,7 @@ data "coder_workspace_owner" "me" {}
 resource "coder_app" "gateway" {
   for_each     = length(var.default) > 1 ? toset(var.default) : toset([data.coder_parameter.jetbrains_ide[0].value])
   agent_id     = var.agent_id
-  slug         = var.slug
+  slug         = "${var.slug}-${lower(each.value)}"
   display_name = local.jetbrains_ides[each.value].name
   icon         = local.jetbrains_ides[each.value].icon
   external     = true
