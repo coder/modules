@@ -10,7 +10,6 @@ fi
 status=0
 declare -a modules=()
 declare -a failures=()
-modules+=("doesnotexist")
 for path in $(find . -not -path '*/.*' -type f -name main.tf -maxdepth 2 | cut -d '/' -f 2 | sort -u); do
     modules+=("${path}")
 done
