@@ -39,28 +39,22 @@ variable "folder" {
 }
 
 variable "default" {
-  default     = ""
-  type        = string
-  description = "Default IDE"
-}
-
-variable "defaults" {
   default     = []
   type        = list(string)
-  description = "List of default IDEs to be added to the Workspace page. Conflicts with the default variable."
+  description = "List of default IDEs to be added to the Workspace page."
   # check if the list is unique
   validation {
-    condition     = length(var.defaults) == length(toset(var.defaults))
-    error_message = "The defaults must not contain duplicates."
+    condition     = length(var.default) == length(toset(var.default))
+    error_message = "The default must not contain duplicates."
   }
-  # check if defaults are valid jetbrains_ides
+  # check if default are valid jetbrains_ides
   validation {
     condition = (
       alltrue([
-        for code in var.defaults : contains(["IU", "PS", "WS", "PY", "CL", "GO", "RM", "RD"], code)
+        for code in var.default : contains(["IU", "PS", "WS", "PY", "CL", "GO", "RM", "RD"], code)
       ])
     )
-    error_message = "The defaults must be a list of valid product codes. Valid product codes are ${join(",", ["IU", "PS", "WS", "PY", "CL", "GO", "RM", "RD"])}."
+    error_message = "The default must be a list of valid product codes. Valid product codes are ${join(",", ["IU", "PS", "WS", "PY", "CL", "GO", "RM", "RD"])}."
   }
 }
 
@@ -144,7 +138,7 @@ variable "jetbrains_ide_versions" {
 
 variable "jetbrains_ides" {
   type        = list(string)
-  description = "The list of IDE product codes to be shown to the user. Does not apply when defaults are used."
+  description = "The list of IDE product codes to be shown to the user. Does not apply when there are multiple defaults."
   default     = ["IU", "PS", "WS", "PY", "CL", "GO", "RM", "RD"]
   validation {
     condition = (
@@ -259,24 +253,42 @@ locals {
     }
   }
 
-  icon          = local.jetbrains_ides[try(data.coder_parameter.jetbrains_ide[0].value, var.defaults[0])].icon
-  json_data     = var.latest ? jsondecode(data.http.jetbrains_ide_versions[try(data.coder_parameter.jetbrains_ide[0].value, var.defaults[0])].response_body) : {}
-  key           = var.latest ? keys(local.json_data)[0] : ""
-  display_name  = local.jetbrains_ides[try(data.coder_parameter.jetbrains_ide[0].value, var.defaults[0])].name
-  identifier    = try(data.coder_parameter.jetbrains_ide[0].value, var.defaults[0])
-  download_link = var.latest ? local.json_data[local.key][0].downloads.linux.link : local.jetbrains_ides[try(data.coder_parameter.jetbrains_ide[0].value, var.defaults[0])].download_link
-  build_number  = var.latest ? local.json_data[local.key][0].build : local.jetbrains_ides[try(data.coder_parameter.jetbrains_ide[0].value, var.defaults[0])].build_number
-  version       = var.latest ? local.json_data[local.key][0].version : var.jetbrains_ide_versions[try(data.coder_parameter.jetbrains_ide[0].value, var.defaults[0])].version
+  identifier = try([data.coder_parameter.jetbrains_ide[0].value], var.default)
+  list_json_data = var.latest ? [
+    for ide in local.identifier : jsondecode(data.http.jetbrains_ide_versions[ide].response_body)
+  ] : []
+  list_key = var.latest ? [
+    for j in local.list_json_data : keys(j)[0]
+  ] : []
+  download_links = length(local.list_key) > 0 ? [
+    for i, j in local.list_json_data : j[local.list_key[i]][0].downloads.linux.link
+    ] : [
+    for ide in local.identifier : local.jetbrains_ides[ide].download_link
+  ]
+  build_numbers = length(local.list_key) > 0 ? [
+    for i, j in local.list_json_data : j[local.list_key[i]][0].build
+    ] : [
+    for ide in local.identifier : local.jetbrains_ides[ide].build_number
+  ]
+  versions = length(local.list_key) > 0 ? [
+    for i, j in local.list_json_data : j[local.list_key[i]][0].version
+    ] : [
+    for ide in local.identifier : local.jetbrains_ides[ide].version
+  ]
+  display_names = [for key in keys(coder_app.gateway) : coder_app.gateway[key].display_name]
+  icons         = [for key in keys(coder_app.gateway) : coder_app.gateway[key].icon]
+  urls          = [for key in keys(coder_app.gateway) : coder_app.gateway[key].url]
 }
 
 data "coder_parameter" "jetbrains_ide" {
-  count        = length(var.defaults) > 0 ? 0 : 1
+  # remove the coder_parameter if there are multiple default
+  count        = length(var.default) > 1 ? 0 : 1
   type         = "string"
   name         = "jetbrains_ide"
   display_name = "JetBrains IDE"
   icon         = "/icon/gateway.svg"
   mutable      = true
-  default      = var.default == "" ? var.jetbrains_ides[0] : var.default
+  default      = length(var.default) > 0 ? var.default[0] : var.jetbrains_ides[0]
   order        = var.coder_parameter_order
 
   dynamic "option" {
@@ -293,7 +305,7 @@ data "coder_workspace" "me" {}
 data "coder_workspace_owner" "me" {}
 
 resource "coder_app" "gateway" {
-  for_each     = length(var.defaults) > 0 ? toset(var.defaults) : toset([data.coder_parameter.jetbrains_ide[0].value])
+  for_each     = length(var.default) > 1 ? toset(var.default) : toset([data.coder_parameter.jetbrains_ide[0].value])
   agent_id     = var.agent_id
   slug         = var.slug
   display_name = local.jetbrains_ides[each.value].name
@@ -328,31 +340,31 @@ output "identifier" {
 }
 
 output "display_name" {
-  value       = local.display_name
+  value       = [for key in keys(coder_app.gateway) : coder_app.gateway[key].display_name]
   description = "The display name of the JetBrains IDE."
 }
 
 output "icon" {
-  value       = local.icon
+  value       = [for key in keys(coder_app.gateway) : coder_app.gateway[key].icon]
   description = "The icon of the JetBrains IDE."
 }
 
 output "download_link" {
-  value       = local.download_link
+  value       = local.download_links
   description = "The download link of the JetBrains IDE."
 }
 
 output "build_number" {
-  value       = local.build_number
+  value       = local.build_numbers
   description = "The build number of the JetBrains IDE."
 }
 
 output "version" {
-  value       = local.version
+  value       = local.versions
   description = "The version of the JetBrains IDE."
 }
 
 output "url" {
   value       = [for key in keys(coder_app.gateway) : coder_app.gateway[key].url]
-  description = "The URLs to connect to the JetBrains IDEs."
+  description = "The URL to connect to the JetBrains IDE."
 }
