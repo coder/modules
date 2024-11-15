@@ -2,7 +2,7 @@ name: Check modules on registry.coder.com
 
 on:
   schedule:
-    - cron: "23 * * * *" # Runs at 23 minutes past the hour.
+    - cron: "*/13 * * * *" # Runs every 13th minute
   workflow_dispatch: # Allows manual triggering of the workflow if needed
 
 jobs:
@@ -15,4 +15,4 @@ jobs:
 
       - name: Run check.sh
         run: |
-          ./check.sh
+          ./.github/scripts/check.sh
