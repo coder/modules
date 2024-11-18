@@ -7,6 +7,7 @@
 
 [![discord](https://img.shields.io/discord/747933592273027093?label=discord)](https://discord.gg/coder)
 [![license](https://img.shields.io/github/license/coder/modules)](./LICENSE)
+[![Health](https://github.com/coder/modules/actions/workflows/check.yaml/badge.svg)](https://github.com/coder/modules/actions/workflows/check.yaml)
 
 </div>
 
