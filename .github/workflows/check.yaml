@@ -1,5 +1,5 @@
-name: Check modules on registry.coder.com
-
+name: Health
+# Check modules health on registry.coder.com
 on:
   schedule:
     - cron: "*/13 * * * *" # Runs every 13th minute
