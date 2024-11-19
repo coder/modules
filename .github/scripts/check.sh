@@ -2,6 +2,21 @@
 set -o pipefail
 set -u
 
+# List of required environment variables
+required_vars=(
+    "INSTATUS_API_KEY"
+    "INSTATUS_PAGE_ID"
+    "INSTATUS_COMPONENT_ID"
+)
+
+# Check if each required variable is set
+for var in "${required_vars[@]}"; do
+    if [[ -z "${!var:-}" ]]; then
+        echo "Error: Environment variable '$var' is not set."
+        exit 1
+    fi
+done
+
 REGISTRY_BASE_URL="${REGISTRY_BASE_URL:-https://registry.coder.com}"
 
 status=0
