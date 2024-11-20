@@ -12,14 +12,16 @@ tags: [windows, dcv, web, desktop]
 
 Amazon DCV is high performance remote display protocol that provides a secure way to deliver remote desktop and application streaming from any cloud or data center to any device, over varying network conditions.
 
+![Amazon DCV on a Windows workspace](../.images/amazon-dcv-windows.png)
+
 Enable DCV Server and Web Client on Windows workspaces.
 
 ```tf
 module "dcv" {
-  count          = data.coder_workspace.me.start_count
-  source         = "registry.coder.com/modules/amazon-dcv-windows/coder"
-  version        = "1.0.24"
-  agent_id       = resource.coder_agent.main.id
+  count    = data.coder_workspace.me.start_count
+  source   = "registry.coder.com/modules/amazon-dcv-windows/coder"
+  version  = "1.0.24"
+  agent_id = resource.coder_agent.main.id
 }
 
 

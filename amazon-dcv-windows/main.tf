@@ -43,7 +43,7 @@ resource "coder_app" "web-dcv" {
   slug         = var.slug
   display_name = "Web DCV"
   url          = "https://localhost:${var.port}${local.web_url_path}?username=${local.admin_username}&password=${var.admin_password}"
-  icon         = "/icon/desktop.svg"
+  icon         = "/icon/dcv.svg"
   subdomain    = var.subdomain
 }
 
