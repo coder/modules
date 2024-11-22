@@ -93,11 +93,11 @@ force_redeploy_registry () {
     local VERCEL_APP="registry"
 
     local latest_res
-    latest_res=$(curl "https://api.vercel.com/v6/deployments?app=$VERCEL_APP&limit=1&slug=$VERCEL_TEAM_SLUG&teamId=$VERCEL_TEAM_ID" \
+    latest_res=$(curl "https://api.vercel.com/v6/deployments?app=$VERCEL_APP&limit=1&slug=$VERCEL_TEAM_SLUG&teamId=$VERCEL_TEAM_ID&target=production&state=BUILDING,INITIALIZING,QUEUED,READY" \
         --fail \
         --silent \
-        -H "Authorization: Bearer $VERCEL_API_KEY" \
-        -H "Content-Type: application/json"
+        --header "Authorization: Bearer $VERCEL_API_KEY" \
+        --header "Content-Type: application/json"
     )
 
     # If we have zero deployments, something is VERY wrong. Make the whole
@@ -119,17 +119,26 @@ force_redeploy_registry () {
         return 1
     fi
 
-    local redeploy_res
-    redeploy_res=$(curl -X POST "https://api.vercel.com/v13/deployments?forceNew=1&skipAutoDetectionConfirmation=1&slug=$VERCEL_TEAM_SLUG&teamId=$VERCEL_TEAM_ID" \
-        --fail \
-        --silent \
-        --output "/dev/null" \
-        -H "Authorization: Bearer $VERCEL_API_KEY" \
-        -H "Content-Type: application/json" \
-        -d "{ \"deploymentId\": \"${latest_id}\" }"
-    )
+    local latest_deployment_state
+    latest_deployment_state="$(echo "${latest_res}" | jq -r '.deployments[0].state')"
+    if [[ "${latest_deployment_state}" != "READY" ]]; then
+        echo "Last deployment was not in READY state. Skipping redeployment."
+        return 1
+    fi
 
-    echo "${redeploy_res}"
+    echo "============================================================="
+    echo "!!! Redeploying registry with deployment ID: ${latest_id} !!!"
+    echo "============================================================="
+
+    if curl -X POST "https://api.vercel.com/v13/deployments?forceNew=1&skipAutoDetectionConfirmation=1&slug=$VERCEL_TEAM_SLUG&teamId=$VERCEL_TEAM_ID&target=production" \
+        --fail \
+        --header "Authorization: Bearer $VERCEL_API_KEY" \
+        --header "Content-Type: application/json" \
+        --data-raw "{ \"deploymentId\": \"${latest_id}\", \"name\": \"${VERCEL_APP}\" }"; then
+        echo "0"
+    else
+        echo "1"
+    fi
 }
 
 # Check each module's accessibility
@@ -170,9 +179,8 @@ else
 
     # If a module is down, force a reployment to try getting things back online
     # ASAP
-    status_code=$(force_redeploy_registry)
-    # shellcheck disable=SC2181
-    if (( status_code == 200 )); then
+    redeploy_result=$(force_redeploy_registry)
+    if (( redeploy_result == 0 )); then
         echo "Reployment successful"
     else
         echo "Unable to redeploy automatically"
