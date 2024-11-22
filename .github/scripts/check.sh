@@ -18,8 +18,8 @@ for var in "${required_vars[@]}"; do
     fi
 done
 
-LATEST_REDEPLOY_FAILED="$LATEST_REDEPLOY_FAILED:-0"
-if (LATEST_REDEPLOY_FAILED); do
+LATEST_REDEPLOY_FAILED="${LATEST_REDEPLOY_FAILED:-0}"
+if [[ "${LATEST_REDEPLOY_FAILED}" -ne "0" ]] ;then
     echo "Trying to re-run job when previous re-deploy failed"
     return 1
 fi
@@ -52,7 +52,7 @@ create_incident() {
     local incident_name="Testing Instatus"
     local message="The following modules are experiencing issues:\n"
     for i in "${!failures[@]}"; do
-        message+="$(($i + 1)). ${failures[$i]}\n"
+        message+="$((i + 1)). ${failures[$i]}\n"
     done
 
     component_status="PARTIALOUTAGE"
@@ -87,7 +87,8 @@ force_redeploy_registry () {
     local VERCEL_TEAM_ID="team_tGkWfhEGGelkkqUUm9nXq17r"
     local VERCEL_APP="registry"
 
-    local latest_res=$(curl "https://api.vercel.com/v6/deployments?app=$VERCEL_APP&limit=1&slug=$VERCEL_TEAM_SLUG&teamId=$VERCEL_TEAM_ID" \
+    local latest_res
+    latest_res=$(curl "https://api.vercel.com/v6/deployments?app=$VERCEL_APP&limit=1&slug=$VERCEL_TEAM_SLUG&teamId=$VERCEL_TEAM_ID" \
         --fail \
         --silent \
         -H "Authorization: Bearer $VERCEL_API_KEY" \
@@ -96,24 +97,24 @@ force_redeploy_registry () {
 
     # If we have zero deployments, something is VERY wrong. Make the whole
     # script exit with a non-zero status code
-    local latest_id=$(echo $latest_res | jq '.deployments[0].uid')
-    if (( latest_id == "null" )); do
-        echo "Unable to pull any previous deployments for redeployment" 
+    local latest_id
+    latest_id=$(echo "${latest_res}" | jq '.deployments[0].uid')
+    if [[ "${latest_id}" = "null" ]]; then
+        echo "Unable to pull any previous deployments for redeployment"
         return 1
     fi
 
-    local redeploy_res=$(curl -X POST "https://api.vercel.com/v13/deployments?forceNew=1&skipAutoDetectionConfirmation=1&slug=$VERCEL_TEAM_SLUG&teamId=$VERCEL_TEAM_ID" \
+    local redeploy_res
+    redeploy_res=$(curl -X POST "https://api.vercel.com/v13/deployments?forceNew=1&skipAutoDetectionConfirmation=1&slug=$VERCEL_TEAM_SLUG&teamId=$VERCEL_TEAM_ID" \
         --fail \
         --silent \
         --output "/dev/null" \
         -H "Authorization: Bearer $VERCEL_API_KEY" \
         -H "Content-Type: application/json" \
-        -d "{
-            "deploymentId": $latest_id,
-        }"
+        -d "{ \"deploymentId\": \"${latest_id}\" }"
     )
 
-    echo $redeploy_res
+    echo "${redeploy_res}"
 }
 
 # Check each module's accessibility
@@ -136,13 +137,13 @@ done
 # Determine overall status and update Instatus component
 if (( status == 0 )); then
     echo "All modules are operational."
-    # set to 
+    # set to
     update_component_status "OPERATIONAL"
 
-    echo "LATEST_REDEPLOY_FAILED=0" >> $GITHUB_ENV
+    echo "LATEST_REDEPLOY_FAILED=0" >> "${GITHUB_ENV}"
 else
     echo "The following modules have issues: ${failures[*]}"
-    # check if all modules are down 
+    # check if all modules are down
     if (( ${#failures[@]} == ${#modules[@]} )); then
         update_component_status "MAJOROUTAGE"
     else
@@ -152,7 +153,7 @@ else
     # Create a new incident
     incident_id=$(create_incident)
     echo "Created incident with ID: $incident_id"
-    
+
     # If a module is down, force a reployment to try getting things back online
     # ASAP
     status_code=$(force_redeploy_registry)
@@ -167,7 +168,7 @@ else
     # don't keep running the script over and over again. Note that even if a
     # re-deployment succeeds, that doesn't necessarily mean that everything is
     # fully operational
-    echo "LATEST_REDEPLOY_FAILED=1" >> $GITHUB_ENV
+    echo "LATEST_REDEPLOY_FAILED=1" >> "${GITHUB_ENV}"
 fi
 
 exit "${status}"
