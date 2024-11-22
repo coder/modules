@@ -106,7 +106,7 @@ force_redeploy_registry () {
     latest_id=$(echo "${latest_res}" | jq -r '.deployments[0].uid')
     if [[ "${latest_id}" = "null" ]]; then
         echo "Unable to pull any previous deployments for redeployment"
-        return 1
+        exit 1
     fi
 
     local latest_date_ts_seconds
@@ -116,28 +116,32 @@ force_redeploy_registry () {
     local max_redeploy_interval_seconds=7200 # 2 hours
     if (( current_date_ts_seconds - latest_date_ts_seconds < max_redeploy_interval_seconds )); then
         echo "Last deployment was less than 2 hours ago. Skipping redeployment."
-        return 1
+        echo "Please check the Vercel dashboard for more information."
+        echo "https://vercel.com/codercom/registry/deployments"
+        exit 1
     fi
 
     local latest_deployment_state
     latest_deployment_state="$(echo "${latest_res}" | jq -r '.deployments[0].state')"
     if [[ "${latest_deployment_state}" != "READY" ]]; then
         echo "Last deployment was not in READY state. Skipping redeployment."
-        return 1
+        echo "Please check the Vercel dashboard for more information."
+        echo "https://vercel.com/codercom/registry/deployments"
+        exit 1
     fi
 
     echo "============================================================="
     echo "!!! Redeploying registry with deployment ID: ${latest_id} !!!"
     echo "============================================================="
 
-    if curl -X POST "https://api.vercel.com/v13/deployments?forceNew=1&skipAutoDetectionConfirmation=1&slug=$VERCEL_TEAM_SLUG&teamId=$VERCEL_TEAM_ID&target=production" \
+    if ! curl -X POST "https://api.vercel.com/v13/deployments?forceNew=1&skipAutoDetectionConfirmation=1&slug=$VERCEL_TEAM_SLUG&teamId=$VERCEL_TEAM_ID" \
         --fail \
         --header "Authorization: Bearer $VERCEL_API_KEY" \
         --header "Content-Type: application/json" \
-        --data-raw "{ \"deploymentId\": \"${latest_id}\", \"name\": \"${VERCEL_APP}\" }"; then
-        echo "0"
-    else
-        echo "1"
+        --data-raw "{ \"deploymentId\": \"${latest_id}\", \"name\": \"${VERCEL_APP}\", \"target\": \"production\" }"; then
+        echo "DEPLOYMENT FAILED! Please check the Vercel dashboard for more information."
+        echo "https://vercel.com/codercom/registry/deployments"
+        exit 1
     fi
 }
 
@@ -162,8 +166,6 @@ if (( status == 0 )); then
     echo "All modules are operational."
     # set to
     update_component_status "OPERATIONAL"
-
-    echo "LATEST_REDEPLOY_FAILED=0" >> "${GITHUB_ENV}"
 else
     echo "The following modules have issues: ${failures[*]}"
     # check if all modules are down
@@ -179,18 +181,7 @@ else
 
     # If a module is down, force a reployment to try getting things back online
     # ASAP
-    redeploy_result=$(force_redeploy_registry)
-    if (( redeploy_result == 0 )); then
-        echo "Reployment successful"
-    else
-        echo "Unable to redeploy automatically"
-    fi
-
-    # Update environment variable so that if automatic re-deployment fails, we
-    # don't keep running the script over and over again. Note that even if a
-    # re-deployment succeeds, that doesn't necessarily mean that everything is
-    # fully operational
-    echo "LATEST_REDEPLOY_FAILED=1" >> "${GITHUB_ENV}"
+    force_redeploy_registry
 fi
 
 exit "${status}"
