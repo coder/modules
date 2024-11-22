@@ -7,6 +7,8 @@ required_vars=(
     "INSTATUS_API_KEY"
     "INSTATUS_PAGE_ID"
     "INSTATUS_COMPONENT_ID"
+    "VERCEL_API_KEY"
+    
 )
 
 # Check if each required variable is set
@@ -16,6 +18,11 @@ for var in "${required_vars[@]}"; do
         exit 1
     fi
 done
+
+JUST_REDEPLOYED="$JUST_REDEPLOYED:-0"
+if (JUST_REDEPLOYED); do
+    return 1
+fi
 
 REGISTRY_BASE_URL="${REGISTRY_BASE_URL:-https://registry.coder.com}"
 
@@ -74,6 +81,41 @@ create_incident() {
     echo "$incident_id"
 }
 
+force_redeploy_registry () {
+    # These are not secret values; safe to just expose directly in script
+    local VERCEL_TEAM_SLUG="codercom"
+    local VERCEL_TEAM_ID="team_tGkWfhEGGelkkqUUm9nXq17r"
+    local VERCEL_APP="registry"
+
+    local latest_res=$(curl "https://api.vercel.com/v6/deployments?app=$VERCEL_APP&limit=1&slug=$VERCEL_TEAM_SLUG&teamId=$VERCEL_TEAM_ID" \
+        --fail \
+        --silent \
+        -H "Authorization: Bearer $VERCEL_API_KEY" \
+        -H "Content-Type: application/json"
+    )
+
+    # If we have zero deployments, something is VERY wrong. Make the whole
+    # script exit with a non-zero status code
+    local latest_id=$(echo $latest_res | jq '.deployments[0].uid')
+    if (( latest_id == "null" )); do
+        echo "Unable to pull any previous deployments for redeployment" 
+        return 1
+    fi
+
+    local redeploy_res=$(curl -X POST "https://api.vercel.com/v13/deployments?forceNew=1&skipAutoDetectionConfirmation=1&slug=$VERCEL_TEAM_SLUG&teamId=$VERCEL_TEAM_ID" \
+        --fail \
+        --silent \
+        --output "/dev/null" \
+        -H "Authorization: Bearer $VERCEL_API_KEY" \
+        -H "Content-Type: application/json" \
+        -d "{
+            "deploymentId": $latest_id,
+        }"
+    )
+
+    echo $redeploy_res
+}
+
 # Check each module's accessibility
 for module in "${modules[@]}"; do
     # Trim leading/trailing whitespace from module name
@@ -96,6 +138,8 @@ if (( status == 0 )); then
     echo "All modules are operational."
     # set to 
     update_component_status "OPERATIONAL"
+
+    echo "JUST_REDEPLOYED=0" >> $GITHUB_ENV
 else
     echo "The following modules have issues: ${failures[*]}"
     # check if all modules are down 
@@ -108,6 +152,20 @@ else
     # Create a new incident
     incident_id=$(create_incident)
     echo "Created incident with ID: $incident_id"
+    
+    # If a module is down, force a reployment to try getting things back online
+    # ASAP
+    status_code=$(force_redeploy_registry)
+    # shellcheck disable=SC2181
+    if (( status_code == 200 )); then
+        echo "Reployment successful"
+    else
+        echo "Unable to redeploy automatically"
+    fi
+
+    # Update environment variable so that if automatic re-deployment fails, we
+    # don't keep running the script over and over again
+    echo "JUST_REDEPLOYED=1" >> $GITHUB_ENV
 fi
 
 exit "${status}"

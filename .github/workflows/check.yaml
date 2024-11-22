@@ -20,3 +20,4 @@ jobs:
           INSTATUS_API_KEY: ${{ secrets.INSTATUS_API_KEY }}
           INSTATUS_PAGE_ID: ${{ secrets.INSTATUS_PAGE_ID }}
           INSTATUS_COMPONENT_ID: ${{ secrets.INSTATUS_COMPONENT_ID }}
+          VERCEL_API_KEY: ${{ secrets.VERCEL_API_KEY }}
