@@ -2,6 +2,11 @@
 set -o pipefail
 set -u
 
+VERBOSE="${VERBOSE:-0}"
+if [[ "${VERBOSE}" -ne "0" ]]; then
+    set -x
+fi
+
 # List of required environment variables
 required_vars=(
     "INSTATUS_API_KEY"
