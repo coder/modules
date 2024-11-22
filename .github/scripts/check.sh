@@ -103,14 +103,14 @@ force_redeploy_registry () {
     # If we have zero deployments, something is VERY wrong. Make the whole
     # script exit with a non-zero status code
     local latest_id
-    latest_id=$(echo "${latest_res}" | jq '.deployments[0].uid')
+    latest_id=$(echo "${latest_res}" | jq -r '.deployments[0].uid')
     if [[ "${latest_id}" = "null" ]]; then
         echo "Unable to pull any previous deployments for redeployment"
         return 1
     fi
 
     local latest_date_ts_seconds
-    latest_date_ts_seconds=$(echo "${latest_res}" | jq '.deployments[0].createdAt/1000|floor')
+    latest_date_ts_seconds=$(echo "${latest_res}" | jq -r '.deployments[0].createdAt/1000|floor')
     local current_date_ts_seconds
     current_date_ts_seconds="$(date +%s)"
     local max_redeploy_interval_seconds=7200 # 2 hours
@@ -139,7 +139,6 @@ for module in "${modules[@]}"; do
     url="${REGISTRY_BASE_URL}/modules/${module}"
     printf "=== Checking module %s at %s\n" "${module}" "${url}"
     status_code=$(curl --output /dev/null --head --silent --fail --location "${url}" --retry 3 --write-out "%{http_code}")
-    # shellcheck disable=SC2181
     if (( status_code != 200 )); then
         printf "==> FAIL(%s)\n" "${status_code}"
         status=1
