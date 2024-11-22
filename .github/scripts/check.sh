@@ -164,7 +164,9 @@ else
     fi
 
     # Update environment variable so that if automatic re-deployment fails, we
-    # don't keep running the script over and over again
+    # don't keep running the script over and over again. Note that even if a
+    # re-deployment succeeds, that doesn't necessarily mean that everything is
+    # fully operational
     echo "LATEST_REDEPLOY_FAILED=1" >> $GITHUB_ENV
 fi
 
