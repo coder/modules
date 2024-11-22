@@ -23,12 +23,6 @@ for var in "${required_vars[@]}"; do
     fi
 done
 
-LATEST_REDEPLOY_FAILED="${LATEST_REDEPLOY_FAILED:-0}"
-if [[ "${LATEST_REDEPLOY_FAILED}" -ne "0" ]] ;then
-    echo "Trying to re-run job when previous re-deploy failed"
-    return 1
-fi
-
 REGISTRY_BASE_URL="${REGISTRY_BASE_URL:-https://registry.coder.com}"
 
 status=0
