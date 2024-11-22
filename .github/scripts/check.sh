@@ -110,7 +110,7 @@ force_redeploy_registry () {
     fi
 
     local latest_date_ts_seconds
-    latest_date_ts_seconds=$(echo "${latest_res}" | jq '.deployments[0].createdAt/1000|floor)')
+    latest_date_ts_seconds=$(echo "${latest_res}" | jq '.deployments[0].createdAt/1000|floor')
     local current_date_ts_seconds
     current_date_ts_seconds="$(date +%s)"
     local max_redeploy_interval_seconds=7200 # 2 hours
