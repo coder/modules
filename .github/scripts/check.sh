@@ -36,7 +36,7 @@ declare -a modules=()
 declare -a failures=()
 
 # Collect all module directories containing a main.tf file
-for path in $(find . -not -path '*/.*' -type f -name main.tf -maxdepth 2 | cut -d '/' -f 2 | sort -u); do
+for path in $(find . -maxdepth 2 -not -path '*/.*' -type f -name main.tf | cut -d '/' -f 2 | sort -u); do
     modules+=("${path}")
 done
 
