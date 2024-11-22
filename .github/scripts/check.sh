@@ -8,7 +8,6 @@ required_vars=(
     "INSTATUS_PAGE_ID"
     "INSTATUS_COMPONENT_ID"
     "VERCEL_API_KEY"
-    
 )
 
 # Check if each required variable is set
@@ -19,8 +18,9 @@ for var in "${required_vars[@]}"; do
     fi
 done
 
-JUST_REDEPLOYED="$JUST_REDEPLOYED:-0"
-if (JUST_REDEPLOYED); do
+LATEST_REDEPLOY_FAILED="$LATEST_REDEPLOY_FAILED:-0"
+if (LATEST_REDEPLOY_FAILED); do
+    echo "Trying to re-run job when previous re-deploy failed"
     return 1
 fi
 
@@ -139,7 +139,7 @@ if (( status == 0 )); then
     # set to 
     update_component_status "OPERATIONAL"
 
-    echo "JUST_REDEPLOYED=0" >> $GITHUB_ENV
+    echo "LATEST_REDEPLOY_FAILED=0" >> $GITHUB_ENV
 else
     echo "The following modules have issues: ${failures[*]}"
     # check if all modules are down 
@@ -165,7 +165,7 @@ else
 
     # Update environment variable so that if automatic re-deployment fails, we
     # don't keep running the script over and over again
-    echo "JUST_REDEPLOYED=1" >> $GITHUB_ENV
+    echo "LATEST_REDEPLOY_FAILED=1" >> $GITHUB_ENV
 fi
 
 exit "${status}"
