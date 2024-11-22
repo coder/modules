@@ -109,6 +109,16 @@ force_redeploy_registry () {
         return 1
     fi
 
+    local latest_date_ts_seconds
+    latest_date_ts_seconds=$(echo "${latest_res}" | jq '.deployments[0].createdAt/1000|floor)')
+    local current_date_ts_seconds
+    current_date_ts_seconds="$(date +%s)"
+    local max_redeploy_interval_seconds=7200 # 2 hours
+    if (( current_date_ts_seconds - latest_date_ts_seconds < max_redeploy_interval_seconds )); then
+        echo "Last deployment was less than 2 hours ago. Skipping redeployment."
+        return 1
+    fi
+
     local redeploy_res
     redeploy_res=$(curl -X POST "https://api.vercel.com/v13/deployments?forceNew=1&skipAutoDetectionConfirmation=1&slug=$VERCEL_TEAM_SLUG&teamId=$VERCEL_TEAM_ID" \
         --fail \
