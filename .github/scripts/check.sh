@@ -100,6 +100,8 @@ force_redeploy_registry () {
     latest_id=$(echo "${latest_res}" | jq -r '.deployments[0].uid')
     if [[ "${latest_id}" = "null" ]]; then
         echo "Unable to pull any previous deployments for redeployment"
+        echo "Please redeploy the latest deployment manually in Vercel."
+        echo "https://vercel.com/codercom/registry/deployments"
         exit 1
     fi
 
@@ -109,7 +111,9 @@ force_redeploy_registry () {
     current_date_ts_seconds="$(date +%s)"
     local max_redeploy_interval_seconds=7200 # 2 hours
     if (( current_date_ts_seconds - latest_date_ts_seconds < max_redeploy_interval_seconds )); then
-        echo "Last deployment was less than 2 hours ago. Skipping redeployment."
+        echo "The registry was deployed less than 2 hours ago."
+        echo "Not automatically re-deploying the regitstry."
+        echo "A human reading this message should decide if a redeployment is necessary."
         echo "Please check the Vercel dashboard for more information."
         echo "https://vercel.com/codercom/registry/deployments"
         exit 1
@@ -119,6 +123,7 @@ force_redeploy_registry () {
     latest_deployment_state="$(echo "${latest_res}" | jq -r '.deployments[0].state')"
     if [[ "${latest_deployment_state}" != "READY" ]]; then
         echo "Last deployment was not in READY state. Skipping redeployment."
+        echo "A human reading this message should decide if a redeployment is necessary."
         echo "Please check the Vercel dashboard for more information."
         echo "https://vercel.com/codercom/registry/deployments"
         exit 1
