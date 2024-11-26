@@ -73,7 +73,7 @@ variable "coder_parameter_order" {
 variable "latest" {
   type        = bool
   description = "Whether to fetch the latest version of the IDE."
-  default     = false
+  default     = true
 }
 
 variable "channel" {
@@ -94,36 +94,36 @@ variable "jetbrains_ide_versions" {
   description = "The set of versions for each jetbrains IDE"
   default = {
     "IU" = {
-      build_number = "241.14494.240"
-      version      = "2024.1"
+      build_number = "243.21565.193"
+      version      = "2024.3"
     }
     "PS" = {
-      build_number = "241.14494.237"
-      version      = "2024.1"
+      build_number = "243.21565.202"
+      version      = "2024.3"
     }
     "WS" = {
-      build_number = "241.14494.235"
-      version      = "2024.1"
+      build_number = "243.21565.180"
+      version      = "2024.3"
     }
     "PY" = {
-      build_number = "241.14494.241"
-      version      = "2024.1"
+      build_number = "243.21565.199"
+      version      = "2024.3"
     }
     "CL" = {
-      build_number = "241.14494.288"
+      build_number = "243.21565.238"
       version      = "2024.1"
     }
     "GO" = {
-      build_number = "241.14494.238"
-      version      = "2024.1"
+      build_number = "243.21565.208"
+      version      = "2024.3"
     }
     "RM" = {
-      build_number = "241.14494.234"
-      version      = "2024.1"
+      build_number = "243.21565.197"
+      version      = "2024.3"
     }
     "RD" = {
-      build_number = "241.14494.307"
-      version      = "2024.1"
+      build_number = "243.21565.191"
+      version      = "2024.3"
     }
   }
   validation {
