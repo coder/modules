@@ -24,7 +24,7 @@ function Get-VirtualDisplayDriverRequired {
     Write-Output "[DEBUG] OS version: $OSVersion"
 
     # Force boolean result
-    $result = (($OSVersion -ne "2019") -and ($OSVersion -ne "2022")) -and (($instanceType[0] -ne 'g') -and ($instanceType[0] -ne 'p'))
+    $result = (($OSVersion -ne "2019") -and ($OSVersion -ne "2022") -and ($OSVersion -ne "2025")) -and (($instanceType[0] -ne 'g') -and ($instanceType[0] -ne 'p'))
     Write-Output "[INFO] VirtualDisplayDriverRequired result: $result"
     Read-Host "[DEBUG] Press Enter to proceed to the next step"
     return [bool]$result
@@ -143,11 +143,8 @@ function Configure-DCV {
     }
     
     # Set registry keys
-    New-ItemProperty -Path "$dcvPath\connectivity" -Name enable-quic-frontend -PropertyType DWORD -Value 1 -Force
     New-ItemProperty -Path "$dcvPath\session-management" -Name create-session -PropertyType DWORD -Value 1 -Force
     New-ItemProperty -Path "$dcvPath\session-management\automatic-console-session" -Name owner -Value Administrator -Force
-    New-ItemProperty -Path "$dcvPath\display" -Name target-fps -PropertyType DWORD -Value 60 -Force
-    New-ItemProperty -Path "$dcvPath\connectivity" -Name enable-datagrams-display -Value "always-off" -Force
     New-ItemProperty -Path "$dcvPath\connectivity" -Name quic-port -PropertyType DWORD -Value $port -Force
     New-ItemProperty -Path "$dcvPath\connectivity" -Name web-port -PropertyType DWORD -Value $port -Force
     New-ItemProperty -Path "$dcvPath\connectivity" -Name web-url-path -PropertyType String -Value $webURLPath -Force
