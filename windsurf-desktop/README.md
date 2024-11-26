@@ -11,4 +11,4 @@ tags: [ide, windsurf, helper]
 
 Add a button to open any workspace with a single click in Windsurf IDE.
 
-Uses the [Coder Remote Windsurf Extension](https://github.com/coder/windsurf-coder). 
+Uses the [Coder Remote Windsurf Extension](https://github.com/coder/windsurf-coder).

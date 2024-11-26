@@ -85,4 +85,4 @@ describe("windsurf", async () => {
     expect(coder_app?.instances.length).toBe(1);
     expect(coder_app?.instances[0].attributes.order).toBe(22);
   });
-}); 
+});
