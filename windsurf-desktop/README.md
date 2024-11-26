@@ -11,4 +11,25 @@ tags: [ide, windsurf, helper]
 
 Add a button to open any workspace with a single click in Windsurf IDE.
 
-Uses the [Coder Remote Windsurf Extension](https://github.com/coder/windsurf-coder).
+Uses the [Coder Remote VS Code Extension](https://github.com/coder/vscode-coder).
+
+```tf
+module "windsurf" {
+  source   = "registry.coder.com/modules/windsurf/coder"
+  version  = "1.0.19"
+  agent_id = coder_agent.example.id
+}
+```
+
+## Examples
+
+### Open in a specific directory
+
+```tf
+module "windsurf" {
+  source   = "registry.coder.com/modules/windsurf/coder"
+  version  = "1.0.19"
+  agent_id = coder_agent.example.id
+  folder   = "/home/coder/project"
+}
+```
