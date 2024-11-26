@@ -21,7 +21,7 @@ describe("jetbrains-gateway", async () => {
       folder: "/home/coder",
     });
     expect(state.outputs.url.value).toEqual([
-      "jetbrains-gateway://connect#type=coder&workspace=default&owner=default&agent=foo&folder=/home/coder&url=https://mydeployment.coder.com&token=$SESSION_TOKEN&ide_product_code=IU&ide_build_number=241.14494.240&ide_download_link=https://download.jetbrains.com/idea/ideaIU-2024.1.tar.gz",
+      "jetbrains-gateway://connect#type=coder&workspace=default&owner=default&agent=foo&folder=/home/coder&url=https://mydeployment.coder.com&token=$SESSION_TOKEN&ide_product_code=IU&ide_build_number=243.21565.193&ide_download_link=https://download.jetbrains.com/idea/ideaIU-2024.3.tar.gz",
     ]);
 
     const coder_app = state.resources.find(
@@ -42,7 +42,7 @@ describe("jetbrains-gateway", async () => {
     });
     expect(state.outputs.identifier.value).toEqual(["IU"]);
     expect(state.outputs.url.value).toEqual([
-      "jetbrains-gateway://connect#type=coder&workspace=default&owner=default&agent=foo&folder=/home/foo&url=https://mydeployment.coder.com&token=$SESSION_TOKEN&ide_product_code=IU&ide_build_number=241.14494.240&ide_download_link=https://download.jetbrains.com/idea/ideaIU-2024.1.tar.gz",
+      "jetbrains-gateway://connect#type=coder&workspace=default&owner=default&agent=foo&folder=/home/foo&url=https://mydeployment.coder.com&token=$SESSION_TOKEN&ide_product_code=IU&ide_build_number=243.21565.193&ide_download_link=https://download.jetbrains.com/idea/ideaIU-2024.3.tar.gz",
     ]);
   });
 
@@ -55,9 +55,9 @@ describe("jetbrains-gateway", async () => {
     });
     expect(state.outputs.identifier.value).toEqual(["GO", "IU", "PY"]);
     expect(state.outputs.url.value).toEqual([
-      "jetbrains-gateway://connect#type=coder&workspace=default&owner=default&agent=foo&folder=/home/foo&url=https://mydeployment.coder.com&token=$SESSION_TOKEN&ide_product_code=GO&ide_build_number=241.14494.238&ide_download_link=https://download.jetbrains.com/go/goland-2024.1.tar.gz",
-      "jetbrains-gateway://connect#type=coder&workspace=default&owner=default&agent=foo&folder=/home/foo&url=https://mydeployment.coder.com&token=$SESSION_TOKEN&ide_product_code=IU&ide_build_number=241.14494.240&ide_download_link=https://download.jetbrains.com/idea/ideaIU-2024.1.tar.gz",
-      "jetbrains-gateway://connect#type=coder&workspace=default&owner=default&agent=foo&folder=/home/foo&url=https://mydeployment.coder.com&token=$SESSION_TOKEN&ide_product_code=PY&ide_build_number=241.14494.241&ide_download_link=https://download.jetbrains.com/python/pycharm-professional-2024.1.tar.gz",
+      "jetbrains-gateway://connect#type=coder&workspace=default&owner=default&agent=foo&folder=/home/foo&url=https://mydeployment.coder.com&token=$SESSION_TOKEN&ide_product_code=GO&ide_build_number=243.21565.208&ide_download_link=https://download.jetbrains.com/go/goland-2024.3.tar.gz",
+      "jetbrains-gateway://connect#type=coder&workspace=default&owner=default&agent=foo&folder=/home/foo&url=https://mydeployment.coder.com&token=$SESSION_TOKEN&ide_product_code=IU&ide_build_number=243.21565.193&ide_download_link=https://download.jetbrains.com/idea/ideaIU-2024.3.tar.gz",
+      "jetbrains-gateway://connect#type=coder&workspace=default&owner=default&agent=foo&folder=/home/foo&url=https://mydeployment.coder.com&token=$SESSION_TOKEN&ide_product_code=PY&ide_build_number=243.21565.199&ide_download_link=https://download.jetbrains.com/python/pycharm-professional-2024.3.tar.gz",
     ]);
   });
 });
