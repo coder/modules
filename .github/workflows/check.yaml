@@ -1,8 +1,8 @@
-name: Check modules on registry.coder.com
-
+name: Health
+# Check modules health on registry.coder.com
 on:
   schedule:
-    - cron: "*/13 * * * *" # Runs every 13th minute
+    - cron: "0,15,30,45 * * * *" # Runs every 15 minutes
   workflow_dispatch: # Allows manual triggering of the workflow if needed
 
 jobs:
@@ -11,8 +11,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Run check.sh
         run: |
           ./.github/scripts/check.sh
+        env:
+          INSTATUS_API_KEY: ${{ secrets.INSTATUS_API_KEY }}
+          INSTATUS_PAGE_ID: ${{ secrets.INSTATUS_PAGE_ID }}
+          INSTATUS_COMPONENT_ID: ${{ secrets.INSTATUS_COMPONENT_ID }}
+          VERCEL_API_KEY: ${{ secrets.VERCEL_API_KEY }}
