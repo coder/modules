@@ -41,7 +41,7 @@ module "jetbrains_gateway" {
 }
 ```
 
-### Use the latest release version
+### Use the fixed set by `jetbrains_ide_versions`
 
 ```tf
 module "jetbrains_gateway" {
@@ -52,7 +52,7 @@ module "jetbrains_gateway" {
   folder         = "/home/coder/example"
   jetbrains_ides = ["GO", "WS"]
   default        = "GO"
-  latest         = true
+  latest         = false
 }
 ```
 
