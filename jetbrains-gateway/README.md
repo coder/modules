@@ -41,7 +41,7 @@ module "jetbrains_gateway" {
 }
 ```
 
-### Use the fixed set by `jetbrains_ide_versions`
+### Use fixed versions set by `jetbrains_ide_versions`
 
 ```tf
 module "jetbrains_gateway" {
@@ -53,6 +53,40 @@ module "jetbrains_gateway" {
   jetbrains_ides = ["GO", "WS"]
   default        = "GO"
   latest         = false
+  jetbrains_ide_versions = {
+    "IU" = {
+      build_number = "243.21565.193"
+      version      = "2024.3"
+    }
+    "PS" = {
+      build_number = "243.21565.202"
+      version      = "2024.3"
+    }
+    "WS" = {
+      build_number = "243.21565.180"
+      version      = "2024.3"
+    }
+    "PY" = {
+      build_number = "243.21565.199"
+      version      = "2024.3"
+    }
+    "CL" = {
+      build_number = "243.21565.238"
+      version      = "2024.1"
+    }
+    "GO" = {
+      build_number = "243.21565.208"
+      version      = "2024.3"
+    }
+    "RM" = {
+      build_number = "243.21565.197"
+      version      = "2024.3"
+    }
+    "RD" = {
+      build_number = "243.21565.191"
+      version      = "2024.3"
+    }
+  }
 }
 ```
 
