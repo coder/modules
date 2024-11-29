@@ -59,7 +59,7 @@ variable "coder_parameter_order" {
 variable "latest" {
   type        = bool
   description = "Whether to fetch the latest version of the IDE."
-  default     = true
+  default     = false
 }
 
 variable "channel" {

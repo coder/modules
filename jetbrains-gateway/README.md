@@ -41,6 +41,21 @@ module "jetbrains_gateway" {
 }
 ```
 
+### Use the latest version of each IDE
+
+```tf
+module "jetbrains_gateway" {
+  source         = "registry.coder.com/modules/jetbrains-gateway/coder"
+  version        = "1.0.25"
+  agent_id       = coder_agent.example.id
+  agent_name     = "example"
+  folder         = "/home/coder/example"
+  jetbrains_ides = ["IU", "PY"]
+  default        = "IU"
+  latest         = true
+}
+```
+
 ### Use fixed versions set by `jetbrains_ide_versions`
 
 ```tf
