@@ -39,9 +39,23 @@ variable "folder" {
 }
 
 variable "default" {
-  default     = ""
-  type        = string
-  description = "Default IDE"
+  default     = []
+  type        = list(string)
+  description = "List of default IDEs to be added to the Workspace page."
+  # check if the list is unique
+  validation {
+    condition     = length(var.default) == length(toset(var.default))
+    error_message = "The default must not contain duplicates."
+  }
+  # check if default are valid jetbrains_ides
+  validation {
+    condition = (
+      alltrue([
+        for code in var.default : contains(["IU", "PS", "WS", "PY", "CL", "GO", "RM", "RD"], code)
+      ])
+    )
+    error_message = "The default must be a list of valid product codes. Valid product codes are ${join(",", ["IU", "PS", "WS", "PY", "CL", "GO", "RM", "RD"])}."
+  }
 }
 
 variable "order" {
@@ -59,7 +73,7 @@ variable "coder_parameter_order" {
 variable "latest" {
   type        = bool
   description = "Whether to fetch the latest version of the IDE."
-  default     = false
+  default     = true
 }
 
 variable "channel" {
@@ -80,36 +94,36 @@ variable "jetbrains_ide_versions" {
   description = "The set of versions for each jetbrains IDE"
   default = {
     "IU" = {
-      build_number = "241.14494.240"
-      version      = "2024.1"
+      build_number = "243.21565.193"
+      version      = "2024.3"
     }
     "PS" = {
-      build_number = "241.14494.237"
-      version      = "2024.1"
+      build_number = "243.21565.202"
+      version      = "2024.3"
     }
     "WS" = {
-      build_number = "241.14494.235"
-      version      = "2024.1"
+      build_number = "243.21565.180"
+      version      = "2024.3"
     }
     "PY" = {
-      build_number = "241.14494.241"
-      version      = "2024.1"
+      build_number = "243.21565.199"
+      version      = "2024.3"
     }
     "CL" = {
-      build_number = "241.14494.288"
+      build_number = "243.21565.238"
       version      = "2024.1"
     }
     "GO" = {
-      build_number = "241.14494.238"
-      version      = "2024.1"
+      build_number = "243.21565.208"
+      version      = "2024.3"
     }
     "RM" = {
-      build_number = "241.14494.234"
-      version      = "2024.1"
+      build_number = "243.21565.197"
+      version      = "2024.3"
     }
     "RD" = {
-      build_number = "241.14494.307"
-      version      = "2024.1"
+      build_number = "243.21565.191"
+      version      = "2024.3"
     }
   }
   validation {
@@ -124,7 +138,7 @@ variable "jetbrains_ide_versions" {
 
 variable "jetbrains_ides" {
   type        = list(string)
-  description = "The list of IDE product codes."
+  description = "The list of IDE product codes to be shown to the user. Does not apply when there are multiple defaults."
   default     = ["IU", "PS", "WS", "PY", "CL", "GO", "RM", "RD"]
   validation {
     condition = (
@@ -239,23 +253,42 @@ locals {
     }
   }
 
-  icon          = local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].icon
-  json_data     = var.latest ? jsondecode(data.http.jetbrains_ide_versions[data.coder_parameter.jetbrains_ide.value].response_body) : {}
-  key           = var.latest ? keys(local.json_data)[0] : ""
-  display_name  = local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].name
-  identifier    = data.coder_parameter.jetbrains_ide.value
-  download_link = var.latest ? local.json_data[local.key][0].downloads.linux.link : local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].download_link
-  build_number  = var.latest ? local.json_data[local.key][0].build : local.jetbrains_ides[data.coder_parameter.jetbrains_ide.value].build_number
-  version       = var.latest ? local.json_data[local.key][0].version : var.jetbrains_ide_versions[data.coder_parameter.jetbrains_ide.value].version
+  identifier = try([data.coder_parameter.jetbrains_ide[0].value], var.default)
+  list_json_data = var.latest ? [
+    for ide in local.identifier : jsondecode(data.http.jetbrains_ide_versions[ide].response_body)
+  ] : []
+  list_key = var.latest ? [
+    for j in local.list_json_data : keys(j)[0]
+  ] : []
+  download_links = length(local.list_key) > 0 ? [
+    for i, j in local.list_json_data : j[local.list_key[i]][0].downloads.linux.link
+    ] : [
+    for ide in local.identifier : local.jetbrains_ides[ide].download_link
+  ]
+  build_numbers = length(local.list_key) > 0 ? [
+    for i, j in local.list_json_data : j[local.list_key[i]][0].build
+    ] : [
+    for ide in local.identifier : local.jetbrains_ides[ide].build_number
+  ]
+  versions = length(local.list_key) > 0 ? [
+    for i, j in local.list_json_data : j[local.list_key[i]][0].version
+    ] : [
+    for ide in local.identifier : local.jetbrains_ides[ide].version
+  ]
+  display_names = [for key in keys(coder_app.gateway) : coder_app.gateway[key].display_name]
+  icons         = [for key in keys(coder_app.gateway) : coder_app.gateway[key].icon]
+  urls          = [for key in keys(coder_app.gateway) : coder_app.gateway[key].url]
 }
 
 data "coder_parameter" "jetbrains_ide" {
+  # remove the coder_parameter if there are multiple default
+  count        = length(var.default) > 1 ? 0 : 1
   type         = "string"
   name         = "jetbrains_ide"
   display_name = "JetBrains IDE"
   icon         = "/icon/gateway.svg"
   mutable      = true
-  default      = var.default == "" ? var.jetbrains_ides[0] : var.default
+  default      = length(var.default) > 0 ? var.default[0] : var.jetbrains_ides[0]
   order        = var.coder_parameter_order
 
   dynamic "option" {
@@ -272,10 +305,11 @@ data "coder_workspace" "me" {}
 data "coder_workspace_owner" "me" {}
 
 resource "coder_app" "gateway" {
+  for_each     = length(var.default) > 1 ? toset(var.default) : toset([data.coder_parameter.jetbrains_ide[0].value])
   agent_id     = var.agent_id
-  slug         = var.slug
-  display_name = local.display_name
-  icon         = local.icon
+  slug         = "${var.slug}-${lower(each.value)}"
+  display_name = local.jetbrains_ides[each.value].name
+  icon         = local.jetbrains_ides[each.value].icon
   external     = true
   order        = var.order
   url = join("", [
@@ -292,38 +326,45 @@ resource "coder_app" "gateway" {
     "&token=",
     "$SESSION_TOKEN",
     "&ide_product_code=",
-    data.coder_parameter.jetbrains_ide.value,
+    each.value,
     "&ide_build_number=",
-    local.build_number,
+    local.jetbrains_ides[each.value].build_number,
     "&ide_download_link=",
-    local.download_link,
+    local.jetbrains_ides[each.value].download_link,
   ])
 }
 
 output "identifier" {
-  value = local.identifier
+  value       = local.identifier
+  description = "The product code of the JetBrains IDE."
 }
 
 output "display_name" {
-  value = local.display_name
+  value       = [for key in keys(coder_app.gateway) : coder_app.gateway[key].display_name]
+  description = "The display name of the JetBrains IDE."
 }
 
 output "icon" {
-  value = local.icon
+  value       = [for key in keys(coder_app.gateway) : coder_app.gateway[key].icon]
+  description = "The icon of the JetBrains IDE."
 }
 
 output "download_link" {
-  value = local.download_link
+  value       = local.download_links
+  description = "The download link of the JetBrains IDE."
 }
 
 output "build_number" {
-  value = local.build_number
+  value       = local.build_numbers
+  description = "The build number of the JetBrains IDE."
 }
 
 output "version" {
-  value = local.version
+  value       = local.versions
+  description = "The version of the JetBrains IDE."
 }
 
 output "url" {
-  value = coder_app.gateway.url
+  value       = [for key in keys(coder_app.gateway) : coder_app.gateway[key].url]
+  description = "The URL to connect to the JetBrains IDE."
 }

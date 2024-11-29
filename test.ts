@@ -200,7 +200,8 @@ export const runTerraformApply = async <TVars extends TerraformVariables>(
 
   const combinedEnv = env === undefined ? {} : { ...env };
   for (const [key, value] of Object.entries(vars)) {
-    combinedEnv[`TF_VAR_${key}`] = String(value);
+    // Convert arrays to JSON strings
+    combinedEnv[`TF_VAR_${key}`] = Array.isArray(value) ? JSON.stringify(value) : String(value);
   }
 
   const proc = spawn(
