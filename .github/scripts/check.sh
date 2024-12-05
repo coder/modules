@@ -48,7 +48,7 @@ update_component_status() {
 
 # Function to create an incident
 create_incident() {
-    local incident_name="Testing Instatus"
+    local incident_name="Degraded Service"
     local message="The following modules are experiencing issues:\n"
     for i in "${!failures[@]}"; do
         message+="$((i + 1)). ${failures[$i]}\n"
@@ -59,7 +59,7 @@ create_incident() {
         component_status="MAJOROUTAGE"
     fi
     # see https://instatus.com/help/api/incidents
-    response=$(curl -s -X POST "https://api.instatus.com/v1/$INSTATUS_PAGE_ID/incidents" \
+    incident_id=$(curl -s -X POST "https://api.instatus.com/v1/$INSTATUS_PAGE_ID/incidents" \
         -H "Authorization: Bearer $INSTATUS_API_KEY" \
         -H "Content-Type: application/json" \
         -d "{
@@ -74,10 +74,25 @@ create_incident() {
                     \"status\": \"PARTIALOUTAGE\"
                 }
             ]
-        }")
+        }" | jq -r '.id')
 
-    incident_id=$(echo "$response" | jq -r '.id')
-    echo "$incident_id"
+    echo "Created incident with ID: $incident_id"
+}
+
+# Function to check for existing unresolved incidents
+check_existing_incident() {
+    # Fetch the latest incidents with status not equal to "RESOLVED"
+    local unresolved_incidents=$(curl -s -X GET "https://api.instatus.com/v1/$INSTATUS_PAGE_ID/incidents" \
+        -H "Authorization: Bearer $INSTATUS_API_KEY" \
+        -H "Content-Type: application/json" | jq -r '.incidents[] | select(.status != "RESOLVED") | .id')
+
+    if [[ -n "$unresolved_incidents" ]]; then
+        echo "Unresolved incidents found: $unresolved_incidents"
+        return 0  # Indicate that there are unresolved incidents
+    else
+        echo "No unresolved incidents found."
+        return 1  # Indicate that no unresolved incidents exist
+    fi
 }
 
 force_redeploy_registry () {
@@ -174,9 +189,10 @@ else
         update_component_status "PARTIALOUTAGE"
     fi
 
-    # Create a new incident
-    incident_id=$(create_incident)
-    echo "Created incident with ID: $incident_id"
+    # Check if there is an existing incident before creating a new one
+    if ! check_existing_incident; then
+        create_incident
+    fi
 
     # If a module is down, force a reployment to try getting things back online
     # ASAP
