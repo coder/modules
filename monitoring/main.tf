@@ -16,25 +16,25 @@ variable "description" {
 
 variable "threshold" {
   type        = number
-  description = "The threshold for the monitoring, used for all resources unless overridden by *_threshold."
+  description = "The threshold for the monitoring, used for all resources unless overridden by *_threshold - expressed as a percentage."
   default     = 90
 }
 
 variable "memory_threshold" {
   type        = number
-  description = "The threshold for the memory monitoring."
+  description = "The threshold for the memory monitoring - expressed as a percentage."
   default     = 90
 }
 
 variable "disk_threshold" {
   type        = number
-  description = "The threshold for the disk monitoring."
+  description = "The threshold for the disk monitoring - expressed as a percentage."
   default     = 90
 }
 
 variable "disks" {
   type        = list(string)
-  description = "The disks to monitor."
+  description = "The disks to monitor. e.g. ['/', '/home']"
   default     = ["/"]
 }
 
@@ -47,7 +47,7 @@ variable "enabled" {
 variable "memory_enabled" {
   type        = bool
   description = "Whether the memory monitoring is enabled."
-  default     = false
+  default     = true
 }
 
 variable "disk_enabled" {
