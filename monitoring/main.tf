@@ -61,7 +61,7 @@ variable "agent_id" {
   description = "The ID of the agent to monitor."
 }
 
-data "coder_monitoring" "resources" {
+data "coder_monitoring" "monitoring" {
   name         = "monitoring"
   description  = var.description
   threshold    = var.threshold
