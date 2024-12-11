@@ -23,11 +23,13 @@ for var in "${required_vars[@]}"; do
 done
 
 # Trigger a build for dev 
+# DONT EVER SET ANY FLAGS THAT MIGHT PRINT THE URL, AS IT HAS SECRETS IN IT
 curl -X POST "https://cloudbuild.googleapis.com/v1/projects/coder-registry-1/triggers/http-build-registry-v2-dev:webhook?key=${GCLOUD_API_KEY}&secret=${GCLOUD_DEV_DEPLOY_SECRET}" \
 -H "Content-Type: application/json" \
 -d '{}'
 
 # Trigger a build for prod
+# DONT EVER SET ANY FLAGS THAT MIGHT PRINT THE URL, AS IT HAS SECRETS IN IT
 curl -X POST "https://cloudbuild.googleapis.com/v1/projects/coder-registry-1/triggers/http-build-registry-v2-trigger:webhook?key=${GCLOUD_API_KEY}&secret=${GCLOUD_PROD_DEPLOY_SECRET}" \
 -H "Content-Type: application/json" \
 -d '{}'
