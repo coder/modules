@@ -15,9 +15,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run check.sh
+      - name: Run deploy-registry.sh
         run: |
-          ./.github/scripts/check.sh
+          ./.github/scripts/deploy-registry.sh
         env:
           GCLOUD_API_KEY: ${{ secrets.GCLOUD_API_KEY }}
           GCLOUD_PROD_DEPLOY_SECRET: ${{ secrets.GCLOUD_PROD_DEPLOY_SECRET }}

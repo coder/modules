@@ -15,7 +15,7 @@ jobs:
 
       - name: Run check.sh
         run: |
-          ./.github/scripts/deploy-registry.sh
+          ./.github/scripts/check.sh
         env:
           INSTATUS_API_KEY: ${{ secrets.INSTATUS_API_KEY }}
           INSTATUS_PAGE_ID: ${{ secrets.INSTATUS_PAGE_ID }}
