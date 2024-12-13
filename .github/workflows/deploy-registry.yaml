@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # Set id-token permission for gcloud 
-    # Adding a comment because retriggering the build manually hung? How about with a new cel?
+    # Adding a comment because retriggering the build manually hung? With the new config maybe?
     permissions:
       contents: read
       id-token: write
