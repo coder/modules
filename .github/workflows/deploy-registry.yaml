@@ -9,6 +9,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    # Set id-token permission for gcloud
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
