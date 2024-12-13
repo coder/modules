@@ -5,9 +5,6 @@ on:
     branches:
       - main
 
-  pull_request:
-  workflow_dispatch:
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -15,11 +12,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run deploy-registry.sh
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@6fc4af4b145ae7821d527454aa9bd537d1f2dc5f 
+        with:
+          workload_identity_provider: projects/309789351055/locations/global/workloadIdentityPools/github-actions/providers/github
+          service_account: registry-v2-github@coder-registry-1.iam.gserviceaccount.com
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@6189d56e4096ee891640bb02ac264be376592d6a 
+
+        # For the time being, let's have the first couple merges to main in modules deploy a new version
+        # to *dev*. Once we review and make sure everything's working, we can deploy a new version to *main*. 
+        # Maybe in the future we could automate this based on the result of E2E tests.
+      - name: Deploy to dev.registry.coder.com
         run: |
-          ./.github/scripts/deploy-registry.sh
-        env:
-          GCLOUD_API_KEY: ${{ secrets.GCLOUD_API_KEY }}
-          GCLOUD_PROD_DEPLOY_SECRET: ${{ secrets.GCLOUD_PROD_DEPLOY_SECRET }}
-          GCLOUD_DEV_DEPLOY_SECRET: ${{ secrets.GCLOUD_DEV_DEPLOY_SECRET }}
+          gcloud builds triggers run 29818181-126d-4f8a-a937-f228b27d3d34 --branch dev
   
