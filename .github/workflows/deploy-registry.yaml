@@ -10,7 +10,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    # Set id-token permission for gcloud
+    # Set id-token permission for gcloud 
+    # Adding a comment because retriggering the build manually hung? Did some messing around in cloud console.
     permissions:
       contents: read
       id-token: write
