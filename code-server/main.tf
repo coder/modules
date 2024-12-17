@@ -39,7 +39,7 @@ variable "slug" {
 }
 
 variable "settings" {
-  type        = map(string)
+  type        = any
   description = "A map of settings to apply to code-server."
   default     = {}
 }
