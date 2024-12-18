@@ -73,7 +73,7 @@ module "vault" {
 
 ```tf
 module "vault" {
-  count               = data.coder_workspace.me.start_count
+  count             = data.coder_workspace.me.start_count
   source            = "registry.coder.com/modules/vault-github/coder"
   version           = "1.0.7"
   agent_id          = coder_agent.example.id

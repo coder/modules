@@ -58,12 +58,12 @@ Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarte
 
 ```tf
 module "vscode-web" {
-  count        = data.coder_workspace.me.start_count
-  source       = "registry.coder.com/modules/vscode-web/coder"
-  version      = "1.0.22"
-  agent_id     = coder_agent.example.id
-  extensions   = ["dracula-theme.theme-dracula"]
-  settings     = {
+  count      = data.coder_workspace.me.start_count
+  source     = "registry.coder.com/modules/vscode-web/coder"
+  version    = "1.0.22"
+  agent_id   = coder_agent.example.id
+  extensions = ["dracula-theme.theme-dracula"]
+  settings = {
     "workbench.colorTheme" = "Dracula"
   }
   accept_license = true
