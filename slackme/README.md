@@ -56,6 +56,7 @@ slackme npm run long-build
 
    ```tf
    module "slackme" {
+     count            = data.coder_workspace.me.start_count
      source           = "registry.coder.com/modules/slackme/coder"
      version          = "1.0.2"
      agent_id         = coder_agent.example.id
@@ -72,6 +73,7 @@ slackme npm run long-build
 
 ```tf
 module "slackme" {
+  count            = data.coder_workspace.me.start_count
   source           = "registry.coder.com/modules/slackme/coder"
   version          = "1.0.2"
   agent_id         = coder_agent.example.id
