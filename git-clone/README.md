@@ -95,7 +95,6 @@ resource "coder_app" "website" {
   display_name = module.git_clone[count.index].folder_name
   url          = module.git_clone[count.index].web_url
   icon         = module.git_clone[count.index].git_provider != "" ? "/icon/${module.git_clone[count.index].git_provider}.svg" : "/icon/git.svg"
-  count        = module.git_clone[count.index].web_url != "" ? 1 : 0
 }
 ```
 
