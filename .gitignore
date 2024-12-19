@@ -2,3 +2,6 @@
 node_modules
 *.tfstate
 *.tfstate.lock.info
+
+# Ignore generated credentials from google-github-actions/auth
+gha-creds-*.json
