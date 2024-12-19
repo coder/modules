@@ -13,6 +13,7 @@ Automatically install [KasmVNC](https://kasmweb.com/kasmvnc) in a workspace, and
 
 ```tf
 module "kasmvnc" {
+  count               = data.coder_workspace.me.start_count
   source              = "registry.coder.com/modules/kasmvnc/coder"
   version             = "1.0.23"
   agent_id            = coder_agent.example.id

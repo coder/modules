@@ -13,6 +13,7 @@ This module adds a JetBrains Gateway Button to open any workspace with a single 
 
 ```tf
 module "jetbrains_gateway" {
+  count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
   version        = "1.0.25"
   agent_id       = coder_agent.example.id
@@ -31,6 +32,7 @@ module "jetbrains_gateway" {
 
 ```tf
 module "jetbrains_gateway" {
+  count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
   version        = "1.0.25"
   agent_id       = coder_agent.example.id
@@ -45,6 +47,7 @@ module "jetbrains_gateway" {
 
 ```tf
 module "jetbrains_gateway" {
+  count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
   version        = "1.0.25"
   agent_id       = coder_agent.example.id
@@ -60,6 +63,7 @@ module "jetbrains_gateway" {
 
 ```tf
 module "jetbrains_gateway" {
+  count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
   version        = "1.0.25"
   agent_id       = coder_agent.example.id
@@ -85,6 +89,7 @@ module "jetbrains_gateway" {
 
 ```tf
 module "jetbrains_gateway" {
+  count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
   version        = "1.0.25"
   agent_id       = coder_agent.example.id
@@ -103,6 +108,7 @@ Due to the highest priority of the `ide_download_link` parameter in the `(jetbra
 
 ```tf
 module "jetbrains_gateway" {
+  count              = data.coder_workspace.me.start_count
   source             = "registry.coder.com/modules/jetbrains-gateway/coder"
   version            = "1.0.25"
   agent_id           = coder_agent.example.id

@@ -13,6 +13,7 @@ Runs a script that updates git credentials in the workspace to match the user's 
 
 ```tf
 module "git-config" {
+  count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/git-config/coder"
   version  = "1.0.15"
   agent_id = coder_agent.example.id
@@ -27,6 +28,7 @@ TODO: Add screenshot
 
 ```tf
 module "git-config" {
+  count              = data.coder_workspace.me.start_count
   source             = "registry.coder.com/modules/git-config/coder"
   version            = "1.0.15"
   agent_id           = coder_agent.example.id
@@ -40,6 +42,7 @@ TODO: Add screenshot
 
 ```tf
 module "git-config" {
+  count                 = data.coder_workspace.me.start_count
   source                = "registry.coder.com/modules/git-config/coder"
   version               = "1.0.15"
   agent_id              = coder_agent.example.id

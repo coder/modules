@@ -13,6 +13,7 @@ Automatically install [code-server](https://github.com/coder/code-server) in a w
 
 ```tf
 module "code-server" {
+  count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/code-server/coder"
   version  = "1.0.26"
   agent_id = coder_agent.example.id
@@ -27,6 +28,7 @@ module "code-server" {
 
 ```tf
 module "code-server" {
+  count           = data.coder_workspace.me.start_count
   source          = "registry.coder.com/modules/code-server/coder"
   version         = "1.0.26"
   agent_id        = coder_agent.example.id
@@ -40,6 +42,7 @@ Install the Dracula theme from [OpenVSX](https://open-vsx.org/):
 
 ```tf
 module "code-server" {
+  count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/code-server/coder"
   version  = "1.0.26"
   agent_id = coder_agent.example.id
@@ -57,6 +60,7 @@ Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarte
 
 ```tf
 module "code-server" {
+  count      = data.coder_workspace.me.start_count
   source     = "registry.coder.com/modules/code-server/coder"
   version    = "1.0.26"
   agent_id   = coder_agent.example.id
@@ -73,6 +77,7 @@ Just run code-server in the background, don't fetch it from GitHub:
 
 ```tf
 module "code-server" {
+  count      = data.coder_workspace.me.start_count
   source     = "registry.coder.com/modules/code-server/coder"
   version    = "1.0.26"
   agent_id   = coder_agent.example.id
@@ -88,6 +93,7 @@ Run an existing copy of code-server if found, otherwise download from GitHub:
 
 ```tf
 module "code-server" {
+  count      = data.coder_workspace.me.start_count
   source     = "registry.coder.com/modules/code-server/coder"
   version    = "1.0.26"
   agent_id   = coder_agent.example.id
@@ -100,6 +106,7 @@ Just run code-server in the background, don't fetch it from GitHub:
 
 ```tf
 module "code-server" {
+  count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/code-server/coder"
   version  = "1.0.26"
   agent_id = coder_agent.example.id

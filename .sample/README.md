@@ -13,6 +13,7 @@ tags: [helper]
 
 ```tf
 module "MODULE_NAME" {
+  count   = data.coder_workspace.me.start_count
   source  = "registry.coder.com/modules/MODULE_NAME/coder"
   version = "1.0.2"
 }
@@ -28,6 +29,7 @@ Install the Dracula theme from [OpenVSX](https://open-vsx.org/):
 
 ```tf
 module "MODULE_NAME" {
+  count      = data.coder_workspace.me.start_count
   source     = "registry.coder.com/modules/MODULE_NAME/coder"
   version    = "1.0.2"
   agent_id   = coder_agent.example.id
@@ -45,6 +47,7 @@ Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarte
 
 ```tf
 module "MODULE_NAME" {
+  count      = data.coder_workspace.me.start_count
   source     = "registry.coder.com/modules/MODULE_NAME/coder"
   version    = "1.0.2"
   agent_id   = coder_agent.example.id

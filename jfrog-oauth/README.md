@@ -16,6 +16,7 @@ Install the JF CLI and authenticate package managers with Artifactory using OAut
 
 ```tf
 module "jfrog" {
+  count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/jfrog-oauth/coder"
   version        = "1.0.19"
   agent_id       = coder_agent.example.id
@@ -44,6 +45,7 @@ Configure the Python pip package manager to fetch packages from Artifactory whil
 
 ```tf
 module "jfrog" {
+  count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/jfrog-oauth/coder"
   version        = "1.0.19"
   agent_id       = coder_agent.example.id
@@ -72,6 +74,7 @@ The [JFrog extension](https://open-vsx.org/extension/JFrog/jfrog-vscode-extensio
 
 ```tf
 module "jfrog" {
+  count                 = data.coder_workspace.me.start_count
   source                = "registry.coder.com/modules/jfrog-oauth/coder"
   version               = "1.0.19"
   agent_id              = coder_agent.example.id
@@ -95,8 +98,8 @@ provider "docker" {
   # ...
   registry_auth {
     address  = "https://example.jfrog.io/artifactory/api/docker/REPO-KEY"
-    username = module.jfrog.username
-    password = module.jfrog.access_token
+    username = try(module.jfrog[0].username, "")
+    password = try(module.jfrog[0].access_token, "")
   }
 }
 ```
