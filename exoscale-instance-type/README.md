@@ -16,6 +16,7 @@ Customize the preselected parameter value:
 
 ```tf
 module "exoscale-instance-type" {
+  count   = data.coder_workspace.me.start_count
   source  = "registry.coder.com/modules/exoscale-instance-type/coder"
   version = "1.0.12"
   default = "standard.medium"
@@ -44,6 +45,7 @@ Change the display name a type using the corresponding maps:
 
 ```tf
 module "exoscale-instance-type" {
+  count   = data.coder_workspace.me.start_count
   source  = "registry.coder.com/modules/exoscale-instance-type/coder"
   version = "1.0.12"
   default = "standard.medium"
@@ -78,6 +80,7 @@ Show only gpu1 types
 
 ```tf
 module "exoscale-instance-type" {
+  count         = data.coder_workspace.me.start_count
   source        = "registry.coder.com/modules/exoscale-instance-type/coder"
   version       = "1.0.12"
   default       = "gpu.large"

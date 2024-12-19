@@ -15,6 +15,7 @@ We can use the simplest format here, only adding a default selection as the `atl
 
 ```tf
 module "fly-region" {
+  count   = data.coder_workspace.me.start_count
   source  = "registry.coder.com/modules/fly-region/coder"
   version = "1.0.2"
   default = "atl"
@@ -31,6 +32,7 @@ The regions argument can be used to display only the desired regions in the Code
 
 ```tf
 module "fly-region" {
+  count   = data.coder_workspace.me.start_count
   source  = "registry.coder.com/modules/fly-region/coder"
   version = "1.0.2"
   default = "ams"
@@ -46,6 +48,7 @@ Set custom icons and names with their respective maps.
 
 ```tf
 module "fly-region" {
+  count   = data.coder_workspace.me.start_count
   source  = "registry.coder.com/modules/fly-region/coder"
   version = "1.0.2"
   default = "ams"

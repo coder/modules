@@ -17,6 +17,7 @@ e.g.
 
 ```tf
 module "code-server" {
+  count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/code-server/coder"
   version  = "1.0.2"
   agent_id = coder_agent.main.id
