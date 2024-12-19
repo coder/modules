@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - bcpeinhardt/ci-to-build-new-registry-on-push-to-main
 
 jobs:
   deploy:
