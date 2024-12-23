@@ -13,6 +13,7 @@ This module allows you to automatically clone a repository by URL and skip if it
 
 ```tf
 module "git-clone" {
+  count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/git-clone/coder"
   version  = "1.0.18"
   agent_id = coder_agent.example.id
@@ -26,6 +27,7 @@ module "git-clone" {
 
 ```tf
 module "git-clone" {
+  count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/git-clone/coder"
   version  = "1.0.18"
   agent_id = coder_agent.example.id
@@ -40,6 +42,7 @@ To use with [Git Authentication](https://coder.com/docs/v2/latest/admin/git-prov
 
 ```tf
 module "git-clone" {
+  count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/git-clone/coder"
   version  = "1.0.18"
   agent_id = coder_agent.example.id
@@ -65,6 +68,7 @@ data "coder_parameter" "git_repo" {
 
 # Clone the repository for branch `feat/example`
 module "git_clone" {
+  count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/git-clone/coder"
   version  = "1.0.18"
   agent_id = coder_agent.example.id
@@ -73,23 +77,24 @@ module "git_clone" {
 
 # Create a code-server instance for the cloned repository
 module "code-server" {
+  count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/code-server/coder"
   version  = "1.0.18"
   agent_id = coder_agent.example.id
   order    = 1
-  folder   = "/home/${local.username}/${module.git_clone.folder_name}"
+  folder   = "/home/${local.username}/${module.git_clone[count.index].folder_name}"
 }
 
 # Create a Coder app for the website
 resource "coder_app" "website" {
+  count        = data.coder_workspace.me.start_count
   agent_id     = coder_agent.example.id
   order        = 2
   slug         = "website"
   external     = true
-  display_name = module.git_clone.folder_name
-  url          = module.git_clone.web_url
-  icon         = module.git_clone.git_provider != "" ? "/icon/${module.git_clone.git_provider}.svg" : "/icon/git.svg"
-  count        = module.git_clone.web_url != "" ? 1 : 0
+  display_name = module.git_clone[count.index].folder_name
+  url          = module.git_clone[count.index].web_url
+  icon         = module.git_clone[count.index].git_provider != "" ? "/icon/${module.git_clone[count.index].git_provider}.svg" : "/icon/git.svg"
 }
 ```
 
@@ -97,6 +102,7 @@ Configuring `git-clone` for a self-hosted GitHub Enterprise Server running at `g
 
 ```tf
 module "git-clone" {
+  count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/git-clone/coder"
   version  = "1.0.18"
   agent_id = coder_agent.example.id
@@ -115,6 +121,7 @@ To GitLab clone with a specific branch like `feat/example`
 
 ```tf
 module "git-clone" {
+  count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/git-clone/coder"
   version  = "1.0.18"
   agent_id = coder_agent.example.id
@@ -126,6 +133,7 @@ Configuring `git-clone` for a self-hosted GitLab running at `gitlab.example.com`
 
 ```tf
 module "git-clone" {
+  count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/git-clone/coder"
   version  = "1.0.18"
   agent_id = coder_agent.example.id
@@ -146,6 +154,7 @@ For example, to clone the `feat/example` branch:
 
 ```tf
 module "git-clone" {
+  count       = data.coder_workspace.me.start_count
   source      = "registry.coder.com/modules/git-clone/coder"
   version     = "1.0.18"
   agent_id    = coder_agent.example.id
@@ -162,6 +171,7 @@ For example, this will clone into the `~/projects/coder/coder-dev` folder:
 
 ```tf
 module "git-clone" {
+  count       = data.coder_workspace.me.start_count
   source      = "registry.coder.com/modules/git-clone/coder"
   version     = "1.0.18"
   agent_id    = coder_agent.example.id

@@ -13,6 +13,7 @@ Automatically install [Visual Studio Code Server](https://code.visualstudio.com/
 
 ```tf
 module "vscode-web" {
+  count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/vscode-web/coder"
   version        = "1.0.26"
   agent_id       = coder_agent.example.id
@@ -28,6 +29,7 @@ module "vscode-web" {
 
 ```tf
 module "vscode-web" {
+  count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/vscode-web/coder"
   version        = "1.0.26"
   agent_id       = coder_agent.example.id
@@ -41,6 +43,7 @@ module "vscode-web" {
 
 ```tf
 module "vscode-web" {
+  count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/vscode-web/coder"
   version        = "1.0.26"
   agent_id       = coder_agent.example.id
@@ -55,6 +58,7 @@ Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarte
 
 ```tf
 module "vscode-web" {
+  count      = data.coder_workspace.me.start_count
   source     = "registry.coder.com/modules/vscode-web/coder"
   version    = "1.0.26"
   agent_id   = coder_agent.example.id
