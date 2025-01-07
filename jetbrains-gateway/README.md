@@ -125,11 +125,12 @@ module "jetbrains_gateway" {
 
 This module and JetBrains Gateway support the following JetBrains IDEs:
 
-- GoLand (`GO`)
-- WebStorm (`WS`)
-- IntelliJ IDEA Ultimate (`IU`)
-- PyCharm Professional (`PY`)
-- PhpStorm (`PS`)
-- CLion (`CL`)
-- RubyMine (`RM`)
-- Rider (`RD`)
+- [GoLand (`GO`)](https://www.jetbrains.com/go/)
+- [WebStorm (`WS`)](https://www.jetbrains.com/webstorm/)
+- [IntelliJ IDEA Ultimate (`IU`)](https://www.jetbrains.com/idea/)
+- [PyCharm Professional (`PY`)](https://www.jetbrains.com/pycharm/)
+- [PhpStorm (`PS`)](https://www.jetbrains.com/phpstorm/)
+- [CLion (`CL`)](https://www.jetbrains.com/clion/)
+- [RubyMine (`RM`)](https://www.jetbrains.com/ruby/)
+- [Rider (`RD`)](https://www.jetbrains.com/rider/)
+- [RustRover (`RR`)](https://www.jetbrains.com/rust/)
