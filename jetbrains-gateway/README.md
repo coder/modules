@@ -17,7 +17,6 @@ module "jetbrains_gateway" {
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
   version        = "1.0.27"
   agent_id       = coder_agent.example.id
-  agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["CL", "GO", "IU", "PY", "WS"]
   default        = "GO"
@@ -36,7 +35,6 @@ module "jetbrains_gateway" {
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
   version        = "1.0.27"
   agent_id       = coder_agent.example.id
-  agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["GO", "WS"]
   default        = "GO"
@@ -51,7 +49,6 @@ module "jetbrains_gateway" {
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
   version        = "1.0.27"
   agent_id       = coder_agent.example.id
-  agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["IU", "PY"]
   default        = "IU"
@@ -67,7 +64,6 @@ module "jetbrains_gateway" {
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
   version        = "1.0.27"
   agent_id       = coder_agent.example.id
-  agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["IU", "PY"]
   default        = "IU"
@@ -93,7 +89,6 @@ module "jetbrains_gateway" {
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
   version        = "1.0.27"
   agent_id       = coder_agent.example.id
-  agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["GO", "WS"]
   default        = "GO"
@@ -112,7 +107,6 @@ module "jetbrains_gateway" {
   source             = "registry.coder.com/modules/jetbrains-gateway/coder"
   version            = "1.0.27"
   agent_id           = coder_agent.example.id
-  agent_name         = "example"
   folder             = "/home/coder/example"
   jetbrains_ides     = ["GO", "WS"]
   releases_base_link = "https://releases.internal.site/"
