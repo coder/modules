@@ -15,9 +15,8 @@ This module adds a JetBrains Gateway Button to open any workspace with a single 
 module "jetbrains_gateway" {
   count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
-  version        = "1.0.27"
+  version        = "1.0.28"
   agent_id       = coder_agent.example.id
-  agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["CL", "GO", "IU", "PY", "WS"]
   default        = "GO"
@@ -34,9 +33,8 @@ module "jetbrains_gateway" {
 module "jetbrains_gateway" {
   count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
-  version        = "1.0.27"
+  version        = "1.0.28"
   agent_id       = coder_agent.example.id
-  agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["GO", "WS"]
   default        = "GO"
@@ -49,9 +47,8 @@ module "jetbrains_gateway" {
 module "jetbrains_gateway" {
   count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
-  version        = "1.0.27"
+  version        = "1.0.28"
   agent_id       = coder_agent.example.id
-  agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["IU", "PY"]
   default        = "IU"
@@ -65,9 +62,8 @@ module "jetbrains_gateway" {
 module "jetbrains_gateway" {
   count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
-  version        = "1.0.27"
+  version        = "1.0.28"
   agent_id       = coder_agent.example.id
-  agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["IU", "PY"]
   default        = "IU"
@@ -91,9 +87,8 @@ module "jetbrains_gateway" {
 module "jetbrains_gateway" {
   count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/jetbrains-gateway/coder"
-  version        = "1.0.27"
+  version        = "1.0.28"
   agent_id       = coder_agent.example.id
-  agent_name     = "example"
   folder         = "/home/coder/example"
   jetbrains_ides = ["GO", "WS"]
   default        = "GO"
@@ -110,9 +105,8 @@ Due to the highest priority of the `ide_download_link` parameter in the `(jetbra
 module "jetbrains_gateway" {
   count              = data.coder_workspace.me.start_count
   source             = "registry.coder.com/modules/jetbrains-gateway/coder"
-  version            = "1.0.27"
+  version            = "1.0.28"
   agent_id           = coder_agent.example.id
-  agent_name         = "example"
   folder             = "/home/coder/example"
   jetbrains_ides     = ["GO", "WS"]
   releases_base_link = "https://releases.internal.site/"

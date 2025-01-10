@@ -26,7 +26,9 @@ variable "slug" {
 
 variable "agent_name" {
   type        = string
-  description = "Agent name."
+  description = "Agent name. (unused). Will be removed in a future version"
+
+  default = ""
 }
 
 variable "folder" {
@@ -295,8 +297,6 @@ resource "coder_app" "gateway" {
     data.coder_workspace.me.name,
     "&owner=",
     data.coder_workspace_owner.me.name,
-    "&agent=",
-    var.agent_name,
     "&folder=",
     var.folder,
     "&url=",

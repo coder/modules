@@ -10,7 +10,6 @@ describe("jetbrains-gateway", async () => {
 
   await testRequiredVariables(import.meta.dir, {
     agent_id: "foo",
-    agent_name: "foo",
     folder: "/home/foo",
   });
 
@@ -18,11 +17,10 @@ describe("jetbrains-gateway", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       // These are all required.
       agent_id: "foo",
-      agent_name: "foo",
       folder: "/home/coder",
     });
     expect(state.outputs.url.value).toBe(
-      "jetbrains-gateway://connect#type=coder&workspace=default&owner=default&agent=foo&folder=/home/coder&url=https://mydeployment.coder.com&token=$SESSION_TOKEN&ide_product_code=IU&ide_build_number=243.21565.193&ide_download_link=https://download.jetbrains.com/idea/ideaIU-2024.3.tar.gz",
+      "jetbrains-gateway://connect#type=coder&workspace=default&owner=default&folder=/home/coder&url=https://mydeployment.coder.com&token=$SESSION_TOKEN&ide_product_code=IU&ide_build_number=243.21565.193&ide_download_link=https://download.jetbrains.com/idea/ideaIU-2024.3.tar.gz",
     );
 
     const coder_app = state.resources.find(
@@ -37,7 +35,6 @@ describe("jetbrains-gateway", async () => {
   it("default to first ide", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
-      agent_name: "foo",
       folder: "/home/foo",
       jetbrains_ides: '["IU", "GO", "PY"]',
     });
