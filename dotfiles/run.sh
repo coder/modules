@@ -18,6 +18,6 @@ if [ -n "$${DOTFILES_URI// }" ]; then
 
     CODER_BIN=$(which coder)
     DOTFILES_USER_HOME=$(eval echo ~"$DOTFILES_USER")
-    sudo -u "$DOTFILES_USER" sh -c "'$CODER_BIN' dotfiles '$DOTFILES_URI' -y 2>&1 | tee '$DOTFILES_USER_HOME'/.dotfiles.log"
+    sudo -u "$DOTFILES_USER" sh -c "'$CODER_BIN' dotfiles '$DOTFILES_URI' -y 2>&1 | tee '$DOTFILES_USER_HOME'/.dotfiles.log || true"
   fi
 fi
