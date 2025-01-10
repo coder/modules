@@ -297,8 +297,6 @@ resource "coder_app" "gateway" {
     data.coder_workspace.me.name,
     "&owner=",
     data.coder_workspace_owner.me.name,
-    #    "&agent=",
-    #    var.agent_name,
     "&folder=",
     var.folder,
     "&url=",
