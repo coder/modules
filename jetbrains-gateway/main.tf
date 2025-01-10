@@ -26,7 +26,7 @@ variable "slug" {
 
 variable "agent_name" {
   type        = string
-  description = "Agent name. (unused)"
+  description = "Agent name. (unused). Will be removed in a future version"
 
   default = ""
 }
