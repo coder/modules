@@ -21,13 +21,10 @@ if [ "${DB_PATH}" != "filebrowser.db" ]; then
   DB_FLAG=" -d ${DB_PATH}"
 fi
 
-# set baseurl to be able to run if sudomain=false; if subdomain=true the SERVER_BASE_PATH value will be ""
-filebrowser config set --baseurl "${SERVER_BASE_PATH}"$${DB_FLAG} > ${LOG_PATH} 2>&1
-
 printf "📂 Serving $${ROOT_DIR} at http://localhost:${PORT} \n\n"
 
 printf "Running 'filebrowser --noauth --root $ROOT_DIR --port ${PORT}$${DB_FLAG}' \n\n"
 
-filebrowser --noauth --root $ROOT_DIR --port ${PORT}$${DB_FLAG} > ${LOG_PATH} 2>&1 &
+filebrowser --noauth --root $ROOT_DIR --port ${PORT}$${DB_FLAG} -b ${SERVER_BASE_PATH} > ${LOG_PATH} 2>&1 &
 
 printf "📝 Logs at ${LOG_PATH} \n\n"
