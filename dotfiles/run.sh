@@ -22,5 +22,6 @@ if [ -n "$${DOTFILES_URI// }" ]; then
   fi
   if [ $? -ne 0 ]; then
     echo "Failed to install dotfiles"
-    exit 1  
+    exit 1
+  fi
 fi
