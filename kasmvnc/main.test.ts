@@ -5,6 +5,8 @@ import {
   testRequiredVariables,
 } from "../test";
 
+console.log("DELETE ME BEFORE COMMITTING!!!!!");
+
 const allowedDesktopEnvs = ["xfce", "kde", "gnome", "lxde", "lxqt"] as const;
 type AllowedDesktopEnv = (typeof allowedDesktopEnvs)[number];
 
