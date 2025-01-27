@@ -194,13 +194,18 @@ export const testRequiredVariables = <TVars extends TerraformVariables>(
 export const runTerraformApply = async <TVars extends TerraformVariables>(
   dir: string,
   vars: Readonly<TVars>,
-  env?: Record<string, string>,
+  customEnv?: Record<string, string>,
 ): Promise<TerraformState> => {
   const stateFile = `${dir}/${crypto.randomUUID()}.tfstate`;
 
-  const combinedEnv = env === undefined ? {} : { ...env };
+  const combinedEnv: Record<string, string | undefined> = {
+    ...process.env,
+    ...(customEnv ?? {}),
+  };
   for (const [key, value] of Object.entries(vars)) {
-    combinedEnv[`TF_VAR_${key}`] = String(value);
+    if (value !== null) {
+      combinedEnv[`TF_VAR_${key}`] = String(value);
+    }
   }
 
   const proc = spawn(
