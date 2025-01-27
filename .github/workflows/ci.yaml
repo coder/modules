@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Set up job
         uses: actions/checkout@v4
-      - name: Set up Terraform
+      - name: Set up Terraform (replace with Coder action if possible)
         uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
         with:
           terraform_version: 1.9.8
@@ -29,6 +29,8 @@ jobs:
           bun-version: latest
       - name: Install dependencies
         run: bun install
+      - name: Verify that Terraform is installed
+        run: which terraform
       - name: Run tests
         run: bun test
   pretty:
