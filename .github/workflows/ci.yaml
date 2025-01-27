@@ -31,6 +31,8 @@ jobs:
         run: bun install
       - name: Verify that Terraform is installed
         run: which terraform
+      - name: Verify that Node.js is installed
+        run: which node
       - name: Run tests
         run: bun test
   pretty:
