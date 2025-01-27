@@ -19,10 +19,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
       - name: Set up Terraform (REPLACE WITH CODER ACTION WHEN DONE)
-        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
-        with:
-          terraform_version: 1.9.8
-          terraform_wrapper: false
+        uses: coder/coder/.github/actions/setup-tf@main
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
         with:
