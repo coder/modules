@@ -25,7 +25,7 @@ const removeOldContainers = async () => {
     "-a",
     "-q",
     "--filter",
-    `label=modules-test`,
+    "label=modules-test",
   ]);
   let containerIDsRaw = await readableStreamToText(proc.stdout);
   let exitCode = await proc.exited;
