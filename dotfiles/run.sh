@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+set -euo pipefail
+
 DOTFILES_URI="${DOTFILES_URI}"
 DOTFILES_USER="${DOTFILES_USER}"
 
@@ -19,9 +22,5 @@ if [ -n "$${DOTFILES_URI// }" ]; then
     CODER_BIN=$(which coder)
     DOTFILES_USER_HOME=$(eval echo ~"$DOTFILES_USER")
     sudo -u "$DOTFILES_USER" sh -c "'$CODER_BIN' dotfiles '$DOTFILES_URI' -y 2>&1 | tee '$DOTFILES_USER_HOME'/.dotfiles.log"
-  fi
-  if [ $? -ne 0 ]; then
-    echo "Failed to install dotfiles"
-    exit 1
   fi
 fi
