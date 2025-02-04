@@ -11,6 +11,9 @@ tags: [ide, jetbrains, helper, parameter]
 
 This module adds a JetBrains Gateway Button to open any workspace with a single click.
 
+JetBrains recommends a minimum of 4 CPU cores and 8GB of RAM.
+Consult the [JetBrains documentation](https://www.jetbrains.com/help/idea/prerequisites.html#min_requirements) to confirm other system requirements.
+
 ```tf
 module "jetbrains_gateway" {
   count          = data.coder_workspace.me.start_count
