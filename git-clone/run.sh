@@ -9,7 +9,7 @@ CLONE_PATH="$${CLONE_PATH/#\~/$${HOME}}"
 # Check if the variable is empty...
 if [ -z "$REPO_URL" ]; then
   echo "No repository specified!"
-  exit 1
+  exit 0
 fi
 
 # Check if the variable is empty...
