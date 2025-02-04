@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+set -euo pipefail
+
 DOTFILES_URI="${DOTFILES_URI}"
 DOTFILES_USER="${DOTFILES_USER}"
 
