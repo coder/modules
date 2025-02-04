@@ -26,7 +26,7 @@ jobs:
           service_account: registry-v2-github@coder-registry-1.iam.gserviceaccount.com
 
       - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@6189d56e4096ee891640bb02ac264be376592d6a 
+        uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a 
 
         # For the time being, let's have the first couple merges to main in modules deploy a new version
         # to *dev*. Once we review and make sure everything's working, we can deploy a new version to *main*. 
