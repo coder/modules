@@ -27,5 +27,4 @@ printf "Running 'filebrowser --noauth --root $ROOT_DIR --port ${PORT}$${DB_FLAG}
 
 filebrowser --noauth --root $ROOT_DIR --port ${PORT}$${DB_FLAG} --baseurl ${SERVER_BASE_PATH} > ${LOG_PATH} 2>&1 &
 
-
 printf "📝 Logs at ${LOG_PATH} \n\n"
