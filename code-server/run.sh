@@ -104,7 +104,8 @@ if [ "${AUTO_INSTALL_EXTENSIONS}" = true ]; then
 
   if [ -f "$WORKSPACE_DIR/.vscode/extensions.json" ]; then
     printf "🧩 Installing extensions from %s/.vscode/extensions.json...\n" "$WORKSPACE_DIR"
-    extensions=$(jq -r '.recommendations[]' "$WORKSPACE_DIR"/.vscode/extensions.json)
+    # Use sed to remove single-line comments before parsing with jq
+    extensions=$(sed 's|//.*||g' "$WORKSPACE_DIR"/.vscode/extensions.json | jq -r '.recommendations[]')
     for extension in $extensions; do
       if extension_installed "$extension"; then
         continue
