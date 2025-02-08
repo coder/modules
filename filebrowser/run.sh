@@ -24,9 +24,10 @@ fi
 # Check if filebrowser db exists
 if [ ! -f ${DB_PATH} ]; then
   filebrowser $DB_FLAG config init >> ${LOG_PATH} 2>&1
-  filebrowser $DB_FLAG config set --baseurl=${SERVER_BASE_PATH} --port=${PORT} --auth.method=noauth --root=$ROOT_DIR >> ${LOG_PATH} 2>&1
-  filebrowser $DB_FLAG users add admin "" --perm.admin=true >> ${LOG_PATH} 2>&1
+  filebrowser $DB_FLAG users add admin "" --perm.admin=true --viewMode=mosaic >> ${LOG_PATH} 2>&1
 fi
+
+filebrowser $DB_FLAG config set --baseurl=${SERVER_BASE_PATH} --port=${PORT} --auth.method=noauth --root=$ROOT_DIR >> ${LOG_PATH} 2>&1
 
 printf "👷 Starting filebrowser in background... \n\n"
 
