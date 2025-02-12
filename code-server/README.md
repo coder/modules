@@ -56,7 +56,7 @@ Enter the `<author>.<name>` into the extensions array and code-server will autom
 
 ### Pre-configure Settings
 
-Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarted/settings#_settingsjson) file:
+Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarted/settings#_settings-json-file) file:
 
 ```tf
 module "code-server" {

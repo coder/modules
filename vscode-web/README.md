@@ -54,7 +54,7 @@ module "vscode-web" {
 
 ### Pre-configure Settings
 
-Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarted/settings#_settingsjson) file:
+Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarted/settings#_settings-json-file) file:
 
 ```tf
 module "vscode-web" {
