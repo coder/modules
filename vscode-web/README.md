@@ -76,11 +76,11 @@ By default, this module installs the latest. To pin a specific version, retrieve
 
 ```tf
 module "vscode-web" {
-  count      = data.coder_workspace.me.start_count
-  source     = "registry.coder.com/modules/vscode-web/coder"
-  version    = "1.0.30"
-  agent_id   = coder_agent.example.id
-  commit_id  = "e54c774e0add60467559eb0d1e229c6452cf8447"
+  count          = data.coder_workspace.me.start_count
+  source         = "registry.coder.com/modules/vscode-web/coder"
+  version        = "1.0.30"
+  agent_id       = coder_agent.example.id
+  commit_id      = "e54c774e0add60467559eb0d1e229c6452cf8447"
   accept_license = true
 }
 ```
