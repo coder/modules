@@ -15,7 +15,7 @@ Automatically install [Visual Studio Code Server](https://code.visualstudio.com/
 module "vscode-web" {
   count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/vscode-web/coder"
-  version        = "1.0.29"
+  version        = "1.0.30"
   agent_id       = coder_agent.example.id
   accept_license = true
 }
@@ -31,7 +31,7 @@ module "vscode-web" {
 module "vscode-web" {
   count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/vscode-web/coder"
-  version        = "1.0.29"
+  version        = "1.0.30"
   agent_id       = coder_agent.example.id
   install_prefix = "/home/coder/.vscode-web"
   folder         = "/home/coder"
@@ -45,7 +45,7 @@ module "vscode-web" {
 module "vscode-web" {
   count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/vscode-web/coder"
-  version        = "1.0.29"
+  version        = "1.0.30"
   agent_id       = coder_agent.example.id
   extensions     = ["github.copilot", "ms-python.python", "ms-toolsai.jupyter"]
   accept_license = true
@@ -60,7 +60,7 @@ Configure VS Code's [settings.json](https://code.visualstudio.com/docs/getstarte
 module "vscode-web" {
   count      = data.coder_workspace.me.start_count
   source     = "registry.coder.com/modules/vscode-web/coder"
-  version    = "1.0.29"
+  version    = "1.0.30"
   agent_id   = coder_agent.example.id
   extensions = ["dracula-theme.theme-dracula"]
   settings = {
