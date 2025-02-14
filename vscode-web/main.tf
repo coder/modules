@@ -157,7 +157,7 @@ resource "coder_script" "vscode-web" {
     FOLDER : var.folder,
     AUTO_INSTALL_EXTENSIONS : var.auto_install_extensions,
     SERVER_BASE_PATH : local.server_base_path,
-    VSCODE_WEB_COMMIT_ID : var.vscode_web_commit_id, 
+    VSCODE_WEB_COMMIT_ID : var.vscode_web_commit_id,
   })
   run_on_start = true
 
