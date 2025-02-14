@@ -60,8 +60,8 @@ case "$ARCH" in
 esac
 
 # Check if a specific VS Code Web commit ID was provided
-if [ -n "${VSCODE_WEB_COMMIT_ID}" ]; then
-  HASH="${VSCODE_WEB_COMMIT_ID}"
+if [ -n "${COMMIT_ID}" ]; then
+  HASH="${COMMIT_ID}"
 else
   HASH=$(curl -fsSL https://update.code.visualstudio.com/api/commits/stable/server-linux-$ARCH-web | cut -d '"' -f 2)
 fi

@@ -69,3 +69,18 @@ module "vscode-web" {
   accept_license = true
 }
 ```
+
+### Pin a specific VS Code Web version
+
+By default, this module installs the latest. To pin a specific version, retrieve the commit ID from the [VS Code Update API](https://update.code.visualstudio.com/api/commits/stable/server-linux-x64-web) and verify its corresponding release on the [VS Code GitHub Releases](https://github.com/microsoft/vscode/releases).  
+
+```tf
+module "vscode-web" {
+  count      = data.coder_workspace.me.start_count
+  source     = "registry.coder.com/modules/vscode-web/coder"
+  version    = "1.0.30"
+  agent_id   = coder_agent.example.id
+  commit_id  = "e54c774e0add60467559eb0d1e229c6452cf8447"  
+  accept_license = true
+}
+```
