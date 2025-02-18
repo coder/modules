@@ -32,7 +32,7 @@ if ! command -v jupyter-lab > /dev/null 2>&1; then
   printf "$${BOLD}Installing jupyterlab!\n"
   case $INSTALLER in
     uv)
-      uv add jupyter-lab
+      uv add jupyterlab
       printf "%s\n" "🥳 jupyterlab has been installed"
       ;;
     pipx)
