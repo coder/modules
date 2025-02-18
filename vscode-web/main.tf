@@ -59,6 +59,12 @@ variable "install_prefix" {
   default     = "/tmp/vscode-web"
 }
 
+variable "commit_id" {
+  type        = string
+  description = "Specify the commit ID of the VS Code Web binary to pin to a specific version. If left empty, the latest stable version is used."
+  default     = ""
+}
+
 variable "extensions" {
   type        = list(string)
   description = "A list of extensions to install."
@@ -151,6 +157,7 @@ resource "coder_script" "vscode-web" {
     FOLDER : var.folder,
     AUTO_INSTALL_EXTENSIONS : var.auto_install_extensions,
     SERVER_BASE_PATH : local.server_base_path,
+    COMMIT_ID : var.commit_id,
   })
   run_on_start = true
 
