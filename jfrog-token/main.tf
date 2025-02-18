@@ -68,6 +68,12 @@ variable "username_field" {
   }
 }
 
+variable "username" {
+  type        = string
+  description = "Username to use for Artifactory. Overrides the field specified in `username_field`"
+  default     = null
+}
+
 variable "agent_id" {
   type        = string
   description = "The ID of a Coder agent."
@@ -99,8 +105,8 @@ variable "package_managers" {
 }
 
 locals {
-  # The username field to use for artifactory
-  username   = var.username_field == "email" ? data.coder_workspace_owner.me.email : data.coder_workspace_owner.me.name
+  # The username to use for artifactory
+  username   = coalesce(var.username, var.username_field == "email" ? data.coder_workspace_owner.me.email : data.coder_workspace_owner.me.name)
   jfrog_host = split("://", var.jfrog_url)[1]
   common_values = {
     JFROG_URL                = var.jfrog_url
