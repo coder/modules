@@ -69,7 +69,7 @@ fi
 printf "$${BOLD}VS Code Web commit id version $HASH.\n"
 
 # Todo: Support download for other OS
-output=$(curl -fsSL "https://vscode.download.prss.microsoft.com/dbazure/download/stable/$HASH/vscode_cli_alpine_x64_cli.tar.gz" | tar -xz -C "${INSTALL_PREFIX}" --strip-components 1)
+output=$(curl -fsSL "https://vscode.download.prss.microsoft.com/dbazure/download/stable/$HASH/vscode_cli_alpine_x64_cli.tar.gz" | tar -xz -C "${INSTALL_PREFIX}")
 
 if [ $? -ne 0 ]; then
   echo "Failed to install Microsoft Visual Studio Code Server: $output"
