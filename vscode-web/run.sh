@@ -123,6 +123,7 @@ install_extension() {
       fi
     fi
   fi
+  printf "✅ VSCode Web Extension installed.\n"
 }
 
 run_vscode_web
