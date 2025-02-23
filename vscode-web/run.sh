@@ -5,19 +5,21 @@ EXTENSIONS=("${EXTENSIONS}")
 VSCODE_CLI="${INSTALL_PREFIX}/code"
 
 # Set extension directory
+EXTENSION_ARG=""
 if [ -n "${EXTENSIONS_DIR}" ]; then
-  EXTENSIONS_DIR="--extensions-dir=${EXTENSIONS_DIR}"
+  EXTENSION_ARG="--extensions-dir=${EXTENSIONS_DIR}"
 fi
 
 # Set extension directory
+SERVER_BASE_PATH_ARG=""
 if [ -n "${SERVER_BASE_PATH}" ]; then
-  SERVER_BASE_PATH="--server-base-path=${SERVER_BASE_PATH}"
+  SERVER_BASE_PATH_ARG="--server-base-path=${SERVER_BASE_PATH}"
 fi
 
 run_vscode_web() {
-  echo "👷 Running $VSCODE_CLI serve-web $EXTENSIONS_DIR $SERVER_BASE_PATH_ARG --port ${PORT} --host 127.0.0.1 --accept-server-license-terms --without-connection-token in the background..."
+  echo "👷 Running $VSCODE_CLI serve-web $EXTENSION_ARG $SERVER_BASE_PATH_ARG --port ${PORT} --host 127.0.0.1 --accept-server-license-terms --without-connection-token in the background..."
   echo "Check logs at ${LOG_PATH}!"
-  "$VSCODE_CLI" serve-web ${EXTENSIONS_DIR} ${SERVER_BASE_PATH} --port "${PORT}" --host 127.0.0.1 --accept-server-license-terms --without-connection-token > "${LOG_PATH}" 2>&1 &
+  "$VSCODE_CLI" serve-web $EXTENSION_ARG $SERVER_BASE_PATH_ARG --port "${PORT}" --host 127.0.0.1 --accept-server-license-terms --without-connection-token > "${LOG_PATH}" 2>&1 &
 }
 
 # Check if the settings file exists...
