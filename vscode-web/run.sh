@@ -2,7 +2,6 @@
 
 BOLD='\033[0;1m'
 EXTENSIONS=("${EXTENSIONS}")
-VSCODE_WEB="${INSTALL_PREFIX}/bin/code-server"
 VSCODE_CLI="${INSTALL_PREFIX}/code"
 
 # Set extension directory
@@ -20,8 +19,7 @@ fi
 run_vscode_web() {
   echo "👷 Running $VSCODE_CLI serve-web $EXTENSION_ARG $SERVER_BASE_PATH_ARG --port ${PORT} --host 127.0.0.1 --accept-server-license-terms --without-connection-token in the background..."
   echo "Check logs at ${LOG_PATH}!"
-  # Todo: Add EXTENSION_ARG and SERVER_BASE_PATH_ARG
-  "$VSCODE_CLI" serve-web --port "${PORT}" --host 127.0.0.1 --accept-server-license-terms --without-connection-token > "${LOG_PATH}" 2>&1 &
+  "$VSCODE_CLI" serve-web ${EXTENSION_ARG} ${SERVER_BASE_PATH_ARG} --port "${PORT}" --host 127.0.0.1 --accept-server-license-terms --without-connection-token > "${LOG_PATH}" 2>&1 &
 }
 
 # Check if the settings file exists...
@@ -65,12 +63,11 @@ esac
 if [ -n "${COMMIT_ID}" ]; then
   HASH="${COMMIT_ID}"
 else
-  HASH=$(curl -fsSL https://update.code.visualstudio.com/api/commits/stable/server-linux-$ARCH-web | cut -d '"' -f 2)
+  HASH=$(curl -fsSL https://update.code.visualstudio.com/api/commits/stable/server-linux-${ARCH}-web | cut -d '"' -f 2)
 fi
-printf "$${BOLD}VS Code Web commit id version $HASH.\n"
+printf "$${BOLD}VS Code Web commit id version ${HASH}.\n"
 
-# Todo: Support download for other OS
-output=$(curl -fsSL "https://vscode.download.prss.microsoft.com/dbazure/download/stable/$HASH/vscode_cli_alpine_x64_cli.tar.gz" | tar -xz -C "${INSTALL_PREFIX}")
+output=$(curl -fsSL "https://vscode.download.prss.microsoft.com/dbazure/download/stable/${HASH}/vscode_cli_alpine_${ARCH}_cli.tar.gz" | tar -xz -C "${INSTALL_PREFIX}")
 
 if [ $? -ne 0 ]; then
   echo "Failed to install Microsoft Visual Studio Code Server: $output"
@@ -78,10 +75,10 @@ if [ $? -ne 0 ]; then
 fi
 printf "$${BOLD}VS Code Web has been installed.\n"
 
-VSCODE_WEB=~/.vscode/cli/serve-web/$HASH/bin/code-server
+VSCODE_WEB=~/.vscode/cli/serve-web/${HASH}/bin/code-server
 install_extension() {
   # code serve-web auto download code-server by health check trigger.
-  echo "Download code-server to $VSCODE_WEB."
+  echo "Download code-server to ${VSCODE_WEB}."
   
   while true; do
     if [ -f "$VSCODE_WEB" ]; then
