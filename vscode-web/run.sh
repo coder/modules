@@ -5,21 +5,19 @@ EXTENSIONS=("${EXTENSIONS}")
 VSCODE_CLI="${INSTALL_PREFIX}/code"
 
 # Set extension directory
-EXTENSION_ARG=""
 if [ -n "${EXTENSIONS_DIR}" ]; then
-  EXTENSION_ARG="--extensions-dir=${EXTENSIONS_DIR}"
+  EXTENSIONS_DIR="--extensions-dir=${EXTENSIONS_DIR}"
 fi
 
 # Set extension directory
-SERVER_BASE_PATH_ARG=""
 if [ -n "${SERVER_BASE_PATH}" ]; then
-  SERVER_BASE_PATH_ARG="--server-base-path=${SERVER_BASE_PATH}"
+  SERVER_BASE_PATH="--server-base-path=${SERVER_BASE_PATH}"
 fi
 
 run_vscode_web() {
-  echo "👷 Running $VSCODE_CLI serve-web $EXTENSION_ARG $SERVER_BASE_PATH_ARG --port ${PORT} --host 127.0.0.1 --accept-server-license-terms --without-connection-token in the background..."
+  echo "👷 Running $VSCODE_CLI serve-web $EXTENSIONS_DIR $SERVER_BASE_PATH_ARG --port ${PORT} --host 127.0.0.1 --accept-server-license-terms --without-connection-token in the background..."
   echo "Check logs at ${LOG_PATH}!"
-  "$VSCODE_CLI" serve-web ${EXTENSION_ARG:+$EXTENSION_ARG} ${SERVER_BASE_PATH_ARG:+$SERVER_BASE_PATH_ARG} --port "${PORT}" --host 127.0.0.1 --accept-server-license-terms --without-connection-token > "${LOG_PATH}" 2>&1 &
+  "$VSCODE_CLI" serve-web ${EXTENSIONS_DIR} ${SERVER_BASE_PATH} --port "${PORT}" --host 127.0.0.1 --accept-server-license-terms --without-connection-token > "${LOG_PATH}" 2>&1 &
 }
 
 # Check if the settings file exists...
@@ -96,7 +94,7 @@ install_extension() {
       continue
     fi
     printf "🧩 Installing extension $${CODE}$extension$${RESET}...\n"
-    output=$($VSCODE_WEB "$EXTENSION_ARG" --install-extension "$extension" --force)
+    output=$($VSCODE_WEB $EXTENSIONS_DIR --install-extension "$extension" --force)
     if [ $? -ne 0 ]; then
       echo "Failed to install extension: $extension: $output"
     fi
@@ -116,7 +114,7 @@ install_extension() {
         # Use sed to remove single-line comments before parsing with jq
         extensions=$(sed 's|//.*||g' "$WORKSPACE_DIR"/.vscode/extensions.json | jq -r '.recommendations[]')
         for extension in $extensions; do
-          $VSCODE_WEB "$EXTENSION_ARG" --install-extension "$extension" --force
+          $VSCODE_WEB $EXTENSIONS_DIR --install-extension "$extension" --force
         done
       fi
     fi
