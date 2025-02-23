@@ -78,7 +78,7 @@ if [ $? -ne 0 ]; then
 fi
 printf "$${BOLD}VS Code Web has been installed.\n"
 
-VSCODE_WEB="~/.vscode/cli/serve-web/$HASH/bin/code-server"
+VSCODE_WEB=~/.vscode/cli/serve-web/$HASH/bin/code-server
 install_extension() {
   echo "Wait for $VSCODE_WEB."
   
