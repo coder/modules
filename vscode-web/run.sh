@@ -61,11 +61,11 @@ esac
 if [ -n "${COMMIT_ID}" ]; then
   HASH="${COMMIT_ID}"
 else
-  HASH=$(curl -fsSL https://update.code.visualstudio.com/api/commits/stable/server-linux-${ARCH}-web | cut -d '"' -f 2)
+  HASH=$(curl -fsSL https://update.code.visualstudio.com/api/commits/stable/server-linux-$ARCH-web | cut -d '"' -f 2)
 fi
-printf "$${BOLD}VS Code Web commit id version ${HASH}.\n"
+printf "$${BOLD}VS Code Web commit id version $HASH.\n"
 
-output=$(curl -fsSL "https://vscode.download.prss.microsoft.com/dbazure/download/stable/${HASH}/vscode_cli_alpine_${ARCH}_cli.tar.gz" | tar -xz -C "${INSTALL_PREFIX}")
+output=$(curl -fsSL "https://vscode.download.prss.microsoft.com/dbazure/download/stable/$HASH/vscode_cli_alpine_"$ARCH"_cli.tar.gz" | tar -xz -C "${INSTALL_PREFIX}")
 
 if [ $? -ne 0 ]; then
   echo "Failed to install Microsoft Visual Studio Code Server: $output"
@@ -73,10 +73,10 @@ if [ $? -ne 0 ]; then
 fi
 printf "$${BOLD}VS Code Web has been installed.\n"
 
-VSCODE_WEB=~/.vscode/cli/serve-web/${HASH}/bin/code-server
+VSCODE_WEB=~/.vscode/cli/serve-web/$HASH/bin/code-server
 install_extension() {
   # code serve-web auto download code-server by health check trigger.
-  echo "Download code-server to ${VSCODE_WEB}."
+  echo "Download code-server to $VSCODE_WEB."
   
   while true; do
     if [ -f "$VSCODE_WEB" ]; then
