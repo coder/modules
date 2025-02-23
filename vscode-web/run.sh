@@ -80,7 +80,8 @@ printf "$${BOLD}VS Code Web has been installed.\n"
 
 VSCODE_WEB=~/.vscode/cli/serve-web/$HASH/bin/code-server
 install_extension() {
-  echo "Wait for $VSCODE_WEB."
+  # code serve-web auto download code-server by health check trigger.
+  echo "Download code-server to $VSCODE_WEB."
   
   while true; do
     if [ -f "$VSCODE_WEB" ]; then
@@ -88,7 +89,7 @@ install_extension() {
         break
     fi
     echo "Wait for $VSCODE_WEB."
-    sleep 5
+    sleep 30
   done
   
   # Install each extension...
@@ -123,8 +124,8 @@ install_extension() {
       fi
     fi
   fi
-  printf "✅ VSCode Web Extension installed.\n"
 }
 
 run_vscode_web
 install_extension
+printf "✅ VSCode Web installed.\n"
