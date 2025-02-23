@@ -77,38 +77,49 @@ if [ $? -ne 0 ]; then
 fi
 printf "$${BOLD}VS Code Web has been installed.\n"
 
-# Todo: Support download extension later
-# Install each extension...
-#IFS=',' read -r -a EXTENSIONLIST <<< "$${EXTENSIONS}"
-#for extension in "$${EXTENSIONLIST[@]}"; do
-#  if [ -z "$extension" ]; then
-#    continue
-#  fi
-#  printf "🧩 Installing extension $${CODE}$extension$${RESET}...\n"
-#  output=$($VSCODE_WEB "$EXTENSION_ARG" --install-extension "$extension" --force)
-#  if [ $? -ne 0 ]; then
-#    echo "Failed to install extension: $extension: $output"
-#  fi
-#done
-
-#if [ "${AUTO_INSTALL_EXTENSIONS}" = true ]; then
-#  if ! command -v jq > /dev/null; then
-#    echo "jq is required to install extensions from a workspace file."
-#  else
-#    WORKSPACE_DIR="$HOME"
-#    if [ -n "${FOLDER}" ]; then
-#      WORKSPACE_DIR="${FOLDER}"
-#    fi
-#
-#    if [ -f "$WORKSPACE_DIR/.vscode/extensions.json" ]; then
-#      printf "🧩 Installing extensions from %s/.vscode/extensions.json...\n" "$WORKSPACE_DIR"
-#      # Use sed to remove single-line comments before parsing with jq
-#      extensions=$(sed 's|//.*||g' "$WORKSPACE_DIR"/.vscode/extensions.json | jq -r '.recommendations[]')
-#      for extension in $extensions; do
-#        $VSCODE_WEB "$EXTENSION_ARG" --install-extension "$extension" --force
-#      done
-#    fi
-#  fi
-#fi
+VSCODE_WEB="~/.vscode/cli/serve-web/$HASH/bin/code-server"
+install_extension() {
+  while true; do
+    if [ -f "$VSCODE_WEB" ]; then
+        echo "$VSCODE_WEB exists."
+        break
+    fi
+    sleep 5
+  done
+  
+  # Install each extension...
+  IFS=',' read -r -a EXTENSIONLIST <<< "$${EXTENSIONS}"
+  for extension in "$${EXTENSIONLIST[@]}"; do
+    if [ -z "$extension" ]; then
+      continue
+    fi
+    printf "🧩 Installing extension $${CODE}$extension$${RESET}...\n"
+    output=$($VSCODE_WEB "$EXTENSION_ARG" --install-extension "$extension" --force)
+    if [ $? -ne 0 ]; then
+      echo "Failed to install extension: $extension: $output"
+    fi
+  done
+  
+  if [ "${AUTO_INSTALL_EXTENSIONS}" = true ]; then
+    if ! command -v jq > /dev/null; then
+      echo "jq is required to install extensions from a workspace file."
+    else
+      WORKSPACE_DIR="$HOME"
+      if [ -n "${FOLDER}" ]; then
+        WORKSPACE_DIR="${FOLDER}"
+      fi
+  
+      if [ -f "$WORKSPACE_DIR/.vscode/extensions.json" ]; then
+        printf "🧩 Installing extensions from %s/.vscode/extensions.json...\n" "$WORKSPACE_DIR"
+        # Use sed to remove single-line comments before parsing with jq
+        extensions=$(sed 's|//.*||g' "$WORKSPACE_DIR"/.vscode/extensions.json | jq -r '.recommendations[]')
+        for extension in $extensions; do
+          $VSCODE_WEB "$EXTENSION_ARG" --install-extension "$extension" --force
+        done
+      fi
+    fi
+  fi
+}
 
 run_vscode_web
+install_extension
