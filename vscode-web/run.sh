@@ -80,11 +80,14 @@ printf "$${BOLD}VS Code Web has been installed.\n"
 
 VSCODE_WEB="~/.vscode/cli/serve-web/$HASH/bin/code-server"
 install_extension() {
+  echo "Wait for $VSCODE_WEB."
+  
   while true; do
     if [ -f "$VSCODE_WEB" ]; then
         echo "$VSCODE_WEB exists."
         break
     fi
+    echo "Wait for $VSCODE_WEB."
     sleep 5
   done
   
