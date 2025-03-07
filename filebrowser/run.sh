@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BOLD='\033[0;1m'
+BOLD='\033[[0;1m'
 
 printf "$${BOLD}Installing filebrowser \n\n"
 
@@ -17,12 +17,12 @@ ROOT_DIR=${FOLDER}
 ROOT_DIR=$${ROOT_DIR/\~/$HOME}
 
 DB_FLAG=""
-if [ "${DB_PATH}" != "filebrowser.db" ]; then
+if [[ "${DB_PATH}" != "filebrowser.db" ]]; then
   DB_FLAG=" -d ${DB_PATH}"
 fi
 
 # Check if filebrowser db exists
-if [ ! -f ${DB_PATH} ]; then
+if [[ ! -f ${DB_PATH} ]]; then
   filebrowser $DB_FLAG config init  2>&1 | tee -a ${LOG_PATH}
   filebrowser $DB_FLAG users add admin "" --perm.admin=true --viewMode=mosaic 2>&1 | tee -a ${LOG_PATH} 
 fi
