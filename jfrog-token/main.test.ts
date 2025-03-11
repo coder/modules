@@ -20,6 +20,7 @@ describe("jfrog-token", async () => {
     refreshable?: boolean;
     expires_in?: number;
     username_field?: string;
+    username?: string;
     jfrog_server_id?: string;
     configure_code_server?: boolean;
   };
