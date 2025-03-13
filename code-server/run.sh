@@ -43,7 +43,7 @@ if [ ! -f "$CODE_SERVER" ] || [ "${USE_CACHED}" != true ]; then
   printf "$${BOLD}Installing code-server!\n"
 
   # Clean up from other install (in case install prefix changed).
-  if [ -e "$CODER_SCRIPT_BIN_DIR/code-server" ]; then
+  if [ -n "$CODER_SCRIPT_BIN_DIR" ] && [ -e "$CODER_SCRIPT_BIN_DIR/code-server" ]; then
     rm "$CODER_SCRIPT_BIN_DIR/code-server"
   fi
 
