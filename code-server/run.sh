@@ -42,6 +42,11 @@ fi
 if [ ! -f "$CODE_SERVER" ] || [ "${USE_CACHED}" != true ]; then
   printf "$${BOLD}Installing code-server!\n"
 
+  # Clean up from other install (in case install prefix changed).
+  if [ -e "$CODER_SCRIPT_BIN_DIR/code-server" ]; then
+    rm "$CODER_SCRIPT_BIN_DIR/code-server"
+  fi
+
   ARGS=(
     "--method=standalone"
     "--prefix=${INSTALL_PREFIX}"
@@ -56,6 +61,11 @@ if [ ! -f "$CODE_SERVER" ] || [ "${USE_CACHED}" != true ]; then
     exit 1
   fi
   printf "🥳 code-server has been installed in ${INSTALL_PREFIX}\n\n"
+fi
+
+# Make the code-server available in PATH.
+if [ -n "$CODER_SCRIPT_BIN_DIR" ] && [ ! -e "$CODER_SCRIPT_BIN_DIR/code-server" ]; then
+  ln -s "$CODE_SERVER" "$CODER_SCRIPT_BIN_DIR/code-server"
 fi
 
 # Get the list of installed extensions...
