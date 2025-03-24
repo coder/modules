@@ -3,6 +3,14 @@
 # Exit on error, undefined variables, and pipe failures
 set -euo pipefail
 
+info()  { printf "💁 INFO: %s\n" "$@"; }
+warn()  { printf "😱 WARNING: %s\n" "$@" ;}
+error() { printf "💀 ERROR: %s\n" "$@"; exit 1; }
+debug() {
+  if [ "${DEBUG}" != "Y" ]; then return; fi
+  printf "🦺 DEBUG: %s\n" "$@"
+}
+
 # Function to check if vncserver is already installed
 check_installed() {
   if command -v vncserver &> /dev/null; then
@@ -29,14 +37,12 @@ download_file() {
     # shellcheck disable=SC2034
     download_tool=(busybox wget -O-)
   else
-    echo "ERROR: No download tool available (curl, wget, or busybox required)"
-    exit 1
+    error "No download tool available (curl, wget, or busybox required)"
   fi
 
   # shellcheck disable=SC2288
   "$${download_tool[@]}" "$url" > "$output" || {
-    echo "ERROR: Failed to download $url"
-    exit 1
+    error "Failed to download $url"
   }
 }
 
@@ -79,16 +85,14 @@ install_rpm() {
     # shellcheck disable=SC2034
     package_manager=(rpm -i)
   else
-    echo "ERROR: No supported package manager available (dnf, zypper, yum, or rpm required)"
-    exit 1
+    error "No supported package manager available (dnf, zypper, yum, or rpm required)"
   fi
 
   download_file "$url" "$kasmrpm"
 
   # shellcheck disable=SC2288
   sudo "$${package_manager[@]}" "$kasmrpm" || {
-    echo "ERROR: Failed to install $kasmrpm"
-    exit 1
+    error "Failed to install $kasmrpm"
   }
 
   rm "$kasmrpm"
@@ -107,8 +111,8 @@ install_alpine() {
 
 # Detect system information
 if [[ ! -f /etc/os-release ]]; then
-  echo "ERROR: Cannot detect OS: /etc/os-release not found"
-  exit 1
+  error "Cannot detect OS: /etc/os-release not found"
+
 fi
 
 # shellcheck disable=SC1091
@@ -124,10 +128,11 @@ elif [[ "$ID" == "fedora" ]]; then
   distro_version="$(grep -oP '\(\K[\w ]+' /etc/fedora-release | tr '[:upper:]' '[:lower:]' | tr -d ' ')"
 fi
 
-echo "Detected Distribution: $distro"
-echo "Detected Version: $distro_version"
-echo "Detected Codename: $codename"
-echo "Detected Architecture: $arch"
+echo "🕵 Detected Operating System Information"
+echo "   🔎 Distribution: $distro"
+echo "   🔎      Version: $distro_version"
+echo "   🔎     Codename: $codename"
+echo "   🔎 Architecture: $arch"
 
 # Map arch to package arch
 case "$arch" in
@@ -145,8 +150,7 @@ case "$arch" in
     : # This is effectively a noop
     ;;
   *)
-    echo "ERROR: Unsupported architecture: $arch"
-    exit 1
+    error "Unsupported architecture: $arch"
     ;;
 esac
 
@@ -154,8 +158,7 @@ esac
 if ! check_installed; then
   # Check for NOPASSWD sudo (required)
   if ! command -v sudo &> /dev/null || ! sudo -n true 2> /dev/null; then
-    echo "ERROR: sudo NOPASSWD access required!"
-    exit 1
+    error "sudo NOPASSWD access required!"
   fi
 
   base_url="https://github.com/kasmtech/KasmVNC/releases/download/v${KASM_VERSION}"
@@ -190,14 +193,14 @@ else
   kasm_config_file="$HOME/.vnc/kasmvnc.yaml"
   SUDO=
 
-  echo "WARNING: Sudo access not available, using user config dir!"
+  warn "Sudo access not available, using user config dir!"
 
   if [[ -f "$kasm_config_file" ]]; then
-    echo "WARNING: Custom user KasmVNC config exists, not overwriting!"
-    echo "WARNING: Ensure that you manually configure the appropriate settings."
+    warn "Custom user KasmVNC config exists, not overwriting!"
+    warm "Ensure that you manually configure the appropriate settings."
     kasm_config_file="/dev/stderr"
   else
-    echo "WARNING: This may prevent custom user KasmVNC settings from applying!"
+    warn "This may prevent custom user KasmVNC settings from applying!"
     mkdir -p "$HOME/.vnc"
   fi
 fi
@@ -213,7 +216,70 @@ network:
     pem_key:
   udp:
     public_ip: 127.0.0.1
+logging:
+  log_writer_name: all
+  log_dest: logfile
+  level: 30
 EOF
+
+get_http_dir() {
+  # determine the served file path
+  # Start with the default
+  httpd_directory="/usr/share/kasmvnc/www"
+
+  # Check the system configuration path
+  if [[ -e /etc/kasmvnc/kasmvnc.yaml ]]; then
+    d=($(grep -E "^\s*httpd_directory:.*$" /etc/kasmvnc/kasmvnc.yaml))
+    # If this grep is successful, it will return:
+    #     httpd_directory: /usr/share/kasmvnc/www
+    if [[ $${#d[@]} -eq 2 && -d "$${d[1]}" ]]; then
+      httpd_directory="$${d[1]}"
+    fi
+  fi
+
+  # Check the home directory for overriding values
+  if [[ -e "$HOME/.vnc/kasmvnc.yaml" ]]; then
+    d=($(grep -E "^\s*httpd_directory:.*$" /etc/kasmvnc/kasmvnc.yaml))
+    if [[ $${#d[@]} -eq 2 && -d "$${d[1]}" ]]; then
+      httpd_directory="$${d[1]}"
+    fi
+  fi
+  echo $httpd_directory
+}
+
+fix_server_index_file(){
+    local fname=$${FUNCNAME[0]}  # gets current function name
+    if [[ $# -ne 1 ]]; then
+        error "$fname requires exactly 1 parameter:\n\tpath to KasmVNC httpd_directory"
+    fi
+    local httpdir="$1"
+    if [[ ! -d "$httpdir" ]]; then
+      error "$fname: $httpdir is not a directory"
+    fi
+    pushd "$httpdir" > /dev/null
+
+    cat <<EOH > /tmp/path_vnc.html
+${file(path.module)}
+EOH
+    $SUDO mv /tmp/path_vnc.html .
+    # check for the switcheroo
+    if [[ -f "index.html" && -L "vnc.html" ]]; then
+      $SUDO mv $httpdir/index.html $httpdir/vnc.html
+    fi
+    $SUDO ln -s -f path_vnc.html index.html
+    popd > /dev/null
+}
+
+patch_kasm_http_files(){
+  homedir=$(get_http_dir)
+  fix_server_index_file "$homedir"
+}
+
+if [[ "${SUBDOMAIN}" == "false" ]]; then
+  info "🩹 Patching up webserver files to support path-sharing..."
+  patch_kasm_http_files
+fi
+
 
 # This password is not used since we start the server without auth.
 # The server is protected via the Coder session token / tunnel
@@ -222,14 +288,47 @@ echo -e "password\npassword\n" | vncpasswd -wo -u "$USER"
 
 # Start the server
 printf "🚀 Starting KasmVNC server...\n"
-vncserver -select-de "${DESKTOP_ENVIRONMENT}" -disableBasicAuth > /tmp/kasmvncserver.log 2>&1 &
-pid=$!
+vncserver -select-de "${DESKTOP_ENVIRONMENT}" -disableBasicAuth > /tmp/kasmvncserver.log &
 
-# Wait for server to start
-sleep 5
-grep -v '^[[:space:]]*$' /tmp/kasmvncserver.log | tail -n 10
-if ps -p $pid | grep -q "^$pid"; then
-  echo "ERROR: Failed to start KasmVNC server. Check full logs at /tmp/kasmvncserver.log"
-  exit 1
+# Kasm writes the pid and the log into ~/.vnc. We can check them for liveness
+is_started() {
+  debug "ls for pidfile: $(ls -alh ~/.vnc/$(hostname):1.pid 2>&1)"
+
+  pidfile="$${HOME}/.vnc/$(hostname):1.pid"
+  if [[ ! -f $pidfile ]]; then
+    debug "is_started(): no pidfile found"
+    return 1
+  fi
+  pid=$(cat $${pidfile})
+  debug "$(ps $pid)"
+  if kill -0 $pid; then
+    debug "is_started(): found a live PID, setting active"
+    declare -gx active="Y"
+    return 0
+  else
+    debug "is_started(): PID is not active"
+    return 1
+  fi
+  warning "is_started(): REACHED THE END WITHOUT HITTING A CASE"
+  return 1
+}
+
+# Use a sleep based polling timer to see when Kasm comes up.
+waited=0
+is_started && debug "is Started: true" || debug "is_started: false"
+[[ waited -le 30 ]] && debug "waited -le 30: true" || debug "waited -le 30: false"
+while [[ waited -le 30 ]] && ! is_started; do
+  sleep 1
+  waited=$((waited+1))
+  if [[ waited -ne 0 && $((waited % 5)) -eq 0 ]]; then
+    echo "⏳ Waiting for KasmVNC to start ($waited seconds...)"
+  fi
+is_started && debug  "is Started: true" || debug "is_started: false"
+[[ waited -le 30 ]] && debug "waited -le 30: true" || debug "waited -le 30: false"
+done
+
+if [[ "$active" == "" ]]; then
+  error "timed out waiting for KasmVNC to start."
 fi
-printf "🚀 KasmVNC server started successfully!\n"
+
+printf "🚀 KasmVNC server started successfully in $waited seconds!\n"
