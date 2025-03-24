@@ -9,7 +9,8 @@ tags: [helper, vnc, desktop]
 
 # KasmVNC
 
-Automatically install [KasmVNC](https://kasmweb.com/kasmvnc) in a workspace, and create an app to access it via the dashboard.
+Automatically install [KasmVNC](https://kasmweb.com/kasmvnc) in a workspace, and
+create an app to access it via the dashboard.
 
 ```tf
 module "kasmvnc" {
@@ -18,7 +19,12 @@ module "kasmvnc" {
   version             = "1.0.23"
   agent_id            = coder_agent.example.id
   desktop_environment = "xfce"
+  subdomain           = true
 }
 ```
 
-> **Note:** This module only works on workspaces with a pre-installed desktop environment. As an example base image you can use `codercom/enterprise-desktop` image.
+> **Note:** This module only works on workspaces with a one of the following
+> desktop environments pre-installed: `xfce`, `kde`, `gnome`, `lxde`, `lxqt`.
+
+> The `codercom/enterprise-desktop` base image contains `xfce` and can be used
+> as an example image.
