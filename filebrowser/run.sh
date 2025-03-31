@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 BOLD='\033[[0;1m'
 
 printf "$${BOLD}Installing filebrowser \n\n"
