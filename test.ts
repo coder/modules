@@ -30,6 +30,12 @@ export const runContainer = async (
   return containerID.trim();
 };
 
+export interface scriptOutput {
+  exitCode: number;
+  stdout: string[];
+  stderr: string[];
+}
+
 /**
  * Finds the only "coder_script" resource in the given state and runs it in a
  * container.
@@ -38,13 +44,15 @@ export const executeScriptInContainer = async (
   state: TerraformState,
   image: string,
   shell = "sh",
-): Promise<{
-  exitCode: number;
-  stdout: string[];
-  stderr: string[];
-}> => {
+  before?: string,
+): Promise<scriptOutput> => {
   const instance = findResourceInstance(state, "coder_script");
   const id = await runContainer(image);
+
+  if (before) {
+    const respBefore = await execContainer(id, [shell, "-c", before]);
+  }
+
   const resp = await execContainer(id, [shell, "-c", instance.script]);
   const stdout = resp.stdout.trim().split("\n");
   const stderr = resp.stderr.trim().split("\n");
