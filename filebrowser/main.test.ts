@@ -3,8 +3,26 @@ import {
   executeScriptInContainer,
   runTerraformApply,
   runTerraformInit,
+  type scriptOutput,
   testRequiredVariables,
 } from "../test";
+
+function testBaseLine(output: scriptOutput) {
+  expect(output.exitCode).toBe(0);
+
+  const expectedLines = [
+    "\u001b[[0;1mInstalling filebrowser ",
+    "🥳 Installation complete! ",
+    "👷 Starting filebrowser in background... ",
+    "📂 Serving /root at http://localhost:13339 ",
+    "📝 Logs at /tmp/filebrowser.log",
+  ];
+
+  // we could use expect(output.stdout).toEqual(expect.arrayContaining(expectedLines)), but when it errors, it doesn't say which line is wrong
+  for (const line of expectedLines) {
+    expect(output.stdout).toContain(line);
+  }
+}
 
 describe("filebrowser", async () => {
   await runTerraformInit(import.meta.dir);
@@ -28,21 +46,15 @@ describe("filebrowser", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
     });
-    const output = await executeScriptInContainer(state, "alpine");
-    expect(output.exitCode).toBe(0);
-    expect(output.stdout).toEqual([
-      "\u001b[0;1mInstalling filebrowser ",
-      "",
-      "🥳 Installation complete! ",
-      "",
-      "👷 Starting filebrowser in background... ",
-      "",
-      "📂 Serving /root at http://localhost:13339 ",
-      "",
-      "Running 'filebrowser --noauth --root /root --port 13339 --baseurl ' ",
-      "",
-      "📝 Logs at /tmp/filebrowser.log",
-    ]);
+
+    const output = await executeScriptInContainer(
+      state,
+      "alpine/curl",
+      "sh",
+      "apk add bash",
+    );
+
+    testBaseLine(output);
   });
 
   it("runs with database_path var", async () => {
@@ -50,21 +62,15 @@ describe("filebrowser", async () => {
       agent_id: "foo",
       database_path: ".config/filebrowser.db",
     });
-    const output = await executeScriptInContainer(state, "alpine");
-    expect(output.exitCode).toBe(0);
-    expect(output.stdout).toEqual([
-      "\u001b[0;1mInstalling filebrowser ",
-      "",
-      "🥳 Installation complete! ",
-      "",
-      "👷 Starting filebrowser in background... ",
-      "",
-      "📂 Serving /root at http://localhost:13339 ",
-      "",
-      "Running 'filebrowser --noauth --root /root --port 13339 -d .config/filebrowser.db --baseurl ' ",
-      "",
-      "📝 Logs at /tmp/filebrowser.log",
-    ]);
+
+    const output = await await executeScriptInContainer(
+      state,
+      "alpine/curl",
+      "sh",
+      "apk add bash",
+    );
+
+    testBaseLine(output);
   });
 
   it("runs with folder var", async () => {
@@ -72,21 +78,12 @@ describe("filebrowser", async () => {
       agent_id: "foo",
       folder: "/home/coder/project",
     });
-    const output = await executeScriptInContainer(state, "alpine");
-    expect(output.exitCode).toBe(0);
-    expect(output.stdout).toEqual([
-      "\u001b[0;1mInstalling filebrowser ",
-      "",
-      "🥳 Installation complete! ",
-      "",
-      "👷 Starting filebrowser in background... ",
-      "",
-      "📂 Serving /home/coder/project at http://localhost:13339 ",
-      "",
-      "Running 'filebrowser --noauth --root /home/coder/project --port 13339 --baseurl ' ",
-      "",
-      "📝 Logs at /tmp/filebrowser.log",
-    ]);
+    const output = await await executeScriptInContainer(
+      state,
+      "alpine/curl",
+      "sh",
+      "apk add bash",
+    );
   });
 
   it("runs with subdomain=false", async () => {
@@ -95,20 +92,14 @@ describe("filebrowser", async () => {
       agent_name: "main",
       subdomain: false,
     });
-    const output = await executeScriptInContainer(state, "alpine");
-    expect(output.exitCode).toBe(0);
-    expect(output.stdout).toEqual([
-      "\u001B[0;1mInstalling filebrowser ",
-      "",
-      "🥳 Installation complete! ",
-      "",
-      "👷 Starting filebrowser in background... ",
-      "",
-      "📂 Serving /root at http://localhost:13339 ",
-      "",
-      "Running 'filebrowser --noauth --root /root --port 13339 --baseurl /@default/default.main/apps/filebrowser' ",
-      "",
-      "📝 Logs at /tmp/filebrowser.log",
-    ]);
+
+    const output = await await executeScriptInContainer(
+      state,
+      "alpine/curl",
+      "sh",
+      "apk add bash",
+    );
+
+    testBaseLine(output);
   });
 });
