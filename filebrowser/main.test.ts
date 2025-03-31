@@ -19,7 +19,7 @@ function testBaseLine(output: scriptOutput) {
   ];
 
   // we could use expect(output.stdout).toEqual(expect.arrayContaining(expectedLines)), but when it errors, it doesn't say which line is wrong
-  for(const line of expectedLines) {
+  for (const line of expectedLines) {
     expect(output.stdout).toContain(line);
   }
 }
@@ -47,8 +47,13 @@ describe("filebrowser", async () => {
       agent_id: "foo",
     });
 
-    const output = await executeScriptInContainer(state, "alpine/curl", "sh", "apk add bash");
-    
+    const output = await executeScriptInContainer(
+      state,
+      "alpine/curl",
+      "sh",
+      "apk add bash",
+    );
+
     testBaseLine(output);
   });
 
@@ -58,8 +63,13 @@ describe("filebrowser", async () => {
       database_path: ".config/filebrowser.db",
     });
 
-    const output = await await executeScriptInContainer(state, "alpine/curl", "sh", "apk add bash");
-    
+    const output = await await executeScriptInContainer(
+      state,
+      "alpine/curl",
+      "sh",
+      "apk add bash",
+    );
+
     testBaseLine(output);
   });
 
@@ -68,8 +78,12 @@ describe("filebrowser", async () => {
       agent_id: "foo",
       folder: "/home/coder/project",
     });
-    const output = await await executeScriptInContainer(state, "alpine/curl", "sh", "apk add bash");
-
+    const output = await await executeScriptInContainer(
+      state,
+      "alpine/curl",
+      "sh",
+      "apk add bash",
+    );
   });
 
   it("runs with subdomain=false", async () => {
@@ -79,8 +93,13 @@ describe("filebrowser", async () => {
       subdomain: false,
     });
 
-    const output = await await executeScriptInContainer(state, "alpine/curl", "sh", "apk add bash");
-    
+    const output = await await executeScriptInContainer(
+      state,
+      "alpine/curl",
+      "sh",
+      "apk add bash",
+    );
+
     testBaseLine(output);
   });
 });
