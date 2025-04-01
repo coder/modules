@@ -152,7 +152,7 @@ resource "coder_app" "goose" {
       cd ${var.folder}
       export LANG=en_US.UTF-8
       export LC_ALL=en_US.UTF-8
-      goose
+      $HOME/.local/bin/goose
     fi
     EOT
   icon         = var.icon
