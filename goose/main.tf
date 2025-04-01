@@ -60,6 +60,24 @@ variable "experiment_report_tasks" {
   default     = false
 }
 
+variable "experiment_auto_configure" {
+  type        = bool
+  description = "Whether to automatically configure Goose."
+  default     = false
+}
+
+variable "experiment_goose_provider" {
+  type        = string
+  description = "The provider to use for Goose (e.g., anthropic)."
+  default     = null
+}
+
+variable "experiment_goose_model" {
+  type        = string
+  description = "The model to use for Goose (e.g., claude-3-5-sonnet-latest)."
+  default     = null
+}
+
 # Install and Initialize Goose
 resource "coder_script" "goose" {
   agent_id     = var.agent_id
@@ -82,6 +100,36 @@ resource "coder_script" "goose" {
       fi
       echo "Installing Goose..."
       RELEASE_TAG=v${var.goose_version} curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | CONFIGURE=false bash
+    fi
+
+    # Configure Goose if auto-configure is enabled
+    if [ "${var.experiment_auto_configure}" = "true" ]; then
+      echo "Configuring Goose..."
+      mkdir -p "$HOME/.config/goose"
+      cat > "$HOME/.config/goose/config.yaml" << EOL
+GOOSE_PROVIDER: ${var.experiment_goose_provider}
+GOOSE_MODEL: ${var.experiment_goose_model}
+extensions:
+  coder:
+    args:
+    - exp
+    - mcp
+    - server
+    cmd: coder
+    description: Report ALL tasks and statuses (in progress, done, failed) before and after starting
+    enabled: true
+    envs:
+      CODER_MCP_APP_STATUS_SLUG: goose
+    name: Coder
+    timeout: 3000
+    type: stdio
+  developer:
+    display_name: Developer
+    enabled: true
+    name: developer
+    timeout: 300
+    type: builtin
+EOL
     fi
     
     # Run with screen if enabled

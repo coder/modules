@@ -22,6 +22,12 @@ Your workspace must have `screen` installed to use this.
 ### Run in the background and report tasks (Experimental)
 
 ```tf
+variable "anthropic_api_key" {
+  type        = string
+  description = "The Anthropic API key"
+  sensitive   = true
+}
+
 data "coder_parameter" "ai_prompt" {
   type        = "string"
   name        = "AI Prompt"
@@ -32,11 +38,16 @@ data "coder_parameter" "ai_prompt" {
 
 # Set the prompt and system prompt for Goose via environment variables
 resource "coder_agent" "main" {
+  # ...
   env = {
     GOOSE_TASK_PROMPT = data.coder_parameter.ai_prompt.value
     SYSTEM_PROMPT      =<<-EOT
       You are a helpful assistant that can help with code.
     EOT
+
+    # An API key is required for experiment_auto_configure
+    # See https://block.github.io/goose/docs/getting-started/providers
+    ANTHROPIC_API_KEY = var.anthropic_api_key
   }
 }
 
@@ -50,8 +61,14 @@ module "goose" {
   goose_version       = "v1.0.16"
 
   # Enable experimental features
-  experiment_use_screen   = true
-  experiment_report_tasks = true
+  experiment_report_tasks   = true
+
+  # Avoid configuring Goose manually
+  experiment_auto_configure = true
+
+  # Required for experiment_auto_configure
+  experiment_goose_provider = "anthropic"
+  experiment_goose_model    = "claude-3-5-sonnet-latest"
 }
 ```
 

@@ -33,9 +33,10 @@ data "coder_parameter" "ai_prompt" {
 
 # Set the prompt and system prompt for Claude Code via environment variables
 resource "coder_agent" "main" {
+  # ...
   env = {
     CLAUDE_TASK_PROMPT = data.coder_parameter.ai_prompt.value
-    SYSTEM_PROMPT      =<<-EOT
+    SYSTEM_PROMPT      = <<-EOT
       You are a helpful assistant that can help with code.
     EOT
   }
