@@ -21,6 +21,13 @@ Your workspace must have `screen` installed to use this.
 
 ### Run in the background and report tasks (Experimental)
 
+> This functionality is in early access and subject to change. Do not run in
+> production as it is unstable. Instead, deploy these changes into a demo or
+> staging environment.
+>
+> Join our [Discord channel](https://discord.gg/coder) or
+> [contact us](https://coder.com/contact) to get help or share feedback.
+
 ```tf
 variable "anthropic_api_key" {
   type        = string
@@ -40,14 +47,14 @@ data "coder_parameter" "ai_prompt" {
 resource "coder_agent" "main" {
   # ...
   env = {
-    GOOSE_TASK_PROMPT = data.coder_parameter.ai_prompt.value
-    SYSTEM_PROMPT      =<<-EOT
-      You are a helpful assistant that can help with code.
+    GOOSE_SYSTEM_PROMPT = <<-EOT
+      You are a helpful assistant that can help with code. Run long running tasks in the background and not in the foreground. Notify Coder of the status of the task before and after your steps.
     EOT
+    GOOSE_TASK_PROMPT = data.coder_parameter.ai_prompt.value
 
     # An API key is required for experiment_auto_configure
     # See https://block.github.io/goose/docs/getting-started/providers
-    ANTHROPIC_API_KEY = var.anthropic_api_key
+    ANTHROPIC_API_KEY = var.anthropic_api_key # or use a coder_parameter
   }
 }
 

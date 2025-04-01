@@ -20,6 +20,13 @@ Run the [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude
 
 ### Run in the background and report tasks (Experimental)
 
+> This functionality is in early access and subject to change. Do not run in
+> production as it is unstable. Instead, deploy these changes into a demo or
+> staging environment.
+>
+> Join our [Discord channel](https://discord.gg/coder) or
+> [contact us](https://coder.com/contact) to get help or share feedback.
+
 Your workspace must have `screen` installed to use this.
 
 ```tf
