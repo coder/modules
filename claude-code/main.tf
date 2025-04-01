@@ -84,9 +84,11 @@ resource "coder_script" "claude_code" {
       npm install -g @anthropic-ai/claude-code@${var.claude_code_version}
     fi
 
-    # Debug output
-    echo "experiment_use_screen value: `${var.experiment_use_screen}`"
-    
+    if [ "${var.experiment_report_tasks}" = "true" ]; then
+      echo "Configuring Claude Code to report tasks via Coder MCP..."
+      coder exp mcp configure claude-code ${var.folder}
+    fi
+
     # Run with screen if enabled
     if [ "${var.experiment_use_screen}" = "true" ]; then
       echo "Running Claude Code in the background..."
@@ -119,7 +121,7 @@ resource "coder_script" "claude_code" {
       
       screen -U -dmS claude-code bash -c '
         cd ${var.folder}
-        claude | tee -a "$HOME/.claude-code.log"
+        claude --dangerously-skip-permissions | tee -a "$HOME/.claude-code.log"
         exec bash
       '
     else
@@ -149,7 +151,7 @@ resource "coder_app" "claude_code" {
         screen -xRR claude-code
       else
         echo "Starting a new Claude Code session." | tee -a "$HOME/.claude-code.log"
-        screen -S claude-code bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; claude | tee -a "$HOME/.claude-code.log"; exec bash'
+        screen -S claude-code bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; claude --dangerously-skip-permissions | tee -a "$HOME/.claude-code.log"; exec bash'
       fi
     else
       cd ${var.folder}

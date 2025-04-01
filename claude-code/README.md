@@ -42,8 +42,9 @@ data "coder_parameter" "ai_prompt" {
 resource "coder_agent" "main" {
   # ...
   env = {
-    CLAUDE_TASK_PROMPT = data.coder_parameter.ai_prompt.value
-    SYSTEM_PROMPT      = <<-EOT
+    CLAUDE_TASK_PROMPT                         = data.coder_parameter.ai_prompt.value
+    CODER_MCP_APP_STATUS_SLUG                  = "claude-code"
+    CODER_MCP_CLAUDE_SYSTEM_PROMPT             = <<-EOT
       You are a helpful assistant that can help with code.
     EOT
   }
