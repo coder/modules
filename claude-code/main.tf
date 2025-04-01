@@ -118,8 +118,6 @@ resource "coder_script" "claude_code" {
       export LC_ALL=en_US.UTF-8
       
       screen -U -dmS claude-code bash -c '
-        export LANG=en_US.UTF-8
-        export LC_ALL=en_US.UTF-8
         cd ${var.folder}
         claude | tee -a "$HOME/.claude-code.log"
         exec bash
