@@ -143,38 +143,15 @@ resource "coder_app" "claude_code" {
     #!/bin/bash
     set -e
 
-    LOG_FILE="$HOME/.claude-code.log"
-
-    # Function to check if a command exists
-    command_exists() {
-      command -v "$1" >/dev/null 2>&1
-    }
-
-    # Check if claude is installed
-    if ! command_exists claude; then
-      echo "Error: Claude Code is not installed. Please enable install_claude_code or install it manually."
-      exit 1
-    fi
-
-    # Debug output
-    echo "experiment_use_screen value: ${var.experiment_use_screen}"
-
     if [ "${var.experiment_use_screen}" = "true" ]; then
-      # Check if screen is installed
-      if ! command_exists screen; then
-        echo "Error: screen is not installed. Please install screen manually."
-        exit 1
-      fi
-
       if screen -list | grep -q "claude-code"; then
-        echo "Attaching to existing Claude Code session." | tee -a "$LOG_FILE"
+        echo "Attaching to existing Claude Code session." | tee -a "$HOME/.claude-code.log"
         screen -xRR claude-code
       else
-        echo "Starting a new Claude Code session." | tee -a "$LOG_FILE"
-        screen -S claude-code bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; claude | tee -a "$HOME/.claude-code.log"; exec bash'
+        echo "Starting a new Claude Code session." | tee -a "$HOME/.claude-code.log"
+        screen -S claude-code bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; claude | tee -a "$LOG_FILE"; exec bash'
       fi
     else
-      echo "Running Claude Code in foreground..."
       cd ${var.folder}
       export LANG=en_US.UTF-8
       export LC_ALL=en_US.UTF-8
