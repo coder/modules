@@ -60,12 +60,6 @@ variable "experiment_report_tasks" {
   default     = false
 }
 
-variable "experiment_init_script" {
-  type        = string
-  description = "Additional initialization script to run before starting Claude Code."
-  default     = ""
-}
-
 # Install and Initialize Claude Code
 resource "coder_script" "claude_code" {
   agent_id     = var.agent_id
@@ -80,12 +74,6 @@ resource "coder_script" "claude_code" {
       command -v "$1" >/dev/null 2>&1
     }
 
-    # Run init script if provided
-    if [ -n "${var.experiment_init_script}" ]; then
-      echo "Running init script..."
-      ${var.experiment_init_script}
-    fi
-
     # Install Claude Code if enabled
     if [ "${var.install_claude_code}" = "true" ]; then
       if ! command_exists npm; then
@@ -96,6 +84,9 @@ resource "coder_script" "claude_code" {
       npm install -g @anthropic-ai/claude-code@${var.claude_code_version}
     fi
 
+    # Debug output
+    echo "experiment_use_screen value: `${var.experiment_use_screen}`"
+    
     # Run with screen if enabled
     if [ "${var.experiment_use_screen}" = "true" ]; then
       echo "Running Claude Code in the background..."
@@ -165,6 +156,9 @@ resource "coder_app" "claude_code" {
       exit 1
     fi
 
+    # Debug output
+    echo "experiment_use_screen value: ${var.experiment_use_screen}"
+
     if [ "${var.experiment_use_screen}" = "true" ]; then
       # Check if screen is installed
       if ! command_exists screen; then
@@ -177,9 +171,10 @@ resource "coder_app" "claude_code" {
         screen -xRR claude-code
       else
         echo "Starting a new Claude Code session." | tee -a "$LOG_FILE"
-        screen -S claude-code bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; claude | tee -a "$LOG_FILE"; exec bash'
+        screen -S claude-code bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; claude | tee -a "$HOME/.claude-code.log"; exec bash'
       fi
     else
+      echo "Running Claude Code in foreground..."
       cd ${var.folder}
       export LANG=en_US.UTF-8
       export LC_ALL=en_US.UTF-8

@@ -52,15 +52,6 @@ module "claude-code" {
   # Enable experimental features
   experiment_use_screen          = true
   experiment_report_tasks        = true
-  experiment_init_script         =<<-EOT
-    #!/bin/bash
-    # Install `screen` if it's not already installed.
-    # This specific script only works on Debian-based systems.
-    if ! command -v screen &> /dev/null; then
-      echo "Installing screen..."
-      sudo apt-get update && sudo apt-get install -y screen
-    fi
-  EOT
 }
 ```
 
