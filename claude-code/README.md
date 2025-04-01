@@ -30,6 +30,12 @@ Run the [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude
 Your workspace must have `screen` installed to use this.
 
 ```tf
+variable "anthropic_api_key" {
+  type        = string
+  description = "The Anthropic API key"
+  sensitive   = true
+}
+
 data "coder_parameter" "ai_prompt" {
   type        = "string"
   name        = "AI Prompt"
@@ -42,9 +48,10 @@ data "coder_parameter" "ai_prompt" {
 resource "coder_agent" "main" {
   # ...
   env = {
-    CLAUDE_TASK_PROMPT                         = data.coder_parameter.ai_prompt.value
-    CODER_MCP_APP_STATUS_SLUG                  = "claude-code"
-    CODER_MCP_CLAUDE_SYSTEM_PROMPT             = <<-EOT
+    CODER_MCP_CLAUDE_API_KEY                             = var.anthropic_api_key # or use a coder_parameter 
+    CODER_MCP_CLAUDE_TASK_PROMPT                         = data.coder_parameter.ai_prompt.value
+    CODER_MCP_APP_STATUS_SLUG                            = "claude-code"
+    CODER_MCP_CLAUDE_SYSTEM_PROMPT                       = <<-EOT
       You are a helpful assistant that can help with code.
     EOT
   }
