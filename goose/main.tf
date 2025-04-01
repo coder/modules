@@ -27,7 +27,7 @@ variable "order" {
 variable "icon" {
   type        = string
   description = "The icon to use for the app."
-  default     = "/icon/claude.svg"
+  default     = "/icon/goose.svg"
 }
 
 variable "folder" {
@@ -119,12 +119,12 @@ resource "coder_script" "goose" {
       
       screen -U -dmS goose bash -c '
         cd ${var.folder}
-        claude | tee -a "$HOME/.goose.log"
+        goose | tee -a "$HOME/.goose.log"
         exec bash
       '
     else
-      # Check if claude is installed before running
-      if ! command_exists claude; then
+      # Check if goose is installed before running
+      if ! command_exists goose; then
         echo "Error: Goose is not installed. Please enable install_goose or install it manually."
         exit 1
       fi
@@ -149,13 +149,13 @@ resource "coder_app" "goose" {
         screen -xRR goose
       else
         echo "Starting a new Goose session." | tee -a "$HOME/.goose.log"
-        screen -S goose bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; claude | tee -a "$HOME/.goose.log"; exec bash'
+        screen -S goose bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; goose | tee -a "$HOME/.goose.log"; exec bash'
       fi
     else
       cd ${var.folder}
       export LANG=en_US.UTF-8
       export LC_ALL=en_US.UTF-8
-      claude
+      goose
     fi
     EOT
   icon         = var.icon
