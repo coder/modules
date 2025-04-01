@@ -121,9 +121,11 @@ resource "coder_script" "claude_code" {
       
       screen -U -dmS claude-code bash -c '
         cd ${var.folder}
-        claude --dangerously-skip-permissions "$CODER_MCP_CLAUDE_TASK_PROMPT" | tee -a "$HOME/.claude-code.log"
+        claude --dangerously-skip-permissions | tee -a "$HOME/.claude-code.log"
         exec bash
       '
+      screen -S claude-code -X stuff "$CODER_MCP_CLAUDE_TASK_PROMPT"
+      screen -S claude-code -X stuff "^M"
     else
       # Check if claude is installed before running
       if ! command_exists claude; then
