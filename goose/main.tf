@@ -83,9 +83,6 @@ resource "coder_script" "goose" {
       echo "Installing Goose..."
       RELEASE_TAG=v${var.goose_version} curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | CONFIGURE=false bash
     fi
-
-    # Debug output
-    echo "experiment_use_screen value: `${var.experiment_use_screen}`"
     
     # Run with screen if enabled
     if [ "${var.experiment_use_screen}" = "true" ]; then
@@ -119,12 +116,12 @@ resource "coder_script" "goose" {
       
       screen -U -dmS goose bash -c '
         cd ${var.folder}
-        goose | tee -a "$HOME/.goose.log"
+        $HOME/.local/bin/goose | tee -a "$HOME/.goose.log"
         exec bash
       '
     else
       # Check if goose is installed before running
-      if ! command_exists goose; then
+      if ! command_exists $HOME/.local/bin/goose; then
         echo "Error: Goose is not installed. Please enable install_goose or install it manually."
         exit 1
       fi
