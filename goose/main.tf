@@ -164,7 +164,7 @@ EOL
       
       screen -U -dmS goose bash -c '
         cd ${var.folder}
-        $HOME/.local/bin/goose --text "Always report status and instructions to Coder, before and after your steps. Your task: $GOOSE_PROMPT" --interactive | tee -a "$HOME/.goose.log"
+        $HOME/.local/bin/goose run --text "Always report status and instructions to Coder, before and after your steps. Your task: $GOOSE_PROMPT" --interactive | tee -a "$HOME/.goose.log"
         exec bash
       '
     else
@@ -194,7 +194,7 @@ resource "coder_app" "goose" {
         screen -xRR goose
       else
         echo "Starting a new Goose session." | tee -a "$HOME/.goose.log"
-        screen -S goose bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; $HOME/.local/bin/goose --text "Always report status and instructions to Coder, before and after your steps" --interactive | tee -a "$HOME/.goose.log"; exec bash'
+        screen -S goose bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; $HOME/.local/bin/goose run --text "Always report status and instructions to Coder, before and after your steps" --interactive | tee -a "$HOME/.goose.log"; exec bash'
       fi
     else
       cd ${var.folder}
