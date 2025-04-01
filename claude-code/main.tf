@@ -124,7 +124,9 @@ resource "coder_script" "claude_code" {
         claude --dangerously-skip-permissions | tee -a "$HOME/.claude-code.log"
         exec bash
       '
+      # Extremely hacky way to send the prompt to the screen session
       screen -S claude-code -X stuff "$CODER_MCP_CLAUDE_TASK_PROMPT"
+      sleep 0.5
       screen -S claude-code -X stuff "^M"
     else
       # Check if claude is installed before running
