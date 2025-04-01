@@ -48,7 +48,13 @@ resource "coder_agent" "main" {
   # ...
   env = {
     GOOSE_SYSTEM_PROMPT = <<-EOT
-      You are a helpful assistant that can help with code. Run long running tasks in the background and not in the foreground. Notify Coder of the status of the task before and after your steps.
+      You are a helpful assistant that can help write code.
+      
+      Run all long running tasks (e.g. npm run dev) in the background and not in the foreground.
+      
+      Periodically check in on background tasks.
+      
+      Notify Coder of the status of the task before and after your steps.
     EOT
     GOOSE_TASK_PROMPT = data.coder_parameter.ai_prompt.value
 
