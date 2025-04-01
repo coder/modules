@@ -114,6 +114,8 @@ resource "coder_script" "claude_code" {
         echo "Adding 'acladd $(whoami)' to ~/.screenrc..." | tee -a "$HOME/.claude-code.log"
         echo "acladd $(whoami)" >> "$HOME/.screenrc"
       fi
+      export LANG=en_US.UTF-8
+      export LC_ALL=en_US.UTF-8
       
       screen -U -dmS claude-code bash -c '
         export LANG=en_US.UTF-8
@@ -143,6 +145,8 @@ resource "coder_app" "claude_code" {
 
     if [ "${var.experiment_use_screen}" = "true" ]; then
       if screen -list | grep -q "claude-code"; then
+        export LANG=en_US.UTF-8
+        export LC_ALL=en_US.UTF-8
         echo "Attaching to existing Claude Code session." | tee -a "$HOME/.claude-code.log"
         screen -xRR claude-code
       else
