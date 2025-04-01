@@ -19,7 +19,8 @@ Run the [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude
 ## Examples
 
 ### Run in the background and report tasks (Experimental)
-Your workspace must have `screen` installed to use this. In this example, we'll attempt to install `screen` if it's not already installed.
+
+Your workspace must have `screen` installed to use this.
 
 ```tf
 data "coder_parameter" "ai_prompt" {
