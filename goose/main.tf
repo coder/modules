@@ -164,7 +164,7 @@ EOL
       
       screen -U -dmS goose bash -c '
         cd ${var.folder}
-        $HOME/.local/bin/goose run --text "Always report status and instructions to Coder, before and after your steps. Your task: $GOOSE_PROMPT" --interactive | tee -a "$HOME/.goose.log"
+        $HOME/.local/bin/goose run --text "Always report status and instructions to Coder, before and after your steps. Your task: $GOOSE_TASK_PROMPT" --interactive | tee -a "$HOME/.goose.log"
         exec bash
       '
     else
