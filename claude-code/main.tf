@@ -97,31 +97,29 @@ resource "coder_script" "claude_code" {
         exit 1
       fi
 
-      SCREENRC="$HOME/.screenrc"
-      LOG_FILE="$HOME/.claude-code.log"
-      touch "$LOG_FILE"
+      touch "$HOME/.claude-code.log"
 
       # Ensure the screenrc exists
-      if [ ! -f "$SCREENRC" ]; then
-        echo "Creating ~/.screenrc and adding multiuser settings..." | tee -a "$LOG_FILE"
-        echo -e "multiuser on\nacladd $(whoami)" > "$SCREENRC"
+      if [ ! -f "$HOME/.screenrc" ]; then
+        echo "Creating ~/.screenrc and adding multiuser settings..." | tee -a "$HOME/.claude-code.log"
+        echo -e "multiuser on\nacladd $(whoami)" > "$HOME/.screenrc"
       fi
       
-      if ! grep -q "^multiuser on$" "$SCREENRC"; then
-        echo "Adding 'multiuser on' to ~/.screenrc..." | tee -a "$LOG_FILE"
-        echo "multiuser on" >> "$SCREENRC"
+      if ! grep -q "^multiuser on$" "$HOME/.screenrc"; then
+        echo "Adding 'multiuser on' to ~/.screenrc..." | tee -a "$HOME/.claude-code.log"
+        echo "multiuser on" >> "$HOME/.screenrc"
       fi
 
-      if ! grep -q "^acladd $(whoami)$" "$SCREENRC"; then
-        echo "Adding 'acladd $(whoami)' to ~/.screenrc..." | tee -a "$LOG_FILE"
-        echo "acladd $(whoami)" >> "$SCREENRC"
+      if ! grep -q "^acladd $(whoami)$" "$HOME/.screenrc"; then
+        echo "Adding 'acladd $(whoami)' to ~/.screenrc..." | tee -a "$HOME/.claude-code.log"
+        echo "acladd $(whoami)" >> "$HOME/.screenrc"
       fi
       
       screen -U -dmS claude-code bash -c '
         export LANG=en_US.UTF-8
         export LC_ALL=en_US.UTF-8
         cd ${var.folder}
-        claude | tee -a "$LOG_FILE"
+        claude | tee -a "$HOME/.claude-code.log"
         exec bash
       '
     else
@@ -149,7 +147,7 @@ resource "coder_app" "claude_code" {
         screen -xRR claude-code
       else
         echo "Starting a new Claude Code session." | tee -a "$HOME/.claude-code.log"
-        screen -S claude-code bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; claude | tee -a "$LOG_FILE"; exec bash'
+        screen -S claude-code bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; claude | tee -a "$HOME/.claude-code.log"; exec bash'
       fi
     else
       cd ${var.folder}
