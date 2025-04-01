@@ -55,9 +55,9 @@ module "claude-code" {
 }
 ```
 
-## Run as a standalone app
+## Run standalone
 
-Run Claude Code as a standalone app in your workspace. This will install Claude Code and run it directly without using screen.
+Run Claude Code as a standalone app in your workspace. This will install Claude Code and run it directly without using screen or any task reporting to the Coder UI.
 
 ```tf
 module "claude-code" {
