@@ -78,6 +78,6 @@ module "claude-code" {
   claude_code_version = "latest"
 
   # Icon is not available in Coder v2.20 and below, so we'll use a custom icon URL
-  icon                = "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/claude-ai-icon.png"
+  icon                = "https://registry.npmmirror.com/@lobehub/icons-static-png/1.24.0/files/dark/claude-color.png"
 }
 ```

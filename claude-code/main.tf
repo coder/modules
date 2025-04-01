@@ -92,7 +92,7 @@ resource "coder_script" "claude_code" {
         echo "Error: npm is not installed. Please install Node.js and npm first."
         exit 1
       fi
-      echo "Installing Claude Code version ${var.claude_code_version}..."
+      echo "Installing Claude Code..."
       npm install -g @anthropic-ai/claude-code@${var.claude_code_version}
     fi
 
@@ -139,11 +139,6 @@ resource "coder_script" "claude_code" {
         echo "Error: Claude Code is not installed. Please enable install_claude_code or install it manually."
         exit 1
       fi
-      
-      cd ${var.folder}
-      export LANG=en_US.UTF-8
-      export LC_ALL=en_US.UTF-8
-      claude
     fi
     EOT
   run_on_start = true
