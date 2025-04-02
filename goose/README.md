@@ -35,9 +35,9 @@ Your workspace must have `screen` installed to use this.
 
 ### Run in the background and report tasks (Experimental)
 
-> This functionality is in early access as of Coder v2.21 and is subject to change.
-> Do not run in production as it is unstable.
-> Instead, deploy these changes into a demo or staging environment.
+> This functionality is in early access as of Coder v2.21 and is still evolving.
+> For now, we recommend testing it in a demo or staging environment,
+> rather than deploying to production
 >
 > Learn more in [the Coder documentation](https://coder.com/docs/tutorials/ai-agents)
 >
