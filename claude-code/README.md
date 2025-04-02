@@ -11,6 +11,17 @@ tags: [agent, claude-code]
 
 Run the [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview) agent in your workspace to generate code and perform tasks.
 
+```tf
+module "claude-code" {
+  source              = "registry.coder.com/modules/claude-code/coder"
+  version             = "1.0.29"
+  agent_id            = coder_agent.example.id
+  folder              = "/home/coder"
+  install_claude_code = true
+  claude_code_version = "latest"
+}
+```
+
 ### Prerequisites
 
 - Node.js and npm must be installed in your workspace to install Claude Code

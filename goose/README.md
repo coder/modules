@@ -11,6 +11,17 @@ tags: [agent, goose]
 
 Run the [Goose](https://block.github.io/goose/) agent in your workspace to generate code and perform tasks.
 
+```tf
+module "goose" {
+  source        = "registry.coder.com/modules/goose/coder"
+  version       = "1.0.29"
+  agent_id      = coder_agent.example.id
+  folder        = "/home/coder"
+  install_goose = true
+  goose_version = "v1.0.16"
+}
+```
+
 ### Prerequisites
 
 - `screen` must be installed in your workspace to run Goose in the background
