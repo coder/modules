@@ -2,7 +2,7 @@
 
 BOLD='\033[0;1m'
 EXTENSIONS=("${EXTENSIONS}")
-VSCODE_WEB="${INSTALL_PREFIX}/bin/code-server"
+VSCODE_CLI="${INSTALL_PREFIX}/code"
 
 # Set extension directory
 EXTENSION_ARG=""
@@ -17,9 +17,9 @@ if [ -n "${SERVER_BASE_PATH}" ]; then
 fi
 
 run_vscode_web() {
-  echo "👷 Running $VSCODE_WEB serve-local $EXTENSION_ARG $SERVER_BASE_PATH_ARG --port ${PORT} --host 127.0.0.1 --accept-server-license-terms --without-connection-token --telemetry-level ${TELEMETRY_LEVEL} in the background..."
+  echo "👷 Running $VSCODE_CLI serve-web $EXTENSION_ARG $SERVER_BASE_PATH_ARG --port ${PORT} --host 127.0.0.1 --accept-server-license-terms --without-connection-token in the background..."
   echo "Check logs at ${LOG_PATH}!"
-  "$VSCODE_WEB" serve-local "$EXTENSION_ARG" "$SERVER_BASE_PATH_ARG" --port "${PORT}" --host 127.0.0.1 --accept-server-license-terms --without-connection-token --telemetry-level "${TELEMETRY_LEVEL}" > "${LOG_PATH}" 2>&1 &
+  "$VSCODE_CLI" serve-web $EXTENSION_ARG $SERVER_BASE_PATH_ARG --port "${PORT}" --host 127.0.0.1 --accept-server-license-terms --without-connection-token > "${LOG_PATH}" 2>&1 &
 }
 
 # Check if the settings file exists...
@@ -30,18 +30,18 @@ if [ ! -f ~/.vscode-server/data/Machine/settings.json ]; then
 fi
 
 # Check if vscode-server is already installed for offline or cached mode
-if [ -f "$VSCODE_WEB" ]; then
-  if [ "${OFFLINE}" = true ] || [ "${USE_CACHED}" = true ]; then
-    echo "🥳 Found a copy of VS Code Web"
-    run_vscode_web
-    exit 0
-  fi
-fi
+#if [ -f "$VSCODE_WEB" ]; then
+#  if [ "${OFFLINE}" = true ] || [ "${USE_CACHED}" = true ]; then
+#    echo "🥳 Found a copy of VS Code Web"
+#    run_vscode_web
+#    exit 0
+#  fi
+#fi
 # Offline mode always expects a copy of vscode-server to be present
-if [ "${OFFLINE}" = true ]; then
-  echo "Failed to find a copy of VS Code Web"
-  exit 1
-fi
+#if [ "${OFFLINE}" = true ]; then
+#  echo "Failed to find a copy of VS Code Web"
+#  exit 1
+#fi
 
 # Create install prefix
 mkdir -p ${INSTALL_PREFIX}
@@ -67,7 +67,7 @@ else
 fi
 printf "$${BOLD}VS Code Web commit id version $HASH.\n"
 
-output=$(curl -fsSL "https://vscode.download.prss.microsoft.com/dbazure/download/stable/$HASH/vscode-server-linux-$ARCH-web.tar.gz" | tar -xz -C "${INSTALL_PREFIX}" --strip-components 1)
+output=$(curl -fsSL "https://vscode.download.prss.microsoft.com/dbazure/download/stable/$HASH/vscode_cli_alpine_"$ARCH"_cli.tar.gz" | tar -xz -C "${INSTALL_PREFIX}")
 
 if [ $? -ne 0 ]; then
   echo "Failed to install Microsoft Visual Studio Code Server: $output"
@@ -75,37 +75,54 @@ if [ $? -ne 0 ]; then
 fi
 printf "$${BOLD}VS Code Web has been installed.\n"
 
-# Install each extension...
-IFS=',' read -r -a EXTENSIONLIST <<< "$${EXTENSIONS}"
-for extension in "$${EXTENSIONLIST[@]}"; do
-  if [ -z "$extension" ]; then
-    continue
-  fi
-  printf "🧩 Installing extension $${CODE}$extension$${RESET}...\n"
-  output=$($VSCODE_WEB "$EXTENSION_ARG" --install-extension "$extension" --force)
-  if [ $? -ne 0 ]; then
-    echo "Failed to install extension: $extension: $output"
-  fi
-done
-
-if [ "${AUTO_INSTALL_EXTENSIONS}" = true ]; then
-  if ! command -v jq > /dev/null; then
-    echo "jq is required to install extensions from a workspace file."
-  else
-    WORKSPACE_DIR="$HOME"
-    if [ -n "${FOLDER}" ]; then
-      WORKSPACE_DIR="${FOLDER}"
+VSCODE_WEB=~/.vscode/cli/serve-web/$HASH/bin/code-server
+install_extension() {
+  # code serve-web auto download code-server by health check trigger.
+  echo "Download code-server to $VSCODE_WEB."
+  
+  while true; do
+    if [ -f "$VSCODE_WEB" ]; then
+        echo "$VSCODE_WEB exists."
+        break
     fi
-
-    if [ -f "$WORKSPACE_DIR/.vscode/extensions.json" ]; then
-      printf "🧩 Installing extensions from %s/.vscode/extensions.json...\n" "$WORKSPACE_DIR"
-      # Use sed to remove single-line comments before parsing with jq
-      extensions=$(sed 's|//.*||g' "$WORKSPACE_DIR"/.vscode/extensions.json | jq -r '.recommendations[]')
-      for extension in $extensions; do
-        $VSCODE_WEB "$EXTENSION_ARG" --install-extension "$extension" --force
-      done
+    echo "Wait for $VSCODE_WEB."
+    sleep 30
+  done
+  
+  # Install each extension...
+  IFS=',' read -r -a EXTENSIONLIST <<< "$${EXTENSIONS}"
+  for extension in "$${EXTENSIONLIST[@]}"; do
+    if [ -z "$extension" ]; then
+      continue
+    fi
+    printf "🧩 Installing extension $${CODE}$extension$${RESET}...\n"
+    output=$($VSCODE_WEB $EXTENSIONS_DIR --install-extension "$extension" --force)
+    if [ $? -ne 0 ]; then
+      echo "Failed to install extension: $extension: $output"
+    fi
+  done
+  
+  if [ "${AUTO_INSTALL_EXTENSIONS}" = true ]; then
+    if ! command -v jq > /dev/null; then
+      echo "jq is required to install extensions from a workspace file."
+    else
+      WORKSPACE_DIR="$HOME"
+      if [ -n "${FOLDER}" ]; then
+        WORKSPACE_DIR="${FOLDER}"
+      fi
+  
+      if [ -f "$WORKSPACE_DIR/.vscode/extensions.json" ]; then
+        printf "🧩 Installing extensions from %s/.vscode/extensions.json...\n" "$WORKSPACE_DIR"
+        # Use sed to remove single-line comments before parsing with jq
+        extensions=$(sed 's|//.*||g' "$WORKSPACE_DIR"/.vscode/extensions.json | jq -r '.recommendations[]')
+        for extension in $extensions; do
+          $VSCODE_WEB $EXTENSIONS_DIR --install-extension "$extension" --force
+        done
+      fi
     fi
   fi
-fi
+}
 
 run_vscode_web
+install_extension
+printf "✅ VSCode Web installed.\n"
