@@ -14,6 +14,9 @@ Run the [Goose](https://block.github.io/goose/) agent in your workspace to gener
 ### Prerequisites
 
 - `screen` must be installed in your workspace to run Goose in the background
+- You must add the [Coder Login](https://registry.coder.com/modules/coder-login) module to your template
+
+The `codercom/oss-dogfood:latest` container image can be used for testing on container-based workspaces.
 
 ## Examples
 
@@ -29,6 +32,13 @@ Your workspace must have `screen` installed to use this.
 > [contact us](https://coder.com/contact) to get help or share feedback.
 
 ```tf
+module "coder-login" {
+  count    = data.coder_workspace.me.start_count
+  source   = "registry.coder.com/modules/coder-login/coder"
+  version  = "1.0.15"
+  agent_id = coder_agent.example.id
+}
+
 variable "anthropic_api_key" {
   type        = string
   description = "The Anthropic API key"

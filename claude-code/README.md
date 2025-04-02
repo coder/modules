@@ -15,6 +15,9 @@ Run the [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude
 
 - Node.js and npm must be installed in your workspace to install Claude Code
 - `screen` must be installed in your workspace to run Claude Code in the background
+- You must add the [Coder Login](https://registry.coder.com/modules/coder-login) module to your template
+
+The `codercom/oss-dogfood:latest` container image can be used for testing on container-based workspaces.
 
 ## Examples
 
@@ -34,6 +37,13 @@ variable "anthropic_api_key" {
   type        = string
   description = "The Anthropic API key"
   sensitive   = true
+}
+
+module "coder-login" {
+  count    = data.coder_workspace.me.start_count
+  source   = "registry.coder.com/modules/coder-login/coder"
+  version  = "1.0.15"
+  agent_id = coder_agent.example.id
 }
 
 data "coder_parameter" "ai_prompt" {
