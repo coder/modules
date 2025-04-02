@@ -14,7 +14,7 @@ Run the [Goose](https://block.github.io/goose/) agent in your workspace to gener
 ```tf
 module "goose" {
   source        = "registry.coder.com/modules/goose/coder"
-  version       = "1.0.29"
+  version       = "1.0.31"
   agent_id      = coder_agent.example.id
   folder        = "/home/coder"
   install_goose = true
@@ -46,7 +46,7 @@ Your workspace must have `screen` installed to use this.
 module "coder-login" {
   count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/coder-login/coder"
-  version  = "1.0.15"
+  version  = "1.0.31"
   agent_id = coder_agent.example.id
 }
 
@@ -88,7 +88,7 @@ resource "coder_agent" "main" {
 module "goose" {
   count         = data.coder_workspace.me.start_count
   source        = "registry.coder.com/modules/goose/coder"
-  version       = "1.0.29"
+  version       = "1.0.31"
   agent_id      = coder_agent.example.id
   folder        = "/home/coder"
   install_goose = true
@@ -113,7 +113,7 @@ Run Goose as a standalone app in your workspace. This will install Goose and run
 ```tf
 module "goose" {
   source        = "registry.coder.com/modules/goose/coder"
-  version       = "1.0.29"
+  version       = "1.0.31"
   agent_id      = coder_agent.example.id
   folder        = "/home/coder"
   install_goose = true
