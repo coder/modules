@@ -58,10 +58,10 @@ data "coder_parameter" "ai_prompt" {
 resource "coder_agent" "main" {
   # ...
   env = {
-    CODER_MCP_CLAUDE_API_KEY                             = var.anthropic_api_key # or use a coder_parameter 
-    CODER_MCP_CLAUDE_TASK_PROMPT                         = data.coder_parameter.ai_prompt.value
-    CODER_MCP_APP_STATUS_SLUG                            = "claude-code"
-    CODER_MCP_CLAUDE_SYSTEM_PROMPT                       = <<-EOT
+    CODER_MCP_CLAUDE_API_KEY       = var.anthropic_api_key # or use a coder_parameter 
+    CODER_MCP_CLAUDE_TASK_PROMPT   = data.coder_parameter.ai_prompt.value
+    CODER_MCP_APP_STATUS_SLUG      = "claude-code"
+    CODER_MCP_CLAUDE_SYSTEM_PROMPT = <<-EOT
       You are a helpful assistant that can help with code.
     EOT
   }
@@ -77,8 +77,8 @@ module "claude-code" {
   claude_code_version = "0.2.57"
 
   # Enable experimental features
-  experiment_use_screen          = true
-  experiment_report_tasks        = true
+  experiment_use_screen   = true
+  experiment_report_tasks = true
 }
 ```
 
@@ -96,6 +96,6 @@ module "claude-code" {
   claude_code_version = "latest"
 
   # Icon is not available in Coder v2.20 and below, so we'll use a custom icon URL
-  icon                = "https://registry.npmmirror.com/@lobehub/icons-static-png/1.24.0/files/dark/claude-color.png"
+  icon = "https://registry.npmmirror.com/@lobehub/icons-static-png/1.24.0/files/dark/claude-color.png"
 }
 ```

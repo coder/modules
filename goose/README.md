@@ -66,7 +66,7 @@ resource "coder_agent" "main" {
       
       Notify Coder of the status of the task before and after your steps.
     EOT
-    GOOSE_TASK_PROMPT = data.coder_parameter.ai_prompt.value
+    GOOSE_TASK_PROMPT   = data.coder_parameter.ai_prompt.value
 
     # An API key is required for experiment_auto_configure
     # See https://block.github.io/goose/docs/getting-started/providers
@@ -75,16 +75,16 @@ resource "coder_agent" "main" {
 }
 
 module "goose" {
-  count               = data.coder_workspace.me.start_count
-  source              = "registry.coder.com/modules/goose/coder"
-  version             = "1.0.29"
-  agent_id            = coder_agent.example.id
-  folder              = "/home/coder"
-  install_goose       = true
-  goose_version       = "v1.0.16"
+  count         = data.coder_workspace.me.start_count
+  source        = "registry.coder.com/modules/goose/coder"
+  version       = "1.0.29"
+  agent_id      = coder_agent.example.id
+  folder        = "/home/coder"
+  install_goose = true
+  goose_version = "v1.0.16"
 
   # Enable experimental features
-  experiment_report_tasks   = true
+  experiment_report_tasks = true
 
   # Avoid configuring Goose manually
   experiment_auto_configure = true
@@ -101,14 +101,14 @@ Run Goose as a standalone app in your workspace. This will install Goose and run
 
 ```tf
 module "goose" {
-  source              = "registry.coder.com/modules/goose/coder"
-  version             = "1.0.29"
-  agent_id            = coder_agent.example.id
-  folder              = "/home/coder"
-  install_goose       = true
-  goose_version       = "v1.0.16"
+  source        = "registry.coder.com/modules/goose/coder"
+  version       = "1.0.29"
+  agent_id      = coder_agent.example.id
+  folder        = "/home/coder"
+  install_goose = true
+  goose_version = "v1.0.16"
 
   # Icon is not available in Coder v2.20 and below, so we'll use a custom icon URL
-  icon                = "https://raw.githubusercontent.com/block/goose/refs/heads/main/ui/desktop/src/images/icon.svg"
+  icon = "https://raw.githubusercontent.com/block/goose/refs/heads/main/ui/desktop/src/images/icon.svg"
 }
 ```
