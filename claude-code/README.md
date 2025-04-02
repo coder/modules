@@ -34,9 +34,9 @@ The `codercom/oss-dogfood:latest` container image can be used for testing on con
 
 ### Run in the background and report tasks (Experimental)
 
-> This functionality is in early access and still evolving. For now,
-> we recommend testing it in a demo or staging environment,
-> rather than deploying to production.
+> This functionality is in early access as of Coder v2.21 and is still evolving.
+> For now, we recommend testing it in a demo or staging environment,
+> rather than deploying to production
 >
 > Learn more in [the Coder documentation](https://coder.com/docs/tutorials/ai-agents)
 >
