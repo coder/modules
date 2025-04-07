@@ -223,16 +223,6 @@ resource "coder_app" "goose" {
     #!/bin/bash
     set -e
 
-    # Check if goose is installed
-    if command_exists goose; then
-      GOOSE_CMD=goose
-    elif command_exists $HOME/.local/bin/goose; then
-      GOOSE_CMD=$HOME/.local/bin/goose
-    else
-      echo "Error: Goose is not installed. Please enable install_goose or install it manually."
-      exit 1
-    fi
-
     if [ "${var.experiment_use_screen}" = "true" ]; then
       if screen -list | grep -q "goose"; then
         export LANG=en_US.UTF-8
@@ -247,7 +237,7 @@ resource "coder_app" "goose" {
       cd ${var.folder}
       export LANG=en_US.UTF-8
       export LC_ALL=en_US.UTF-8
-      $GOOSE_CMD
+      goose
     fi
     EOT
   icon         = var.icon
