@@ -162,14 +162,28 @@ EOL
       export LANG=en_US.UTF-8
       export LC_ALL=en_US.UTF-8
       
+      # Check if goose is installed before running
+      if command_exists goose; then
+        GOOSE_CMD=goose
+      elif command_exists $HOME/.local/bin/goose; then
+        GOOSE_CMD=$HOME/.local/bin/goose
+      else
+        echo "Error: Goose is not installed. Please enable install_goose or install it manually."
+        exit 1
+      fi
+      
       screen -U -dmS goose bash -c '
         cd ${var.folder}
-        $HOME/.local/bin/goose run --text "$GOOSE_SYSTEM_PROMPT. Your task: $GOOSE_TASK_PROMPT" --interactive | tee -a "$HOME/.goose.log"
+        $GOOSE_CMD run --text "$GOOSE_SYSTEM_PROMPT. Your task: $GOOSE_TASK_PROMPT" --interactive | tee -a "$HOME/.goose.log"
         exec bash
       '
     else
       # Check if goose is installed before running
-      if ! command_exists $HOME/.local/bin/goose; then
+      if command_exists goose; then
+        GOOSE_CMD=goose
+      elif command_exists $HOME/.local/bin/goose; then
+        GOOSE_CMD=$HOME/.local/bin/goose
+      else
         echo "Error: Goose is not installed. Please enable install_goose or install it manually."
         exit 1
       fi
@@ -186,6 +200,16 @@ resource "coder_app" "goose" {
     #!/bin/bash
     set -e
 
+    # Check if goose is installed
+    if command_exists goose; then
+      GOOSE_CMD=goose
+    elif command_exists $HOME/.local/bin/goose; then
+      GOOSE_CMD=$HOME/.local/bin/goose
+    else
+      echo "Error: Goose is not installed. Please enable install_goose or install it manually."
+      exit 1
+    fi
+
     if [ "${var.experiment_use_screen}" = "true" ]; then
       if screen -list | grep -q "goose"; then
         export LANG=en_US.UTF-8
@@ -194,13 +218,13 @@ resource "coder_app" "goose" {
         screen -xRR goose
       else
         echo "Starting a new Goose session." | tee -a "$HOME/.goose.log"
-        screen -S goose bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; $HOME/.local/bin/goose run --text "Always report status and instructions to Coder, before and after your steps" --interactive | tee -a "$HOME/.goose.log"; exec bash'
+        screen -S goose bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; $GOOSE_CMD run --text "Always report status and instructions to Coder, before and after your steps" --interactive | tee -a "$HOME/.goose.log"; exec bash'
       fi
     else
       cd ${var.folder}
       export LANG=en_US.UTF-8
       export LC_ALL=en_US.UTF-8
-      $HOME/.local/bin/goose
+      $GOOSE_CMD
     fi
     EOT
   icon         = var.icon
