@@ -78,6 +78,18 @@ variable "experiment_goose_model" {
   default     = null
 }
 
+variable "experiment_pre_install_script" {
+  type        = string
+  description = "Custom script to run before installing Goose."
+  default     = null
+}
+
+variable "experiment_post_install_script" {
+  type        = string
+  description = "Custom script to run after installing Goose."
+  default     = null
+}
+
 # Install and Initialize Goose
 resource "coder_script" "goose" {
   agent_id     = var.agent_id
@@ -92,6 +104,12 @@ resource "coder_script" "goose" {
       command -v "$1" >/dev/null 2>&1
     }
 
+    # Run pre-install script if provided
+    if [ -n "${var.experiment_pre_install_script}" ]; then
+      echo "Running pre-install script..."
+      eval "${var.experiment_pre_install_script}"
+    fi
+
     # Install Goose if enabled
     if [ "${var.install_goose}" = "true" ]; then
       if ! command_exists npm; then
@@ -100,6 +118,12 @@ resource "coder_script" "goose" {
       fi
       echo "Installing Goose..."
       RELEASE_TAG=v${var.goose_version} curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | CONFIGURE=false bash
+    fi
+
+    # Run post-install script if provided
+    if [ -n "${var.experiment_post_install_script}" ]; then
+      echo "Running post-install script..."
+      eval "${var.experiment_post_install_script}"
     fi
 
     # Configure Goose if auto-configure is enabled
