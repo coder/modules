@@ -105,7 +105,7 @@ resource "coder_script" "goose" {
     }
 
     # Run pre-install script if provided
-    PRE_INSTALL_SCRIPT='${coalesce(var.experiment_pre_install_script, "")}'
+    PRE_INSTALL_SCRIPT='${var.experiment_pre_install_script != null ? var.experiment_pre_install_script : ""}'
     if [ -n "$PRE_INSTALL_SCRIPT" ]; then
       echo "Running pre-install script..."
       eval "$PRE_INSTALL_SCRIPT"
@@ -122,7 +122,7 @@ resource "coder_script" "goose" {
     fi
 
     # Run post-install script if provided
-    POST_INSTALL_SCRIPT='${coalesce(var.experiment_post_install_script, "")}'
+    POST_INSTALL_SCRIPT='${var.experiment_post_install_script != null ? var.experiment_post_install_script : ""}'
     if [ -n "$POST_INSTALL_SCRIPT" ]; then
       echo "Running post-install script..."
       eval "$POST_INSTALL_SCRIPT"
