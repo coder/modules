@@ -105,9 +105,10 @@ resource "coder_script" "goose" {
     }
 
     # Run pre-install script if provided
-    if [ -n "${var.experiment_pre_install_script}" ]; then
+    PRE_INSTALL_SCRIPT='${coalesce(var.experiment_pre_install_script, "")}'
+    if [ -n "$PRE_INSTALL_SCRIPT" ]; then
       echo "Running pre-install script..."
-      eval "${var.experiment_pre_install_script}"
+      eval "$PRE_INSTALL_SCRIPT"
     fi
 
     # Install Goose if enabled
@@ -121,9 +122,10 @@ resource "coder_script" "goose" {
     fi
 
     # Run post-install script if provided
-    if [ -n "${var.experiment_post_install_script}" ]; then
+    POST_INSTALL_SCRIPT='${coalesce(var.experiment_post_install_script, "")}'
+    if [ -n "$POST_INSTALL_SCRIPT" ]; then
       echo "Running post-install script..."
-      eval "${var.experiment_post_install_script}"
+      eval "$POST_INSTALL_SCRIPT"
     fi
 
     # Configure Goose if auto-configure is enabled
