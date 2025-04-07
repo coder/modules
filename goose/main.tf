@@ -193,10 +193,7 @@ EOL
       
       screen -U -dmS goose bash -c '
         cd ${var.folder}
-        echo "Current PATH: $PATH" | tee -a "$HOME/.goose.log"
-        echo "Looking for goose in PATH..." | tee -a "$HOME/.goose.log"
-        which goose | tee -a "$HOME/.goose.log"
-        echo "Running goose command..." | tee -a "$HOME/.goose.log"
+        export PATH="$PATH_FOR_SCREEN"
         goose run --text "$GOOSE_SYSTEM_PROMPT. Your task: $GOOSE_TASK_PROMPT" --interactive | tee -a "$HOME/.goose.log"
         exec bash
       '
@@ -231,7 +228,7 @@ resource "coder_app" "goose" {
         screen -xRR goose
       else
         echo "Starting a new Goose session." | tee -a "$HOME/.goose.log"
-        screen -S goose bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; echo "Current PATH: $PATH" | tee -a "$HOME/.goose.log"; echo "Looking for goose in PATH..." | tee -a "$HOME/.goose.log"; which goose | tee -a "$HOME/.goose.log"; echo "Running goose command..." | tee -a "$HOME/.goose.log"; goose run --text "Always report status and instructions to Coder, before and after your steps" --interactive | tee -a "$HOME/.goose.log"; exec bash'
+        screen -S goose bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; goose run --text "Always report status and instructions to Coder, before and after your steps" --interactive | tee -a "$HOME/.goose.log"; exec bash'
       fi
     else
       cd ${var.folder}
