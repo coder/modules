@@ -111,9 +111,6 @@ resource "coder_script" "goose" {
       eval "$PRE_INSTALL_SCRIPT"
     fi
 
-    # Store current PATH for screen session
-    export PATH_FOR_SCREEN="$PATH"
-
     # Install Goose if enabled
     if [ "${var.install_goose}" = "true" ]; then
       if ! command_exists npm; then
@@ -203,7 +200,6 @@ EOL
       
       screen -U -dmS goose bash -c "
         cd ${var.folder}
-        export PATH=\"$PATH\"
         \"$GOOSE_CMD\" run --text \"$GOOSE_SYSTEM_PROMPT. Your task: $GOOSE_TASK_PROMPT\" --interactive | tee -a \"$HOME/.goose.log\"
         exec bash
       "
