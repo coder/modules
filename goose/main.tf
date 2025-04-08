@@ -200,7 +200,8 @@ EOL
       
       screen -U -dmS goose bash -c "
         cd ${var.folder}
-        \"$GOOSE_CMD\" run --text \"Always report status and instructions to Coder, before and after your steps\" --interactive | tee -a \"$HOME/.goose.log\"
+        export GOOSE_SYSTEM_PROMPT=\"$GOOSE_SYSTEM_PROMPT\"
+        \"$GOOSE_CMD\" run --text \"\$GOOSE_SYSTEM_PROMPT\" --interactive | tee -a \"$HOME/.goose.log\"
       "
     else
       # Check if goose is installed before running
