@@ -230,7 +230,7 @@ EOL
       
       screen -U -dmS goose bash -c "
         cd ${var.folder}
-        \"$GOOSE_CMD\" run --text \"\${GOOSE_TASK_PROMPT}\" --interactive | tee -a \"$HOME/.goose.log\"
+        \"$GOOSE_CMD\" run --text \"$GOOSE_TASK_PROMPT\" --interactive | tee -a \"$HOME/.goose.log\"
       "
     else
       # Check if goose is installed before running
