@@ -204,14 +204,7 @@ EOL
       screen -U -dmS goose bash -c "
         cd ${var.folder}
         export PATH=\"$PATH\"
-        echo \"Starting goose with command: $GOOSE_CMD\" | tee -a \"$HOME/.goose.log\"
-        echo \"Current PATH: $PATH\" | tee -a \"$HOME/.goose.log\"
-        echo \"Current directory: $(pwd)\" | tee -a \"$HOME/.goose.log\"
-        echo \"Goose version: $(\"$GOOSE_CMD\" --version 2>&1)\" | tee -a \"$HOME/.goose.log\"
-        echo \"Running goose command...\" | tee -a \"$HOME/.goose.log\"
-        \"$GOOSE_CMD\" run --text \"$GOOSE_SYSTEM_PROMPT. Your task: $GOOSE_TASK_PROMPT\" --interactive 2>&1 | tee -a \"$HOME/.goose.log\"
-        EXIT_CODE=\$?
-        echo \"Goose exited with code: \$EXIT_CODE\" | tee -a \"$HOME/.goose.log\"
+        \"$GOOSE_CMD\" run --text \"$GOOSE_SYSTEM_PROMPT. Your task: $GOOSE_TASK_PROMPT\" --interactive | tee -a \"$HOME/.goose.log\"
         exec bash
       "
     else
@@ -253,20 +246,8 @@ resource "coder_app" "goose" {
     fi
 
     if [ "${var.experiment_use_screen}" = "true" ]; then
-      echo "Checking for existing screen sessions..." | tee -a "$HOME/.goose.log"
-      screen -list | tee -a "$HOME/.goose.log"
-      
-      # Check if the session exists and is attached
-      if screen -list | grep -q "goose.*(Attached)"; then
-        echo "Found attached Goose session, reattaching..." | tee -a "$HOME/.goose.log"
-        screen -x goose
-      elif screen -list | grep -q "goose.*(Detached)"; then
-        echo "Found detached Goose session, attaching..." | tee -a "$HOME/.goose.log"
-        screen -r goose
-      else
-        echo "No existing Goose session found, starting new one..." | tee -a "$HOME/.goose.log"
-        screen -S goose bash -c "export PATH=\"$PATH\"; export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; echo \"Starting goose with command: $GOOSE_CMD\" | tee -a \"$HOME/.goose.log\"; echo \"Current PATH: $PATH\" | tee -a \"$HOME/.goose.log\"; echo \"Current directory: $(pwd)\" | tee -a \"$HOME/.goose.log\"; echo \"Goose version: $(\"$GOOSE_CMD\" --version 2>&1)\" | tee -a \"$HOME/.goose.log\"; echo \"Running goose command...\" | tee -a \"$HOME/.goose.log\"; \"$GOOSE_CMD\" run --text \"Always report status and instructions to Coder, before and after your steps\" --interactive 2>&1 | tee -a \"$HOME/.goose.log\"; EXIT_CODE=\$?; echo \"Goose exited with code: \$EXIT_CODE\" | tee -a \"$HOME/.goose.log\"; exec bash"
-      fi
+      # Just attach to the existing session
+      screen -xRR goose
     else
       cd ${var.folder}
       export LANG=en_US.UTF-8
