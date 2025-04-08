@@ -253,13 +253,16 @@ resource "coder_app" "goose" {
     fi
 
     if [ "${var.experiment_use_screen}" = "true" ]; then
+      echo "Checking for existing screen sessions..." | tee -a "$HOME/.goose.log"
+      screen -list | tee -a "$HOME/.goose.log"
+      
       if screen -list | grep -q "goose"; then
         export LANG=en_US.UTF-8
         export LC_ALL=en_US.UTF-8
-        echo "Attaching to existing Goose session." | tee -a "$HOME/.goose.log"
+        echo "Found existing Goose session, attaching..." | tee -a "$HOME/.goose.log"
         screen -xRR goose
       else
-        echo "Starting a new Goose session." | tee -a "$HOME/.goose.log"
+        echo "No existing Goose session found, starting new one..." | tee -a "$HOME/.goose.log"
         screen -S goose bash -c "export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; echo \"Starting goose with command: $GOOSE_CMD\" | tee -a \"$HOME/.goose.log\"; echo \"Current PATH: $PATH\" | tee -a \"$HOME/.goose.log\"; echo \"Current directory: $(pwd)\" | tee -a \"$HOME/.goose.log\"; echo \"Goose version: $(\"$GOOSE_CMD\" --version 2>&1)\" | tee -a \"$HOME/.goose.log\"; echo \"Running goose command...\" | tee -a \"$HOME/.goose.log\"; \"$GOOSE_CMD\" run --text \"Always report status and instructions to Coder, before and after your steps\" --interactive 2>&1 | tee -a \"$HOME/.goose.log\"; EXIT_CODE=\$?; echo \"Goose exited with code: \$EXIT_CODE\" | tee -a \"$HOME/.goose.log\"; exec bash"
       fi
     else
