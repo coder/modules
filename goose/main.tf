@@ -204,7 +204,7 @@ EOL
       screen -U -dmS goose bash -c '
         cd ${var.folder}
         export PATH="$PATH_FOR_SCREEN"
-        $GOOSE_CMD run --text "$GOOSE_SYSTEM_PROMPT. Your task: $GOOSE_TASK_PROMPT" --interactive | tee -a "$HOME/.goose.log"
+        "$GOOSE_CMD" run --text "$GOOSE_SYSTEM_PROMPT. Your task: $GOOSE_TASK_PROMPT" --interactive | tee -a "$HOME/.goose.log"
         exec bash
       '
     else
@@ -253,13 +253,13 @@ resource "coder_app" "goose" {
         screen -xRR goose
       else
         echo "Starting a new Goose session." | tee -a "$HOME/.goose.log"
-        screen -S goose bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; $GOOSE_CMD run --text "Always report status and instructions to Coder, before and after your steps" --interactive | tee -a "$HOME/.goose.log"; exec bash'
+        screen -S goose bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; "$GOOSE_CMD" run --text "Always report status and instructions to Coder, before and after your steps" --interactive | tee -a "$HOME/.goose.log"; exec bash'
       fi
     else
       cd ${var.folder}
       export LANG=en_US.UTF-8
       export LC_ALL=en_US.UTF-8
-      $GOOSE_CMD
+      "$GOOSE_CMD" run --text "Always report status and instructions to Coder, before and after your steps" --interactive
     fi
     EOT
   icon         = var.icon
