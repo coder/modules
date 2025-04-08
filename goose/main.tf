@@ -204,7 +204,7 @@ EOL
       
       screen -U -dmS goose bash -c "
         cd ${var.folder}
-        \"$GOOSE_CMD\" run --text \"Review goosehints. Report all tasks to Coder with proper descriptions and statuses. Your task: $GOOSE_TASK_PROMPT\" --interactive | tee -a \"$HOME/.goose.log\"
+        \"$GOOSE_CMD\" run --text \"Review your goosehints. Every step of the way, report tasks to Coder with proper descriptions and statuses. Your task at hand: $GOOSE_TASK_PROMPT\" --interactive | tee -a \"$HOME/.goose.log\"
       "
     else
       # Check if goose is installed before running
