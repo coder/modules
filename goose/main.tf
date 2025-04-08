@@ -245,13 +245,18 @@ resource "coder_app" "goose" {
     fi
 
     if [ "${var.experiment_use_screen}" = "true" ]; then
-      # Just attach to the existing session
-      screen -xRR goose
+      # Check if session exists first
+      if ! screen -list | grep -q "goose"; then
+        echo "Error: No existing Goose session found. Please wait for the script to start it."
+        exit 1
+      fi
+      # Only attach to existing session
+      screen -x goose
     else
       cd ${var.folder}
       export LANG=en_US.UTF-8
       export LC_ALL=en_US.UTF-8
-      "$GOOSE_CMD" run --text "$GOOSE_TASK_PROMPT" --interactive
+      "$GOOSE_CMD" run --text "Review goosehints. Your task: $GOOSE_TASK_PROMPT" --interactive
     fi
     EOT
   icon         = var.icon
