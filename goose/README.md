@@ -48,7 +48,7 @@ Your workspace must have `screen` installed to use this.
 module "coder-login" {
   count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/coder-login/coder"
-  version  = "1.0.31"
+  version  = "1.0.15"
   agent_id = coder_agent.example.id
 }
 
@@ -98,6 +98,9 @@ module "goose" {
 
   # Enable experimental features
   experiment_report_tasks = true
+
+  # Run Goose in the background
+  experiment_use_screen = true
 
   # Avoid configuring Goose manually
   experiment_auto_configure = true
