@@ -90,11 +90,6 @@ variable "experiment_post_install_script" {
   default     = null
 }
 
-variable "GOOSE_SYSTEM_PROMPT" {
-  type        = string
-  description = "The system prompt to use for Goose."
-}
-
 # Install and Initialize Goose
 resource "coder_script" "goose" {
   agent_id     = var.agent_id
