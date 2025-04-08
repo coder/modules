@@ -205,6 +205,7 @@ EOL
       screen -U -dmS goose bash -c "
         cd ${var.folder}
         \"$GOOSE_CMD\" run --text \"Review your goosehints. Every step of the way, report tasks to Coder with proper descriptions and statuses. Your task at hand: $GOOSE_TASK_PROMPT\" --interactive | tee -a \"$HOME/.goose.log\"
+        /bin/bash
       "
     else
       # Check if goose is installed before running
@@ -251,7 +252,7 @@ resource "coder_app" "goose" {
         exit 1
       fi
       # Only attach to existing session
-      screen -x goose
+      screen -xRR goose
     else
       cd ${var.folder}
       export LANG=en_US.UTF-8
