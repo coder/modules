@@ -142,7 +142,7 @@ extensions:
     - mcp
     - server
     cmd: coder
-    description: Report ALL tasks and statuses (in progress, done, failed) before and after starting
+    description: Report ALL tasks and statuses (in progress, done, failed) you are working on.
     enabled: true
     envs:
       CODER_MCP_APP_STATUS_SLUG: goose
@@ -204,7 +204,7 @@ EOL
       
       screen -U -dmS goose bash -c "
         cd ${var.folder}
-        \"$GOOSE_CMD\" run --text \"Review goosehints. Your task: $GOOSE_TASK_PROMPT\" --interactive | tee -a \"$HOME/.goose.log\"
+        \"$GOOSE_CMD\" run --text \"Review goosehints. Report all tasks to Coder with proper descriptions and statuses. Your task: $GOOSE_TASK_PROMPT\" --interactive | tee -a \"$HOME/.goose.log\"
       "
     else
       # Check if goose is installed before running
