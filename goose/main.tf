@@ -90,6 +90,12 @@ variable "experiment_post_install_script" {
   default     = null
 }
 
+variable "experiment_additional_extensions" {
+  type        = string
+  description = "Additional extensions configuration in YAML format to append to the config."
+  default     = null
+}
+
 # Install and Initialize Goose
 resource "coder_script" "goose" {
   agent_id     = var.agent_id
@@ -156,6 +162,11 @@ extensions:
     timeout: 300
     type: builtin
 EOL
+
+      # Append additional extensions if provided
+      if [ -n "${var.experiment_additional_extensions}" ]; then
+        echo "${var.experiment_additional_extensions}" >> "$HOME/.config/goose/config.yaml"
+      fi
     fi
     
     # Write system prompt to config
