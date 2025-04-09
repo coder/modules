@@ -160,13 +160,8 @@ extensions:
     enabled: true
     name: developer
     timeout: 300
-    type: builtin
+    type: builtin${var.experiment_additional_extensions != null ? "\n  ${replace(var.experiment_additional_extensions, "\n", "\n  ")}" : ""}
 EOL
-
-      # Append additional extensions if provided
-      if [ -n "${var.experiment_additional_extensions != null ? var.experiment_additional_extensions : ""}" ]; then
-        echo "${var.experiment_additional_extensions != null ? var.experiment_additional_extensions : ""}" >> "$HOME/.config/goose/config.yaml"
-      fi
     fi
     
     # Write system prompt to config
