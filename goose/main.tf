@@ -96,6 +96,37 @@ variable "experiment_additional_extensions" {
   default     = null
 }
 
+locals {
+  base_extensions = <<-EOT
+    coder:
+      args:
+      - exp
+      - mcp
+      - server
+      cmd: coder
+      description: Report ALL tasks and statuses (in progress, done, failed) you are working on.
+      enabled: true
+      envs:
+        CODER_MCP_APP_STATUS_SLUG: goose
+      name: Coder
+      timeout: 3000
+      type: stdio
+    developer:
+      display_name: Developer
+      enabled: true
+      name: developer
+      timeout: 300
+      type: builtin
+  EOT
+
+  additional_extensions = var.experiment_additional_extensions != null ? "\n${replace(var.experiment_additional_extensions, "\n", "\n    ")}" : ""
+
+  combined_extensions = <<-EOT
+extensions:
+${local.base_extensions}${local.additional_extensions}
+  EOT
+}
+
 # Install and Initialize Goose
 resource "coder_script" "goose" {
   agent_id     = var.agent_id
@@ -141,26 +172,7 @@ resource "coder_script" "goose" {
       cat > "$HOME/.config/goose/config.yaml" << EOL
 GOOSE_PROVIDER: ${var.experiment_goose_provider}
 GOOSE_MODEL: ${var.experiment_goose_model}
-extensions:
-  coder:
-    args:
-    - exp
-    - mcp
-    - server
-    cmd: coder
-    description: Report ALL tasks and statuses (in progress, done, failed) you are working on.
-    enabled: true
-    envs:
-      CODER_MCP_APP_STATUS_SLUG: goose
-    name: Coder
-    timeout: 3000
-    type: stdio
-  developer:
-    display_name: Developer
-    enabled: true
-    name: developer
-    timeout: 300
-    type: builtin${var.experiment_additional_extensions != null ? "\n  ${replace(var.experiment_additional_extensions, "\n", "\n  ")}" : ""}
+${local.combined_extensions}
 EOL
     fi
     
