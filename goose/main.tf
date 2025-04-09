@@ -97,33 +97,32 @@ variable "experiment_additional_extensions" {
 }
 
 locals {
-  base_extensions = <<-EOT
-  coder:
-    args:
-    - exp
-    - mcp
-    - server
-    cmd: coder
-    description: Report ALL tasks and statuses (in progress, done, failed) you are working on.
-    enabled: true
-    envs:
-      CODER_MCP_APP_STATUS_SLUG: goose
-    name: Coder
-    timeout: 3000
-    type: stdio
-  developer:
-    display_name: Developer
-    enabled: true
-    name: developer
-    timeout: 300
-    type: builtin
+  base_extensions = <<EOT
+coder:
+  args:
+  - exp
+  - mcp
+  - server
+  cmd: coder
+  description: Report ALL tasks and statuses (in progress, done, failed) you are working on.
+  enabled: true
+  envs:
+    CODER_MCP_APP_STATUS_SLUG: goose
+  name: Coder
+  timeout: 3000
+  type: stdio
+developer:
+  display_name: Developer
+  enabled: true
+  name: developer
+  timeout: 300
+  type: builtin
 EOT
 
-  additional_extensions = var.experiment_additional_extensions != null ? "\n  ${replace(var.experiment_additional_extensions, "\n", "\n  ")}" : ""
-
-  combined_extensions = <<-EOT
+  combined_extensions = <<EOT
 extensions:
-${local.base_extensions}${local.additional_extensions}
+${local.base_extensions}
+${var.experiment_additional_extensions != null ? var.experiment_additional_extensions : ""}
 EOT
 }
 
@@ -172,7 +171,8 @@ resource "coder_script" "goose" {
       cat > "$HOME/.config/goose/config.yaml" << EOL
 GOOSE_PROVIDER: ${var.experiment_goose_provider}
 GOOSE_MODEL: ${var.experiment_goose_model}
-${local.combined_extensions}EOL
+${local.combined_extensions}
+EOL
     fi
     
     # Write system prompt to config
