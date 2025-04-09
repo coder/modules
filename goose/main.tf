@@ -164,8 +164,8 @@ extensions:
 EOL
 
       # Append additional extensions if provided
-      if [ -n "${var.experiment_additional_extensions}" ]; then
-        echo "${var.experiment_additional_extensions}" >> "$HOME/.config/goose/config.yaml"
+      if [ -n "${var.experiment_additional_extensions != null ? var.experiment_additional_extensions : ""}" ]; then
+        echo "${var.experiment_additional_extensions != null ? var.experiment_additional_extensions : ""}" >> "$HOME/.config/goose/config.yaml"
       fi
     fi
     
