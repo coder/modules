@@ -97,7 +97,7 @@ variable "experiment_additional_extensions" {
 }
 
 locals {
-  base_extensions = <<EOT
+  base_extensions = <<-EOT
 coder:
   args:
   - exp
@@ -119,10 +119,13 @@ developer:
   type: builtin
 EOT
 
-  combined_extensions = <<EOT
+  # Add two spaces to each line of extensions to match YAML structure
+  formatted_base = "  ${replace(trimspace(local.base_extensions), "\n", "\n  ")}"
+  additional_extensions = var.experiment_additional_extensions != null ? "\n  ${replace(trimspace(var.experiment_additional_extensions), "\n", "\n  ")}" : ""
+
+  combined_extensions = <<-EOT
 extensions:
-${local.base_extensions}
-${var.experiment_additional_extensions != null ? var.experiment_additional_extensions : ""}
+${local.formatted_base}${local.additional_extensions}
 EOT
 }
 
@@ -171,7 +174,7 @@ resource "coder_script" "goose" {
       cat > "$HOME/.config/goose/config.yaml" << EOL
 GOOSE_PROVIDER: ${var.experiment_goose_provider}
 GOOSE_MODEL: ${var.experiment_goose_model}
-${local.combined_extensions}
+${trimspace(local.combined_extensions)}
 EOL
     fi
     
