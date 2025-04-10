@@ -51,16 +51,13 @@ jobs:
         uses: crate-ci/typos@v1.17.2
       - name: Lint
         run: bun lint
-      - name: Check version
+      - name: Check module versions
         shell: bash
         run: |
-          # check for version changes
-          ./update-version.sh
-          # Check if any changes were made in README.md files
-          if [[ -n "$(git status --porcelain -- '**/README.md')" ]]; then
-            echo "Version mismatch detected. Please run ./update-version.sh and commit the updated README.md files."
-            git diff -- '**/README.md' 
-            exit 1
-          else
-            echo "No version mismatch detected. All versions are up to date."
-          fi
+          # Run version check in strict mode - will exit with error if any module
+          # has a version in README.md that doesn't match its tag
+          echo "Checking module versions..."
+          ./modules-version.sh --check
+          
+          # If any module needs version updates, the check will fail with details
+          # about which modules need updating and what versions should be used
