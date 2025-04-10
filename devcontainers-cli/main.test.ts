@@ -39,7 +39,7 @@ describe("devcontainers-cli", async () => {
     agent_id: "some-agent-id",
   });
 
-  it("missing npm", async () => {
+  it("misses npm", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "some-agent-id",
     });

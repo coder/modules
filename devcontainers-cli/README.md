@@ -3,7 +3,7 @@ display_name: devcontainers-cli
 description: devcontainers-cli module provides an easy way to install @devcontainers/cli into a workspace
 icon: ../.icons/devcontainers.svg
 verified: true
-tags: [helper]
+tags: [devcontainers]
 ---
 
 # devcontainers-cli
