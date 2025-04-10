@@ -66,7 +66,6 @@ The release process is automated and follows these steps:
    - You can then push a new tag for the module from main
    - The tag should follow the format: `release/module-name/v1.0.0`
 
-
 Following that, our automated processes will handle publishing new data to [`registry.coder.com`](https://registry.coder.com):
 
 > [!NOTE]
