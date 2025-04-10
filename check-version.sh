@@ -1,24 +1,27 @@
 #!/usr/bin/env bash
 
-# This script checks and verifies that README.md files have up-to-date versions
-# for modules with module-specific tags in the format: release/module-name/v1.0.0
-# It can be used in CI to verify versions are correct or to update versions locally.
-# It is intended to be run from the root of the repository or by using the 
-# `bun update-version` command.
+# This script checks that README.md files have versions that match module-specific
+# tags in the format: release/module-name/v1.0.0
+# It can be used in CI to verify versions are correct.
+#
+# It also supports updating a README with a new version that will be tagged in the future.
+#
+# Usage:
+#   ./check-version.sh                   # Check all modules with changes
+#   ./check-version.sh module-name       # Check only the specified module
+#   ./check-version.sh --version=1.2.3 module-name  # Update module README to version 1.2.3
 
 set -euo pipefail
 
-# Check for --check flag to run in verification mode without making changes
-CHECK_ONLY=false
-if [[ "$*" == *"--check"* ]]; then
-  CHECK_ONLY=true
-  echo "Running in check-only mode (no changes will be made)"
-fi
-
-# Parse other arguments
+# Parse arguments
 MODULE_NAME=""
+NEW_VERSION=""
+
 for arg in "$@"; do
-  if [[ "$arg" != "--check" ]]; then
+  if [[ "$arg" == --version=* ]]; then
+    NEW_VERSION="${arg#*=}"
+    echo "Will update to version: $NEW_VERSION"
+  elif [[ "$arg" != --* ]]; then
     MODULE_NAME="$arg"
     echo "Focusing on module: $MODULE_NAME"
   fi
@@ -56,34 +59,19 @@ for dir in "${changed_dirs[@]}"; do
     # Get the module name from the directory
     module_name=$(basename "$dir")
     
-    # Check for module-specific tag with format: release/module-name/v1.0.0
-    latest_module_tag=$(git tag -l "release/$module_name/v*" | sort -V | tail -n 1)
-    
-    # Skip modules that don't have module-specific tags
-    if [[ -z "$latest_module_tag" ]]; then
-      echo "Skipping $dir: No module-specific tag found"
-      continue
-    fi
-    
-    # Extract version number from tag
-    current_tag_version=$(echo "$latest_module_tag" | sed 's|release/'"$module_name"'/v||')
-    
     # Get version from README.md
     readme_version=$(extract_readme_version "$dir/README.md")
     
-    echo "Processing $dir: Tag version=$current_tag_version, README version=$readme_version"
-    
-    # Check if README version matches the current tag version
-    if [[ "$readme_version" != "$current_tag_version" ]]; then
-      if [[ "$CHECK_ONLY" == "true" ]]; then
-        echo "ERROR: Version mismatch in $dir/README.md: Expected $current_tag_version, found $readme_version"
-        EXIT_CODE=1
+    # If a new version was provided, update the README
+    if [[ -n "$NEW_VERSION" ]]; then
+      if [[ "$readme_version" == "$NEW_VERSION" ]]; then
+        echo "Version in $dir/README.md is already set to $NEW_VERSION"
       else
-        echo "Updating version in $dir/README.md from $readme_version to $current_tag_version"
+        echo "Updating version in $dir/README.md from $readme_version to $NEW_VERSION"
         
         file="$dir/README.md"
         tmpfile=$(mktemp /tmp/tempfile.XXXXXX)
-        awk -v tag="$current_tag_version" '
+        awk -v tag="$NEW_VERSION" '
           BEGIN { in_code_block = 0; in_nested_block = 0 }
           {
             # Detect the start and end of Markdown code blocks.
@@ -116,11 +104,46 @@ for dir in "${changed_dirs[@]}"; do
             print
           }
         ' "$file" > "$tmpfile" && mv "$tmpfile" "$file"
+        
+        echo "Remember to tag this release with: git tag release/$module_name/v$NEW_VERSION"
       fi
-    else
-      echo "Version in $dir/README.md is already correct ($readme_version)"
+      # Skip the version check when updating
+      continue
+    fi
+    
+    # Check for module-specific tag with format: release/module-name/v1.0.0
+    module_tags=$(git tag -l "release/$module_name/v*" | sort -V)
+    
+    # Skip modules that don't have module-specific tags
+    if [[ -z "$module_tags" ]]; then
+      echo "Skipping $dir: No module-specific tags found"
+      continue
+    fi
+    
+    # Check if README version matches any of the module's tags
+    version_found=false
+    for tag in $module_tags; do
+      tag_version=$(echo "$tag" | sed 's|release/'"$module_name"'/v||')
+      if [[ "$readme_version" == "$tag_version" ]]; then
+        version_found=true
+        echo "Version in $dir/README.md ($readme_version) matches tag $tag"
+        break
+      fi
+    done
+    
+    if [[ "$version_found" == "false" ]]; then
+      echo "ERROR: Version in $dir/README.md ($readme_version) does not match any existing tag"
+      echo "Available tags:"
+      echo "$module_tags"
+      EXIT_CODE=1
     fi
   fi
 done
+
+if [[ $EXIT_CODE -eq 0 ]]; then
+  echo "All checked modules have valid versions"
+else
+  echo "Some modules have version mismatches - see errors above"
+fi
 
 exit $EXIT_CODE
