@@ -18,6 +18,6 @@ resource "coder_script" "devcontainers-cli" {
   agent_id     = var.agent_id
   display_name = "devcontainers-cli"
   icon         = "/icon/devcontainers.svg"
-  script = templatefile("${path.module}/run.sh", {})
+  script       = templatefile("${path.module}/run.sh", {})
   run_on_start = true
 }
