@@ -60,7 +60,11 @@ describe("devcontainers-cli", async () => {
     expect(output.exitCode).toBe(0);
 
     expect(output.stdout[0]).toEqual("Installing @devcontainers/cli ...");
-    expect(output.stdout[1]).toEqual("Running npm install -g @devcontainers/cli ...");
-    expect(output.stdout[4]).toEqual("🥳 @devcontainers/cli has been installed !");
+    expect(output.stdout[1]).toEqual(
+      "Running npm install -g @devcontainers/cli ...",
+    );
+    expect(output.stdout[4]).toEqual(
+      "🥳 @devcontainers/cli has been installed !",
+    );
   });
 });
