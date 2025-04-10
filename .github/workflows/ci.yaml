@@ -51,23 +51,31 @@ jobs:
         uses: crate-ci/typos@v1.17.2
       - name: Lint
         run: bun lint
-      - name: Check module versions
+      # Skip version checks if requested in commit message
+      - name: Check for version check skip flag
+        id: check-skip
         shell: bash
         run: |
-          # Add ability to skip version check with a marker in commit message
           if [[ "${{ contains(github.event.head_commit.message || '', '[skip-version-check]') }}" == "true" ]]; then
-            echo "Version check skipped by commit message"
-            exit 0
+            echo "Skipping version check as requested in commit message"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
           fi
 
-          # For PRs, just check that the version in README matches what's in modules-version.sh
-          # This assumes developer has run the script locally to update versions
-          echo "Checking module versions for changed modules..."
+      # For pull requests: Display version info but don't enforce
+      - name: Show module version info (PR)
+        if: github.event_name == 'pull_request' && steps.check-skip.outputs.skip != 'true'
+        shell: bash
+        run: |
+          echo "📌 Checking module versions for changed modules (informational only)..."
           ./modules-version.sh
+          echo "ℹ️ This check is informational only. Remember to update versions with ./modules-version.sh if needed."
 
-          # Skip actual checks when in PR
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo "Pull request detected - version check is informational only"
-            echo "Remember to update versions with ./modules-version.sh if needed"
-            exit 0
-          fi
+      # For main branch: Enforce version checks
+      - name: Verify module versions (main branch)
+        if: github.event_name != 'pull_request' && steps.check-skip.outputs.skip != 'true'
+        shell: bash
+        run: |
+          echo "🔍 Verifying module versions match tags..."
+          ./modules-version.sh --check
