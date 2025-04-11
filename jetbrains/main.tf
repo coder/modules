@@ -28,7 +28,7 @@ variable "folder" {
 }
 
 variable "default" {
-  default     = ""
+  default     = "Default IDE selection"
   type        = string
   description = "Default IDE"
 }
@@ -87,7 +87,7 @@ variable "options" {
 
 variable "releases_base_link" {
   type        = string
-  description = ""
+  description = "URL of the JetBrains releases base link."
   default     = "https://data.services.jetbrains.com"
   validation {
     condition     = can(regex("^https?://.+$", var.releases_base_link))
@@ -97,7 +97,7 @@ variable "releases_base_link" {
 
 variable "download_base_link" {
   type        = string
-  description = ""
+  description = "URL of the JetBrains download base link."
   default     = "https://download.jetbrains.com"
   validation {
     condition     = can(regex("^https?://.+$", var.download_base_link))
@@ -127,7 +127,7 @@ locals {
   # Dynamically generate IDE configurations based on options
   jetbrains_ides = {
     for code in var.options : code => {
-      icon       = "/icon/${lower(local.ide_config[code].name)}.svg"
+      icon       = local.ide_config[code].icon
       name       = local.ide_config[code].name
       identifier = code
       build      = local.ide_config[code].build
@@ -146,7 +146,7 @@ data "coder_parameter" "jetbrains_ide" {
   type         = "string"
   name         = "jetbrains_ide"
   display_name = "JetBrains IDE"
-  icon         = "/icon/gateway.svg"
+  icon         = "/icon/toolbox.svg"
   mutable      = true
   default      = var.default == "" ? var.options[0] : var.default
   order        = var.coder_parameter_order
@@ -176,7 +176,7 @@ resource "coder_app" "jetbrains" {
     data.coder_workspace.me.name,
     "&owner=",
     data.coder_workspace_owner.me.name,
-    "&project_path=",
+    "&folder=",
     var.folder,
     "&url=",
     data.coder_workspace.me.access_url,
