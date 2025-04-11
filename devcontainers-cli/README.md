@@ -16,7 +16,7 @@ npm is required and should be installed in order for the module to work.
 ```tf
 module "devcontainers-cli" {
   source   = "registry.coder.com/modules/devcontainers-cli/coder"
-  version  = "1.0.0"
+  version  = "release/claude-code/1.0.32"
   agent_id = coder_agent.example.id
 }
 ```
