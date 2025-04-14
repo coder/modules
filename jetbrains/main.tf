@@ -146,7 +146,7 @@ data "coder_parameter" "jetbrains_ide" {
   type         = "string"
   name         = "jetbrains_ide"
   display_name = "JetBrains IDE"
-  icon         = "/icon/toolbox.svg"
+  icon         = "/icon/jetbrains-toolbox.svg"
   mutable      = true
   default      = var.default == "" ? var.options[0] : var.default
   order        = var.coder_parameter_order
