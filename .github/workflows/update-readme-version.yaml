@@ -72,35 +72,50 @@ jobs:
           
           echo "Updated README version to $VERSION"
       
-      - name: Create Pull Request
+      - name: Create and Auto-Merge PR
         if: steps.check.outputs.NEEDS_UPDATE == 'true'
-        id: create-pr
-        uses: peter-evans/create-pull-request@v6
-        with:
-          commit-message: "chore: update ${{ steps.tag.outputs.MODULE_NAME }} version to ${{ steps.tag.outputs.VERSION }}"
-          branch: automated-readme-update-${{ steps.tag.outputs.MODULE_NAME }}-${{ steps.tag.outputs.VERSION }}
-          base: main
-          title: "chore: update ${{ steps.tag.outputs.MODULE_NAME }} version to ${{ steps.tag.outputs.VERSION }}"
-          body: |
-            This PR automatically updates the README version to match the newly created tag.
-            
-            Tag: ${{ steps.tag.outputs.TAG_NAME }}
-            Module: ${{ steps.tag.outputs.MODULE_NAME }}
-            Version: ${{ steps.tag.outputs.VERSION }}
-            
-            This PR has been automatically approved and enabled for auto-merge.
-          delete-branch: true
-      
-      - name: Auto-approve PR
-        if: steps.create-pr.outputs.pull-request-number
-        uses: hmarr/auto-approve-action@v3
-        with:
-          pull-request-number: ${{ steps.create-pr.outputs.pull-request-number }}
-          
-      - name: Enable auto-merge
-        if: steps.create-pr.outputs.pull-request-number
-        run: |
-          # Enable auto-merge using GitHub CLI
-          gh pr merge ${{ steps.create-pr.outputs.pull-request-number }} --auto --squash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Variables for PR creation
+          MODULE="${{ steps.tag.outputs.MODULE_NAME }}"
+          VERSION="${{ steps.tag.outputs.VERSION }}"
+          TAG="${{ steps.tag.outputs.TAG_NAME }}"
+          BRANCH="automated-readme-update-$MODULE-$VERSION"
+          PR_TITLE="chore: update $MODULE version to $VERSION"
+          
+          # Create a branch for the PR
+          git checkout -b "$BRANCH"
+          
+          # Commit the changes
+          git add "$MODULE/README.md"
+          git commit -m "$PR_TITLE" --author="github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          
+          # Push the branch
+          git push origin "$BRANCH"
+          
+          # Create PR using GitHub CLI
+          PR_URL=$(gh pr create \
+            --title "$PR_TITLE" \
+            --body "This PR automatically updates the README version to match the newly created tag.
+            
+            Tag: $TAG
+            Module: $MODULE
+            Version: $VERSION
+            
+            This PR will be automatically approved and merged." \
+            --base main \
+            --head "$BRANCH")
+          
+          echo "Created PR: $PR_URL"
+          
+          # Extract PR number from URL
+          PR_NUMBER=$(echo "$PR_URL" | grep -o '[0-9]*$')
+          
+          # Request review from cdr-bot
+          gh pr review "$PR_NUMBER" --request --reviewer "cdr-bot"
+          
+          # Enable auto-merge
+          gh pr merge "$PR_NUMBER" --auto --squash
+          
+          echo "PR has been created, requested cdr-bot review, and set to auto-merge"
