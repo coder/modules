@@ -52,11 +52,6 @@ jobs:
       - name: Lint
         run: bun lint
 
-      # Verify module tags on PRs
-      - name: Verify module tags
-        if: github.event_name == 'pull_request'
-        shell: bash
-        run: |
-          echo "📌 Checking module tags for changed modules..."
-          ./modules-version.sh --dry-run
-          echo "ℹ️ After merging, create tags with: ./modules-version.sh --tag module-name"
+      # No need to verify module versions in PRs now
+      # Version checks will be handled by the maintainer after merging
+      # And automated PRs will update the README.md files

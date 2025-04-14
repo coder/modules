@@ -58,26 +58,28 @@ module "example" {
 
 The release process is automated and follows these steps:
 
-1. Create a PR with your changes
-2. The CI will verify that your module works correctly
-3. Once the PR is approved and merged to main:
-   - Create an annotated tag for the module from main:
+1. Create a PR with your module changes
+   - You **do not** need to update the version number in the README.md file
+   - Focus on implementing your feature or fix
+
+2. Have your PR reviewed, approved, and merged to main
+
+3. After merging to main, a maintainer will:
+   - Create and push an annotated tag with an appropriate version based on your changes:
    ```shell
-   # Create an annotated tag (this will use the version from README)
-   ./modules-version.sh --tag module-name
-   
-   # Alternatively, specify an exact version:
+   # Create an annotated tag with an exact version number
    ./modules-version.sh --tag --version=1.2.3 module-name
    
    # Push the tag to the repository
-   git push origin release/module-name/vX.Y.Z
+   git push origin release/module-name/v1.2.3
    ```
    - The tag will follow the format: `release/module-name/v1.0.0`
-   - When you push the tag, a GitHub Action will automatically:
-     - Update the module's README.md version using the modules-version.sh script
-     - Create a PR with the changes by github-actions[bot]
-     - Auto-approve and set the PR to auto-merge
-     - No manual action required - the version will be updated automatically
+
+4. When the tag is pushed, a GitHub Action will automatically:
+   - Update the module's README.md version to match the tag
+   - Create a PR with the version update by github-actions[bot]
+   - Auto-approve and auto-merge the version update PR
+   - No manual action required - the version will be updated automatically
 
 Following that, our automated processes will handle publishing new data to [`registry.coder.com`](https://registry.coder.com):
 
