@@ -61,12 +61,12 @@ describe("devcontainers-cli", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "some-agent-id",
     });
-    const output = await executeScriptInContainer(state, "alpine");
+    const output = await executeScriptInContainer(state, "docker:dind");
     expect(output.exitCode).toBe(1);
     expect(output.stdout).toEqual([
       "No supported package manager (npm, pnpm, yarn) is installed. Please install one first.",
     ]);
-  });
+  }, 15000);
 
   it("installs devcontainers-cli with npm", async () => {
     const state = await runTerraformApply(import.meta.dir, {
@@ -75,7 +75,7 @@ describe("devcontainers-cli", async () => {
 
     const output = await executeScriptInContainerWithPackageManager(
       state,
-      "alpine",
+      "docker:dind",
       "npm",
     );
     expect(output.exitCode).toBe(0);
@@ -95,13 +95,33 @@ describe("devcontainers-cli", async () => {
 
     const output = await executeScriptInContainerWithPackageManager(
       state,
-      "alpine",
+      "docker:dind",
       "yarn",
     );
     expect(output.exitCode).toBe(0);
 
     expect(output.stdout[0]).toEqual(
       "Installing @devcontainers/cli using yarn ...",
+    );
+    expect(output.stdout[output.stdout.length - 1]).toEqual(
+      "🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!",
+    );
+  });
+
+  it("displays warning if docker is not installed", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "some-agent-id",
+    });
+
+    const output = await executeScriptInContainerWithPackageManager(
+      state,
+      "alpine",
+      "npm",
+    );
+    expect(output.exitCode).toBe(0);
+
+    expect(output.stdout[0]).toEqual(
+      "WARNING: Docker was not found but is required to use @devcontainers/cli, please make sure it is available.",
     );
     expect(output.stdout[output.stdout.length - 1]).toEqual(
       "🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!",
