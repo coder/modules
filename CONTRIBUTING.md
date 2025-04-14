@@ -59,13 +59,16 @@ module "example" {
 The release process is automated and follows these steps:
 
 1. Create a PR with your module changes
+
    - You **do not** need to update the version number in the README.md file
    - Focus on implementing your feature or fix
 
 2. Have your PR reviewed, approved, and merged to main
 
 3. After merging to main, a maintainer will:
+
    - Create and push an annotated tag with an appropriate version based on your changes:
+
    ```shell
    # Create an annotated tag with an exact version number
    ./release.sh module-name 1.2.3
@@ -73,11 +76,13 @@ The release process is automated and follows these steps:
    # Push the tag to the repository
    git push origin release/module-name/v1.2.3
    ```
-   
+
    - View all modules and their current versions with:
+
    ```shell
    ./release.sh --list
    ```
+
    - The tag will follow the format: `release/module-name/v1.0.0`
 
 4. When the tag is pushed, a GitHub Action will automatically:
