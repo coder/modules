@@ -6,6 +6,12 @@ if command -v devcontainer > /dev/null 2>&1; then
   exit 0
 fi
 
+# Check if docker is installed
+if ! command -v docker > /dev/null 2>&1; then
+  echo "Docker is required."
+  exit 1
+fi
+
 # Determine the package manager to use: npm, pnpm, or yarn
 if command -v pnpm > /dev/null 2>&1; then
   PACKAGE_MANAGER="pnpm"

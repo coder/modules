@@ -27,9 +27,17 @@ const executeScriptInContainerWithPackageManager = async (
   if (packageManager === "npm") {
     await execContainer(id, [shell, "-c", "apk add nodejs npm"]);
   } else if (packageManager === "pnpm") {
-    await execContainer(id, [shell, "-c", "apk add nodejs npm && npm install -g pnpm"]);
+    await execContainer(id, [
+      shell,
+      "-c",
+      "apk add nodejs npm && npm install -g pnpm",
+    ]);
   } else if (packageManager === "yarn") {
-    await execContainer(id, [shell, "-c", "apk add nodejs npm && npm install -g yarn"]);
+    await execContainer(id, [
+      shell,
+      "-c",
+      "apk add nodejs npm && npm install -g yarn",
+    ]);
   }
 
   const resp = await execContainer(id, [shell, "-c", instance.script]);
@@ -65,11 +73,19 @@ describe("devcontainers-cli", async () => {
       agent_id: "some-agent-id",
     });
 
-    const output = await executeScriptInContainerWithPackageManager(state, "alpine", "npm");
+    const output = await executeScriptInContainerWithPackageManager(
+      state,
+      "alpine",
+      "npm",
+    );
     expect(output.exitCode).toBe(0);
 
-    expect(output.stdout[0]).toEqual("Installing @devcontainers/cli using npm ...");
-    expect(output.stdout[output.stdout.length-1]).toEqual("🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!");
+    expect(output.stdout[0]).toEqual(
+      "Installing @devcontainers/cli using npm ...",
+    );
+    expect(output.stdout[output.stdout.length - 1]).toEqual(
+      "🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!",
+    );
   });
 
   it("installs devcontainers-cli with yarn", async () => {
@@ -77,10 +93,18 @@ describe("devcontainers-cli", async () => {
       agent_id: "some-agent-id",
     });
 
-    const output = await executeScriptInContainerWithPackageManager(state, "alpine", "yarn");
+    const output = await executeScriptInContainerWithPackageManager(
+      state,
+      "alpine",
+      "yarn",
+    );
     expect(output.exitCode).toBe(0);
 
-    expect(output.stdout[0]).toEqual("Installing @devcontainers/cli using yarn ...");
-    expect(output.stdout[output.stdout.length-1]).toEqual("🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!");
+    expect(output.stdout[0]).toEqual(
+      "Installing @devcontainers/cli using yarn ...",
+    );
+    expect(output.stdout[output.stdout.length - 1]).toEqual(
+      "🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!",
+    );
   });
 });
