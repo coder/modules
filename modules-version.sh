@@ -9,6 +9,7 @@
 # - Check that README.md versions match module tags (CI-friendly)
 # - Create annotated tags for module releases
 # - Bump module versions in README files
+# - Set exact versions in README files
 # - Support for module-specific tags and versioning
 #
 # Usage:
@@ -19,6 +20,7 @@
 #   ./modules-version.sh --bump=patch module-name         # Bump patch version (default)
 #   ./modules-version.sh --bump=minor module-name         # Bump minor version
 #   ./modules-version.sh --bump=major module-name         # Bump major version
+#   ./modules-version.sh --version=1.2.3 module-name      # Set exact version number
 
 set -euo pipefail
 
@@ -27,6 +29,7 @@ DRY_RUN=false
 MODULE_NAME=""
 VERSION_ACTION=""
 VERSION_TYPE="patch"
+EXACT_VERSION_CLI=""
 CREATE_TAG=false
 SHOW_HELP=false
 
@@ -41,6 +44,7 @@ Usage:
 Options:
   --dry-run                Simulate updates without making changes
   --bump=patch|minor|major Bump version (patch is default)
+  --version=X.Y.Z          Set an exact version number
   --tag                    Create annotated git tag
   --help                   Show this help message
 
@@ -50,6 +54,7 @@ Examples:
   ./modules-version.sh module-name             # Check a specific module
   ./modules-version.sh --tag module-name       # Create annotated tag for a module
   ./modules-version.sh --bump=minor module-name    # Bump minor version in README
+  ./modules-version.sh --version=1.2.3 module-name # Set exact version in README
 EOF
   exit 0
 }
@@ -67,6 +72,14 @@ for arg in "$@"; do
     VERSION_TYPE="${arg#*=}"
     if [[ "$VERSION_TYPE" != "patch" && "$VERSION_TYPE" != "minor" && "$VERSION_TYPE" != "major" ]]; then
       echo "Error: Version bump type must be 'patch', 'minor', or 'major'"
+      exit 1
+    fi
+  elif [[ "$arg" == --version=* ]]; then
+    VERSION_ACTION="set"
+    EXACT_VERSION_CLI="${arg#*=}"
+    # Validate version format
+    if ! [[ "$EXACT_VERSION_CLI" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+      echo "Error: Version must be in format X.Y.Z (e.g., 1.2.3)"
       exit 1
     fi
   elif [[ "$arg" != --* ]]; then
@@ -90,6 +103,8 @@ fi
 
 if [[ "$VERSION_ACTION" == "bump" ]]; then
   echo "Will bump $VERSION_TYPE version"
+elif [[ "$VERSION_ACTION" == "set" ]]; then
+  echo "Will set version to $EXACT_VERSION_CLI"
 fi
 
 if [[ "$CREATE_TAG" == "true" ]]; then
@@ -104,19 +119,26 @@ extract_readme_version() {
 
 # Function to determine version
 # Supports:
-# 1. Exact version from EXACT_VERSION environment variable
-# 2. Bumping version based on type (major, minor, patch)
+# 1. Exact version from --version command-line option
+# 2. Exact version from EXACT_VERSION environment variable 
+# 3. Bumping version based on type (major, minor, patch)
 get_version() {
   local current_version="$1"
   local bump_type="$2"
   
-  # Check if an exact version is specified via environment variable
-  if [[ -n "$EXACT_VERSION" ]]; then
+  # Priority 1: Use the command-line --version option if specified
+  if [[ "$VERSION_ACTION" == "set" && -n "$EXACT_VERSION_CLI" ]]; then
+    echo "$EXACT_VERSION_CLI"
+    return
+  fi
+  
+  # Priority 2: Check if an exact version is specified via environment variable
+  if [[ -n "${EXACT_VERSION:-}" ]]; then
     echo "$EXACT_VERSION"
     return
   fi
   
-  # Otherwise bump the version according to semantic versioning
+  # Priority 3: Bump the version according to semantic versioning
   IFS='.' read -r major minor patch <<< "$current_version"
   
   if [[ "$bump_type" == "major" ]]; then

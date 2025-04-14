@@ -63,8 +63,11 @@ The release process is automated and follows these steps:
 3. Once the PR is approved and merged to main:
    - Create an annotated tag for the module from main:
    ```shell
-   # Create an annotated tag
+   # Create an annotated tag (this will use the version from README)
    ./modules-version.sh --tag module-name
+   
+   # Alternatively, specify an exact version:
+   ./modules-version.sh --tag --version=1.2.3 module-name
    
    # Push the tag to the repository
    git push origin release/module-name/vX.Y.Z
