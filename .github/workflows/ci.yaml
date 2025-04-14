@@ -51,7 +51,3 @@ jobs:
         uses: crate-ci/typos@v1.17.2
       - name: Lint
         run: bun lint
-
-      # No need to verify module versions in PRs now
-      # Version checks will be handled by the maintainer after merging
-      # And automated PRs will update the README.md files
