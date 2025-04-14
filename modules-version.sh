@@ -102,16 +102,26 @@ extract_readme_version() {
   grep -o 'version *= *"[0-9]\+\.[0-9]\+\.[0-9]\+"' "$file" | head -1 | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' || echo "0.0.0"
 }
 
-# Function to bump version according to semantic versioning
-bump_version() {
-  local version="$1"
-  local type="$2"
+# Function to determine version
+# Supports:
+# 1. Exact version from EXACT_VERSION environment variable
+# 2. Bumping version based on type (major, minor, patch)
+get_version() {
+  local current_version="$1"
+  local bump_type="$2"
   
-  IFS='.' read -r major minor patch <<< "$version"
+  # Check if an exact version is specified via environment variable
+  if [[ -n "$EXACT_VERSION" ]]; then
+    echo "$EXACT_VERSION"
+    return
+  fi
   
-  if [[ "$type" == "major" ]]; then
+  # Otherwise bump the version according to semantic versioning
+  IFS='.' read -r major minor patch <<< "$current_version"
+  
+  if [[ "$bump_type" == "major" ]]; then
     echo "$((major + 1)).0.0"
-  elif [[ "$type" == "minor" ]]; then
+  elif [[ "$bump_type" == "minor" ]]; then
     echo "$major.$((minor + 1)).0"
   else # Default to patch
     echo "$major.$minor.$((patch + 1))"
@@ -207,7 +217,7 @@ for dir in "${changed_dirs[@]}"; do
       else
         base_version="$readme_version"
       fi
-      target_version=$(bump_version "$base_version" "$VERSION_TYPE")
+      target_version=$(get_version "$base_version" "$VERSION_TYPE")
       
       # Update README if needed
       if [[ "$readme_version" == "$target_version" ]]; then
@@ -236,7 +246,7 @@ for dir in "${changed_dirs[@]}"; do
       else
         base_version="$readme_version"
       fi
-      target_version=$(bump_version "$base_version" "$VERSION_TYPE")
+      target_version=$(get_version "$base_version" "$VERSION_TYPE")
       
       echo "[DRY RUN] Would update version in $dir/README.md from $readme_version to $target_version"
       if [[ "$CREATE_TAG" == "true" ]]; then

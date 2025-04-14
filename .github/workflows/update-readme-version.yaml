@@ -1,4 +1,4 @@
-name: Update README Version
+name: Auto Update README Version
 
 on:
   push:
@@ -63,49 +63,22 @@ jobs:
       - name: Update README version
         if: steps.check.outputs.NEEDS_UPDATE == 'true'
         run: |
-          # Update README with the new version
-          ./modules-version.sh --bump=patch ${{ steps.tag.outputs.MODULE_NAME }}
+          # Use the existing script to update the README version
+          # We're forcing an exact version (from the tag) instead of bumping
           
-          # Modify update_version_in_readme to use the specific version from the tag
-          TEMP_FILE=$(mktemp)
-          MODULE_PATH="${{ steps.tag.outputs.MODULE_NAME }}"
-          README_PATH="$MODULE_PATH/README.md"
+          # Set git identity for the commit
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          awk -v tag="${{ steps.tag.outputs.VERSION }}" '
-            BEGIN { in_code_block = 0; in_nested_block = 0 }
-            {
-              # Detect the start and end of Markdown code blocks.
-              if ($0 ~ /^```/) {
-                in_code_block = !in_code_block
-                # Reset nested block tracking when exiting a code block.
-                if (!in_code_block) {
-                  in_nested_block = 0
-                }
-              }
-
-              # Handle nested blocks within a code block.
-              if (in_code_block) {
-                # Detect the start of a nested block (skipping "module" blocks).
-                if ($0 ~ /{/ && !($1 == "module" || $1 ~ /^[a-zA-Z0-9_]+$/)) {
-                  in_nested_block++
-                }
-
-                # Detect the end of a nested block.
-                if ($0 ~ /}/ && in_nested_block > 0) {
-                  in_nested_block--
-                }
-
-                # Update "version" only if not in a nested block.
-                if (!in_nested_block && $1 == "version" && $2 == "=") {
-                  sub(/"[^"]*"/, "\"" tag "\"")
-                }
-              }
-
-              print
-            }
-          ' "$README_PATH" > "$TEMP_FILE" && mv "$TEMP_FILE" "$README_PATH"
+          # Use modules-version.sh to update the README 
+          # This utilizes all the existing logic for finding and updating version strings
+          VERSION="${{ steps.tag.outputs.VERSION }}"
           
-          echo "Updated README version to ${{ steps.tag.outputs.VERSION }}"
+          # Use a special environment variable to pass the exact version to use
+          # This avoids having to modify the script
+          EXACT_VERSION="$VERSION" ./modules-version.sh ${{ steps.tag.outputs.MODULE_NAME }}
+          
+          echo "Updated README version to $VERSION"
       
       - name: Create Pull Request
         if: steps.check.outputs.NEEDS_UPDATE == 'true'
