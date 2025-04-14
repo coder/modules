@@ -52,11 +52,11 @@ jobs:
       - name: Lint
         run: bun lint
 
-      # Only run version checks on PRs
-      - name: Verify module versions
+      # Verify module tags on PRs
+      - name: Verify module tags
         if: github.event_name == 'pull_request'
         shell: bash
         run: |
-          echo "📌 Checking module versions for changed modules..."
+          echo "📌 Checking module tags for changed modules..."
           ./modules-version.sh --dry-run
-          echo "ℹ️ Remember to update versions with ./modules-version.sh if needed."
+          echo "ℹ️ After merging, create tags with: ./modules-version.sh --tag module-name"

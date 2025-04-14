@@ -59,28 +59,30 @@ module "example" {
 The release process is automated and follows these steps:
 
 1. Create a PR with your changes
-2. Update the version in the module's README.md file with the next version using the modules-version.sh script:
+2. The CI will verify that your module works correctly
+3. Once the PR is approved and merged to main:
+   - Create an annotated tag for the module from main:
    ```shell
-   # Check what changes are needed
-   ./modules-version.sh --dry-run module-name
+   # Create an annotated tag
+   ./modules-version.sh --tag module-name
    
-   # Bump the patch version
-   ./modules-version.sh --bump=patch module-name
-   
-   # Bump the minor version
-   ./modules-version.sh --bump=minor module-name
-   
-   # Bump the major version
-   ./modules-version.sh --bump=major module-name
-   ```
-3. The CI will automatically check that the version in README.md is updated
-4. Once the PR is approved and merged to main:
-   - The changes will be available on the main branch
-   - You can then create a tag for the module from main:
-   ```shell
-   ./modules-version.sh --bump=patch --tag module-name
+   # Push the tag to the repository
+   git push origin release/module-name/vX.Y.Z
    ```
    - The tag will follow the format: `release/module-name/v1.0.0`
+   - Alternatively, you can automate creating a PR to update the README version:
+   ```shell
+   # Create a tag and automatic PR
+   ./modules-version.sh --tag --auto-pr module-name
+   
+   # Push both the tag and the PR branch
+   git push origin release/module-name/vX.Y.Z
+   git push origin auto-update-module-name-vX.Y.Z
+   
+   # Create the PR using GitHub CLI
+   gh pr create --title "chore: update module-name version to X.Y.Z" \
+                --body "Automated version update following tag creation."
+   ```
 
 Following that, our automated processes will handle publishing new data to [`registry.coder.com`](https://registry.coder.com):
 

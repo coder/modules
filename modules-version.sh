@@ -7,18 +7,19 @@
 #
 # Features:
 # - Check that README.md versions match module tags (CI-friendly)
-# - Update module versions by bumping major, minor, or patch versions
+# - Create annotated tags for module releases
+# - Create automated PRs to update README versions after tagging
 # - Support for module-specific tags and versioning
-# - Create tags for new module versions
 #
 # Usage:
-#   ./modules-version.sh                                # Check all modules with changes
-#   ./modules-version.sh module-name                    # Check or update a specific module
-#   ./modules-version.sh --dry-run                      # Simulate updates without making changes
-#   ./modules-version.sh --bump=patch module-name       # Bump patch version (default)
-#   ./modules-version.sh --bump=minor module-name       # Bump minor version
-#   ./modules-version.sh --bump=major module-name       # Bump major version
-#   ./modules-version.sh --bump=patch --tag module-name # Bump version and create git tag
+#   ./modules-version.sh                                  # Check all modules with changes
+#   ./modules-version.sh module-name                      # Check a specific module
+#   ./modules-version.sh --dry-run                        # Simulate updates without making changes
+#   ./modules-version.sh --tag module-name                # Create annotated git tag
+#   ./modules-version.sh --tag --auto-pr module-name      # Create tag and automated PR to update README
+#   ./modules-version.sh --bump=patch module-name         # Bump patch version (default)
+#   ./modules-version.sh --bump=minor module-name         # Bump minor version
+#   ./modules-version.sh --bump=major module-name         # Bump major version
 
 set -euo pipefail
 
@@ -28,6 +29,7 @@ MODULE_NAME=""
 VERSION_ACTION=""
 VERSION_TYPE="patch"
 CREATE_TAG=false
+AUTO_PR=false
 SHOW_HELP=false
 
 # Function to show usage
@@ -41,15 +43,17 @@ Usage:
 Options:
   --dry-run                Simulate updates without making changes
   --bump=patch|minor|major Bump version (patch is default)
-  --tag                    Create git tag after updating version
+  --tag                    Create annotated git tag
+  --auto-pr                Create automated PR to update README after tagging (used with --tag)
   --help                   Show this help message
 
 Examples:
-  ./modules-version.sh                       # Check all modules with changes
-  ./modules-version.sh --dry-run             # Show what changes would be made (CI-friendly)
-  ./modules-version.sh module-name           # Check or update a specific module
-  ./modules-version.sh --bump=minor module-name      # Bump minor version
-  ./modules-version.sh --bump=patch --tag module-name # Bump version and create tag
+  ./modules-version.sh                         # Check all modules with changes
+  ./modules-version.sh --dry-run               # Show what changes would be made (CI-friendly)
+  ./modules-version.sh module-name             # Check a specific module
+  ./modules-version.sh --tag module-name       # Create annotated tag for a module
+  ./modules-version.sh --tag --auto-pr module-name # Create tag and automated PR
+  ./modules-version.sh --bump=minor module-name    # Bump minor version in README
 EOF
   exit 0
 }
@@ -60,6 +64,8 @@ for arg in "$@"; do
     DRY_RUN=true
   elif [[ "$arg" == "--tag" ]]; then
     CREATE_TAG=true
+  elif [[ "$arg" == "--auto-pr" ]]; then
+    AUTO_PR=true
   elif [[ "$arg" == "--help" ]]; then
     SHOW_HELP=true
   elif [[ "$arg" == --bump=* ]]; then
@@ -90,6 +96,14 @@ fi
 
 if [[ "$VERSION_ACTION" == "bump" ]]; then
   echo "Will bump $VERSION_TYPE version"
+fi
+
+if [[ "$CREATE_TAG" == "true" ]]; then
+  echo "Will create annotated tag"
+  
+  if [[ "$AUTO_PR" == "true" ]]; then
+    echo "Will create automated PR to update README"
+  fi
 fi
 
 # Function to extract version from README.md
@@ -212,13 +226,25 @@ for dir in "${changed_dirs[@]}"; do
         echo "Updating version in $dir/README.md from $readme_version to $target_version"
         update_version_in_readme "$dir/README.md" "$target_version"
         
-        # Create tag if requested
+        # Create annotated tag if requested
         if [[ "$CREATE_TAG" == "true" ]]; then
           tag_name="release/$module_name/v$target_version"
-          echo "Creating tag: $tag_name"
-          git tag "$tag_name"
+          echo "Creating annotated tag: $tag_name"
+          git tag -a "$tag_name" -m "Release $module_name v$target_version"
+          echo "Remember to push the tag with: git push origin $tag_name"
+          
+          # Create automated PR branch for README update if requested
+          if [[ "$AUTO_PR" == "true" ]]; then
+            pr_branch="auto-update-$module_name-v$target_version"
+            echo "Creating branch for automated PR: $pr_branch"
+            git checkout -b "$pr_branch"
+            git add "$dir/README.md"
+            git commit -m "chore: update $module_name version to $target_version" --author="github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+            echo "Push and create PR with: git push origin $pr_branch && gh pr create --title \"chore: update $module_name version to $target_version\" --body \"Automated version update following tag creation.\""
+            git checkout -
+          fi
         else
-          echo "To tag this release, use: git tag release/$module_name/v$target_version"
+          echo "To tag this release, use: git tag -a release/$module_name/v$target_version -m \"Release $module_name v$target_version\""
         fi
       fi
       continue
@@ -234,7 +260,11 @@ for dir in "${changed_dirs[@]}"; do
       
       echo "[DRY RUN] Would update version in $dir/README.md from $readme_version to $target_version"
       if [[ "$CREATE_TAG" == "true" ]]; then
-        echo "[DRY RUN] Would create tag: release/$module_name/v$target_version"
+        echo "[DRY RUN] Would create annotated tag: release/$module_name/v$target_version"
+        
+        if [[ "$AUTO_PR" == "true" ]]; then
+          echo "[DRY RUN] Would create automated PR to update README version to $target_version"
+        fi
       fi
       continue
     fi
