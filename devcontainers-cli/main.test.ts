@@ -10,9 +10,10 @@ import {
   type TerraformState,
 } from "../test";
 
-const executeScriptInContainerWithNPM = async (
+const executeScriptInContainerWithPackageManager = async (
   state: TerraformState,
   image: string,
+  packageManager: string,
   shell = "sh",
 ): Promise<{
   exitCode: number;
@@ -21,7 +22,16 @@ const executeScriptInContainerWithNPM = async (
 }> => {
   const instance = findResourceInstance(state, "coder_script");
   const id = await runContainer(image);
-  const respPipx = await execContainer(id, [shell, "-c", "apk add nodejs npm"]);
+
+  // Install the specified package manager
+  if (packageManager === "npm") {
+    await execContainer(id, [shell, "-c", "apk add nodejs npm"]);
+  } else if (packageManager === "pnpm") {
+    await execContainer(id, [shell, "-c", "apk add nodejs npm && npm install -g pnpm"]);
+  } else if (packageManager === "yarn") {
+    await execContainer(id, [shell, "-c", "apk add nodejs npm && npm install -g yarn"]);
+  }
+
   const resp = await execContainer(id, [shell, "-c", instance.script]);
   const stdout = resp.stdout.trim().split("\n");
   const stderr = resp.stderr.trim().split("\n");
@@ -39,32 +49,38 @@ describe("devcontainers-cli", async () => {
     agent_id: "some-agent-id",
   });
 
-  it("misses npm", async () => {
+  it("misses all package managers", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "some-agent-id",
     });
     const output = await executeScriptInContainer(state, "alpine");
     expect(output.exitCode).toBe(1);
     expect(output.stdout).toEqual([
-      "Installing @devcontainers/cli ...",
-      "npm is not installed, please install npm first",
+      "No supported package manager (npm, pnpm, yarn) is installed. Please install one first.",
     ]);
   });
 
-  it("installs devcontainers-cli", async () => {
+  it("installs devcontainers-cli with npm", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "some-agent-id",
     });
 
-    const output = await executeScriptInContainerWithNPM(state, "alpine");
+    const output = await executeScriptInContainerWithPackageManager(state, "alpine", "npm");
     expect(output.exitCode).toBe(0);
 
-    expect(output.stdout[0]).toEqual("Installing @devcontainers/cli ...");
-    expect(output.stdout[1]).toEqual(
-      "Running npm install -g @devcontainers/cli ...",
-    );
-    expect(output.stdout[4]).toEqual(
-      "🥳 @devcontainers/cli has been installed !",
-    );
+    expect(output.stdout[0]).toEqual("Installing @devcontainers/cli using npm ...");
+    expect(output.stdout[output.stdout.length-1]).toEqual("🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!");
+  });
+
+  it("installs devcontainers-cli with yarn", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "some-agent-id",
+    });
+
+    const output = await executeScriptInContainerWithPackageManager(state, "alpine", "yarn");
+    expect(output.exitCode).toBe(0);
+
+    expect(output.stdout[0]).toEqual("Installing @devcontainers/cli using yarn ...");
+    expect(output.stdout[output.stdout.length-1]).toEqual("🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!");
   });
 });
