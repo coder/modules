@@ -95,7 +95,13 @@ resource "coder_script" "claude_code" {
       coder exp mcp configure claude-code ${var.folder}
     fi
 
-    # Check tmux variable
+    # Handle terminal multiplexer selection (tmux or screen)
+    if [ "${var.experiment_use_tmux}" = "true" ] && [ "${var.experiment_use_screen}" = "true" ]; then
+      echo "Error: Both experiment_use_tmux and experiment_use_screen cannot be true simultaneously."
+      echo "Please set only one of them to true."
+      exit 1
+    fi
+
     if [ "${var.experiment_use_tmux}" = "true" ]; then
       echo "User specified tmux"
     fi
