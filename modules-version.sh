@@ -120,8 +120,7 @@ extract_readme_version() {
 # Function to determine version
 # Supports:
 # 1. Exact version from --version command-line option
-# 2. Exact version from EXACT_VERSION environment variable 
-# 3. Bumping version based on type (major, minor, patch)
+# 2. Bumping version based on type (major, minor, patch)
 get_version() {
   local current_version="$1"
   local bump_type="$2"
@@ -132,13 +131,7 @@ get_version() {
     return
   fi
   
-  # Priority 2: Check if an exact version is specified via environment variable
-  if [[ -n "${EXACT_VERSION:-}" ]]; then
-    echo "$EXACT_VERSION"
-    return
-  fi
-  
-  # Priority 3: Bump the version according to semantic versioning
+  # Priority 2: Bump the version according to semantic versioning
   IFS='.' read -r major minor patch <<< "$current_version"
   
   if [[ "$bump_type" == "major" ]]; then
