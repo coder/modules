@@ -72,10 +72,11 @@ jobs:
           
           echo "Updated README version to $VERSION"
       
-      - name: Create and Auto-Merge PR
+      - name: Create PR
         if: steps.check.outputs.NEEDS_UPDATE == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: create-pr
         run: |
           # Variables for PR creation
           MODULE="${{ steps.tag.outputs.MODULE_NAME }}"
@@ -87,9 +88,13 @@ jobs:
           # Create a branch for the PR
           git checkout -b "$BRANCH"
           
+          # Configure git for cdrci user
+          git config user.name "cdrci"
+          git config user.email "cdrci@users.noreply.github.com"
+          
           # Commit the changes
           git add "$MODULE/README.md"
-          git commit -m "$PR_TITLE" --author="github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          git commit -m "$PR_TITLE"
           
           # Push the branch
           git push origin "$BRANCH"
@@ -111,11 +116,16 @@ jobs:
           
           # Extract PR number from URL
           PR_NUMBER=$(echo "$PR_URL" | grep -o '[0-9]*$')
-          
-          # Request review from cdr-bot
-          gh pr review "$PR_NUMBER" --request --reviewer "cdr-bot"
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
           
           # Enable auto-merge
           gh pr merge "$PR_NUMBER" --auto --squash
           
-          echo "PR has been created, requested cdr-bot review, and set to auto-merge"
+          echo "PR has been created and set to auto-merge"
+          
+      - name: Auto-approve PR
+        if: steps.create-pr.outputs.pr_number
+        uses: hmarr/auto-approve-action@v3
+        with:
+          pull-request-number: ${{ steps.create-pr.outputs.pr_number }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
