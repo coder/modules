@@ -54,6 +54,12 @@ variable "experiment_use_screen" {
   default     = false
 }
 
+variable "experiment_use_tmux" {
+  type        = bool
+  description = "Whether to use tmux instead of screen for running Claude Code in the background."
+  default     = false
+}
+
 variable "experiment_report_tasks" {
   type        = bool
   description = "Whether to enable task reporting."
@@ -87,6 +93,11 @@ resource "coder_script" "claude_code" {
     if [ "${var.experiment_report_tasks}" = "true" ]; then
       echo "Configuring Claude Code to report tasks via Coder MCP..."
       coder exp mcp configure claude-code ${var.folder}
+    fi
+
+    # Check tmux variable
+    if [ "${var.experiment_use_tmux}" = "true" ]; then
+      echo "User specified tmux"
     fi
 
     # Run with screen if enabled
