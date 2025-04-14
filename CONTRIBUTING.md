@@ -68,10 +68,15 @@ The release process is automated and follows these steps:
    - Create and push an annotated tag with an appropriate version based on your changes:
    ```shell
    # Create an annotated tag with an exact version number
-   ./modules-version.sh --tag --version=1.2.3 module-name
+   ./release.sh module-name --version=1.2.3
    
    # Push the tag to the repository
    git push origin release/module-name/v1.2.3
+   ```
+   
+   - View all modules and their current versions with:
+   ```shell
+   ./release.sh --list
    ```
    - The tag will follow the format: `release/module-name/v1.0.0`
 

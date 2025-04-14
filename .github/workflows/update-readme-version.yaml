@@ -70,12 +70,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          # Use modules-version.sh to update the README with the exact version from the tag
-          # This utilizes all the existing logic for finding and updating version strings
+          # Use update-version.sh to update the README with the exact version from the tag
+          # This script is specifically designed for this purpose
           VERSION="${{ steps.tag.outputs.VERSION }}"
+          MODULE="${{ steps.tag.outputs.MODULE_NAME }}"
           
-          # Use the --version parameter to set the exact version
-          ./modules-version.sh --version="$VERSION" ${{ steps.tag.outputs.MODULE_NAME }}
+          # Update the version in README.md
+          chmod +x ./update-version.sh
+          ./update-version.sh "$MODULE" --version="$VERSION"
           
           echo "Updated README version to $VERSION"
       
