@@ -47,7 +47,7 @@ jobs:
           VERSION="${{ steps.tag.outputs.VERSION }}"
           
           echo "Checking if README version matches tag version..."
-          if ./update-version.sh --check "$MODULE" --version="$VERSION"; then
+          if ./update-version.sh --check "$MODULE" "$VERSION"; then
             echo "README version already matches tag version"
             echo "NEEDS_UPDATE=false" >> $GITHUB_OUTPUT
           else
@@ -58,21 +58,17 @@ jobs:
       - name: Update README version
         if: steps.check.outputs.NEEDS_UPDATE == 'true'
         run: |
-          # Use the existing script to update the README version
-          # We're forcing an exact version (from the tag) instead of bumping
-          
           # Set git identity for the commit
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          # Use update-version.sh to update the README with the exact version from the tag
-          # This script is specifically designed for this purpose
+          # Use update-version.sh to update the README version
           VERSION="${{ steps.tag.outputs.VERSION }}"
           MODULE="${{ steps.tag.outputs.MODULE_NAME }}"
           
           # Update the version in README.md
           chmod +x ./update-version.sh
-          ./update-version.sh "$MODULE" --version="$VERSION"
+          ./update-version.sh "$MODULE" "$VERSION"
           
           echo "Updated README version to $VERSION"
       

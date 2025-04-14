@@ -6,71 +6,34 @@
 # to update README versions after a new tag is pushed.
 #
 # Usage:
-#   ./update-version.sh module-name --version=X.Y.Z    # Update README version
-#   ./update-version.sh --help                         # Show help message
-#   ./update-version.sh --check module-name --version=X.Y.Z # Check version
+#   ./update-version.sh module-name X.Y.Z           # Update README version
+#   ./update-version.sh --check module-name X.Y.Z   # Check if versions match
 
 set -euo pipefail
 
 # Default values
-MODULE_NAME=""
-VERSION=""
 CHECK_ONLY=false
-SHOW_HELP=false
 
-# Function to show usage
-show_help() {
-  cat << EOF
-update-version.sh - Update README.md version to match module tag
-
-Usage:
-  ./update-version.sh [options] module-name
-
-Options:
-  --version=X.Y.Z          Version number to set in README.md
-  --check                  Only check if README version matches specified version
-  --help                   Show this help message
-
-Examples:
-  ./update-version.sh code-server --version=1.2.3   # Update version in code-server README
-  ./update-version.sh --check code-server --version=1.2.3  # Check if versions match
-EOF
-  exit 0
-}
-
-# Parse arguments
-for arg in "$@"; do
-  if [[ "$arg" == "--help" ]]; then
-    SHOW_HELP=true
-  elif [[ "$arg" == "--check" ]]; then
-    CHECK_ONLY=true
-  elif [[ "$arg" == --version=* ]]; then
-    VERSION="${arg#*=}"
-    # Validate version format
-    if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-      echo "Error: Version must be in format X.Y.Z (e.g., 1.2.3)"
-      exit 1
-    fi
-  elif [[ "$arg" != --* ]]; then
-    MODULE_NAME="$arg"
-  fi
-done
-
-# Show help if requested
-if [[ "$SHOW_HELP" == "true" ]]; then
-  show_help
+# Parse --check flag if present
+if [[ "$1" == "--check" ]]; then
+  CHECK_ONLY=true
+  shift
 fi
 
-# Validate required parameters
-if [[ -z "$MODULE_NAME" ]]; then
-  echo "Error: Module name is required"
-  echo "Usage: ./update-version.sh module-name --version=X.Y.Z"
+# Validate we have exactly two parameters: module name and version
+if [[ "$#" -ne 2 ]]; then
+  echo "Error: Expected module name and version"
+  echo "Usage: ./update-version.sh [--check] module-name X.Y.Z"
   exit 1
 fi
 
-if [[ -z "$VERSION" ]]; then
-  echo "Error: Version is required (--version=X.Y.Z)"
-  echo "Usage: ./update-version.sh module-name --version=X.Y.Z"
+# Extract arguments
+MODULE_NAME="$1"
+VERSION="$2"
+
+# Validate version format
+if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  echo "Error: Version must be in format X.Y.Z (e.g., 1.2.3)"
   exit 1
 fi
 
