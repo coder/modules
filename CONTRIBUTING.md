@@ -73,7 +73,8 @@ The release process is automated and follows these steps:
    - When you push the tag, a GitHub Action will automatically:
      - Create a PR to update the module's README.md version
      - The PR will be created by github-actions[bot]
-     - Once approved, merge the PR to update the README version
+     - The PR will be automatically approved and set to auto-merge
+     - No manual action required - the version will be updated automatically
 
 Following that, our automated processes will handle publishing new data to [`registry.coder.com`](https://registry.coder.com):
 
