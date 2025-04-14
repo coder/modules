@@ -58,5 +58,5 @@ jobs:
         shell: bash
         run: |
           echo "📌 Checking module versions for changed modules..."
-          ./modules-version.sh
+          ./modules-version.sh --dry-run
           echo "ℹ️ Remember to update versions with ./modules-version.sh if needed."

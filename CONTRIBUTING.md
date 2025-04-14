@@ -59,12 +59,28 @@ module "example" {
 The release process is automated and follows these steps:
 
 1. Create a PR with your changes
-2. Update the version in the module's README.md file with the next version.
+2. Update the version in the module's README.md file with the next version using the modules-version.sh script:
+   ```shell
+   # Check what changes are needed
+   ./modules-version.sh --dry-run module-name
+   
+   # Bump the patch version
+   ./modules-version.sh --bump=patch module-name
+   
+   # Bump the minor version
+   ./modules-version.sh --bump=minor module-name
+   
+   # Bump the major version
+   ./modules-version.sh --bump=major module-name
+   ```
 3. The CI will automatically check that the version in README.md is updated
 4. Once the PR is approved and merged to main:
    - The changes will be available on the main branch
-   - You can then push a new tag for the module from main
-   - The tag should follow the format: `release/module-name/v1.0.0`
+   - You can then create a tag for the module from main:
+   ```shell
+   ./modules-version.sh --bump=patch --tag module-name
+   ```
+   - The tag will follow the format: `release/module-name/v1.0.0`
 
 Following that, our automated processes will handle publishing new data to [`registry.coder.com`](https://registry.coder.com):
 

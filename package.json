@@ -6,7 +6,7 @@
     "fmt:ci": "bun x prettier --check **/*.sh .sample/run.sh new.sh **/*.ts **/*.md *.md && terraform fmt -check **/*.tf .sample/main.tf",
     "lint": "bun run lint.ts && ./terraform_validate.sh",
     "version": "./modules-version.sh",
-    "version:check": "./modules-version.sh --check"
+    "version:check": "./modules-version.sh --dry-run"
   },
   "devDependencies": {
     "bun-types": "^1.1.23",

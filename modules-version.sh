@@ -1,73 +1,67 @@
 #!/usr/bin/env bash
 
-# modules-version: A versatile tool for managing module versions in the Coder modules repository
+# modules-version: A tool for managing module versions in the Coder modules repository
 #
 # This script handles module versioning with support for module-specific tags in the format:
 # release/module-name/v1.0.0
 #
 # Features:
 # - Check that README.md versions match module tags (CI-friendly)
-# - Update module versions automatically or to specified versions
+# - Update module versions by bumping major, minor, or patch versions
 # - Support for module-specific tags and versioning
 # - Create tags for new module versions
 #
 # Usage:
 #   ./modules-version.sh                                # Check all modules with changes
 #   ./modules-version.sh module-name                    # Check or update a specific module
-#   ./modules-version.sh --check                        # Check-only mode (no changes)
-#   ./modules-version.sh --set-version=1.2.3 module-name   # Set specific version
+#   ./modules-version.sh --dry-run                      # Simulate updates without making changes
 #   ./modules-version.sh --bump=patch module-name       # Bump patch version (default)
 #   ./modules-version.sh --bump=minor module-name       # Bump minor version
 #   ./modules-version.sh --bump=major module-name       # Bump major version
-#   ./modules-version.sh --tag module-name              # Create git tag after updating
+#   ./modules-version.sh --bump=patch --tag module-name # Bump version and create git tag
 
 set -euo pipefail
 
 # Default values
-CHECK_ONLY=false
+DRY_RUN=false
 MODULE_NAME=""
 VERSION_ACTION=""
 VERSION_TYPE="patch"
-NEW_VERSION=""
 CREATE_TAG=false
 SHOW_HELP=false
 
 # Function to show usage
 show_help() {
   cat << EOF
-modules-version: A versatile tool for managing module versions
+modules-version: A tool for managing module versions
 
 Usage:
   ./modules-version.sh [options] [module-name]
 
 Options:
-  --check                  Check mode - verify versions without making changes
-  --set-version=X.Y.Z      Set version to specific number
+  --dry-run                Simulate updates without making changes
   --bump=patch|minor|major Bump version (patch is default)
   --tag                    Create git tag after updating version
   --help                   Show this help message
 
 Examples:
   ./modules-version.sh                       # Check all modules with changes
-  ./modules-version.sh --check               # Check-only mode (CI-friendly)
+  ./modules-version.sh --dry-run             # Show what changes would be made (CI-friendly)
   ./modules-version.sh module-name           # Check or update a specific module
-  ./modules-version.sh --set-version=1.2.3 module-name  # Set specific version
-  ./modules-version.sh --bump=minor --tag module-name   # Bump minor version and create tag
+  ./modules-version.sh --bump=minor module-name      # Bump minor version
+  ./modules-version.sh --bump=patch --tag module-name # Bump version and create tag
 EOF
   exit 0
 }
 
 # Parse arguments
 for arg in "$@"; do
-  if [[ "$arg" == "--check" ]]; then
-    CHECK_ONLY=true
+  if [[ "$arg" == "--dry-run" ]]; then
+    DRY_RUN=true
   elif [[ "$arg" == "--tag" ]]; then
     CREATE_TAG=true
   elif [[ "$arg" == "--help" ]]; then
     SHOW_HELP=true
-  elif [[ "$arg" == --set-version=* ]]; then
-    VERSION_ACTION="set"
-    NEW_VERSION="${arg#*=}"
   elif [[ "$arg" == --bump=* ]]; then
     VERSION_ACTION="bump"
     VERSION_TYPE="${arg#*=}"
@@ -86,17 +80,15 @@ if [[ "$SHOW_HELP" == "true" ]]; then
 fi
 
 # Report mode
-if [[ "$CHECK_ONLY" == "true" ]]; then
-  echo "Running in check-only mode (no changes will be made)"
+if [[ "$DRY_RUN" == "true" ]]; then
+  echo "Running in dry-run mode (no changes will be made)"
 fi
 
 if [[ -n "$MODULE_NAME" ]]; then
   echo "Working with module: $MODULE_NAME"
 fi
 
-if [[ "$VERSION_ACTION" == "set" ]]; then
-  echo "Will set version to: $NEW_VERSION"
-elif [[ "$VERSION_ACTION" == "bump" ]]; then
+if [[ "$VERSION_ACTION" == "bump" ]]; then
   echo "Will bump $VERSION_TYPE version"
 fi
 
@@ -202,21 +194,16 @@ for dir in "${changed_dirs[@]}"; do
       echo "Module $module_name: No module-specific tags found, README version=$readme_version"
     fi
     
-    # Update version if requested and not in check-only mode
-    if [[ "$CHECK_ONLY" == "false" && ("$VERSION_ACTION" == "set" || "$VERSION_ACTION" == "bump") ]]; then
-      # Determine the new version
-      if [[ "$VERSION_ACTION" == "set" ]]; then
-        target_version="$NEW_VERSION"
-      else # bump
-        # Start with the latest tag version if available, otherwise use README version
-        base_version=""
-        if [[ -n "$latest_module_tag" ]]; then
-          base_version="$latest_tag_version"
-        else
-          base_version="$readme_version"
-        fi
-        target_version=$(bump_version "$base_version" "$VERSION_TYPE")
+    # Update version if requested and not in dry-run mode
+    if [[ "$DRY_RUN" == "false" && "$VERSION_ACTION" == "bump" ]]; then
+      # Start with the latest tag version if available, otherwise use README version
+      base_version=""
+      if [[ -n "$latest_module_tag" ]]; then
+        base_version="$latest_tag_version"
+      else
+        base_version="$readme_version"
       fi
+      target_version=$(bump_version "$base_version" "$VERSION_TYPE")
       
       # Update README if needed
       if [[ "$readme_version" == "$target_version" ]]; then
@@ -235,10 +222,25 @@ for dir in "${changed_dirs[@]}"; do
         fi
       fi
       continue
+    elif [[ "$DRY_RUN" == "true" && "$VERSION_ACTION" == "bump" ]]; then
+      # Show what would happen in dry-run mode
+      base_version=""
+      if [[ -n "$latest_module_tag" ]]; then
+        base_version="$latest_tag_version"
+      else
+        base_version="$readme_version"
+      fi
+      target_version=$(bump_version "$base_version" "$VERSION_TYPE")
+      
+      echo "[DRY RUN] Would update version in $dir/README.md from $readme_version to $target_version"
+      if [[ "$CREATE_TAG" == "true" ]]; then
+        echo "[DRY RUN] Would create tag: release/$module_name/v$target_version"
+      fi
+      continue
     fi
     
     # Only do version checking if we're not updating
-    if [[ "$VERSION_ACTION" != "set" && "$VERSION_ACTION" != "bump" ]]; then
+    if [[ "$VERSION_ACTION" != "bump" ]]; then
       # Get all tags for the module
       module_tags=$(git tag -l "release/$module_name/v*" | sort -V)
       
