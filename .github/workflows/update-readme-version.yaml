@@ -1,0 +1,124 @@
+name: Update README Version
+
+on:
+  push:
+    tags:
+      - 'release/*/v*'  # Matches tags like release/module-name/v1.0.0
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full history for tags
+      
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      
+      - name: Install dependencies
+        run: bun install
+      
+      - name: Extract tag information
+        id: tag
+        run: |
+          # Extract module name and version from tag
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+          MODULE_NAME=$(echo $TAG_NAME | cut -d'/' -f2)
+          VERSION=$(echo $TAG_NAME | cut -d'/' -f3 | sed 's/^v//')
+          
+          echo "MODULE_NAME=$MODULE_NAME" >> $GITHUB_OUTPUT
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_OUTPUT
+      
+      - name: Check if README needs updating
+        id: check
+        run: |
+          # Check current README version
+          README_PATH="${{ steps.tag.outputs.MODULE_NAME }}/README.md"
+          if [ ! -f "$README_PATH" ]; then
+            echo "README file not found for module ${{ steps.tag.outputs.MODULE_NAME }}"
+            exit 1
+          fi
+          
+          # Extract version from README
+          README_VERSION=$(grep -o 'version *= *"[0-9]\+\.[0-9]\+\.[0-9]\+"' "$README_PATH" | head -1 | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
+          
+          echo "Current README version: $README_VERSION"
+          echo "Tag version: ${{ steps.tag.outputs.VERSION }}"
+          
+          if [ "$README_VERSION" != "${{ steps.tag.outputs.VERSION }}" ]; then
+            echo "NEEDS_UPDATE=true" >> $GITHUB_OUTPUT
+          else
+            echo "NEEDS_UPDATE=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Update README version
+        if: steps.check.outputs.NEEDS_UPDATE == 'true'
+        run: |
+          # Update README with the new version
+          ./modules-version.sh --bump=patch ${{ steps.tag.outputs.MODULE_NAME }}
+          
+          # Modify update_version_in_readme to use the specific version from the tag
+          TEMP_FILE=$(mktemp)
+          MODULE_PATH="${{ steps.tag.outputs.MODULE_NAME }}"
+          README_PATH="$MODULE_PATH/README.md"
+          
+          awk -v tag="${{ steps.tag.outputs.VERSION }}" '
+            BEGIN { in_code_block = 0; in_nested_block = 0 }
+            {
+              # Detect the start and end of Markdown code blocks.
+              if ($0 ~ /^```/) {
+                in_code_block = !in_code_block
+                # Reset nested block tracking when exiting a code block.
+                if (!in_code_block) {
+                  in_nested_block = 0
+                }
+              }
+
+              # Handle nested blocks within a code block.
+              if (in_code_block) {
+                # Detect the start of a nested block (skipping "module" blocks).
+                if ($0 ~ /{/ && !($1 == "module" || $1 ~ /^[a-zA-Z0-9_]+$/)) {
+                  in_nested_block++
+                }
+
+                # Detect the end of a nested block.
+                if ($0 ~ /}/ && in_nested_block > 0) {
+                  in_nested_block--
+                }
+
+                # Update "version" only if not in a nested block.
+                if (!in_nested_block && $1 == "version" && $2 == "=") {
+                  sub(/"[^"]*"/, "\"" tag "\"")
+                }
+              }
+
+              print
+            }
+          ' "$README_PATH" > "$TEMP_FILE" && mv "$TEMP_FILE" "$README_PATH"
+          
+          echo "Updated README version to ${{ steps.tag.outputs.VERSION }}"
+      
+      - name: Create Pull Request
+        if: steps.check.outputs.NEEDS_UPDATE == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore: update ${{ steps.tag.outputs.MODULE_NAME }} version to ${{ steps.tag.outputs.VERSION }}"
+          branch: automated-readme-update-${{ steps.tag.outputs.MODULE_NAME }}-${{ steps.tag.outputs.VERSION }}
+          base: main
+          title: "chore: update ${{ steps.tag.outputs.MODULE_NAME }} version to ${{ steps.tag.outputs.VERSION }}"
+          body: |
+            This PR automatically updates the README version to match the newly created tag.
+            
+            Tag: ${{ steps.tag.outputs.TAG_NAME }}
+            Module: ${{ steps.tag.outputs.MODULE_NAME }}
+            Version: ${{ steps.tag.outputs.VERSION }}
+          delete-branch: true

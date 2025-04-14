@@ -70,19 +70,10 @@ The release process is automated and follows these steps:
    git push origin release/module-name/vX.Y.Z
    ```
    - The tag will follow the format: `release/module-name/v1.0.0`
-   - Alternatively, you can automate creating a PR to update the README version:
-   ```shell
-   # Create a tag and automatic PR
-   ./modules-version.sh --tag --auto-pr module-name
-   
-   # Push both the tag and the PR branch
-   git push origin release/module-name/vX.Y.Z
-   git push origin auto-update-module-name-vX.Y.Z
-   
-   # Create the PR using GitHub CLI
-   gh pr create --title "chore: update module-name version to X.Y.Z" \
-                --body "Automated version update following tag creation."
-   ```
+   - When you push the tag, a GitHub Action will automatically:
+     - Create a PR to update the module's README.md version
+     - The PR will be created by github-actions[bot]
+     - Once approved, merge the PR to update the README version
 
 Following that, our automated processes will handle publishing new data to [`registry.coder.com`](https://registry.coder.com):
 
