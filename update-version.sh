@@ -8,7 +8,7 @@
 # Usage:
 #   ./update-version.sh module-name --version=X.Y.Z    # Update README version
 #   ./update-version.sh --help                         # Show help message
-#   ./update-version.sh --check module-name            # Check if README version matches tag
+#   ./update-version.sh --check module-name --version=X.Y.Z # Check version
 
 set -euo pipefail
 
@@ -34,10 +34,6 @@ Options:
 Examples:
   ./update-version.sh code-server --version=1.2.3   # Update version in code-server README
   ./update-version.sh --check code-server --version=1.2.3  # Check if versions match
-
-Notes:
-  - This script is primarily used by GitHub Actions
-  - It updates the version in README.md files to match module tags
 EOF
   exit 0
 }
@@ -65,14 +61,33 @@ if [[ "$SHOW_HELP" == "true" ]]; then
   show_help
 fi
 
+# Validate required parameters
+if [[ -z "$MODULE_NAME" ]]; then
+  echo "Error: Module name is required"
+  echo "Usage: ./update-version.sh module-name --version=X.Y.Z"
+  exit 1
+fi
+
+if [[ -z "$VERSION" ]]; then
+  echo "Error: Version is required (--version=X.Y.Z)"
+  echo "Usage: ./update-version.sh module-name --version=X.Y.Z"
+  exit 1
+fi
+
+# Verify module directory exists
+if [[ ! -d "$MODULE_NAME" || ! -f "$MODULE_NAME/README.md" ]]; then
+  echo "Error: Module directory '$MODULE_NAME' not found or missing README.md"
+  exit 1
+fi
+
 # Function to extract version from README.md
-extract_readme_version() {
+extract_version() {
   local file="$1"
   grep -o 'version *= *"[0-9]\+\.[0-9]\+\.[0-9]\+"' "$file" | head -1 | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' || echo "0.0.0"
 }
 
 # Function to update version in README.md
-update_version_in_readme() {
+update_version() {
   local file="$1"
   local new_version="$2"
   local tmpfile
@@ -81,28 +96,22 @@ update_version_in_readme() {
   awk -v tag="$new_version" '
     BEGIN { in_code_block = 0; in_nested_block = 0 }
     {
-      # Detect the start and end of Markdown code blocks.
+      # Detect code blocks
       if ($0 ~ /^```/) {
         in_code_block = !in_code_block
-        # Reset nested block tracking when exiting a code block.
-        if (!in_code_block) {
-          in_nested_block = 0
-        }
+        if (!in_code_block) { in_nested_block = 0 }
       }
 
-      # Handle nested blocks within a code block.
+      # Track nested blocks within code blocks
       if (in_code_block) {
-        # Detect the start of a nested block (skipping "module" blocks).
         if ($0 ~ /{/ && !($1 == "module" || $1 ~ /^[a-zA-Z0-9_]+$/)) {
           in_nested_block++
         }
-
-        # Detect the end of a nested block.
         if ($0 ~ /}/ && in_nested_block > 0) {
           in_nested_block--
         }
 
-        # Update "version" only if not in a nested block.
+        # Update version only if not in nested block
         if (!in_nested_block && $1 == "version" && $2 == "=") {
           sub(/"[^"]*"/, "\"" tag "\"")
         }
@@ -113,30 +122,9 @@ update_version_in_readme() {
   ' "$file" > "$tmpfile" && mv "$tmpfile" "$file"
 }
 
-# Validate required parameters
-if [[ -z "$MODULE_NAME" ]]; then
-  echo "Error: Module name is required"
-  echo "Usage: ./update-version.sh module-name --version=X.Y.Z"
-  echo "Run ./update-version.sh --help for more information"
-  exit 1
-fi
-
-if [[ -z "$VERSION" ]]; then
-  echo "Error: Version is required (--version=X.Y.Z)"
-  echo "Usage: ./update-version.sh module-name --version=X.Y.Z"
-  echo "Run ./update-version.sh --help for more information"
-  exit 1
-fi
-
-# Verify module directory exists
-if [[ ! -d "$MODULE_NAME" || ! -f "$MODULE_NAME/README.md" ]]; then
-  echo "Error: Module directory '$MODULE_NAME' not found or missing README.md"
-  exit 1
-fi
-
 # Get current version from README
 README_PATH="$MODULE_NAME/README.md"
-README_VERSION=$(extract_readme_version "$README_PATH")
+README_VERSION=$(extract_version "$README_PATH")
 
 # Report current status
 echo "Module: $MODULE_NAME"
@@ -159,7 +147,7 @@ if [[ "$README_VERSION" == "$VERSION" ]]; then
   echo "Version in $README_PATH is already set to $VERSION"
 else
   echo "Updating version in $README_PATH from $README_VERSION to $VERSION"
-  update_version_in_readme "$README_PATH" "$VERSION"
+  update_version "$README_PATH" "$VERSION"
   echo "✅ Successfully updated version to $VERSION"
 fi
 

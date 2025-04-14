@@ -41,23 +41,18 @@ jobs:
       - name: Check if README needs updating
         id: check
         run: |
-          # Check current README version
-          README_PATH="${{ steps.tag.outputs.MODULE_NAME }}/README.md"
-          if [ ! -f "$README_PATH" ]; then
-            echo "README file not found for module ${{ steps.tag.outputs.MODULE_NAME }}"
-            exit 1
-          fi
+          # Use the update-version.sh script in check mode
+          chmod +x ./update-version.sh
+          MODULE="${{ steps.tag.outputs.MODULE_NAME }}"
+          VERSION="${{ steps.tag.outputs.VERSION }}"
           
-          # Extract version from README
-          README_VERSION=$(grep -o 'version *= *"[0-9]\+\.[0-9]\+\.[0-9]\+"' "$README_PATH" | head -1 | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
-          
-          echo "Current README version: $README_VERSION"
-          echo "Tag version: ${{ steps.tag.outputs.VERSION }}"
-          
-          if [ "$README_VERSION" != "${{ steps.tag.outputs.VERSION }}" ]; then
-            echo "NEEDS_UPDATE=true" >> $GITHUB_OUTPUT
-          else
+          echo "Checking if README version matches tag version..."
+          if ./update-version.sh --check "$MODULE" --version="$VERSION"; then
+            echo "README version already matches tag version"
             echo "NEEDS_UPDATE=false" >> $GITHUB_OUTPUT
+          else
+            echo "README version does not match tag version - update needed"
+            echo "NEEDS_UPDATE=true" >> $GITHUB_OUTPUT
           fi
       
       - name: Update README version

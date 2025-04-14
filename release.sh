@@ -15,7 +15,7 @@ set -euo pipefail
 # Default values
 MODULE_NAME=""
 VERSION=""
-CREATE_TAG=true
+DRY_RUN=false
 LIST_MODULES=false
 SHOW_HELP=false
 
@@ -52,6 +52,8 @@ for arg in "$@"; do
     SHOW_HELP=true
   elif [[ "$arg" == "--list" ]]; then
     LIST_MODULES=true
+  elif [[ "$arg" == "--dry-run" ]]; then
+    DRY_RUN=true
   elif [[ "$arg" == --version=* ]]; then
     VERSION="${arg#*=}"
     # Validate version format
@@ -59,8 +61,6 @@ for arg in "$@"; do
       echo "Error: Version must be in format X.Y.Z (e.g., 1.2.3)"
       exit 1
     fi
-  elif [[ "$arg" == "--dry-run" ]]; then
-    CREATE_TAG=false
   elif [[ "$arg" != --* ]]; then
     MODULE_NAME="$arg"
   fi
@@ -72,7 +72,7 @@ if [[ "$SHOW_HELP" == "true" ]]; then
 fi
 
 # Function to extract version from README.md
-extract_readme_version() {
+extract_version() {
   local file="$1"
   grep -o 'version *= *"[0-9]\+\.[0-9]\+\.[0-9]\+"' "$file" | head -1 | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' || echo "0.0.0"
 }
@@ -90,7 +90,7 @@ list_modules() {
       module_name="${dir%/}"
       
       # Get version from README
-      readme_version=$(extract_readme_version "${dir}README.md")
+      readme_version=$(extract_version "${dir}README.md")
       
       # Get latest tag for this module
       latest_tag=$(git tag -l "release/${module_name}/v*" | sort -V | tail -n 1)
@@ -143,7 +143,7 @@ fi
 
 # Get current version from README
 README_PATH="$MODULE_NAME/README.md"
-README_VERSION=$(extract_readme_version "$README_PATH")
+README_VERSION=$(extract_version "$README_PATH")
 
 # Construct tag name
 TAG_NAME="release/$MODULE_NAME/v$VERSION"
@@ -161,7 +161,7 @@ echo "New tag version: $VERSION"
 echo "Tag name: $TAG_NAME"
 
 # Create the tag
-if [[ "$CREATE_TAG" == "true" ]]; then
+if [[ "$DRY_RUN" == "false" ]]; then
   echo "Creating annotated tag..."
   git tag -a "$TAG_NAME" -m "Release $MODULE_NAME v$VERSION"
   echo -e "\nSuccess! Tag '$TAG_NAME' created."
