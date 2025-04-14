@@ -102,8 +102,30 @@ resource "coder_script" "claude_code" {
       exit 1
     fi
 
+    # Run with tmux if enabled
     if [ "${var.experiment_use_tmux}" = "true" ]; then
-      echo "User specified tmux"
+      echo "Running Claude Code in the background with tmux..."
+      
+      # Check if tmux is installed
+      if ! command_exists tmux; then
+        echo "Error: tmux is not installed. Please install tmux manually."
+        exit 1
+      fi
+
+      touch "$HOME/.claude-code.log"
+      
+      export LANG=en_US.UTF-8
+      export LC_ALL=en_US.UTF-8
+      
+      # Create a new tmux session in detached mode
+      tmux new-session -d -s claude-code -c ${var.folder} "claude --dangerously-skip-permissions | tee -a \"$HOME/.claude-code.log\"; exec bash"
+      
+      # Send the prompt to the tmux session if needed
+      if [ -n "$CODER_MCP_CLAUDE_TASK_PROMPT" ]; then
+        tmux send-keys -t claude-code "$CODER_MCP_CLAUDE_TASK_PROMPT"
+        sleep 5
+        tmux send-keys -t claude-code Enter
+      fi
     fi
 
     # Run with screen if enabled
@@ -166,20 +188,27 @@ resource "coder_app" "claude_code" {
     #!/bin/bash
     set -e
 
-    if [ "${var.experiment_use_screen}" = "true" ]; then
+    export LANG=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
+
+    if [ "${var.experiment_use_tmux}" = "true" ]; then
+      if tmux has-session -t claude-code 2>/dev/null; then
+        echo "Attaching to existing Claude Code tmux session." | tee -a "$HOME/.claude-code.log"
+        tmux attach-session -t claude-code
+      else
+        echo "Starting a new Claude Code tmux session." | tee -a "$HOME/.claude-code.log"
+        tmux new-session -s claude-code -c ${var.folder} "claude --dangerously-skip-permissions | tee -a \"$HOME/.claude-code.log\"; exec bash"
+      fi
+    elif [ "${var.experiment_use_screen}" = "true" ]; then
       if screen -list | grep -q "claude-code"; then
-        export LANG=en_US.UTF-8
-        export LC_ALL=en_US.UTF-8
-        echo "Attaching to existing Claude Code session." | tee -a "$HOME/.claude-code.log"
+        echo "Attaching to existing Claude Code screen session." | tee -a "$HOME/.claude-code.log"
         screen -xRR claude-code
       else
-        echo "Starting a new Claude Code session." | tee -a "$HOME/.claude-code.log"
-        screen -S claude-code bash -c 'export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; claude --dangerously-skip-permissions | tee -a "$HOME/.claude-code.log"; exec bash'
+        echo "Starting a new Claude Code screen session." | tee -a "$HOME/.claude-code.log"
+        screen -S claude-code bash -c 'claude --dangerously-skip-permissions | tee -a "$HOME/.claude-code.log"; exec bash'
       fi
     else
       cd ${var.folder}
-      export LANG=en_US.UTF-8
-      export LC_ALL=en_US.UTF-8
       claude
     fi
     EOT
