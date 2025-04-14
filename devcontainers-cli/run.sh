@@ -2,14 +2,13 @@
 
 # If @devcontainers/cli is already installed, we can skip
 if command -v devcontainer > /dev/null 2>&1; then
-  echo "🥳 @devcontainers/cli is already installed"
+  echo "🥳 @devcontainers/cli is already installed into $(which devcontainer)!"
   exit 0
 fi
 
 # Check if docker is installed
 if ! command -v docker > /dev/null 2>&1; then
-  echo "Docker is required."
-  exit 1
+  echo "WARNING: Docker was not found but is required to use @devcontainers/cli, please make sure it is available."
 fi
 
 # Determine the package manager to use: npm, pnpm, or yarn
