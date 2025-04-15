@@ -47,7 +47,7 @@ jobs:
           MODULE_NAME: ${{steps.tag.outputs.MODULE_NAME}}
           VERSION: ${{steps.tag.outputs.VERSION}}
         run: |
-          if ./update-version.sh --check $MODULE_NAME $VERSION
+          if ./update_version.sh --check $MODULE_NAME $VERSION
             echo "NEEDS_UPDATE=false" >> $GITHUB_OUTPUT
             echo "README version already matches tag version - no update needed"
           else
@@ -67,7 +67,7 @@ jobs:
           git config user.email "78873720+cdrci@users.noreply.github.com"
 
           # Update the README with the new version
-          ./update-version.sh $MODULE_NAME $VERSION
+          ./update_version.sh $MODULE_NAME $VERSION
           echo "Updated README version of $MODULE_NAME to $VERSION"
 
       - name: Create PR for version update

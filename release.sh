@@ -26,15 +26,15 @@ eval set -- "$TEMP"
 
 while true; do
   case "$1" in
-    -l|--list)
+    -l | --list)
       LIST=true
       shift
       ;;
-    -d|--dry-run)
+    -d | --dry-run)
       DRY_RUN=true
       shift
       ;;
-    -p|--push)
+    -p | --push)
       PUSH=true
       shift
       ;;
@@ -108,7 +108,7 @@ README_VERSION=$(extract_version "$MODULE_NAME/README.md")
 TAG_NAME="release/$MODULE_NAME/v$VERSION"
 
 # Check if tag already exists
-if git rev-parse -q --verify "refs/tags/$TAG_NAME" >/dev/null; then
+if git rev-parse -q --verify "refs/tags/$TAG_NAME" > /dev/null; then
   echo "Error: Tag $TAG_NAME already exists"
   exit 1
 fi

@@ -22,7 +22,8 @@ Follow the instructions to ensure that Bun is available globally. Once Bun has b
 
 ## Testing a Module
 
-> **Note:** It is the responsibility of the module author to implement tests for their module. The author must test the module locally before submitting a PR.
+> [!NOTE]
+> It is the responsibility of the module author to implement tests for their module. The author must test the module locally before submitting a PR.
 
 A suite of test-helpers exists to run `terraform apply` on modules with variables, and test script output against containers.
 
@@ -53,45 +54,52 @@ module "example" {
 
 ## Releases
 
-> [!WARNING]
-> When creating a new release, make sure that your new version number is fully accurate. If a version number is incorrect or does not exist, we may end up serving incorrect/old data for our various tools and providers.
+The release process is automated with these steps:
 
-The release process is automated and follows these steps:
+## 1. Create and Merge PR
 
-1. Create a PR with your module changes
+- Create a PR with your module changes
+- Get your PR reviewed, approved, and merged to `main`
 
-   - You **do not** need to update the version number in the README.md file
-   - Focus on implementing your feature or fix
+## 2. Prepare Release (Maintainer Task)
 
-2. Have your PR reviewed, approved, and merged to main
+After merging to main, a maintainer will:
 
-3. After merging to main, a maintainer will:
+- View all modules and their current versions:
 
-   - Create and push an annotated tag with an appropriate version based on your changes:
+  ```shell
+  ./release.sh --list
+  ```
 
-   ```shell
-   # Create an annotated tag with an exact version number
-   ./release.sh module-name 1.2.3
-   
-   # Push the tag to the repository
-   git push origin release/module-name/v1.2.3
-   ```
+- Determine the next version number based on changes:
 
-   - View all modules and their current versions with:
+  - **Patch version** (1.2.3 → 1.2.4): Bug fixes
+  - **Minor version** (1.2.3 → 1.3.0): New features, adding inputs, deprecating inputs
+  - **Major version** (1.2.3 → 2.0.0): Breaking changes (removing inputs, changing input types)
 
-   ```shell
-   ./release.sh --list
-   ```
+- Create and push an annotated tag:
 
-   - The tag will follow the format: `release/module-name/v1.0.0`
+  ```shell
+  # Fetch latest changes
+  git fetch origin
+  
+  # Create and push tag
+  ./release.sh module-name 1.2.3 --push
+  ```
 
-4. When the tag is pushed, a GitHub Action will automatically:
-   - Update the module's README.md version to match the tag
-   - Create a PR with the version update by github-actions[bot]
-   - Auto-approve and auto-merge the version update PR
-   - No manual action required - the version will be updated automatically
+  The tag format will be: `release/module-name/v1.0.0`
 
-Following that, our automated processes will handle publishing new data to [`registry.coder.com`](https://registry.coder.com):
+## 3. Automated Version Update
+
+When the tag is pushed, a GitHub Action automatically:
+
+- Checks if the module's `README.md` version matches the tag version
+- Updates the `README.md` version if needed
+- Creates a PR with the version update
+
+## 4. Publishing to Registry
+
+Our automated processes will handle publishing new data to [registry.coder.com](https://registry.coder.com).
 
 > [!NOTE]
-> Some data in `registry.coder.com` is fetched on demand from the Module repo's main branch. This data should be updated almost immediately after a new release, but other changes will take some time to propagate.
+> Some data in registry.coder.com is fetched on demand from the [coder/modules](https://github.com/coder/modules) repo's `main` branch. This data should update almost immediately after a release, while other changes will take some time to propagate.
