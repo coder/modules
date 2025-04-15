@@ -63,8 +63,8 @@ describe("devcontainers-cli", async () => {
     });
     const output = await executeScriptInContainer(state, "docker:dind");
     expect(output.exitCode).toBe(1);
-    expect(output.stdout).toEqual([
-      "No supported package manager (npm, pnpm, yarn) is installed. Please install one first.",
+    expect(output.stderr).toEqual([
+      "ERROR: No supported package manager (npm, pnpm, yarn) is installed. Please install one first.",
     ]);
   }, 15000);
 
@@ -81,7 +81,7 @@ describe("devcontainers-cli", async () => {
     expect(output.exitCode).toBe(0);
 
     expect(output.stdout[0]).toEqual(
-      "Installing @devcontainers/cli using npm ...",
+      "Installing @devcontainers/cli using npm...",
     );
     expect(output.stdout[output.stdout.length - 1]).toEqual(
       "🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!",
@@ -101,7 +101,7 @@ describe("devcontainers-cli", async () => {
     expect(output.exitCode).toBe(0);
 
     expect(output.stdout[0]).toEqual(
-      "Installing @devcontainers/cli using yarn ...",
+      "Installing @devcontainers/cli using yarn...",
     );
     expect(output.stdout[output.stdout.length - 1]).toEqual(
       "🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!",
