@@ -23,7 +23,7 @@ else
   exit 1
 fi
 
-echo "Installing @devcontainers/cli using $PACKAGE_MANAGER ..."
+echo "Installing @devcontainers/cli using $PACKAGE_MANAGER..."
 
 # Install @devcontainers/cli using the selected package manager
 if [ "$PACKAGE_MANAGER" = "npm" ] || [ "$PACKAGE_MANAGER" = "pnpm" ]; then
