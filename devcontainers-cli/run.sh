@@ -19,7 +19,7 @@ elif command -v yarn > /dev/null 2>&1; then
 elif command -v npm > /dev/null 2>&1; then
   PACKAGE_MANAGER="npm"
 else
-  echo "No supported package manager (npm, pnpm, yarn) is installed. Please install one first."
+  echo "ERROR: No supported package manager (npm, pnpm, yarn) is installed. Please install one first." 1>&2
   exit 1
 fi
 
