@@ -1,39 +1,31 @@
 name: Auto Update README Version
 
-# This workflow runs when a new tag is pushed with the format release/module-name/vX.Y.Z
-# It automatically updates the corresponding README.md file with the new version
-# and creates a PR that is auto-approved and auto-merged.
-
 on:
   push:
     tags:
-      - 'release/*/v*'  # Matches tags like release/module-name/v1.0.0
+      - "release/*/v*" # Matches tags like release/module-name/v1.0.0
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
     permissions:
-      contents: write      # Needed to push branches
-      pull-requests: write # Needed to create and manage PRs
-    
+      contents: write
+      pull-requests: write
+
     steps:
-      # Check out the repository
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # We need the full history to check tags
-      
-      # Set up the Bun JavaScript runtime
+          fetch-depth: 0
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-      
-      # Install dependencies
+
       - name: Install dependencies
         run: bun install
-      
-      # Extract information from the tag that triggered this workflow
+
       - name: Extract tag information
         id: tag
         run: |
@@ -43,86 +35,64 @@ jobs:
           MODULE_NAME=$(echo $TAG_NAME | cut -d'/' -f2)
           # Extract version (the last part, without the 'v' prefix)
           VERSION=$(echo $TAG_NAME | cut -d'/' -f3 | sed 's/^v//')
-          
+
           # Make these values available to other steps
           echo "MODULE_NAME=$MODULE_NAME" >> $GITHUB_OUTPUT
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_OUTPUT
-      
-      # Check if README needs updating
+
       - name: Check if README version needs updating
         id: check
+        env:
+          MODULE_NAME: ${{steps.tag.outputs.MODULE_NAME}}
+          VERSION: ${{steps.tag.outputs.VERSION}}
         run: |
-          # Make the script executable
-          chmod +x ./update-version.sh
-          
-          # Check if README version matches tag version
-          # The script will exit with 0 if versions match, 1 if they don't
-          if ./update-version.sh --check "${{ steps.tag.outputs.MODULE_NAME }}" "${{ steps.tag.outputs.VERSION }}"; then
+          if ./update-version.sh --check $MODULE_NAME $VERSION
             echo "NEEDS_UPDATE=false" >> $GITHUB_OUTPUT
             echo "README version already matches tag version - no update needed"
           else
             echo "NEEDS_UPDATE=true" >> $GITHUB_OUTPUT
             echo "README version doesn't match tag version - update needed"
           fi
-      
+
       # Update README with new version
       - name: Update README version
         if: steps.check.outputs.NEEDS_UPDATE == 'true'
+        env:
+          MODULE_NAME: ${{steps.tag.outputs.MODULE_NAME}}
+          VERSION: ${{steps.tag.outputs.VERSION}}
         run: |
           # Set git identity for commits
           git config user.name "cdrci"
-          git config user.email "cdrci@users.noreply.github.com"
-          
+          git config user.email "78873720+cdrci@users.noreply.github.com"
+
           # Update the README with the new version
-          chmod +x ./update-version.sh
-          ./update-version.sh "${{ steps.tag.outputs.MODULE_NAME }}" "${{ steps.tag.outputs.VERSION }}"
-          echo "Updated README version to ${{ steps.tag.outputs.VERSION }}"
-      
-      # Create PR with the changes
+          ./update-version.sh $MODULE_NAME $VERSION
+          echo "Updated README version of $MODULE_NAME to $VERSION"
+
       - name: Create PR for version update
-        if: steps.check.outputs.NEEDS_UPDATE == 'true'
+        if: steps.check.outputs.NEEDS_UPDATE == 'true' && github.repository_owner == 'coder'
         id: create-pr
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MODULE_NAME: ${{steps.tag.outputs.MODULE_NAME}}
+          VERSION: ${{steps.tag.outputs.VERSION}}
+          TAG: ${{steps.tag.outputs.TAG}}
         run: |
-          # Set variables for PR creation
-          MODULE="${{ steps.tag.outputs.MODULE_NAME }}"
-          VERSION="${{ steps.tag.outputs.VERSION }}"
-          BRANCH="automated-update-$MODULE-$VERSION"
-          PR_TITLE="chore: update $MODULE version to $VERSION"
-          
-          # Create a branch for the PR
+          BRANCH="auto-update-$MODULE_NAME-$VERSION"
+          PR_TITLE="chore($MODULE_NAME): update version to $VERSION"
           git checkout -b "$BRANCH"
-          
-          # Commit the changes
-          git add "$MODULE/README.md"
+          git add "$MODULE_NAME/README.md"
           git commit -m "$PR_TITLE"
-          
-          # Push the branch to the repository
           git push origin "$BRANCH"
-          
-          # Create a PR using GitHub CLI
+
           PR_URL=$(gh pr create \
             --title "$PR_TITLE" \
-            --body "Updates README version to match tag ${{ steps.tag.outputs.TAG_NAME }}" \
+            --body "Updates module version to match the latest tag $TAG" \
             --base main \
             --head "$BRANCH")
-          
-          echo "Created PR: $PR_URL"
-          
-          # Extract PR number from the URL
-          PR_NUMBER=$(echo "$PR_URL" | grep -o '[0-9]*$')
-          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
-          
-          # Enable auto-merge for the PR
-          gh pr merge "$PR_NUMBER" --auto --squash
-          echo "Enabled auto-merge for PR #$PR_NUMBER"
-      
-      # Auto-approve the PR
-      - name: Auto-approve PR
-        if: steps.create-pr.outputs.pr_number
-        uses: hmarr/auto-approve-action@v3
-        with:
-          pull-request-number: ${{ steps.create-pr.outputs.pr_number }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          gh pr merge "$PR_URL" --auto --squash
+          echo "Enabled auto-merge for $PR_URL"
+
+          # TODO: Add Autoapprove PR
