@@ -127,6 +127,9 @@ EOT
 extensions:
 ${local.formatted_base}${local.additional_extensions}
 EOT
+
+  encoded_pre_install_script  = var.experiment_pre_install_script != null ? base64encode(var.experiment_pre_install_script) : ""
+  encoded_post_install_script = var.experiment_post_install_script != null ? base64encode(var.experiment_post_install_script) : ""
 }
 
 # Install and Initialize Goose
@@ -144,12 +147,11 @@ resource "coder_script" "goose" {
     }
 
     # Run pre-install script if provided
-    PRE_INSTALL_SCRIPT="${var.experiment_pre_install_script != null ? var.experiment_pre_install_script : ""}"
-    if [ -n "${var.experiment_post_install_script}" ]; then
-      echo "Running post-install script..."
-      echo "${var.experiment_post_install_script}" > /tmp/post_install.sh
-      chmod +x /tmp/post_install.sh
-      /tmp/post_install.sh
+    if [ -n "${local.encoded_pre_install_script}" ]; then
+      echo "Running pre-install script..."
+      echo "${local.encoded_pre_install_script}" | base64 -d > /tmp/pre_install.sh
+      chmod +x /tmp/pre_install.sh
+      /tmp/pre_install.sh
     fi
 
     # Install Goose if enabled
@@ -163,15 +165,12 @@ resource "coder_script" "goose" {
     fi
 
     # Run post-install script if provided
-    POST_INSTALL_SCRIPT="${var.experiment_post_install_script != null ? var.experiment_post_install_script : ""}"
-    if [ -n "$POST_INSTALL_SCRIPT" ]; then
+    if [ -n "${local.encoded_post_install_script}" ]; then
       echo "Running post-install script..."
-      echo "$POST_INSTALL_SCRIPT" > /tmp/post_install.sh
+      echo "${local.encoded_post_install_script}" | base64 -d > /tmp/post_install.sh
       chmod +x /tmp/post_install.sh
       /tmp/post_install.sh
     fi
-
-
 
     # Configure Goose if auto-configure is enabled
     if [ "${var.experiment_auto_configure}" = "true" ]; then
