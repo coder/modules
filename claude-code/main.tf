@@ -72,6 +72,11 @@ variable "experiment_post_install_script" {
   default     = null
 }
 
+locals {
+  encoded_pre_install_script  = var.experiment_pre_install_script != null ? base64encode(var.experiment_pre_install_script) : ""
+  encoded_post_install_script = var.experiment_post_install_script != null ? base64encode(var.experiment_post_install_script) : ""
+}
+
 # Install and Initialize Claude Code
 resource "coder_script" "claude_code" {
   agent_id     = var.agent_id
@@ -87,10 +92,11 @@ resource "coder_script" "claude_code" {
     }
 
     # Run pre-install script if provided
-    PRE_INSTALL_SCRIPT="${var.experiment_pre_install_script != null ? var.experiment_pre_install_script : ""}"
-    if [ -n "$PRE_INSTALL_SCRIPT" ]; then
+    if [ -n "${local.encoded_pre_install_script}" ]; then
       echo "Running pre-install script..."
-      eval "$PRE_INSTALL_SCRIPT"
+      echo "${local.encoded_pre_install_script}" | base64 -d > /tmp/pre_install.sh
+      chmod +x /tmp/pre_install.sh
+      /tmp/pre_install.sh
     fi
 
     # Install Claude Code if enabled
@@ -104,10 +110,11 @@ resource "coder_script" "claude_code" {
     fi
 
     # Run post-install script if provided
-    POST_INSTALL_SCRIPT="${var.experiment_post_install_script != null ? var.experiment_post_install_script : ""}"
-    if [ -n "$POST_INSTALL_SCRIPT" ]; then
+    if [ -n "${local.encoded_post_install_script}" ]; then
       echo "Running post-install script..."
-      eval "$POST_INSTALL_SCRIPT"
+      echo "${local.encoded_post_install_script}" | base64 -d > /tmp/post_install.sh
+      chmod +x /tmp/post_install.sh
+      /tmp/post_install.sh
     fi
 
     if [ "${var.experiment_report_tasks}" = "true" ]; then
