@@ -11,7 +11,7 @@ tags: [ide, cursor, helper]
 
 Add a button to open any workspace with a single click in Cursor IDE.
 
-Uses the [Coder Remote VS Code Extension](https://github.com/coder/cursor-coder).
+Uses the [Coder Remote VS Code Extension](https://github.com/coder/vscode-coder).
 
 ```tf
 module "cursor" {
