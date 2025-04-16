@@ -54,7 +54,7 @@ jobs:
       - name: Lint
         run: bun lint
       # Disable version check until https://github.com/coder/modules/pull/426 is merged.
-      # This will alow us to use seperate versioning for each module without failing CI. The backend already supports that.
+      # This will allow us to use separate versioning for each module without failing CI. The backend already supports that.
       # - name: Check version
       #   shell: bash
       #   run: |
