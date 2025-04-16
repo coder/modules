@@ -25,7 +25,7 @@ module "claude-code" {
 ### Prerequisites
 
 - Node.js and npm must be installed in your workspace to install Claude Code
-- `screen` must be installed in your workspace to run Claude Code in the background
+- Either `screen` or `tmux` must be installed in your workspace to run Claude Code in the background
 - You must add the [Coder Login](https://registry.coder.com/modules/coder-login) module to your template
 
 The `codercom/oss-dogfood:latest` container image can be used for testing on container-based workspaces.
@@ -43,7 +43,7 @@ The `codercom/oss-dogfood:latest` container image can be used for testing on con
 > Join our [Discord channel](https://discord.gg/coder) or
 > [contact us](https://coder.com/contact) to get help or share feedback.
 
-Your workspace must have `screen` installed to use this.
+Your workspace must have either `screen` or `tmux` installed to use this.
 
 ```tf
 variable "anthropic_api_key" {
@@ -90,7 +90,7 @@ module "claude-code" {
   claude_code_version = "0.2.57"
 
   # Enable experimental features
-  experiment_use_screen   = true
+  experiment_use_screen   = true  # Or use experiment_use_tmux = true to use tmux instead
   experiment_report_tasks = true
 }
 ```
