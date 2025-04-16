@@ -51,16 +51,18 @@ jobs:
         uses: crate-ci/typos@v1.17.2
       - name: Lint
         run: bun lint
-      - name: Check version
-        shell: bash
-        run: |
-          # check for version changes
-          ./update-version.sh
-          # Check if any changes were made in README.md files
-          if [[ -n "$(git status --porcelain -- '**/README.md')" ]]; then
-            echo "Version mismatch detected. Please run ./update-version.sh and commit the updated README.md files."
-            git diff -- '**/README.md' 
-            exit 1
-          else
-            echo "No version mismatch detected. All versions are up to date."
-          fi
+      # Disable version check until https://github.com/coder/modules/pull/426 is merged.
+      # This will alow us to use seperate versioning for each module without failing CI. The backend already supports that.
+      # - name: Check version
+      #   shell: bash
+      #   run: |
+      #     # check for version changes
+      #     ./update-version.sh
+      #     # Check if any changes were made in README.md files
+      #     if [[ -n "$(git status --porcelain -- '**/README.md')" ]]; then
+      #       echo "Version mismatch detected. Please run ./update-version.sh and commit the updated README.md files."
+      #       git diff -- '**/README.md'
+      #       exit 1
+      #     else
+      #       echo "No version mismatch detected. All versions are up to date."
+      #     fi
