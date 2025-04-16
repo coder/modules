@@ -1,0 +1,4 @@
+[default]
+extend-ignore-identifiers-re = [
+    "de-muc-1", # A valid exoscale region code
+]
