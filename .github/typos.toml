@@ -1,4 +1,2 @@
-[default]
-extend-ignore-identifiers-re = [
-    "de-muc-1", # A valid exoscale region code
-]
+[default.extend-words]
+muc = "muc" # For Munich location code
