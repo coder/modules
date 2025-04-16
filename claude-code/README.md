@@ -90,7 +90,7 @@ module "claude-code" {
   claude_code_version = "0.2.57"
 
   # Enable experimental features
-  experiment_use_screen   = true  # Or use experiment_use_tmux = true to use tmux instead
+  experiment_use_screen   = true # Or use experiment_use_tmux = true to use tmux instead
   experiment_report_tasks = true
 }
 ```
