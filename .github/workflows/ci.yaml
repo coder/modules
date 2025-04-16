@@ -51,7 +51,7 @@ jobs:
         uses: crate-ci/typos@v1.17.2
       - name: Lint
         run: bun lint
-      # Disbale version check until https://github.com/coder/modules/pull/426 is merged.
+      # Disable version check until https://github.com/coder/modules/pull/426 is merged.
       # This will allsow us to use seperate Versioning for each module without failing CI. The backend already supports that.
       # - name: Check version
       #   shell: bash
