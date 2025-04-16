@@ -120,7 +120,7 @@ developer:
 EOT
 
   # Add two spaces to each line of extensions to match YAML structure
-  formatted_base = "  ${replace(trimspace(local.base_extensions), "\n", "\n  ")}"
+  formatted_base        = "  ${replace(trimspace(local.base_extensions), "\n", "\n  ")}"
   additional_extensions = var.experiment_additional_extensions != null ? "\n  ${replace(trimspace(var.experiment_additional_extensions), "\n", "\n  ")}" : ""
 
   combined_extensions = <<-EOT
