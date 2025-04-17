@@ -27,14 +27,14 @@ echo "Installing @devcontainers/cli using $PACKAGE_MANAGER..."
 
 # Install @devcontainers/cli using the selected package manager
 if [ "$PACKAGE_MANAGER" = "npm" ]; then
-    $PACKAGE_MANAGER install -g @devcontainers/cli \
+  $PACKAGE_MANAGER install -g @devcontainers/cli \
     && echo "🥳 @devcontainers/cli has been installed into $(which devcontainer)!"
 elif [ "$PACKAGE_MANAGER" = "pnpm" ]; then
-    # if PNPM_HOME is not set, set it to the bin directory of the script
-    if [ -z "$PNPM_HOME" ]; then
-        export PNPM_HOME="$CODER_SCRIPT_BIN_DIR"
-    fi
-    $PACKAGE_MANAGER add -g @devcontainers/cli \
+  # if PNPM_HOME is not set, set it to the bin directory of the script
+  if [ -z "$PNPM_HOME" ]; then
+    export PNPM_HOME="$CODER_SCRIPT_BIN_DIR"
+  fi
+  $PACKAGE_MANAGER add -g @devcontainers/cli \
     && echo "🥳 @devcontainers/cli has been installed into $(which devcontainer)!"
 elif [ "$PACKAGE_MANAGER" = "yarn" ]; then
   $PACKAGE_MANAGER global add @devcontainers/cli \
