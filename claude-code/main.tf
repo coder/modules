@@ -60,6 +60,23 @@ variable "experiment_report_tasks" {
   default     = false
 }
 
+variable "experiment_pre_install_script" {
+  type        = string
+  description = "Custom script to run before installing Claude Code."
+  default     = null
+}
+
+variable "experiment_post_install_script" {
+  type        = string
+  description = "Custom script to run after installing Claude Code."
+  default     = null
+}
+
+locals {
+  encoded_pre_install_script  = var.experiment_pre_install_script != null ? base64encode(var.experiment_pre_install_script) : ""
+  encoded_post_install_script = var.experiment_post_install_script != null ? base64encode(var.experiment_post_install_script) : ""
+}
+
 # Install and Initialize Claude Code
 resource "coder_script" "claude_code" {
   agent_id     = var.agent_id
@@ -74,6 +91,14 @@ resource "coder_script" "claude_code" {
       command -v "$1" >/dev/null 2>&1
     }
 
+    # Run pre-install script if provided
+    if [ -n "${local.encoded_pre_install_script}" ]; then
+      echo "Running pre-install script..."
+      echo "${local.encoded_pre_install_script}" | base64 -d > /tmp/pre_install.sh
+      chmod +x /tmp/pre_install.sh
+      /tmp/pre_install.sh
+    fi
+
     # Install Claude Code if enabled
     if [ "${var.install_claude_code}" = "true" ]; then
       if ! command_exists npm; then
@@ -82,6 +107,14 @@ resource "coder_script" "claude_code" {
       fi
       echo "Installing Claude Code..."
       npm install -g @anthropic-ai/claude-code@${var.claude_code_version}
+    fi
+
+    # Run post-install script if provided
+    if [ -n "${local.encoded_post_install_script}" ]; then
+      echo "Running post-install script..."
+      echo "${local.encoded_post_install_script}" | base64 -d > /tmp/post_install.sh
+      chmod +x /tmp/post_install.sh
+      /tmp/post_install.sh
     fi
 
     if [ "${var.experiment_report_tasks}" = "true" ]; then
