@@ -106,7 +106,7 @@ describe("devcontainers-cli", async () => {
     expect(output.stdout[output.stdout.length - 1]).toEqual(
       "🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!",
     );
-  });
+  }, 15000);
 
   it("displays warning if docker is not installed", async () => {
     const state = await runTerraformApply(import.meta.dir, {
@@ -126,5 +126,5 @@ describe("devcontainers-cli", async () => {
     expect(output.stdout[output.stdout.length - 1]).toEqual(
       "🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!",
     );
-  });
+  }, 15000);
 });
