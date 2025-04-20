@@ -80,37 +80,4 @@ describe("marimo", async () => {
     ]);
   });
 
-  // TODO: Add faster test to run with uv.
-  // currently times out.
-  // it("runs with uv", async () => {
-  //   const state = await runTerraformApply(import.meta.dir, {
-  //     agent_id: "foo",
-  //   });
-  //   const output = await executeScriptInContainerWithUv(state, "python:3-alpine");
-  //   expect(output.exitCode).toBe(0);
-  //   expect(output.stdout).toEqual([
-  //     "Checking for a supported installer",
-  //     "uv is installed",
-  //     "\u001B[0;1mInstalling marimo!",
-  //     "🥳 marimo has been installed",
-  //     "👷 Starting marimo in background...check logs at /tmp/marimo.log",
-  //   ]);
-  // });
-
-  // TODO: Add faster test to run with pipx.
-  // currently times out.
-  // it("runs with pipx", async () => {
-  //   const state = await runTerraformApply(import.meta.dir, {
-  //     agent_id: "foo",
-  //   });
-  //   const output = await executeScriptInContainerWithPipx(state, "alpine");
-  //   expect(output.exitCode).toBe(0);
-  //   expect(output.stdout).toEqual([
-  //     "Checking for a supported installer",
-  //     "pipx is installed",
-  //     "\u001B[0;1mInstalling marimo!",
-  //     "🥳 marimo has been installed",
-  //     "👷 Starting marimo in background...check logs at /tmp/marimo.log",
-  //   ]);
-  // });
 });
