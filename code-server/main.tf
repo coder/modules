@@ -130,6 +130,10 @@ variable "open_in" {
     `"slim-window"` opens a new browser window without navigation controls.
   EOT
   default     = "slim-window"
+  validation {
+    condition     = contains(["tab", "slim-window"], var.open_in)
+    error_message = "The 'open_in' variable must be one of: 'tab', 'slim-window'."
+  }
 }
 
 resource "coder_script" "code-server" {
