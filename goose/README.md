@@ -111,6 +111,36 @@ module "goose" {
 }
 ```
 
+### Adding Custom Extensions (MCP)
+
+You can extend Goose's capabilities by adding custom extensions. For example, to add the desktop-commander extension:
+
+```tf
+module "goose" {
+  # ... other configuration ...
+
+  experiment_pre_install_script = <<-EOT
+  npm i -g @wonderwhy-er/desktop-commander@latest
+  EOT
+
+  experiment_additional_extensions = <<-EOT
+  desktop-commander:
+    args: []
+    cmd: desktop-commander
+    description: Ideal for background tasks
+    enabled: true
+    envs: {}
+    name: desktop-commander
+    timeout: 300
+    type: stdio
+  EOT
+}
+```
+
+This will add the desktop-commander extension to Goose, allowing it to run commands in the background. The extension will be available in the Goose interface and can be used to run long-running processes like development servers.
+
+Note: The indentation in the heredoc is preserved, so you can write the YAML naturally.
+
 ## Run standalone
 
 Run Goose as a standalone app in your workspace. This will install Goose and run it directly without using screen or any task reporting to the Coder UI.
