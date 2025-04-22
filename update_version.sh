@@ -2,7 +2,7 @@
 set -euo pipefail
 
 usage() {
-  cat <<EOF
+  cat << EOF
 Usage: $0 [OPTIONS] <MODULE> <VERSION>
 
 Update or check the version in a module's README.md file.
@@ -63,14 +63,14 @@ update_version() {
 
       print
     }
-  ' "$file" >"$tmpfile" && mv "$tmpfile" "$file"
+  ' "$file" > "$tmpfile" && mv "$tmpfile" "$file"
 }
 
 get_readme_version() {
-  grep -o 'version *= *"[0-9]\+\.[0-9]\+\.[0-9]\+"' "$1" |
-    head -1 |
-    grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' ||
-    echo "0.0.0"
+  grep -o 'version *= *"[0-9]\+\.[0-9]\+\.[0-9]\+"' "$1" \
+    | head -1 \
+    | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' \
+    || echo "0.0.0"
 }
 
 # Set defaults.
@@ -79,20 +79,20 @@ check_only=false
 # Parse command-line options.
 while [[ $# -gt 0 ]]; do
   case "$1" in
-  -c | --check)
-    check_only=true
-    shift
-    ;;
-  -h | --help)
-    usage 0
-    ;;
-  -*)
-    echo "Error: Unknown option: $1" >&2
-    usage 1
-    ;;
-  *)
-    break
-    ;;
+    -c | --check)
+      check_only=true
+      shift
+      ;;
+    -h | --help)
+      usage 0
+      ;;
+    -*)
+      echo "Error: Unknown option: $1" >&2
+      usage 1
+      ;;
+    *)
+      break
+      ;;
   esac
 done
 
