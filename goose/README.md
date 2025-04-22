@@ -24,14 +24,14 @@ module "goose" {
 
 ### Prerequisites
 
-- `screen` must be installed in your workspace to run Goose in the background
+- `screen` or `tmux` must be installed in your workspace to run Goose in the background
 - You must add the [Coder Login](https://registry.coder.com/modules/coder-login) module to your template
 
 The `codercom/oss-dogfood:latest` container image can be used for testing on container-based workspaces.
 
 ## Examples
 
-Your workspace must have `screen` installed to use this.
+Your workspace must have `screen` or `tmux` installed to use this.
 
 ### Run in the background and report tasks (Experimental)
 
@@ -99,8 +99,9 @@ module "goose" {
   # Enable experimental features
   experiment_report_tasks = true
 
-  # Run Goose in the background
+  # Run Goose in the background (use only one of these options)
   experiment_use_screen = true
+  # experiment_use_tmux = true
 
   # Avoid configuring Goose manually
   experiment_auto_configure = true

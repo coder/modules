@@ -54,6 +54,12 @@ variable "experiment_use_screen" {
   default     = false
 }
 
+variable "experiment_use_tmux" {
+  type        = bool
+  description = "Whether to use tmux instead of screen for running Goose in the background."
+  default     = false
+}
+
 variable "experiment_report_tasks" {
   type        = bool
   description = "Whether to enable task reporting."
@@ -187,8 +193,42 @@ EOL
     mkdir -p "$HOME/.config/goose"
     echo "$GOOSE_SYSTEM_PROMPT" > "$HOME/.config/goose/.goosehints"
     
+    # Handle terminal multiplexer selection (tmux or screen)
+    if [ "${var.experiment_use_tmux}" = "true" ] && [ "${var.experiment_use_screen}" = "true" ]; then
+      echo "Error: Both experiment_use_tmux and experiment_use_screen cannot be true simultaneously."
+      echo "Please set only one of them to true."
+      exit 1
+    fi
+
+    # Determine goose command
+    if command_exists goose; then
+      GOOSE_CMD=goose
+    elif [ -f "$HOME/.local/bin/goose" ]; then
+      GOOSE_CMD="$HOME/.local/bin/goose"
+    else
+      echo "Error: Goose is not installed. Please enable install_goose or install it manually."
+      exit 1
+    fi
+
+    # Run with tmux if enabled
+    if [ "${var.experiment_use_tmux}" = "true" ]; then
+      echo "Running Goose in the background with tmux..."
+      
+      # Check if tmux is installed
+      if ! command_exists tmux; then
+        echo "Error: tmux is not installed. Please install tmux manually."
+        exit 1
+      fi
+
+      touch "$HOME/.goose.log"
+      
+      export LANG=en_US.UTF-8
+      export LC_ALL=en_US.UTF-8
+      
+      # Create a new tmux session in detached mode
+      tmux new-session -d -s goose -c ${var.folder} "$GOOSE_CMD run --text \"Review your goosehints. Every step of the way, report tasks to Coder with proper descriptions and statuses. Your task at hand: $GOOSE_TASK_PROMPT\" --interactive | tee -a \"$HOME/.goose.log\""
     # Run with screen if enabled
-    if [ "${var.experiment_use_screen}" = "true" ]; then
+    elif [ "${var.experiment_use_screen}" = "true" ]; then
       echo "Running Goose in the background..."
       
       # Check if screen is installed
@@ -216,16 +256,6 @@ EOL
       fi
       export LANG=en_US.UTF-8
       export LC_ALL=en_US.UTF-8
-      
-      # Determine goose command
-      if command_exists goose; then
-        GOOSE_CMD=goose
-      elif [ -f "$HOME/.local/bin/goose" ]; then
-        GOOSE_CMD="$HOME/.local/bin/goose"
-      else
-        echo "Error: Goose is not installed. Please enable install_goose or install it manually."
-        exit 1
-      fi
       
       screen -U -dmS goose bash -c "
         cd ${var.folder}
@@ -270,7 +300,15 @@ resource "coder_app" "goose" {
       exit 1
     fi
 
-    if [ "${var.experiment_use_screen}" = "true" ]; then
+    if [ "${var.experiment_use_tmux}" = "true" ]; then
+      if tmux has-session -t goose 2>/dev/null; then
+        echo "Attaching to existing Goose tmux session." | tee -a "$HOME/.goose.log"
+        tmux attach-session -t goose
+      else
+        echo "Starting a new Goose tmux session." | tee -a "$HOME/.goose.log"
+        tmux new-session -s goose -c ${var.folder} "$GOOSE_CMD run --text \"Review goosehints. Your task: $GOOSE_TASK_PROMPT\" --interactive | tee -a \"$HOME/.goose.log\"; exec bash"
+      fi
+    elif [ "${var.experiment_use_screen}" = "true" ]; then
       # Check if session exists first
       if ! screen -list | grep -q "goose"; then
         echo "Error: No existing Goose session found. Please wait for the script to start it."
