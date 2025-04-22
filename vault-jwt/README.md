@@ -143,3 +143,42 @@ module "vault" {
   vault_jwt_token   = jwt_signed_token.vault[0].token
 }
 ```
+#### example vault jwt role
+```
+vault write auth/<JWT_MOUNT>/role/workspace -<<EOF
+{
+  "user_claim": "sub",
+  "bound_audiences": "https://vault.example.com",
+  "role_type": "jwt",
+  "ttl": "1h",
+  "claim_mappings": {
+    "owner": "owner",
+    "owner_email": "owner_email",
+    "owner_login_type": "owner_login_type",
+    "owner_name": "owner_name",
+    "provisioner": "provisioner",
+    "provisioner_arch": "provisioner_arch",
+    "provisioner_os": "provisioner_os",
+    "sub": "sub",
+    "template": "template",
+    "template_name": "template_name",
+    "template_version": "template_version",
+    "workspace": "workspace",
+    "workspace_name": "workspace_name",
+    "workspace_id": "workspace_id"
+}
+}
+EOF
+```
+#### example workspace access vault policy
+```hcl
+path "kv/data/app/coder/{{identity.entity.aliases.<MOUNT_ACCESSOR>.metadata.owner_name}}/{{identity.entity.aliases.<MOUNT_ACCESSOR>.metadata.workspace_name}}" {
+  capabilities = ["create", "read", "update", "delete", "list", "subscribe"]
+  subscribe_event_types = ["*"]
+}
+path "kv/metadata/app/coder/{{identity.entity.aliases.<MOUNT_ACCESSOR>.metadata.owner_name}}/{{identity.entity.aliases.<MOUNT_ACCESSOR>.metadata.workspace_name}}" {
+  capabilities = ["create", "read", "update", "delete", "list", "subscribe"]
+  subscribe_event_types = ["*"]
+}
+```
+
