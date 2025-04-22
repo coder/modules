@@ -48,6 +48,8 @@ jobs:
       - name: Format
         run: bun fmt:ci
       - name: typos-action
-        uses: crate-ci/typos@v1.17.2
+        uses: crate-ci/typos@v1.31.1
+        with:
+          config: .github/typos.toml
       - name: Lint
         run: bun lint
