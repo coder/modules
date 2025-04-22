@@ -63,7 +63,7 @@ The release process is automated with these steps:
 
 ## 2. Prepare Release (Maintainer Task)
 
-After merging to main, a maintainer will:
+After merging to `main`, a maintainer will:
 
 - View all modules and their current versions:
 
@@ -87,17 +87,9 @@ After merging to main, a maintainer will:
   ./release.sh module-name 1.2.3 --push
   ```
 
-  The tag format will be: `release/module-name/v1.0.0`
+  The tag format will be: `release/module-name/v1.2.3`
 
-## 3. Automated Version Update
-
-When the tag is pushed, a GitHub Action automatically:
-
-- Checks if the module's `README.md` version matches the tag version
-- Updates the `README.md` version if needed
-- Creates a PR with the version update
-
-## 4. Publishing to Registry
+## 3. Publishing to Registry
 
 Our automated processes will handle publishing new data to [registry.coder.com](https://registry.coder.com).
 
