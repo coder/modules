@@ -2,7 +2,7 @@
 set -euo pipefail
 
 usage() {
-  cat <<EOF
+  cat << EOF
 Usage: $0 [OPTIONS] [<MODULE> <VERSION>]
 
 Create annotated git tags for module releases.
@@ -28,7 +28,7 @@ EOF
 
 check_getopt() {
   # Check if we have GNU or BSD getopt.
-  if getopt --test >/dev/null 2>&1; then
+  if getopt --test > /dev/null 2>&1; then
     # Exit status 4 means GNU getopt is available.
     if [[ $? -ne 4 ]]; then
       echo "Error: GNU getopt is not available." >&2
@@ -50,10 +50,10 @@ maybe_dry_run() {
 }
 
 get_readme_version() {
-  grep -o 'version *= *"[0-9]\+\.[0-9]\+\.[0-9]\+"' "$1" |
-    head -1 |
-    grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' ||
-    echo "0.0.0"
+  grep -o 'version *= *"[0-9]\+\.[0-9]\+\.[0-9]\+"' "$1" \
+    | head -1 \
+    | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' \
+    || echo "0.0.0"
 }
 
 list_modules() {
@@ -131,29 +131,29 @@ eval set -- "$temp"
 
 while true; do
   case "$1" in
-  -l | --list)
-    list=true
-    shift
-    ;;
-  -d | --dry-run)
-    dry_run=true
-    shift
-    ;;
-  -p | --push)
-    push=true
-    shift
-    ;;
-  -h | --help)
-    usage
-    ;;
-  --)
-    shift
-    break
-    ;;
-  *)
-    echo "Error: Internal error!" >&2
-    exit 1
-    ;;
+    -l | --list)
+      list=true
+      shift
+      ;;
+    -d | --dry-run)
+      dry_run=true
+      shift
+      ;;
+    -p | --push)
+      push=true
+      shift
+      ;;
+    -h | --help)
+      usage
+      ;;
+    --)
+      shift
+      break
+      ;;
+    *)
+      echo "Error: Internal error!" >&2
+      exit 1
+      ;;
   esac
 done
 
@@ -178,7 +178,7 @@ if ! tag_name=$(get_tag_name "$module" "$version"); then
   exit 1
 fi
 
-if git rev-parse -q --verify "refs/tags/$tag_name" >/dev/null 2>&1; then
+if git rev-parse -q --verify "refs/tags/$tag_name" > /dev/null 2>&1; then
   echo "Notice: Tag '$tag_name' already exists" >&2
 else
   maybe_dry_run git tag -a "$tag_name" -m "Release $module v$version"
