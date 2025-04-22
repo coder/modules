@@ -16,7 +16,7 @@ This module lets you authenticate with [Hashicorp Vault](https://www.vaultprojec
 module "vault" {
   count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/vault-jwt/coder"
-  version        = "1.0.20"
+  version        = "1.0.21"
   agent_id       = coder_agent.example.id
   vault_addr     = "https://vault.example.com"
   vault_jwt_role = "coder" # The Vault role to use for authentication
@@ -44,7 +44,7 @@ curl -H "X-Vault-Token: ${VAULT_TOKEN}" -X GET "${VAULT_ADDR}/v1/coder/secrets/d
 module "vault" {
   count               = data.coder_workspace.me.start_count
   source              = "registry.coder.com/modules/vault-jwt/coder"
-  version             = "1.0.20"
+  version             = "1.0.21"
   agent_id            = coder_agent.example.id
   vault_addr          = "https://vault.example.com"
   vault_jwt_auth_path = "oidc"
@@ -60,7 +60,7 @@ data "coder_workspace_owner" "me" {}
 module "vault" {
   count          = data.coder_workspace.me.start_count
   source         = "registry.coder.com/modules/vault-jwt/coder"
-  version        = "1.0.20"
+  version        = "1.0.21"
   agent_id       = coder_agent.example.id
   vault_addr     = "https://vault.example.com"
   vault_jwt_role = data.coder_workspace_owner.me.groups[0]
@@ -73,7 +73,7 @@ module "vault" {
 module "vault" {
   count             = data.coder_workspace.me.start_count
   source            = "registry.coder.com/modules/vault-jwt/coder"
-  version           = "1.0.20"
+  version           = "1.0.21"
   agent_id          = coder_agent.example.id
   vault_addr        = "https://vault.example.com"
   vault_jwt_role    = "coder" # The Vault role to use for authentication
