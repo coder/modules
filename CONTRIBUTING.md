@@ -22,7 +22,8 @@ Follow the instructions to ensure that Bun is available globally. Once Bun has b
 
 ## Testing a Module
 
-> **Note:** It is the responsibility of the module author to implement tests for their module. The author must test the module locally before submitting a PR.
+> [!NOTE]
+> It is the responsibility of the module author to implement tests for their module. The author must test the module locally before submitting a PR.
 
 A suite of test-helpers exists to run `terraform apply` on modules with variables, and test script output against containers.
 
@@ -53,23 +54,44 @@ module "example" {
 
 ## Releases
 
-> [!WARNING]
-> When creating a new release, make sure that your new version number is fully accurate. If a version number is incorrect or does not exist, we may end up serving incorrect/old data for our various tools and providers.
+The release process is automated with these steps:
 
-Much of our release process is automated. To cut a new release:
+## 1. Create and Merge PR
 
-1. Navigate to [GitHub's Releases page](https://github.com/coder/modules/releases)
-2. Click "Draft a new release"
-3. Click the "Choose a tag" button and type a new release number in the format `v<major>.<minor>.<patch>` (e.g., `v1.18.0`). Then click "Create new tag".
-4. Click the "Generate release notes" button, and clean up the resulting README. Be sure to remove any notes that would not be relevant to end-users (e.g., bumping dependencies).
-5. Once everything looks good, click the "Publish release" button.
+- Create a PR with your module changes
+- Get your PR reviewed, approved, and merged to `main`
 
-Once the release has been cut, a script will run to check whether there are any modules that will require that the new release number be published to Terraform. If there are any, a new pull request will automatically be generated. Be sure to approve this PR and merge it into the `main` branch.
+## 2. Prepare Release (Maintainer Task)
 
-Following that, our automated processes will handle publishing new data for [`registry.coder.com`](https://github.com/coder/registry.coder.com/):
+After merging to `main`, a maintainer will:
 
-1. Publishing new versions to Coder's [Terraform Registry](https://registry.terraform.io/providers/coder/coder/latest)
-2. Publishing new data to the [Coder Registry](https://registry.coder.com)
+- View all modules and their current versions:
+
+  ```shell
+  ./release.sh --list
+  ```
+
+- Determine the next version number based on changes:
+
+  - **Patch version** (1.2.3 → 1.2.4): Bug fixes
+  - **Minor version** (1.2.3 → 1.3.0): New features, adding inputs, deprecating inputs
+  - **Major version** (1.2.3 → 2.0.0): Breaking changes (removing inputs, changing input types)
+
+- Create and push an annotated tag:
+
+  ```shell
+  # Fetch latest changes
+  git fetch origin
+  
+  # Create and push tag
+  ./release.sh module-name 1.2.3 --push
+  ```
+
+  The tag format will be: `release/module-name/v1.2.3`
+
+## 3. Publishing to Registry
+
+Our automated processes will handle publishing new data to [registry.coder.com](https://registry.coder.com).
 
 > [!NOTE]
-> Some data in `registry.coder.com` is fetched on demand from the Module repo's main branch. This data should be updated almost immediately after a new release, but other changes will take some time to propagate.
+> Some data in registry.coder.com is fetched on demand from the [coder/modules](https://github.com/coder/modules) repo's `main` branch. This data should update almost immediately after a release, while other changes will take some time to propagate.
