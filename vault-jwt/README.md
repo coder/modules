@@ -88,7 +88,6 @@ module "vault" {
 
 terraform {
   required_providers {
-    ...
     jwt = {
       source  = "geektheripper/jwt"
       version = "1.1.4"
@@ -97,7 +96,6 @@ terraform {
       source  = "hashicorp/time"
       version = "0.11.1"
     }
-    ...
   }
 }
 
