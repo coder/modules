@@ -10,7 +10,7 @@ tags: [helper, integration, vault, jwt, oidc]
 
 # Hashicorp Vault Integration (JWT)
 
-This module lets you authenticate with [Hashicorp Vault](https://www.vaultproject.io/) in your Coder workspaces by reusing the [OIDC](https://coder.com/docs/admin/users/oidc-auth) access token from Coder's OIDC authentication method. This requires configuring the Vault [JWT/OIDC](https://developer.hashicorp.com/vault/docs/auth/jwt#configuration) auth method.
+This module lets you authenticate with [Hashicorp Vault](https://www.vaultproject.io/) in your Coder workspaces by reusing the [OIDC](https://coder.com/docs/admin/users/oidc-auth) access token from Coder's OIDC authentication method or another source of jwt token. This requires configuring the Vault [JWT/OIDC](https://developer.hashicorp.com/vault/docs/auth/jwt#configuration) auth method.
 
 ```tf
 module "vault" {
@@ -20,6 +20,7 @@ module "vault" {
   agent_id       = coder_agent.example.id
   vault_addr     = "https://vault.example.com"
   vault_jwt_role = "coder" # The Vault role to use for authentication
+  vault_jwt_token= "eyJhbGciOiJIUzI1N..." # optional, if not present, defaults to user's oidc authentication token
 }
 ```
 
@@ -77,5 +78,68 @@ module "vault" {
   vault_addr        = "https://vault.example.com"
   vault_jwt_role    = "coder" # The Vault role to use for authentication
   vault_cli_version = "1.17.5"
+}
+```
+
+
+### use a custom jwt token
+
+```tf
+
+terraform {
+  required_providers {
+    ...
+    jwt = {
+      source  = "geektheripper/jwt"
+      version = "1.1.4"
+    }
+    time = {
+      source  = "hashicorp/time"
+      version = "0.11.1"
+    }
+    ...
+  }
+}
+
+
+resource "jwt_signed_token" "vault" {
+  count     = data.coder_workspace.me.start_count
+  algorithm = "RS256"
+  # `openssl genrsa -out key.pem 4096` and `openssl rsa -in key.pem -pubout > pub.pem` to generate keys
+  key       = file("key.pem") 
+  claims_json = jsonencode({
+    iss = "https://code.example.com"
+    sub = "${data.coder_workspace.me.id}"
+    aud = "https://vault.example.com"
+    iat = provider::time::rfc3339_parse(plantimestamp()).unix
+    # exp = timeadd(timestamp(), 3600)
+    agent            = coder_agent.main.id
+    provisioner      = data.coder_provisioner.main.id
+    provisioner_arch = data.coder_provisioner.main.arch
+    provisioner_os   = data.coder_provisioner.main.os
+
+    workspace        = data.coder_workspace.me.id
+    workspace_url    = data.coder_workspace.me.access_url
+    workspace_port   = data.coder_workspace.me.access_port
+    workspace_name   = data.coder_workspace.me.name
+    template         = data.coder_workspace.me.template_id
+    template_name    = data.coder_workspace.me.template_name
+    template_version = data.coder_workspace.me.template_version
+    owner            = data.coder_workspace_owner.me.id
+    owner_name       = data.coder_workspace_owner.me.name
+    owner_email      = data.coder_workspace_owner.me.email
+    owner_login_type = data.coder_workspace_owner.me.login_type
+    owner_groups     = data.coder_workspace_owner.me.groups
+  })
+}
+
+module "vault" {
+  count             = data.coder_workspace.me.start_count
+  source            = "registry.coder.com/modules/vault-jwt/coder"
+  version           = "1.0.20"
+  agent_id          = coder_agent.example.id
+  vault_addr        = "https://vault.example.com"
+  vault_jwt_role    = "coder" # The Vault role to use for authentication
+  vault_jwt_token   = jwt_signed_token.vault[0].token
 }
 ```
