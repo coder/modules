@@ -43,10 +43,10 @@ describe("windsurf", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
       folder: "/foo/bar",
-      open_recent: "true",
+      open_recent: true,
     });
-    expect(state.outputs.cursor_url.value).toBe(
-      "cursor://coder.coder-remote/open?owner=default&workspace=default&folder=/foo/bar&openRecent&url=https://mydeployment.coder.com&token=$SESSION_TOKEN",
+    expect(state.outputs.windsurf_url.value).toBe(
+      "windsurf://coder.coder-remote/open?owner=default&workspace=default&folder=/foo/bar&openRecent&url=https://mydeployment.coder.com&token=$SESSION_TOKEN",
     );
   });
 
@@ -54,31 +54,31 @@ describe("windsurf", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
       folder: "/foo/bar",
-      openRecent: "false",
+      open_recent: false,
     });
-    expect(state.outputs.cursor_url.value).toBe(
-      "cursor://coder.coder-remote/open?owner=default&workspace=default&folder=/foo/bar&url=https://mydeployment.coder.com&token=$SESSION_TOKEN",
+    expect(state.outputs.windsurf_url.value).toBe(
+      "windsurf://coder.coder-remote/open?owner=default&workspace=default&folder=/foo/bar&url=https://mydeployment.coder.com&token=$SESSION_TOKEN",
     );
   });
 
   it("adds open_recent", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
-      open_recent: "true",
+      open_recent: true,
     });
-    expect(state.outputs.cursor_url.value).toBe(
-      "cursor://coder.coder-remote/open?owner=default&workspace=default&openRecent&url=https://mydeployment.coder.com&token=$SESSION_TOKEN",
+    expect(state.outputs.windsurf_url.value).toBe(
+      "windsurf://coder.coder-remote/open?owner=default&workspace=default&openRecent&url=https://mydeployment.coder.com&token=$SESSION_TOKEN",
     );
   });
 
   it("expect order to be set", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
-      order: "22",
+      order: 22,
     });
 
     const coder_app = state.resources.find(
-      (res) => res.type === "coder_app" && res.name === "cursor",
+      (res) => res.type === "coder_app" && res.name === "windsurf",
     );
 
     expect(coder_app).not.toBeNull();
