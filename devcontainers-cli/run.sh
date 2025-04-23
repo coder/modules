@@ -12,26 +12,45 @@ if ! command -v docker > /dev/null 2>&1; then
 fi
 
 # Determine the package manager to use: npm, pnpm, or yarn
-if command -v pnpm > /dev/null 2>&1; then
-  PACKAGE_MANAGER="pnpm"
-elif command -v yarn > /dev/null 2>&1; then
+if command -v yarn > /dev/null 2>&1; then
   PACKAGE_MANAGER="yarn"
 elif command -v npm > /dev/null 2>&1; then
   PACKAGE_MANAGER="npm"
+elif command -v pnpm > /dev/null 2>&1; then
+  PACKAGE_MANAGER="pnpm"
 else
   echo "ERROR: No supported package manager (npm, pnpm, yarn) is installed. Please install one first." 1>&2
   exit 1
 fi
 
-echo "Installing @devcontainers/cli using $PACKAGE_MANAGER..."
+install() {
+  echo "Installing @devcontainers/cli using $PACKAGE_MANAGER..."
+  if [ "$PACKAGE_MANAGER" = "npm" ]; then
+    npm install -g @devcontainers/cli
+  elif [ "$PACKAGE_MANAGER" = "pnpm" ]; then
+    # Check if PNPM_HOME is set, if not, set it to the script's bin directory
+    # pnpm needs this to be set to install binaries
+    # coder agent ensures this part is part of the PATH
+    # so that the devcontainer command is available
+    if [ -z "$PNPM_HOME" ]; then
+      PNPM_HOME="$CODER_SCRIPT_BIN_DIR"
+      export M_HOME
+    fi
+    pnpm add -g @devcontainers/cli
+  elif [ "$PACKAGE_MANAGER" = "yarn" ]; then
+    yarn global add @devcontainers/cli
+  fi
+}
 
-# Install @devcontainers/cli using the selected package manager
-if [ "$PACKAGE_MANAGER" = "npm" ] || [ "$PACKAGE_MANAGER" = "pnpm" ]; then
-  $PACKAGE_MANAGER install -g @devcontainers/cli \
-    && echo "🥳 @devcontainers/cli has been installed into $(which devcontainer)!"
-elif [ "$PACKAGE_MANAGER" = "yarn" ]; then
-  $PACKAGE_MANAGER global add @devcontainers/cli \
-    && echo "🥳 @devcontainers/cli has been installed into $(which devcontainer)!"
+if ! install; then
+  echo "Failed to install @devcontainers/cli" >&2
+  exit 1
 fi
 
+if ! command -v devcontainer > /dev/null 2>&1; then
+  echo "Installation completed but 'devcontainer' command not found in PATH" >&2
+  exit 1
+fi
+
+echo "🥳 @devcontainers/cli has been installed into $(which devcontainer)!"
 exit 0

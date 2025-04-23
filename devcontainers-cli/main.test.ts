@@ -30,7 +30,7 @@ const executeScriptInContainerWithPackageManager = async (
     await execContainer(id, [
       shell,
       "-c",
-      "apk add nodejs npm && npm install -g pnpm",
+      `wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh -`,
     ]);
   } else if (packageManager === "yarn") {
     await execContainer(id, [
@@ -86,7 +86,7 @@ describe("devcontainers-cli", async () => {
     expect(output.stdout[output.stdout.length - 1]).toEqual(
       "🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!",
     );
-  });
+  }, 15000);
 
   it("installs devcontainers-cli with yarn", async () => {
     const state = await runTerraformApply(import.meta.dir, {
@@ -106,7 +106,7 @@ describe("devcontainers-cli", async () => {
     expect(output.stdout[output.stdout.length - 1]).toEqual(
       "🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!",
     );
-  });
+  }, 15000);
 
   it("displays warning if docker is not installed", async () => {
     const state = await runTerraformApply(import.meta.dir, {
@@ -126,5 +126,5 @@ describe("devcontainers-cli", async () => {
     expect(output.stdout[output.stdout.length - 1]).toEqual(
       "🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!",
     );
-  });
+  }, 15000);
 });
