@@ -151,7 +151,7 @@ resource "coder_script" "claude_code" {
       export LC_ALL=en_US.UTF-8
       
       # Create a new tmux session in detached mode
-      tmux new-session -d -s claude-code -c ${var.folder} "claude"
+      tmux new-session -d -s claude-code "cd ${var.folder} && claude"
       
       # Send the prompt to the tmux session if needed
       if [ -n "$CODER_MCP_CLAUDE_TASK_PROMPT" ]; then
@@ -190,7 +190,7 @@ resource "coder_script" "claude_code" {
       fi
       export LANG=en_US.UTF-8
       export LC_ALL=en_US.UTF-8
-      
+
       screen -U -dmS claude-code bash -c '
         cd ${var.folder}
         claude --dangerously-skip-permissions | tee -a "$HOME/.claude-code.log"
