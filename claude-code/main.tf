@@ -230,8 +230,9 @@ resource "coder_app" "claude_code" {
         echo "Attaching to existing Claude Code tmux session." | tee -a "$HOME/.claude-code.log"
         tmux attach-session -t claude-code
       else
+        cd ${var.folder}
         echo "Starting a new Claude Code tmux session." | tee -a "$HOME/.claude-code.log"
-        tmux new-session -s claude-code -c ${var.folder} "claude --dangerously-skip-permissions | tee -a \"$HOME/.claude-code.log\"; exec bash"
+        tmux new-session -s claude-code "claude --dangerously-skip-permissions | tee -a \"$HOME/.claude-code.log\"; exec bash"
       fi
     elif [ "${var.experiment_use_screen}" = "true" ]; then
       if screen -list | grep -q "claude-code"; then
