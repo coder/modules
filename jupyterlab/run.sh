@@ -34,21 +34,22 @@ if ! command -v jupyter-lab > /dev/null 2>&1; then
     uv)
       uv pip install -q jupyterlab \
         && printf "%s\n" "🥳 jupyterlab has been installed"
-      JUPYTERPATH="$HOME/.venv/bin/"
+      JUPYTER="$HOME/.venv/bin/jupyter-lab"
       ;;
     pipx)
       pipx install jupyterlab \
         && printf "%s\n" "🥳 jupyterlab has been installed"
-      JUPYTERPATH="$HOME/.local/bin"
+      JUPYTER="$HOME/.local/bin/jupyter-lab"
       ;;
   esac
 else
   printf "%s\n\n" "🥳 jupyterlab is already installed"
+  JUPYTER=$(command -v jupyter-lab)
 fi
 
 printf "👷 Starting jupyterlab in background..."
 printf "check logs at ${LOG_PATH}"
-$JUPYTERPATH/jupyter-lab --no-browser \
+$JUPYTER --no-browser \
   "$BASE_URL_FLAG" \
   --ServerApp.ip='*' \
   --ServerApp.port="${PORT}" \
