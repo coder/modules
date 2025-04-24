@@ -14,13 +14,13 @@ This module lets you authenticate with [Hashicorp Vault](https://www.vaultprojec
 
 ```tf
 module "vault" {
-  count          = data.coder_workspace.me.start_count
-  source         = "registry.coder.com/modules/vault-jwt/coder"
-  version        = "1.0.21"
-  agent_id       = coder_agent.example.id
-  vault_addr     = "https://vault.example.com"
-  vault_jwt_role = "coder" # The Vault role to use for authentication
-  vault_jwt_token= "eyJhbGciOiJIUzI1N..." # optional, if not present, defaults to user's oidc authentication token
+  count           = data.coder_workspace.me.start_count
+  source          = "registry.coder.com/modules/vault-jwt/coder"
+  version         = "1.0.21"
+  agent_id        = coder_agent.example.id
+  vault_addr      = "https://vault.example.com"
+  vault_jwt_role  = "coder"                # The Vault role to use for authentication
+  vault_jwt_token = "eyJhbGciOiJIUzI1N..." # optional, if not present, defaults to user's oidc authentication token
 }
 ```
 
@@ -81,7 +81,6 @@ module "vault" {
 }
 ```
 
-
 ### use a custom jwt token
 
 ```tf
@@ -104,7 +103,7 @@ resource "jwt_signed_token" "vault" {
   count     = data.coder_workspace.me.start_count
   algorithm = "RS256"
   # `openssl genrsa -out key.pem 4096` and `openssl rsa -in key.pem -pubout > pub.pem` to generate keys
-  key       = file("key.pem") 
+  key = file("key.pem")
   claims_json = jsonencode({
     iss = "https://code.example.com"
     sub = "${data.coder_workspace.me.id}"
@@ -132,16 +131,18 @@ resource "jwt_signed_token" "vault" {
 }
 
 module "vault" {
-  count             = data.coder_workspace.me.start_count
-  source            = "registry.coder.com/modules/vault-jwt/coder"
-  version           = "1.0.20"
-  agent_id          = coder_agent.example.id
-  vault_addr        = "https://vault.example.com"
-  vault_jwt_role    = "coder" # The Vault role to use for authentication
-  vault_jwt_token   = jwt_signed_token.vault[0].token
+  count           = data.coder_workspace.me.start_count
+  source          = "registry.coder.com/modules/vault-jwt/coder"
+  version         = "1.0.20"
+  agent_id        = coder_agent.example.id
+  vault_addr      = "https://vault.example.com"
+  vault_jwt_role  = "coder" # The Vault role to use for authentication
+  vault_jwt_token = jwt_signed_token.vault[0].token
 }
 ```
+
 #### example vault jwt role
+
 ```
 vault write auth/<JWT_MOUNT>/role/workspace -<<EOF
 {
@@ -168,7 +169,9 @@ vault write auth/<JWT_MOUNT>/role/workspace -<<EOF
 }
 EOF
 ```
+
 #### example workspace access vault policy
+
 ```hcl
 path "kv/data/app/coder/{{identity.entity.aliases.<MOUNT_ACCESSOR>.metadata.owner_name}}/{{identity.entity.aliases.<MOUNT_ACCESSOR>.metadata.workspace_name}}" {
   capabilities = ["create", "read", "update", "delete", "list", "subscribe"]
@@ -179,4 +182,3 @@ path "kv/metadata/app/coder/{{identity.entity.aliases.<MOUNT_ACCESSOR>.metadata.
   subscribe_event_types = ["*"]
 }
 ```
-
