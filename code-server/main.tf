@@ -4,7 +4,7 @@ terraform {
   required_providers {
     coder = {
       source  = "coder/coder"
-      version = ">= 2.1"
+      version = ">= 0.17"
     }
   }
 }
@@ -39,8 +39,14 @@ variable "slug" {
 }
 
 variable "settings" {
-  type        = any
+  type        = map(string)
   description = "A map of settings to apply to code-server."
+  default     = {}
+}
+
+variable "machine-settings" {
+  type        = map(string)
+  description = "A map of template level machine settings to apply to code-server. This will be overwritten at each container start."
   default     = {}
 }
 
@@ -122,20 +128,6 @@ variable "subdomain" {
   default     = false
 }
 
-variable "open_in" {
-  type        = string
-  description = <<-EOT
-    Determines where the app will be opened. Valid values are `"tab"` and `"slim-window" (default)`.
-    `"tab"` opens in a new tab in the same browser window.
-    `"slim-window"` opens a new browser window without navigation controls.
-  EOT
-  default     = "slim-window"
-  validation {
-    condition     = contains(["tab", "slim-window"], var.open_in)
-    error_message = "The 'open_in' variable must be one of: 'tab', 'slim-window'."
-  }
-}
-
 resource "coder_script" "code-server" {
   agent_id     = var.agent_id
   display_name = "code-server"
@@ -149,6 +141,7 @@ resource "coder_script" "code-server" {
     INSTALL_PREFIX : var.install_prefix,
     // This is necessary otherwise the quotes are stripped!
     SETTINGS : replace(jsonencode(var.settings), "\"", "\\\""),
+    MACHINE_SETTINGS : replace(jsonencode(var.machine-settings), "\"", "\\\""),
     OFFLINE : var.offline,
     USE_CACHED : var.use_cached,
     USE_CACHED_EXTENSIONS : var.use_cached_extensions,
@@ -180,7 +173,6 @@ resource "coder_app" "code-server" {
   subdomain    = var.subdomain
   share        = var.share
   order        = var.order
-  open_in      = var.open_in
 
   healthcheck {
     url       = "http://localhost:${var.port}/healthz"

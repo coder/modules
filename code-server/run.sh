@@ -26,6 +26,11 @@ if [ ! -f ~/.local/share/code-server/User/settings.json ]; then
   echo "${SETTINGS}" > ~/.local/share/code-server/User/settings.json
 fi
 
+# Apply/overwrite template based settings
+echo "⚙️ Creating machine settings file..."
+mkdir -p ~/.local/share/code-server/Machine
+echo "${MACHINE_SETTINGS}" > ~/.local/share/code-server/Machine/settings.json
+
 # Check if code-server is already installed for offline
 if [ "${OFFLINE}" = true ]; then
   if [ -f "$CODE_SERVER" ]; then
@@ -42,11 +47,6 @@ fi
 if [ ! -f "$CODE_SERVER" ] || [ "${USE_CACHED}" != true ]; then
   printf "$${BOLD}Installing code-server!\n"
 
-  # Clean up from other install (in case install prefix changed).
-  if [ -n "$CODER_SCRIPT_BIN_DIR" ] && [ -e "$CODER_SCRIPT_BIN_DIR/code-server" ]; then
-    rm "$CODER_SCRIPT_BIN_DIR/code-server"
-  fi
-
   ARGS=(
     "--method=standalone"
     "--prefix=${INSTALL_PREFIX}"
@@ -61,11 +61,6 @@ if [ ! -f "$CODE_SERVER" ] || [ "${USE_CACHED}" != true ]; then
     exit 1
   fi
   printf "🥳 code-server has been installed in ${INSTALL_PREFIX}\n\n"
-fi
-
-# Make the code-server available in PATH.
-if [ -n "$CODER_SCRIPT_BIN_DIR" ] && [ ! -e "$CODER_SCRIPT_BIN_DIR/code-server" ]; then
-  ln -s "$CODE_SERVER" "$CODER_SCRIPT_BIN_DIR/code-server"
 fi
 
 # Get the list of installed extensions...
@@ -114,8 +109,7 @@ if [ "${AUTO_INSTALL_EXTENSIONS}" = true ]; then
 
   if [ -f "$WORKSPACE_DIR/.vscode/extensions.json" ]; then
     printf "🧩 Installing extensions from %s/.vscode/extensions.json...\n" "$WORKSPACE_DIR"
-    # Use sed to remove single-line comments before parsing with jq
-    extensions=$(sed 's|//.*||g' "$WORKSPACE_DIR"/.vscode/extensions.json | jq -r '.recommendations[]')
+    extensions=$(jq -r '.recommendations[]' "$WORKSPACE_DIR"/.vscode/extensions.json)
     for extension in $extensions; do
       if extension_installed "$extension"; then
         continue
