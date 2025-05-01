@@ -42,6 +42,9 @@ module "aider" {
 | `use_tmux` | Whether to use tmux instead of screen for running Aider in the background | `bool` | `false` |
 | `session_name` | Name for the persistent session (screen or tmux) | `string` | `"aider"` |
 | `order` | Position of the app in the UI presentation | `number` | `null` |
+| `experiment_report_tasks` | Whether to enable task reporting | `bool` | `false` |
+| `experiment_pre_install_script` | Custom script to run before installing Aider | `string` | `null` |
+| `experiment_post_install_script` | Custom script to run after installing Aider | `string` | `null` |
 
 ## Usage Examples
 
@@ -52,6 +55,9 @@ module "aider" {
   source        = "registry.coder.com/modules/aider/coder"
   version       = "1.0.0"
   agent_id      = coder_agent.main.id
+  folder        = "/home/coder
+  install_aider = true
+  aider_version = "latest"
 }
 ```
 
@@ -60,21 +66,31 @@ module "aider" {
 ```tf
 variable "anthropic_api_key" {
   type        = string
-  description = "The Anthropic API key"
+  description = "Anthropic API key"
   sensitive   = true
+}
+
+variable "anthropic_model" {
+  type        = string
+  description = "Anthropic Model"
+  default     = "sonnet"
 }
 
 resource "coder_agent" "main" {
   # ...
   env = {
     ANTHROPIC_API_KEY = var.anthropic_api_key
+    AIDER_MODEL       = var.anthropic_model
   }
 }
 
 module "aider" {
-  source  = "registry.coder.com/modules/aider/coder"
-  version = "1.0.0"
-  agent_id = coder_agent.main.id
+  source        = "registry.coder.com/modules/aider/coder"
+  version       = "1.0.0"
+  agent_id      = coder_agent.main.id
+  folder        = "/home/coder
+  install_aider = true
+  aider_version = "latest"
 }
 ```
 
@@ -85,8 +101,67 @@ module "aider" {
   source        = "registry.coder.com/modules/aider/coder"
   version       = "1.0.0"
   agent_id      = coder_agent.main.id
+  folder        = "/home/coder
+  install_aider = true
+  aider_version = "latest"
   use_tmux      = true
-  session_name  = "aider-session"
+}
+```
+
+### With task reporting and initial prompt (Experimental)
+
+> This functionality is in early access and is still evolving.
+> For now, we recommend testing it in a demo or staging environment,
+> rather than deploying to production.
+
+Your workspace must have either `screen` or `tmux` installed to use this.
+
+```tf
+variable "anthropic_api_key" {
+  type        = string
+  description = "Anthropic API key"
+  sensitive   = true
+}
+
+variable "anthropic_model" {
+  type        = string
+  description = "Anthropic Model"
+  default     = "sonnet"
+}
+
+module "coder-login" {
+  count    = data.coder_workspace.me.start_count
+  source   = "registry.coder.com/modules/coder-login/coder"
+  version  = "1.0.15"
+  agent_id = coder_agent.main.id
+}
+
+data "coder_parameter" "ai_prompt" {
+  type        = "string"
+  name        = "AI Prompt"
+  default     = ""
+  description = "Write a prompt for Aider"
+  mutable     = true
+}
+
+# Set the prompt and API key for Aider via environment variables
+resource "coder_agent" "main" {
+  # ...
+  env = {
+    ANTHROPIC_API_KEY            = var.anthropic_api_key # or other API keys based on provider
+    AIDER_MODEL                  = var.anthropic_model
+    CODER_MCP_CLAUDE_TASK_PROMPT = data.coder_parameter.ai_prompt.value
+    CODER_MCP_APP_STATUS_SLUG    = "aider"
+  }
+}
+
+module "aider" {
+  source                 = "registry.coder.com/modules/aider/coder"
+  version                = "1.0.0"
+  agent_id               = coder_agent.main.id
+  folder                 = "/home/coder"
+  use_screen             = true # Or use_tmux = true to use tmux instead
+  experiment_report_tasks = true
 }
 ```
 
@@ -135,10 +210,12 @@ resource "coder_app" "code-server" {
 }
 
 module "aider" {
-  source   = "registry.coder.com/modules/aider/coder"
-  version  = "1.0.0"
-  agent_id = coder_agent.main.id
-  folder   = "/home/coder"
+  source        = "registry.coder.com/modules/aider/coder"
+  version       = "1.0.0"
+  agent_id      = coder_agent.main.id
+  folder        = "/home/coder
+  install_aider = true
+  aider_version = "latest"
 }
 
 resource "coder_metadata" "workspace_info" {
@@ -173,6 +250,24 @@ This allows you to:
 - Disconnect and reconnect to your Aider session without losing context
 - Run Aider in the background while doing other work
 - Switch between terminal and browser interfaces
+
+### Task Reporting (Experimental)
+
+When enabled, the task reporting feature allows you to:
+
+- Send an initial prompt to Aider during workspace creation
+- Monitor task progress in the Coder UI
+- Use the `coder_parameter` resource to collect prompts from users
+
+To enable task reporting:
+
+1. Set `experiment_report_tasks = true` in the module configuration
+2. Add the Coder Login module to your template
+3. Configure environment variables in your agent:
+   - `CODER_MCP_CLAUDE_TASK_PROMPT`: The initial prompt to send to Aider
+   - `CODER_MCP_APP_STATUS_SLUG`: Set to "aider" to identify the app for status reporting
+
+See the "With task reporting and initial prompt" example above for a complete configuration.
 
 ### Available AI Providers and Models
 
