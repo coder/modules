@@ -4,7 +4,7 @@ description: Run Aider AI pair programming in your workspace
 icon: ../.icons/terminal.svg
 maintainer_github: coder
 verified: false
-tags: [ai, pair-programming, coding-assistant]
+tags: [agent, aider]
 ---
 
 # Aider
