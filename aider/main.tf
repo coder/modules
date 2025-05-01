@@ -66,21 +66,35 @@ variable "session_name" {
   default     = "aider"
 }
 
+variable "experiment_report_tasks" {
+  type        = bool
+  description = "Whether to enable task reporting."
+  default     = false
+}
+
+variable "experiment_pre_install_script" {
+  type        = string
+  description = "Custom script to run before installing Aider."
+  default     = null
+}
+
+variable "experiment_post_install_script" {
+  type        = string
+  description = "Custom script to run after installing Aider."
+  default     = null
+}
 
 
 locals {
-  # Default icon for Aider
-  icon = "/icon/terminal.svg"
-  
-  # Basic aider command
-  aider_command = "aider"
+  encoded_pre_install_script  = var.experiment_pre_install_script != null ? base64encode(var.experiment_pre_install_script) : ""
+  encoded_post_install_script = var.experiment_post_install_script != null ? base64encode(var.experiment_post_install_script) : ""
 }
 
 # Install and Initialize Aider
 resource "coder_script" "aider" {
   agent_id     = var.agent_id
   display_name = "Aider"
-  icon         = local.icon
+  icon         = "/icon/terminal.svg"
   script       = <<-EOT
     #!/bin/bash
     set -e
@@ -131,6 +145,14 @@ resource "coder_script" "aider" {
       fi
     fi
 
+    # Run pre-install script if provided
+    if [ -n "${local.encoded_pre_install_script}" ]; then
+      echo "Running pre-install script..."
+      echo "${local.encoded_pre_install_script}" | base64 -d > /tmp/pre_install.sh
+      chmod +x /tmp/pre_install.sh
+      /tmp/pre_install.sh
+    fi
+
     # Install Aider using the official installation script
     if [ "${var.install_aider}" = "true" ]; then
       echo "Installing Aider..."
@@ -156,16 +178,58 @@ resource "coder_script" "aider" {
       # Aider configuration is handled through environment variables
       # or external dotenv module
     fi
+    
+    # Run post-install script if provided
+    if [ -n "${local.encoded_post_install_script}" ]; then
+      echo "Running post-install script..."
+      echo "${local.encoded_post_install_script}" | base64 -d > /tmp/post_install.sh
+      chmod +x /tmp/post_install.sh
+      /tmp/post_install.sh
+    fi
+    
+    # Configure task reporting if enabled
+    if [ "${var.experiment_report_tasks}" = "true" ]; then
+      echo "Configuring Aider to report tasks via Coder MCP..."
+      coder exp mcp configure aider ${var.folder}
+    fi
 
     # Start a persistent session at workspace creation
     echo "Starting persistent Aider session..."
+    
+    # Create a log file to store session output
+    touch "$HOME/.aider.log"
+    
+    # Set up environment for UTF-8 support
+    export LANG=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
+    
     if [ "${var.use_tmux}" = "true" ]; then
       # Create a new detached tmux session
-      tmux new-session -d -s ${var.session_name} "cd ${var.folder} && ${local.aider_command}; exec bash"
+      tmux new-session -d -s ${var.session_name} -c ${var.folder} "aider"
+      
+      # Send the prompt to the tmux session if needed
+      if [ -n "$CODER_MCP_CLAUDE_TASK_PROMPT" ]; then
+        echo "Sending initial prompt to Aider tmux session..."
+        sleep 5 # Wait for Aider to initialize
+        tmux send-keys -t ${var.session_name} "$CODER_MCP_CLAUDE_TASK_PROMPT"
+        sleep 2
+        tmux send-keys -t ${var.session_name} Enter
+      fi
+      
       echo "Tmux session '${var.session_name}' started. Access it by clicking the Aider button."
     else
       # Create a new detached screen session
-      screen -dmS ${var.session_name} bash -c "cd ${var.folder} && ${local.aider_command}; exec bash"
+      screen -dmS ${var.session_name} bash -c "cd ${var.folder} && aider | tee -a \"$HOME/.aider.log\"; exec bash"
+      
+      # Send the prompt to the screen session if needed
+      if [ -n "$CODER_MCP_CLAUDE_TASK_PROMPT" ]; then
+        echo "Sending initial prompt to Aider screen session..."
+        sleep 5 # Wait for Aider to initialize
+        screen -S ${var.session_name} -X stuff "$CODER_MCP_CLAUDE_TASK_PROMPT"
+        sleep 2
+        screen -S ${var.session_name} -X stuff "^M"
+      fi
+      
       echo "Screen session '${var.session_name}' started. Access it by clicking the Aider button."
     fi
     
@@ -179,7 +243,7 @@ resource "coder_app" "aider_cli" {
   agent_id     = var.agent_id
   slug         = "aider"
   display_name = "Aider"
-  icon         = local.icon
+  icon         = "/icon/terminal.svg"
   command      = <<-EOT
     #!/bin/bash
     set -e
@@ -191,27 +255,31 @@ resource "coder_app" "aider_cli" {
     
     cd "${var.folder}"
     
+    # Set up environment for UTF-8 support
+    export LANG=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
+    
     # Check if we should use tmux
     if [ "${var.use_tmux}" = "true" ]; then
       # Check if session exists, attach or create
       if tmux has-session -t ${var.session_name} 2>/dev/null; then
-        echo "Attaching to existing Aider tmux session..."
+        echo "Attaching to existing Aider tmux session..." | tee -a "$HOME/.aider.log"
         tmux attach-session -t ${var.session_name}
       else
-        echo "Starting new Aider tmux session..."
-        tmux new-session -s ${var.session_name} "${local.aider_command}; exec bash"
+        echo "Starting new Aider tmux session..." | tee -a "$HOME/.aider.log"
+        tmux new-session -s ${var.session_name} -c ${var.folder} "aider | tee -a \"$HOME/.aider.log\"; exec bash"
       fi
     else
       # Default to screen
       # Check if session exists, attach or create
       if screen -list | grep -q "\\.${var.session_name}\|${var.session_name}\\"; then
-        echo "Attaching to existing Aider screen session..."
+        echo "Attaching to existing Aider screen session..." | tee -a "$HOME/.aider.log"
         # Get the full screen session name (with PID) and attach to it
         SCREEN_NAME=$(screen -list | grep -o "[0-9]*\\.${var.session_name}" || screen -list | grep -o "${var.session_name}[0-9]*")
         screen -r "$SCREEN_NAME"
       else
-        echo "Starting new Aider screen session..."
-        screen -S ${var.session_name} bash -c "${local.aider_command}; exec bash"
+        echo "Starting new Aider screen session..." | tee -a "$HOME/.aider.log" 
+        screen -S ${var.session_name} bash -c "cd ${var.folder} && aider | tee -a \"$HOME/.aider.log\"; exec bash"
       fi
     fi
   EOT
