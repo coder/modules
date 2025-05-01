@@ -13,6 +13,7 @@ Run [Aider](https://aider.chat) AI pair programming in your workspace. This modu
 
 ```tf
 module "aider" {
+  count = data.coder_workspace.me.start_count
   source       = "registry.coder.com/modules/aider/coder"
   version      = "1.0.0"
   agent_id     = coder_agent.example.id
@@ -52,10 +53,11 @@ module "aider" {
 
 ```tf
 module "aider" {
+  count = data.coder_workspace.me.start_count
   source        = "registry.coder.com/modules/aider/coder"
   version       = "1.0.0"
   agent_id      = coder_agent.main.id
-  folder        = "/home/coder
+  folder        = "/home/coder"
   install_aider = true
   aider_version = "latest"
 }
@@ -78,17 +80,28 @@ variable "anthropic_model" {
 
 resource "coder_agent" "main" {
   # ...
-  env = {
-    ANTHROPIC_API_KEY = var.anthropic_api_key
-    AIDER_MODEL       = var.anthropic_model
-  }
+}
+
+# Set API key and model using coder_env resource
+resource "coder_env" "anthropic" {
+  agent_id = coder_agent.main.id
+  name     = "ANTHROPIC_API_KEY"
+  value    = var.anthropic_api_key
+  secret   = true
+}
+
+resource "coder_env" "aider_model" {
+  agent_id = coder_agent.main.id
+  name     = "AIDER_MODEL"
+  value    = var.anthropic_model
 }
 
 module "aider" {
+  count         = data.coder_workspace.me.start_count
   source        = "registry.coder.com/modules/aider/coder"
   version       = "1.0.0"
   agent_id      = coder_agent.main.id
-  folder        = "/home/coder
+  folder        = "/home/coder"
   install_aider = true
   aider_version = "latest"
 }
@@ -98,10 +111,11 @@ module "aider" {
 
 ```tf
 module "aider" {
+  count         = data.coder_workspace.me.start_count
   source        = "registry.coder.com/modules/aider/coder"
   version       = "1.0.0"
   agent_id      = coder_agent.main.id
-  folder        = "/home/coder
+  folder        = "/home/coder"
   install_aider = true
   aider_version = "latest"
   use_tmux      = true
@@ -144,86 +158,40 @@ data "coder_parameter" "ai_prompt" {
   mutable     = true
 }
 
-# Set the prompt and API key for Aider via environment variables
-resource "coder_agent" "main" {
-  # ...
-  env = {
-    ANTHROPIC_API_KEY            = var.anthropic_api_key # or other API keys based on provider
-    AIDER_MODEL                  = var.anthropic_model
-    CODER_MCP_CLAUDE_TASK_PROMPT = data.coder_parameter.ai_prompt.value
-    CODER_MCP_APP_STATUS_SLUG    = "aider"
-  }
+# Set API key and model using coder_env resource
+resource "coder_env" "anthropic" {
+  agent_id = coder_agent.main.id
+  name     = "ANTHROPIC_API_KEY"
+  value    = var.anthropic_api_key
+  secret   = true
+}
+
+resource "coder_env" "aider_model" {
+  agent_id = coder_agent.main.id
+  name     = "AIDER_MODEL"
+  value    = var.anthropic_model
+}
+
+resource "coder_env" "task_prompt" {
+  agent_id = coder_agent.main.id
+  name     = "CODER_MCP_CLAUDE_TASK_PROMPT"
+  value    = data.coder_parameter.ai_prompt.value
+}
+
+resource "coder_env" "app_status" {
+  agent_id = coder_agent.main.id
+  name     = "CODER_MCP_APP_STATUS_SLUG"
+  value    = "aider"
 }
 
 module "aider" {
+  count                  = data.coder_workspace.me.start_count
   source                 = "registry.coder.com/modules/aider/coder"
   version                = "1.0.0"
   agent_id               = coder_agent.main.id
   folder                 = "/home/coder"
   use_screen             = true # Or use_tmux = true to use tmux instead
   experiment_report_tasks = true
-}
-```
-
-## Complete Template Example
-
-Here's a complete example of how to use the Aider module in a Coder template:
-
-```tf
-terraform {
-  required_providers {
-    coder = {
-      source  = "coder/coder"
-      version = "0.11.0"
-    }
-  }
-}
-
-provider "coder" {}
-
-data "coder_workspace" "me" {}
-
-resource "coder_agent" "main" {
-  os             = "linux"
-  arch           = "amd64"
-  startup_script = <<-EOT
-    #!/bin/bash
-    # Add any additional workspace setup here
-    echo "Workspace ready!"
-  EOT
-}
-
-resource "coder_app" "code-server" {
-  agent_id     = coder_agent.main.id
-  slug         = "code-server"
-  display_name = "VS Code"
-  url          = "http://localhost:8080/?folder=/home/coder/project"
-  icon         = "/icon/code.svg"
-  subdomain    = true
-  share        = "owner"
-
-  healthcheck {
-    url       = "http://localhost:8080/healthz"
-    interval  = 3
-    threshold = 10
-  }
-}
-
-module "aider" {
-  source        = "registry.coder.com/modules/aider/coder"
-  version       = "1.0.0"
-  agent_id      = coder_agent.main.id
-  folder        = "/home/coder
-  install_aider = true
-  aider_version = "latest"
-}
-
-resource "coder_metadata" "workspace_info" {
-  resource_id = coder_agent.main.id
-  item {
-    key   = "AI Assistant"
-    value = "Aider"
-  }
 }
 ```
 
@@ -263,9 +231,20 @@ To enable task reporting:
 
 1. Set `experiment_report_tasks = true` in the module configuration
 2. Add the Coder Login module to your template
-3. Configure environment variables in your agent:
-   - `CODER_MCP_CLAUDE_TASK_PROMPT`: The initial prompt to send to Aider
-   - `CODER_MCP_APP_STATUS_SLUG`: Set to "aider" to identify the app for status reporting
+3. Configure environment variables using `coder_env`:
+   ```tf
+   resource "coder_env" "task_prompt" {
+     agent_id = coder_agent.main.id
+     name     = "CODER_MCP_CLAUDE_TASK_PROMPT" 
+     value    = data.coder_parameter.ai_prompt.value
+   }
+   
+   resource "coder_env" "app_status" {
+     agent_id = coder_agent.main.id
+     name     = "CODER_MCP_APP_STATUS_SLUG"
+     value    = "aider"
+   }
+   ```
 
 See the "With task reporting and initial prompt" example above for a complete configuration.
 
@@ -289,7 +268,26 @@ You will need an API key for your selected provider:
 - **GROQ**: Get a key from [console.groq.com](https://console.groq.com/keys)
 - **OpenRouter**: Get a key from [openrouter.ai](https://openrouter.ai/keys)
 
-You can use the Coder dotenv module to configure Aider if needed.
+#### Setting API Keys with coder_env
+
+Use the `coder_env` resource to securely set API keys:
+
+```tf
+# Set API key as a secret environment variable
+resource "coder_env" "anthropic_api_key" {
+  agent_id = coder_agent.main.id
+  name     = "ANTHROPIC_API_KEY"
+  value    = var.anthropic_api_key
+  secret   = true  # Marks as a secret, won't be visible in logs
+}
+
+# Set model preference as a regular environment variable
+resource "coder_env" "aider_model" {
+  agent_id = coder_agent.main.id
+  name     = "AIDER_MODEL"
+  value    = "sonnet"
+}
+```
 
 ## Troubleshooting
 
