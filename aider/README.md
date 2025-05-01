@@ -157,6 +157,7 @@ After the workspace starts, Aider will be installed and configured according to 
 ### Accessing Aider
 
 Click the "Aider" button in the Coder dashboard to access Aider:
+
 - You'll be attached to the persistent session that was created during workspace setup
 - The session maintains context even when you disconnect
 
@@ -168,6 +169,7 @@ Aider runs in persistent sessions that start automatically when the workspace is
 - **Tmux**: Alternatively, you can enable tmux instead of screen (session name: "aider")
 
 This allows you to:
+
 - Disconnect and reconnect to your Aider session without losing context
 - Run Aider in the background while doing other work
 - Switch between terminal and browser interfaces
@@ -192,16 +194,7 @@ You will need an API key for your selected provider:
 - **GROQ**: Get a key from [console.groq.com](https://console.groq.com/keys)
 - **OpenRouter**: Get a key from [openrouter.ai](https://openrouter.ai/keys)
 
-Add your API key as an environment variable in your Coder template:
-
-```tf
-env = {
-  ANTHROPIC_API_KEY = var.anthropic_api_key
-  # Or other provider keys
-}
-```
-
-You can also use the Coder dotenv module to configure Aider if needed.
+You can use the Coder dotenv module to configure Aider if needed.
 
 ## Troubleshooting
 
