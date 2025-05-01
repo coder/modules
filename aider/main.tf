@@ -51,7 +51,7 @@ variable "aider_version" {
 variable "use_screen" {
   type        = bool
   description = "Whether to use screen for running Aider in the background"
-  default     = true
+  default     = false
 }
 
 variable "use_tmux" {
