@@ -66,12 +66,13 @@ export const executeScriptInContainer = async (
 export const execContainer = async (
   id: string,
   cmd: string[],
+  args?: string[],
 ): Promise<{
   exitCode: number;
   stderr: string;
   stdout: string;
 }> => {
-  const proc = spawn(["docker", "exec", id, ...cmd], {
+	const proc = spawn(["docker", "exec", ...(args ?? []), id, ...cmd], {
     stderr: "pipe",
     stdout: "pipe",
   });
