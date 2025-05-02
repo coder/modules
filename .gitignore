@@ -5,6 +5,3 @@ node_modules
 
 # Ignore generated credentials from google-github-actions/auth
 gha-creds-*.json
-
-# Ignore Claude-Code Init-File
-CLAUDE.md
