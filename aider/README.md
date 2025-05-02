@@ -34,20 +34,20 @@ module "aider" {
 
 ## Module Parameters
 
-| Parameter                        | Description                                                               | Type     | Default                |
-| -------------------------------- | ------------------------------------------------------------------------- | -------- | ---------------------- |
-| `agent_id`                       | The ID of a Coder agent (required)                                        | `string` | -                      |
-| `folder`                         | The folder to run Aider in                                                | `string` | `/home/coder`          |
-| `install_aider`                  | Whether to install Aider                                                  | `bool`   | `true`                 |
-| `aider_version`                  | The version of Aider to install                                           | `string` | `"latest"`             |
-| `use_screen`                     | Whether to use screen for running Aider in the background                 | `bool`   | `false`                |
-| `use_tmux`                       | Whether to use tmux instead of screen for running Aider in the background | `bool`   | `false`                |
-| `session_name`                   | Name for the persistent session (screen or tmux)                          | `string` | `"aider"`              |
-| `order`                          | Position of the app in the UI presentation                                | `number` | `null`                 |
+| Parameter                        | Description                                                               | Type     | Default             |
+| -------------------------------- | ------------------------------------------------------------------------- | -------- | ------------------- |
+| `agent_id`                       | The ID of a Coder agent (required)                                        | `string` | -                   |
+| `folder`                         | The folder to run Aider in                                                | `string` | `/home/coder`       |
+| `install_aider`                  | Whether to install Aider                                                  | `bool`   | `true`              |
+| `aider_version`                  | The version of Aider to install                                           | `string` | `"latest"`          |
+| `use_screen`                     | Whether to use screen for running Aider in the background                 | `bool`   | `false`             |
+| `use_tmux`                       | Whether to use tmux instead of screen for running Aider in the background | `bool`   | `false`             |
+| `session_name`                   | Name for the persistent session (screen or tmux)                          | `string` | `"aider"`           |
+| `order`                          | Position of the app in the UI presentation                                | `number` | `null`              |
 | `icon`                           | The icon to use for the app                                               | `string` | `"/icon/aider.svg"` |
-| `experiment_report_tasks`        | Whether to enable task reporting                                          | `bool`   | `false`                |
-| `experiment_pre_install_script`  | Custom script to run before installing Aider                              | `string` | `null`                 |
-| `experiment_post_install_script` | Custom script to run after installing Aider                               | `string` | `null`                 |
+| `experiment_report_tasks`        | Whether to enable task reporting                                          | `bool`   | `false`             |
+| `experiment_pre_install_script`  | Custom script to run before installing Aider                              | `string` | `null`              |
+| `experiment_post_install_script` | Custom script to run after installing Aider                               | `string` | `null`              |
 
 ## Usage Examples
 
