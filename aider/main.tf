@@ -27,7 +27,7 @@ variable "order" {
 variable "icon" {
   type        = string
   description = "The icon to use for the app."
-  default     = "/icon/terminal.svg"
+  default     = "/icon/aider.svg"
 }
 
 variable "folder" {
@@ -94,7 +94,7 @@ locals {
 resource "coder_script" "aider" {
   agent_id     = var.agent_id
   display_name = "Aider"
-  icon         = "/icon/terminal.svg"
+  icon         = "/icon/aider.svg"
   script       = <<-EOT
     #!/bin/bash
     set -e

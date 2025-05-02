@@ -1,7 +1,7 @@
 ---
 display_name: Aider
 description: Run Aider AI pair programming in your workspace
-icon: ../.icons/terminal.svg
+icon: ../.icons/aider.svg
 maintainer_github: coder
 verified: false
 tags: [agent, aider]
@@ -44,7 +44,7 @@ module "aider" {
 | `use_tmux`                       | Whether to use tmux instead of screen for running Aider in the background | `bool`   | `false`                |
 | `session_name`                   | Name for the persistent session (screen or tmux)                          | `string` | `"aider"`              |
 | `order`                          | Position of the app in the UI presentation                                | `number` | `null`                 |
-| `icon`                           | The icon to use for the app                                               | `string` | `"/icon/terminal.svg"` |
+| `icon`                           | The icon to use for the app                                               | `string` | `"/icon/aider.svg"` |
 | `experiment_report_tasks`        | Whether to enable task reporting                                          | `bool`   | `false`                |
 | `experiment_pre_install_script`  | Custom script to run before installing Aider                              | `string` | `null`                 |
 | `experiment_post_install_script` | Custom script to run after installing Aider                               | `string` | `null`                 |
