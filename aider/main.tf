@@ -243,7 +243,7 @@ resource "coder_app" "aider_cli" {
   agent_id     = var.agent_id
   slug         = "aider"
   display_name = "Aider"
-  icon         = "/icon/terminal.svg"
+  icon         = var.icon
   command      = <<-EOT
     #!/bin/bash
     set -e
@@ -252,8 +252,6 @@ resource "coder_app" "aider_cli" {
     export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
     
     # Environment variables are set in the agent template
-    
-    cd "${var.folder}"
     
     # Set up environment for UTF-8 support
     export LANG=en_US.UTF-8
@@ -269,8 +267,8 @@ resource "coder_app" "aider_cli" {
         echo "Starting new Aider tmux session..." | tee -a "$HOME/.aider.log"
         tmux new-session -s ${var.session_name} -c ${var.folder} "aider | tee -a \"$HOME/.aider.log\"; exec bash"
       fi
-    else
-      # Default to screen
+    elif [ "${var.use_screen}" = "true" ]; then
+      # Use screen
       # Check if session exists, attach or create
       if screen -list | grep -q "\\.${var.session_name}\|${var.session_name}\\"; then
         echo "Attaching to existing Aider screen session..." | tee -a "$HOME/.aider.log"
@@ -281,6 +279,11 @@ resource "coder_app" "aider_cli" {
         echo "Starting new Aider screen session..." | tee -a "$HOME/.aider.log" 
         screen -S ${var.session_name} bash -c "cd ${var.folder} && aider | tee -a \"$HOME/.aider.log\"; exec bash"
       fi
+    else
+      # Run directly without a multiplexer
+      cd "${var.folder}"
+      echo "Starting Aider directly..." | tee -a "$HOME/.aider.log"
+      aider
     fi
   EOT
   order        = var.order
