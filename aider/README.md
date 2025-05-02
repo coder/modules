@@ -3,7 +3,7 @@ display_name: Aider
 description: Run Aider AI pair programming in your workspace
 icon: ../.icons/aider.svg
 maintainer_github: coder
-verified: false
+verified: true
 tags: [agent, aider]
 ---
 
