@@ -112,7 +112,6 @@ describe("devcontainers-cli", async () => {
       "docker:dind",
       "yarn",
     );
-    console.log(output);
     expect(output.exitCode).toBe(0);
 
     expect(output.stdout[0]).toEqual(
