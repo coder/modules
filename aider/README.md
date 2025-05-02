@@ -126,9 +126,14 @@ module "aider" {
 
 ### With task reporting and initial prompt (Experimental)
 
-> This functionality is in early access and is still evolving.
+> This functionality is in early access as of Coder v2.21 and is still evolving.
 > For now, we recommend testing it in a demo or staging environment,
-> rather than deploying to production.
+> rather than deploying to production
+>
+> Learn more in [the Coder documentation](https://coder.com/docs/tutorials/ai-agents)
+>
+> Join our [Discord channel](https://discord.gg/coder) or
+> [contact us](https://coder.com/contact) to get help or share feedback.
 
 Your workspace must have either `screen` or `tmux` installed to use this.
 
@@ -244,6 +249,7 @@ To enable task reporting:
 1. Set `experiment_report_tasks = true` in the module configuration
 2. Add the Coder Login module to your template
 3. Configure environment variables using `coder_env`:
+
    ```tf
    resource "coder_env" "task_prompt" {
      agent_id = coder_agent.main.id
