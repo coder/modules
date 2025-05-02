@@ -39,10 +39,12 @@ module "aider" {
 | `agent_id` | The ID of a Coder agent (required) | `string` | - |
 | `folder` | The folder to run Aider in | `string` | `/home/coder` |
 | `install_aider` | Whether to install Aider | `bool` | `true` |
-| `use_screen` | Whether to use screen for running Aider in the background | `bool` | `true` |
+| `aider_version` | The version of Aider to install | `string` | `"latest"` |
+| `use_screen` | Whether to use screen for running Aider in the background | `bool` | `false` |
 | `use_tmux` | Whether to use tmux instead of screen for running Aider in the background | `bool` | `false` |
 | `session_name` | Name for the persistent session (screen or tmux) | `string` | `"aider"` |
 | `order` | Position of the app in the UI presentation | `number` | `null` |
+| `icon` | The icon to use for the app | `string` | `"/icon/terminal.svg"` |
 | `experiment_report_tasks` | Whether to enable task reporting | `bool` | `false` |
 | `experiment_pre_install_script` | Custom script to run before installing Aider | `string` | `null` |
 | `experiment_post_install_script` | Custom script to run after installing Aider | `string` | `null` |
@@ -203,17 +205,27 @@ After the workspace starts, Aider will be installed and configured according to 
 
 Click the "Aider" button in the Coder dashboard to access Aider:
 
-- You'll be attached to the persistent session that was created during workspace setup
-- The session maintains context even when you disconnect
+- If using persistent sessions (screen/tmux), you'll be attached to the session that was created during workspace setup
+- If not using persistent sessions, Aider will start directly in the configured folder
+- Persistent sessions maintain context even when you disconnect
 
-### Persistent Sessions
+### Session Options
 
-Aider runs in persistent sessions that start automatically when the workspace is created:
+You can run Aider in three different ways:
 
-- **Screen**: By default, screen is used for persistent sessions (session name: "aider")
-- **Tmux**: Alternatively, you can enable tmux instead of screen (session name: "aider")
+1. **Direct Mode** (Default): Aider starts directly in the specified folder when you click the app button
+   - Simple setup without persistent context
+   - Suitable for quick coding sessions
 
-This allows you to:
+2. **Screen Mode**: Run Aider in a screen session that persists across connections
+   - Set `use_screen = true` to enable
+   - Session name: "aider" (or configured via `session_name`)
+
+3. **Tmux Mode**: Run Aider in a tmux session instead of screen
+   - Set `use_tmux = true` to enable
+   - Session name: "aider" (or configured via `session_name`)
+
+Persistent sessions (screen/tmux) allow you to:
 
 - Disconnect and reconnect to your Aider session without losing context
 - Run Aider in the background while doing other work
