@@ -34,20 +34,20 @@ module "aider" {
 
 ## Module Parameters
 
-| Parameter | Description | Type | Default |
-|-----------|-------------|------|---------|
-| `agent_id` | The ID of a Coder agent (required) | `string` | - |
-| `folder` | The folder to run Aider in | `string` | `/home/coder` |
-| `install_aider` | Whether to install Aider | `bool` | `true` |
-| `aider_version` | The version of Aider to install | `string` | `"latest"` |
-| `use_screen` | Whether to use screen for running Aider in the background | `bool` | `false` |
-| `use_tmux` | Whether to use tmux instead of screen for running Aider in the background | `bool` | `false` |
-| `session_name` | Name for the persistent session (screen or tmux) | `string` | `"aider"` |
-| `order` | Position of the app in the UI presentation | `number` | `null` |
-| `icon` | The icon to use for the app | `string` | `"/icon/terminal.svg"` |
-| `experiment_report_tasks` | Whether to enable task reporting | `bool` | `false` |
-| `experiment_pre_install_script` | Custom script to run before installing Aider | `string` | `null` |
-| `experiment_post_install_script` | Custom script to run after installing Aider | `string` | `null` |
+| Parameter                        | Description                                                               | Type     | Default                |
+| -------------------------------- | ------------------------------------------------------------------------- | -------- | ---------------------- |
+| `agent_id`                       | The ID of a Coder agent (required)                                        | `string` | -                      |
+| `folder`                         | The folder to run Aider in                                                | `string` | `/home/coder`          |
+| `install_aider`                  | Whether to install Aider                                                  | `bool`   | `true`                 |
+| `aider_version`                  | The version of Aider to install                                           | `string` | `"latest"`             |
+| `use_screen`                     | Whether to use screen for running Aider in the background                 | `bool`   | `false`                |
+| `use_tmux`                       | Whether to use tmux instead of screen for running Aider in the background | `bool`   | `false`                |
+| `session_name`                   | Name for the persistent session (screen or tmux)                          | `string` | `"aider"`              |
+| `order`                          | Position of the app in the UI presentation                                | `number` | `null`                 |
+| `icon`                           | The icon to use for the app                                               | `string` | `"/icon/terminal.svg"` |
+| `experiment_report_tasks`        | Whether to enable task reporting                                          | `bool`   | `false`                |
+| `experiment_pre_install_script`  | Custom script to run before installing Aider                              | `string` | `null`                 |
+| `experiment_post_install_script` | Custom script to run after installing Aider                               | `string` | `null`                 |
 
 ## Usage Examples
 
@@ -55,7 +55,7 @@ module "aider" {
 
 ```tf
 module "aider" {
-  count = data.coder_workspace.me.start_count
+  count         = data.coder_workspace.me.start_count
   source        = "registry.coder.com/modules/aider/coder"
   version       = "1.0.0"
   agent_id      = coder_agent.main.id
@@ -192,12 +192,12 @@ resource "coder_env" "app_status" {
 }
 
 module "aider" {
-  count                  = data.coder_workspace.me.start_count
-  source                 = "registry.coder.com/modules/aider/coder"
-  version                = "1.0.0"
-  agent_id               = coder_agent.main.id
-  folder                 = "/home/coder"
-  use_screen             = true # Or use_tmux = true to use tmux instead
+  count                   = data.coder_workspace.me.start_count
+  source                  = "registry.coder.com/modules/aider/coder"
+  version                 = "1.0.0"
+  agent_id                = coder_agent.main.id
+  folder                  = "/home/coder"
+  use_screen              = true # Or use_tmux = true to use tmux instead
   experiment_report_tasks = true
 }
 ```
@@ -219,10 +219,12 @@ Click the "Aider" button in the Coder dashboard to access Aider:
 You can run Aider in three different ways:
 
 1. **Direct Mode** (Default): Aider starts directly in the specified folder when you click the app button
+
    - Simple setup without persistent context
    - Suitable for quick coding sessions
 
 2. **Screen Mode**: Run Aider in a screen session that persists across connections
+
    - Set `use_screen = true` to enable
    - Session name: "aider" (or configured via `session_name`)
 
@@ -253,7 +255,7 @@ To enable task reporting:
    ```tf
    resource "coder_env" "task_prompt" {
      agent_id = coder_agent.main.id
-     name     = "CODER_MCP_CLAUDE_TASK_PROMPT" 
+     name     = "CODER_MCP_CLAUDE_TASK_PROMPT"
      value    = data.coder_parameter.ai_prompt.value
    }
    
@@ -268,13 +270,13 @@ See the "With task reporting and initial prompt" example above for a complete co
 
 ### Available AI Providers and Models
 
-| Provider | Available Models | Description |
-|----------|------------------|-------------|
-| **Anthropic** | Claude 3.7 Sonnet, Claude 3.7 Haiku | High-quality Claude models |
-| **OpenAI** | o3-mini, o1, GPT-4o | GPT models from OpenAI |
-| **DeepSeek** | DeepSeek R1, DeepSeek Chat V3 | Models from DeepSeek |
-| **GROQ** | Mixtral, Llama 3 | Fast inference on open models |
-| **OpenRouter** | OpenRouter | Access to multiple providers with a single key |
+| Provider       | Available Models                    | Description                                    |
+| -------------- | ----------------------------------- | ---------------------------------------------- |
+| **Anthropic**  | Claude 3.7 Sonnet, Claude 3.7 Haiku | High-quality Claude models                     |
+| **OpenAI**     | o3-mini, o1, GPT-4o                 | GPT models from OpenAI                         |
+| **DeepSeek**   | DeepSeek R1, DeepSeek Chat V3       | Models from DeepSeek                           |
+| **GROQ**       | Mixtral, Llama 3                    | Fast inference on open models                  |
+| **OpenRouter** | OpenRouter                          | Access to multiple providers with a single key |
 
 ### API Keys
 
@@ -296,7 +298,7 @@ resource "coder_env" "anthropic_api_key" {
   agent_id = coder_agent.main.id
   name     = "ANTHROPIC_API_KEY"
   value    = var.anthropic_api_key
-  secret   = true  # Marks as a secret, won't be visible in logs
+  secret   = true # Marks as a secret, won't be visible in logs
 }
 
 # Set model preference as a regular environment variable

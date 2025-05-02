@@ -19,17 +19,22 @@ describe("aider", async () => {
       agent_id: "foo",
       use_screen: true, // Need to set this since default is false
     });
-    
+
     // Execute the script with mock setup first
-    const output = await executeScriptInContainer(state, "alpine", "sh", 
-      "mkdir -p /home/coder/bin && echo '#!/bin/sh\necho \"Aider mock started\"' > /home/coder/bin/aider && chmod +x /home/coder/bin/aider && " + 
-      "mkdir -p /usr/bin && echo '#!/bin/sh\necho \"screen mock $@\"' > /usr/bin/screen && chmod +x /usr/bin/screen"
+    const output = await executeScriptInContainer(
+      state,
+      "alpine",
+      "sh",
+      "mkdir -p /home/coder/bin && echo '#!/bin/sh\necho \"Aider mock started\"' > /home/coder/bin/aider && chmod +x /home/coder/bin/aider && " +
+        "mkdir -p /usr/bin && echo '#!/bin/sh\necho \"screen mock $@\"' > /usr/bin/screen && chmod +x /usr/bin/screen",
     );
-    
+
     // Verify expected outputs
     expect(output.exitCode).toBe(0);
     expect(output.stdout).toContain("Setting up Aider AI pair programming...");
-    expect(output.stdout).toContain("Screen session 'aider' started. Access it by clicking the Aider button.");
+    expect(output.stdout).toContain(
+      "Screen session 'aider' started. Access it by clicking the Aider button.",
+    );
   });
 
   it("uses tmux when specified", async () => {
@@ -37,16 +42,21 @@ describe("aider", async () => {
       agent_id: "foo",
       use_tmux: true,
     });
-    
+
     // Execute the script with mock setup first
-    const output = await executeScriptInContainer(state, "alpine", "sh", 
+    const output = await executeScriptInContainer(
+      state,
+      "alpine",
+      "sh",
       "mkdir -p /home/coder/bin && echo '#!/bin/sh\necho \"Aider mock started\"' > /home/coder/bin/aider && chmod +x /home/coder/bin/aider && " +
-      "mkdir -p /usr/bin && echo '#!/bin/sh\necho \"tmux mock $@\"' > /usr/bin/tmux && chmod +x /usr/bin/tmux"
+        "mkdir -p /usr/bin && echo '#!/bin/sh\necho \"tmux mock $@\"' > /usr/bin/tmux && chmod +x /usr/bin/tmux",
     );
-    
+
     // Verify expected outputs
     expect(output.exitCode).toBe(0);
-    expect(output.stdout).toContain("Tmux session 'aider' started. Access it by clicking the Aider button.");
+    expect(output.stdout).toContain(
+      "Tmux session 'aider' started. Access it by clicking the Aider button.",
+    );
   });
 
   it("configures task reporting when enabled", async () => {
@@ -55,19 +65,26 @@ describe("aider", async () => {
       experiment_report_tasks: true,
       use_screen: true, // Set explicitly since default is false
     });
-    
+
     // Set up mocks including coder command
-    const mockSetup = 
+    const mockSetup =
       "mkdir -p /usr/bin && echo '#!/bin/sh\necho \"coder mock $@\"' > /usr/bin/coder && chmod +x /usr/bin/coder && " +
       "mkdir -p /home/coder/bin && echo '#!/bin/sh\necho \"Aider mock started\"' > /home/coder/bin/aider && chmod +x /home/coder/bin/aider && " +
       "mkdir -p /usr/bin && echo '#!/bin/sh\necho \"screen mock $@\"' > /usr/bin/screen && chmod +x /usr/bin/screen";
-    
+
     // Execute the script with mock setup
-    const output = await executeScriptInContainer(state, "alpine", "sh", mockSetup);
-    
+    const output = await executeScriptInContainer(
+      state,
+      "alpine",
+      "sh",
+      mockSetup,
+    );
+
     // Verify expected outputs
     expect(output.exitCode).toBe(0);
-    expect(output.stdout).toContain("Configuring Aider to report tasks via Coder MCP...");
+    expect(output.stdout).toContain(
+      "Configuring Aider to report tasks via Coder MCP...",
+    );
   });
 
   it("executes pre and post install scripts", async () => {
@@ -77,13 +94,16 @@ describe("aider", async () => {
       experiment_post_install_script: "echo 'Post-install script executed'",
       use_screen: true, // Set explicitly since default is false
     });
-    
+
     // Execute the script with basic mocks
-    const output = await executeScriptInContainer(state, "alpine", "sh",
+    const output = await executeScriptInContainer(
+      state,
+      "alpine",
+      "sh",
       "mkdir -p /home/coder/bin && echo '#!/bin/sh\necho \"Aider mock started\"' > /home/coder/bin/aider && chmod +x /home/coder/bin/aider && " +
-      "mkdir -p /usr/bin && echo '#!/bin/sh\necho \"screen mock $@\"' > /usr/bin/screen && chmod +x /usr/bin/screen"
+        "mkdir -p /usr/bin && echo '#!/bin/sh\necho \"screen mock $@\"' > /usr/bin/screen && chmod +x /usr/bin/screen",
     );
-    
+
     // Verify expected outputs
     expect(output.exitCode).toBe(0);
     expect(output.stdout).toContain("Running pre-install script...");
