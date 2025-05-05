@@ -23,7 +23,7 @@ resource "coder_script" "kasm_vnc" {
   display_name = "KasmVNC"
   icon         = "/icon/kasmvnc.svg"
   run_on_start = true
-  script       = templatefile("${path.module}/run.sh", locals.template_data)
+  script       = templatefile("${path.module}/run.sh.tftpl", locals.template_data)
 }
 
 resource "coder_app" "kasm_vnc" {
