@@ -74,12 +74,12 @@ describe("aider", async () => {
     // Instead of running the script, just verify the script content
     // to ensure the tmux parameter is being properly applied
     const instance = findResourceInstance(state, "coder_script");
-    
+
     // Check for the correct tmux condition with the interpolated value
     expect(instance.script.includes('if [ "true" = "true" ]')).toBe(true);
-    
+
     // Also check for a unique string only present when tmux is used in the script
-    expect(instance.script.includes('tmux new-session -d -s')).toBe(true);
+    expect(instance.script.includes("tmux new-session -d -s")).toBe(true);
   });
 
   it("configures task reporting when enabled", async () => {
