@@ -17,7 +17,6 @@ describe("aider", async () => {
   it("installs aider with default settings", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
-      use_screen: true, // Need to set this since default is false
     });
 
     // Execute the script with mock setup first
@@ -41,6 +40,7 @@ describe("aider", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
       use_tmux: true,
+      use_screen: false,
     });
 
     // Execute the script with mock setup first
@@ -63,7 +63,6 @@ describe("aider", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
       experiment_report_tasks: true,
-      use_screen: true, // Set explicitly since default is false
     });
 
     // Set up mocks including coder command
@@ -92,7 +91,6 @@ describe("aider", async () => {
       agent_id: "foo",
       experiment_pre_install_script: "echo 'Pre-install script executed'",
       experiment_post_install_script: "echo 'Post-install script executed'",
-      use_screen: true, // Set explicitly since default is false
     });
 
     // Execute the script with basic mocks
