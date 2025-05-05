@@ -51,7 +51,7 @@ variable "aider_version" {
 variable "use_screen" {
   type        = bool
   description = "Whether to use screen for running Aider in the background"
-  default     = false
+  default     = true
 }
 
 variable "use_tmux" {
@@ -69,7 +69,7 @@ variable "session_name" {
 variable "experiment_report_tasks" {
   type        = bool
   description = "Whether to enable task reporting."
-  default     = false
+  default     = true
 }
 
 variable "experiment_pre_install_script" {
@@ -133,16 +133,9 @@ resource "coder_script" "aider" {
           sudo dnf install -y -q python3-pip python3-virtualenv screen
         fi
       fi
-    elif [ "$(uname)" = "Darwin" ]; then
-      echo "Installing dependencies on macOS..."
-      if ! command_exists brew; then
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      fi
-      if [ "${var.use_tmux}" = "true" ]; then
-        brew install -q python3 tmux
-      else
-        brew install -q python3 screen
-      fi
+    else
+      echo "This module currently only supports Linux workspaces."
+      exit 1
     fi
 
     # Run pre-install script if provided
