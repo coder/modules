@@ -182,4 +182,3 @@ path "kv/metadata/app/coder/{{identity.entity.aliases.<MOUNT_ACCESSOR>.metadata.
   subscribe_event_types = ["*"]
 }
 ```
-
