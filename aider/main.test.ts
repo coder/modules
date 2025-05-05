@@ -74,13 +74,12 @@ describe("aider", async () => {
     // Instead of running the script, just verify the script content
     // to ensure the tmux parameter is being properly applied
     const instance = findResourceInstance(state, "coder_script");
-    expect(instance.script.includes("${var.use_tmux}")).toBe(true);
     
-    // Make sure the generated script contains the condition for tmux
-    expect(instance.script.includes('if [ "${var.use_tmux}" = "true" ]')).toBe(true);
+    // Check for the correct tmux condition with the interpolated value
+    expect(instance.script.includes('if [ "true" = "true" ]')).toBe(true);
     
-    // This is sufficient to verify the parameter is being passed correctly,
-    // without trying to test the runtime behavior which is difficult in the test env
+    // Also check for a unique string only present when tmux is used in the script
+    expect(instance.script.includes('tmux new-session -d -s')).toBe(true);
   });
 
   it("configures task reporting when enabled", async () => {
