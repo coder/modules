@@ -58,7 +58,7 @@ module "aider" {
   count         = data.coder_workspace.me.start_count
   source        = "registry.coder.com/modules/aider/coder"
   version       = "1.0.0"
-  agent_id      = coder_agent.main.id
+  agent_id      = coder_agent.example.id
   folder        = "/home/coder"
   install_aider = true
   aider_version = "latest"
@@ -86,14 +86,13 @@ resource "coder_agent" "main" {
 
 # Set API key and model using coder_env resource
 resource "coder_env" "anthropic" {
-  agent_id = coder_agent.main.id
+  agent_id = coder_agent.example.id
   name     = "ANTHROPIC_API_KEY"
   value    = var.anthropic_api_key
-  secret   = true
 }
 
 resource "coder_env" "aider_model" {
-  agent_id = coder_agent.main.id
+  agent_id = coder_agent.example.id
   name     = "AIDER_MODEL"
   value    = var.anthropic_model
 }
@@ -102,7 +101,7 @@ module "aider" {
   count         = data.coder_workspace.me.start_count
   source        = "registry.coder.com/modules/aider/coder"
   version       = "1.0.0"
-  agent_id      = coder_agent.main.id
+  agent_id      = coder_agent.example.id
   folder        = "/home/coder"
   install_aider = true
   aider_version = "latest"
@@ -116,10 +115,8 @@ module "aider" {
   count         = data.coder_workspace.me.start_count
   source        = "registry.coder.com/modules/aider/coder"
   version       = "1.0.0"
-  agent_id      = coder_agent.main.id
+  agent_id      = coder_agent.example.id
   folder        = "/home/coder"
-  install_aider = true
-  aider_version = "latest"
   use_tmux      = true
 }
 ```
@@ -154,7 +151,7 @@ module "coder-login" {
   count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/modules/coder-login/coder"
   version  = "1.0.15"
-  agent_id = coder_agent.main.id
+  agent_id = coder_agent.example.id
 }
 
 data "coder_parameter" "ai_prompt" {
@@ -163,30 +160,30 @@ data "coder_parameter" "ai_prompt" {
   default     = ""
   description = "Write a prompt for Aider"
   mutable     = true
+  ephemeral   = true
 }
 
 # Set API key and model using coder_env resource
 resource "coder_env" "anthropic" {
-  agent_id = coder_agent.main.id
+  agent_id = coder_agent.example.id
   name     = "ANTHROPIC_API_KEY"
   value    = var.anthropic_api_key
-  secret   = true
 }
 
 resource "coder_env" "aider_model" {
-  agent_id = coder_agent.main.id
+  agent_id = coder_agent.example.id
   name     = "AIDER_MODEL"
   value    = var.anthropic_model
 }
 
 resource "coder_env" "task_prompt" {
-  agent_id = coder_agent.main.id
+  agent_id = coder_agent.example.id
   name     = "CODER_MCP_CLAUDE_TASK_PROMPT"
   value    = data.coder_parameter.ai_prompt.value
 }
 
 resource "coder_env" "app_status" {
-  agent_id = coder_agent.main.id
+  agent_id = coder_agent.example.id
   name     = "CODER_MCP_APP_STATUS_SLUG"
   value    = "aider"
 }
@@ -195,9 +192,8 @@ module "aider" {
   count                   = data.coder_workspace.me.start_count
   source                  = "registry.coder.com/modules/aider/coder"
   version                 = "1.0.0"
-  agent_id                = coder_agent.main.id
+  agent_id                = coder_agent.example.id
   folder                  = "/home/coder"
-  use_screen              = true # Or use_tmux = true to use tmux instead
   experiment_report_tasks = true
 }
 ```
@@ -254,13 +250,13 @@ To enable task reporting:
 
    ```tf
    resource "coder_env" "task_prompt" {
-     agent_id = coder_agent.main.id
+     agent_id = coder_agent.example.id
      name     = "CODER_MCP_CLAUDE_TASK_PROMPT"
      value    = data.coder_parameter.ai_prompt.value
    }
    
    resource "coder_env" "app_status" {
-     agent_id = coder_agent.main.id
+     agent_id = coder_agent.example.id
      name     = "CODER_MCP_APP_STATUS_SLUG"
      value    = "aider"
    }
@@ -270,40 +266,30 @@ See the "With task reporting and initial prompt" example above for a complete co
 
 ### Available AI Providers and Models
 
-| Provider       | Available Models                    | Description                                    |
-| -------------- | ----------------------------------- | ---------------------------------------------- |
-| **Anthropic**  | Claude 3.7 Sonnet, Claude 3.7 Haiku | High-quality Claude models                     |
-| **OpenAI**     | o3-mini, o1, GPT-4o                 | GPT models from OpenAI                         |
-| **DeepSeek**   | DeepSeek R1, DeepSeek Chat V3       | Models from DeepSeek                           |
-| **GROQ**       | Mixtral, Llama 3                    | Fast inference on open models                  |
-| **OpenRouter** | OpenRouter                          | Access to multiple providers with a single key |
+| Provider       | Available Models                    | API Key Source                                               |
+| -------------- | ----------------------------------- | ------------------------------------------------------------ |
+| **Anthropic**  | Claude 3.7 Sonnet, Claude 3.7 Haiku | [console.anthropic.com](https://console.anthropic.com/)      |
+| **OpenAI**     | o3-mini, o1, GPT-4o                 | [platform.openai.com](https://platform.openai.com/api-keys)  |
+| **DeepSeek**   | DeepSeek R1, DeepSeek Chat V3       | [platform.deepseek.com](https://platform.deepseek.com/)      |
+| **GROQ**       | Mixtral, Llama 3                    | [console.groq.com](https://console.groq.com/keys)            |
+| **OpenRouter** | OpenRouter                          | [openrouter.ai](https://openrouter.ai/keys)                  |
 
-### API Keys
-
-You will need an API key for your selected provider:
-
-- **Anthropic**: Get a key from [console.anthropic.com](https://console.anthropic.com/)
-- **OpenAI**: Get a key from [platform.openai.com](https://platform.openai.com/api-keys)
-- **DeepSeek**: Get a key from [platform.deepseek.com](https://platform.deepseek.com/)
-- **GROQ**: Get a key from [console.groq.com](https://console.groq.com/keys)
-- **OpenRouter**: Get a key from [openrouter.ai](https://openrouter.ai/keys)
+For a complete and up-to-date list of supported LLMs and models, please refer to the [Aider LLM documentation](https://aider.chat/docs/llms.html) and the [Aider LLM Leaderboards](https://aider.chat/docs/leaderboards.html) which show performance comparisons across different models.
 
 #### Setting API Keys with coder_env
 
 Use the `coder_env` resource to securely set API keys:
 
 ```tf
-# Set API key as a secret environment variable
 resource "coder_env" "anthropic_api_key" {
-  agent_id = coder_agent.main.id
+  agent_id = coder_agent.example.id
   name     = "ANTHROPIC_API_KEY"
   value    = var.anthropic_api_key
-  secret   = true # Marks as a secret, won't be visible in logs
 }
 
 # Set model preference as a regular environment variable
 resource "coder_env" "aider_model" {
-  agent_id = coder_agent.main.id
+  agent_id = coder_agent.example.id
   name     = "AIDER_MODEL"
   value    = "sonnet"
 }
