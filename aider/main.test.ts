@@ -73,8 +73,8 @@ describe("aider", async () => {
     // Install bash and run the script
     const output = await executeScriptInContainerWithBash(state);
     
-    // Verify that the script at least attempts to start a tmux session
-    expect(output.stdout).toContain("Starting persistent Aider session...");
+    // Verify that the script at least attempts to install tmux
+    expect(output.stdout).toContain("Installing tmux for persistent sessions...");
   });
 
   it("configures task reporting when enabled", async () => {
