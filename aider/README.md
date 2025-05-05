@@ -266,13 +266,13 @@ See the "With task reporting and initial prompt" example above for a complete co
 
 ### Available AI Providers and Models
 
-| Provider       | Available Models                    | API Key Source                                               |
-| -------------- | ----------------------------------- | ------------------------------------------------------------ |
-| **Anthropic**  | Claude 3.7 Sonnet, Claude 3.7 Haiku | [console.anthropic.com](https://console.anthropic.com/)      |
-| **OpenAI**     | o3-mini, o1, GPT-4o                 | [platform.openai.com](https://platform.openai.com/api-keys)  |
-| **DeepSeek**   | DeepSeek R1, DeepSeek Chat V3       | [platform.deepseek.com](https://platform.deepseek.com/)      |
-| **GROQ**       | Mixtral, Llama 3                    | [console.groq.com](https://console.groq.com/keys)            |
-| **OpenRouter** | OpenRouter                          | [openrouter.ai](https://openrouter.ai/keys)                  |
+| Provider       | Available Models                    | API Key Source                                              |
+| -------------- | ----------------------------------- | ----------------------------------------------------------- |
+| **Anthropic**  | Claude 3.7 Sonnet, Claude 3.7 Haiku | [console.anthropic.com](https://console.anthropic.com/)     |
+| **OpenAI**     | o3-mini, o1, GPT-4o                 | [platform.openai.com](https://platform.openai.com/api-keys) |
+| **DeepSeek**   | DeepSeek R1, DeepSeek Chat V3       | [platform.deepseek.com](https://platform.deepseek.com/)     |
+| **GROQ**       | Mixtral, Llama 3                    | [console.groq.com](https://console.groq.com/keys)           |
+| **OpenRouter** | OpenRouter                          | [openrouter.ai](https://openrouter.ai/keys)                 |
 
 For a complete and up-to-date list of supported LLMs and models, please refer to the [Aider LLM documentation](https://aider.chat/docs/llms.html) and the [Aider LLM Leaderboards](https://aider.chat/docs/leaderboards.html) which show performance comparisons across different models.
 
