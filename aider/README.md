@@ -112,12 +112,12 @@ module "aider" {
 
 ```tf
 module "aider" {
-  count         = data.coder_workspace.me.start_count
-  source        = "registry.coder.com/modules/aider/coder"
-  version       = "1.0.0"
-  agent_id      = coder_agent.example.id
-  folder        = "/home/coder"
-  use_tmux      = true
+  count    = data.coder_workspace.me.start_count
+  source   = "registry.coder.com/modules/aider/coder"
+  version  = "1.0.0"
+  agent_id = coder_agent.example.id
+  folder   = "/home/coder"
+  use_tmux = true
 }
 ```
 
