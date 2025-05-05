@@ -172,7 +172,7 @@ EOF
 
 #### example workspace access vault policy
 
-```hcl
+```tf
 path "kv/data/app/coder/{{identity.entity.aliases.<MOUNT_ACCESSOR>.metadata.owner_name}}/{{identity.entity.aliases.<MOUNT_ACCESSOR>.metadata.workspace_name}}" {
   capabilities = ["create", "read", "update", "delete", "list", "subscribe"]
   subscribe_event_types = ["*"]
