@@ -75,7 +75,49 @@ variable "experiment_report_tasks" {
 variable "experiment_task_conventions" {
   type        = string
   description = "Custom conventions for task reporting to be written to CONVENTIONS.md"
-  default     = "# Aider Conventions\n\n- Always report task status to Coder before and after each step.\n- For each task, report when you're starting, what progress you're making, and when you're done or if you encounter any issues.\n- Make sure to send clear task updates that include descriptions and statuses (in progress, done, failed)."
+  default     = <<-EOT
+# Aider Coding Conventions
+
+## Task Reporting Requirements
+
+As you work on tasks, you MUST follow these task reporting conventions:
+
+1. ALWAYS report the status of each task to Coder before and after your steps.
+2. Use the following format for reporting tasks:
+   ```
+   TASK: [brief description of what you're doing]
+   STATUS: [one of: "started", "in progress", "done", "failed"]
+   ```
+
+3. Send a task report in these specific situations:
+   - When you BEGIN working on a task
+   - When you make SIGNIFICANT PROGRESS on a task
+   - When you COMPLETE a task successfully
+   - When you ENCOUNTER AN ERROR or cannot complete a task
+
+4. Example sequence of task reporting:
+   ```
+   TASK: Setting up project structure
+   STATUS: started
+   
+   [Your work and discussion here]
+   
+   TASK: Setting up project structure
+   STATUS: in progress
+   
+   [More work and discussion]
+   
+   TASK: Setting up project structure
+   STATUS: done
+   
+   TASK: Implementing feature X
+   STATUS: started
+   ```
+
+5. Always include a brief but descriptive task name that clearly identifies what you're working on.
+
+These conventions ensure that Coder can properly track task status in the UI.
+EOT
 }
 
 variable "experiment_pre_install_script" {
