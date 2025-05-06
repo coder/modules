@@ -284,6 +284,7 @@ EOL
         # Start aider with the message flag and yes-always to avoid confirmations
         screen -U -dmS ${var.session_name} bash -c "
           cd ${var.folder}
+          export PATH=\"$HOME/bin:$HOME/.local/bin:$PATH\"
           aider --yes-always --message \"$CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\"
           /bin/bash
         "
@@ -313,6 +314,7 @@ EOL
         
         screen -U -dmS ${var.session_name} bash -c "
           cd ${var.folder}
+          export PATH=\"$HOME/bin:$HOME/.local/bin:$PATH\"
           aider | tee -a \"$HOME/.aider.log\"
           /bin/bash
         "
