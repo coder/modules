@@ -244,33 +244,33 @@ EOL
     export PATH="$HOME/bin:$PATH"
     
     if [ "${var.use_tmux}" = "true" ]; then
-      # Create a new detached tmux session
-      tmux new-session -d -s ${var.session_name} -c ${var.folder} "aider"
-      
-      # Send the prompt to the tmux session if needed
+      # Check if we have a task prompt
       if [ -n "$CODER_MCP_AIDER_TASK_PROMPT" ]; then
-        echo "Sending initial prompt to Aider tmux session..."
-        sleep 5 # Wait for Aider to initialize
-        tmux send-keys -t ${var.session_name} "$CODER_MCP_AIDER_TASK_PROMPT"
-        sleep 2
-        tmux send-keys -t ${var.session_name} Enter
+        echo "Running Aider with message in tmux session..."
+        # Start aider with the message flag and yes-always to avoid confirmations
+        tmux new-session -d -s ${var.session_name} -c ${var.folder} "aider --message \"$CODER_MCP_AIDER_TASK_PROMPT\" --yes-always | tee -a \"$HOME/.aider.log\""
+        # Create a flag file to indicate this task was executed
+        touch "$HOME/.aider_task_executed"
+        echo "Aider task started in tmux session '${var.session_name}'. Check the logs for progress."
+      else
+        # Create a new detached tmux session for interactive use
+        tmux new-session -d -s ${var.session_name} -c ${var.folder} "aider | tee -a \"$HOME/.aider.log\""
+        echo "Tmux session '${var.session_name}' started. Access it by clicking the Aider button."
       fi
-      
-      echo "Tmux session '${var.session_name}' started. Access it by clicking the Aider button."
     else
-      # Create a new detached screen session
-      screen -dmS ${var.session_name} bash -c "cd ${var.folder} && aider | tee -a \"$HOME/.aider.log\"; exec bash"
-      
-      # Send the prompt to the screen session if needed
+      # Check if we have a task prompt
       if [ -n "$CODER_MCP_AIDER_TASK_PROMPT" ]; then
-        echo "Sending initial prompt to Aider screen session..."
-        sleep 5 # Wait for Aider to initialize
-        screen -S ${var.session_name} -X stuff "$CODER_MCP_AIDER_TASK_PROMPT"
-        sleep 2
-        screen -S ${var.session_name} -X stuff "^M"
+        echo "Running Aider with message in screen session..."
+        # Start aider with the message flag and yes-always to avoid confirmations
+        screen -dmS ${var.session_name} bash -c "cd ${var.folder} && aider --message \"$CODER_MCP_AIDER_TASK_PROMPT\" --yes-always | tee -a \"$HOME/.aider.log\"; exec bash"
+        # Create a flag file to indicate this task was executed
+        touch "$HOME/.aider_task_executed"
+        echo "Aider task started in screen session '${var.session_name}'. Check the logs for progress."
+      else
+        # Create a new detached screen session for interactive use
+        screen -dmS ${var.session_name} bash -c "cd ${var.folder} && aider | tee -a \"$HOME/.aider.log\"; exec bash"
+        echo "Screen session '${var.session_name}' started. Access it by clicking the Aider button."
       fi
-      
-      echo "Screen session '${var.session_name}' started. Access it by clicking the Aider button."
     fi
     
     echo "Aider setup complete!"
