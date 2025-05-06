@@ -97,6 +97,41 @@ describe("aider", async () => {
     );
   });
 
+  it("passes message with --yes-always flag when prompt is provided", async () => {
+    const state = await runTerraformApply(import.meta.dir, {
+      agent_id: "foo",
+    });
+
+    // Define a test prompt
+    const testPrompt = "Add a hello world function";
+
+    // Set up the environment variable for the task prompt
+    const output = await executeScriptInContainerWithBash(
+      state,
+      "alpine",
+      `export CODER_MCP_AIDER_TASK_PROMPT="${testPrompt}"`,
+    );
+
+    // Check if script contains the proper command construction with --message and --yes-always flags
+    const instance = findResourceInstance(state, "coder_script");
+
+    // Verify the script uses --message flag
+    expect(instance.script.includes("aider --message")).toBe(true);
+
+    // Verify the script uses --yes-always flag
+    expect(instance.script.includes("--yes-always")).toBe(true);
+
+    // Verify the script creates a flag file to prevent duplicate execution
+    expect(instance.script.includes('touch "$HOME/.aider_task_executed"')).toBe(
+      true,
+    );
+
+    // Verify the output shows the right message
+    expect(
+      output.stdout.some((line) => line.includes("Running Aider with message")),
+    ).toBe(true);
+  });
+
   it("executes pre and post install scripts", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
