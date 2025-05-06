@@ -36,7 +36,10 @@ const executeScriptInContainerWithBash = async (
 
   // Run the script with the environment variables from extraCommands
   // Modifying to preserve environment variables
-  const resp = await execContainer(id, ["bash", "-c", `
+  const resp = await execContainer(id, [
+    "bash",
+    "-c",
+    `
     # Source any environment variables that might have been set
     if [ -f /tmp/env_vars.sh ]; then
       source /tmp/env_vars.sh
@@ -44,7 +47,8 @@ const executeScriptInContainerWithBash = async (
     
     # Run the script
     ${instance.script}
-  `]);
+  `,
+  ]);
   const stdout = resp.stdout.trim().split("\n");
   const stderr = resp.stderr.trim().split("\n");
   return {
@@ -118,12 +122,12 @@ describe("aider", async () => {
     const output = await executeScriptInContainerWithBash(
       state,
       "alpine",
-      `echo 'export CODER_MCP_AIDER_TASK_PROMPT="${testPrompt}"' > /tmp/env_vars.sh`
+      `echo 'export CODER_MCP_AIDER_TASK_PROMPT="${testPrompt}"' > /tmp/env_vars.sh`,
     );
 
     // Debug: print all output lines
     console.log("DEBUG OUTPUT LINES:");
-    output.stdout.forEach(line => console.log(`> ${line}`));
+    output.stdout.forEach((line) => console.log(`> ${line}`));
 
     // Check if script contains the proper command construction with --message and --yes-always flags
     const instance = findResourceInstance(state, "coder_script");
@@ -141,7 +145,9 @@ describe("aider", async () => {
 
     // Verify the output shows the right message
     expect(
-      output.stdout.some((line) => line.includes("Running Aider with message in screen session")),
+      output.stdout.some((line) =>
+        line.includes("Running Aider with message in screen session"),
+      ),
     ).toBe(true);
   });
 
