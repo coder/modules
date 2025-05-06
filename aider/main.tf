@@ -261,14 +261,61 @@ EOL
       # Check if we have a task prompt
       if [ -n "$CODER_MCP_AIDER_TASK_PROMPT" ]; then
         echo "Running Aider with message in screen session..."
+        
+        # Create log file
+        touch "$HOME/.aider.log"
+        
+        # Ensure the screenrc exists with multi-user settings
+        if [ ! -f "$HOME/.screenrc" ]; then
+          echo "Creating ~/.screenrc and adding multiuser settings..." | tee -a "$HOME/.aider.log"
+          echo -e "multiuser on\nacladd $(whoami)" > "$HOME/.screenrc"
+        fi
+        
+        if ! grep -q "^multiuser on$" "$HOME/.screenrc"; then
+          echo "Adding 'multiuser on' to ~/.screenrc..." | tee -a "$HOME/.aider.log"
+          echo "multiuser on" >> "$HOME/.screenrc"
+        fi
+
+        if ! grep -q "^acladd $(whoami)$" "$HOME/.screenrc"; then
+          echo "Adding 'acladd $(whoami)' to ~/.screenrc..." | tee -a "$HOME/.aider.log"
+          echo "acladd $(whoami)" >> "$HOME/.screenrc"
+        fi
+        
         # Start aider with the message flag and yes-always to avoid confirmations
-        screen -dmS ${var.session_name} bash -c "cd ${var.folder} && aider --yes-always --message \"$CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\"; exec bash"
+        screen -U -dmS ${var.session_name} bash -c "
+          cd ${var.folder}
+          aider --yes-always --message \"$CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\"
+          /bin/bash
+        "
+        
         # Create a flag file to indicate this task was executed
         touch "$HOME/.aider_task_executed"
         echo "Aider task started in screen session '${var.session_name}'. Check the logs for progress."
       else
         # Create a new detached screen session for interactive use
-        screen -dmS ${var.session_name} bash -c "cd ${var.folder} && aider | tee -a \"$HOME/.aider.log\"; exec bash"
+        touch "$HOME/.aider.log"
+        
+        # Ensure the screenrc exists with multi-user settings
+        if [ ! -f "$HOME/.screenrc" ]; then
+          echo "Creating ~/.screenrc and adding multiuser settings..." | tee -a "$HOME/.aider.log"
+          echo -e "multiuser on\nacladd $(whoami)" > "$HOME/.screenrc"
+        fi
+        
+        if ! grep -q "^multiuser on$" "$HOME/.screenrc"; then
+          echo "Adding 'multiuser on' to ~/.screenrc..." | tee -a "$HOME/.aider.log"
+          echo "multiuser on" >> "$HOME/.screenrc"
+        fi
+
+        if ! grep -q "^acladd $(whoami)$" "$HOME/.screenrc"; then
+          echo "Adding 'acladd $(whoami)' to ~/.screenrc..." | tee -a "$HOME/.aider.log"
+          echo "acladd $(whoami)" >> "$HOME/.screenrc"
+        fi
+        
+        screen -U -dmS ${var.session_name} bash -c "
+          cd ${var.folder}
+          aider | tee -a \"$HOME/.aider.log\"
+          /bin/bash
+        "
         echo "Screen session '${var.session_name}' started. Access it by clicking the Aider button."
       fi
     fi
@@ -309,16 +356,13 @@ resource "coder_app" "aider_cli" {
       fi
     elif [ "${var.use_screen}" = "true" ]; then
       # Use screen
-      # Check if session exists, attach or create
-      if screen -list | grep -q "\\.${var.session_name}\|${var.session_name}\\"; then
-        echo "Attaching to existing Aider screen session..." | tee -a "$HOME/.aider.log"
-        # Get the full screen session name (with PID) and attach to it
-        SCREEN_NAME=$(screen -list | grep -o "[0-9]*\\.${var.session_name}" || screen -list | grep -o "${var.session_name}[0-9]*")
-        screen -r "$SCREEN_NAME"
-      else
-        echo "Starting new Aider screen session..." | tee -a "$HOME/.aider.log" 
-        screen -S ${var.session_name} bash -c "cd ${var.folder} && aider | tee -a \"$HOME/.aider.log\"; exec bash"
+      # Check if session exists first
+      if ! screen -list | grep -q "${var.session_name}"; then
+        echo "Error: No existing Aider session found. Please wait for the script to start it."
+        exit 1
       fi
+      # Only attach to existing session
+      screen -xRR ${var.session_name}
     else
       # Run directly without a multiplexer
       cd "${var.folder}"
