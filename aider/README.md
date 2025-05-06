@@ -43,11 +43,11 @@ Run [Aider](https://aider.chat) AI pair programming in your workspace. This modu
 
 ```tf
 module "aider" {
-  count         = data.coder_workspace.me.start_count
-  source        = "registry.coder.com/modules/aider/coder"
-  version       = "1.0.0"
-  agent_id      = coder_agent.example.id
-  folder        = "/home/coder"
+  count    = data.coder_workspace.me.start_count
+  source   = "registry.coder.com/modules/aider/coder"
+  version  = "1.0.0"
+  agent_id = coder_agent.example.id
+  folder   = "/home/coder"
 }
 ```
 
@@ -84,11 +84,11 @@ resource "coder_env" "aider_model" {
 }
 
 module "aider" {
-  count         = data.coder_workspace.me.start_count
-  source        = "registry.coder.com/modules/aider/coder"
-  version       = "1.0.0"
-  agent_id      = coder_agent.example.id
-  folder        = "/home/coder"
+  count    = data.coder_workspace.me.start_count
+  source   = "registry.coder.com/modules/aider/coder"
+  version  = "1.0.0"
+  agent_id = coder_agent.example.id
+  folder   = "/home/coder"
 }
 ```
 
@@ -173,11 +173,11 @@ resource "coder_env" "app_status" {
 }
 
 module "aider" {
-  count                   = data.coder_workspace.me.start_count
-  source                  = "registry.coder.com/modules/aider/coder"
-  version                 = "1.0.0"
-  agent_id                = coder_agent.example.id
-  folder                  = "/home/coder"
+  count    = data.coder_workspace.me.start_count
+  source   = "registry.coder.com/modules/aider/coder"
+  version  = "1.0.0"
+  agent_id = coder_agent.example.id
+  folder   = "/home/coder"
 }
 ```
 
