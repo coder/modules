@@ -179,7 +179,7 @@ resource "coder_env" "aider_model" {
 
 resource "coder_env" "task_prompt" {
   agent_id = coder_agent.example.id
-  name     = "CODER_MCP_CLAUDE_TASK_PROMPT"
+  name     = "CODER_MCP_AIDER_TASK_PROMPT"
   value    = data.coder_parameter.ai_prompt.value
 }
 
@@ -288,7 +288,7 @@ Task reporting is **enabled by default** in this module. To use it effectively:
    ```tf
    resource "coder_env" "task_prompt" {
      agent_id = coder_agent.example.id
-     name     = "CODER_MCP_CLAUDE_TASK_PROMPT"
+     name     = "CODER_MCP_AIDER_TASK_PROMPT"
      value    = data.coder_parameter.ai_prompt.value
    }
    
