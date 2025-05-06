@@ -11,6 +11,14 @@ tags: [agent, aider]
 
 Run [Aider](https://aider.chat) AI pair programming in your workspace. This module installs Aider and provides a persistent session using screen or tmux.
 
+```tf
+module "aider" {
+  source   = "registry.coder.com/modules/aider/coder"
+  version  = "1.0.0"
+  agent_id = coder_agent.example.id
+}
+```
+
 ## Features
 
 - **Interactive Parameter Selection**: Choose your AI provider, model, and configuration options when creating the workspace
