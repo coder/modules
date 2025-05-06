@@ -30,20 +30,21 @@ module "aider" {
 
 ## Module Parameters
 
-| Parameter                        | Description                                                               | Type     | Default             |
-| -------------------------------- | ------------------------------------------------------------------------- | -------- | ------------------- |
-| `agent_id`                       | The ID of a Coder agent (required)                                        | `string` | -                   |
-| `folder`                         | The folder to run Aider in                                                | `string` | `/home/coder`       |
-| `install_aider`                  | Whether to install Aider                                                  | `bool`   | `true`              |
-| `aider_version`                  | The version of Aider to install                                           | `string` | `"latest"`          |
-| `use_screen`                     | Whether to use screen for running Aider in the background                 | `bool`   | `false`             |
-| `use_tmux`                       | Whether to use tmux instead of screen for running Aider in the background | `bool`   | `false`             |
-| `session_name`                   | Name for the persistent session (screen or tmux)                          | `string` | `"aider"`           |
-| `order`                          | Position of the app in the UI presentation                                | `number` | `null`              |
-| `icon`                           | The icon to use for the app                                               | `string` | `"/icon/aider.svg"` |
-| `experiment_report_tasks`        | Whether to enable task reporting                                          | `bool`   | `false`             |
-| `experiment_pre_install_script`  | Custom script to run before installing Aider                              | `string` | `null`              |
-| `experiment_post_install_script` | Custom script to run after installing Aider                               | `string` | `null`              |
+| Parameter                          | Description                                                                | Type     | Default             |
+| ---------------------------------- | -------------------------------------------------------------------------- | -------- | ------------------- |
+| `agent_id`                         | The ID of a Coder agent (required)                                         | `string` | -                   |
+| `folder`                           | The folder to run Aider in                                                 | `string` | `/home/coder`       |
+| `install_aider`                    | Whether to install Aider                                                   | `bool`   | `true`              |
+| `aider_version`                    | The version of Aider to install                                            | `string` | `"latest"`          |
+| `use_screen`                       | Whether to use screen for running Aider in the background                  | `bool`   | `true`              |
+| `use_tmux`                         | Whether to use tmux instead of screen for running Aider in the background  | `bool`   | `false`             |
+| `session_name`                     | Name for the persistent session (screen or tmux)                           | `string` | `"aider"`           |
+| `order`                            | Position of the app in the UI presentation                                 | `number` | `null`              |
+| `icon`                             | The icon to use for the app                                                | `string` | `"/icon/aider.svg"` |
+| `experiment_report_tasks`          | Whether to enable task reporting                                           | `bool`   | `true`              |
+| `experiment_pre_install_script`    | Custom script to run before installing Aider                               | `string` | `null`              |
+| `experiment_post_install_script`   | Custom script to run after installing Aider                                | `string` | `null`              |
+| `experiment_additional_extensions` | Additional extensions configuration in YAML format to append to the config | `string` | `null`              |
 
 ## Usage Examples
 
@@ -58,6 +59,14 @@ module "aider" {
   folder   = "/home/coder"
 }
 ```
+
+This basic setup will:
+
+- Install Aider in the workspace
+- Create a persistent screen session named "aider"
+- Enable task reporting (configures Aider to report tasks to Coder MCP)
+
+To fully utilize the task reporting feature, you'll need to add the Coder Login module and configure environment variables as shown in the Task Reporting section below.
 
 ### With API key via environment variables
 
@@ -127,6 +136,13 @@ module "aider" {
 Your workspace must have either `screen` or `tmux` installed to use this.
 
 ```tf
+module "coder-login" {
+  count    = data.coder_workspace.me.start_count
+  source   = "registry.coder.com/modules/coder-login/coder"
+  version  = "1.0.15"
+  agent_id = coder_agent.example.id
+}
+
 variable "anthropic_api_key" {
   type        = string
   description = "Anthropic API key"
@@ -137,13 +153,6 @@ variable "anthropic_model" {
   type        = string
   description = "Anthropic Model"
   default     = "sonnet"
-}
-
-module "coder-login" {
-  count    = data.coder_workspace.me.start_count
-  source   = "registry.coder.com/modules/coder-login/coder"
-  version  = "1.0.15"
-  agent_id = coder_agent.example.id
 }
 
 data "coder_parameter" "ai_prompt" {
@@ -189,6 +198,44 @@ module "aider" {
 }
 ```
 
+This example provides the full configuration needed to use task reporting with an initial AI prompt. The Aider module has task reporting enabled by default, so you only need to add the Coder Login module and configure the necessary environment variables.
+
+### Adding Custom Extensions (Experimental)
+
+You can extend Aider's capabilities by adding custom extensions. For example, to add a custom extension:
+
+```tf
+module "aider" {
+  count    = data.coder_workspace.me.start_count
+  source   = "registry.coder.com/modules/aider/coder"
+  version  = "1.0.0"
+  agent_id = coder_agent.example.id
+  folder   = "/home/coder"
+
+  experiment_report_tasks = true
+
+  experiment_pre_install_script = <<-EOT
+  pip install some-custom-dependency
+  EOT
+
+  experiment_additional_extensions = <<-EOT
+  custom-extension:
+    args: []
+    cmd: custom-extension-command
+    description: A custom extension for Aider
+    enabled: true
+    envs: {}
+    name: custom-extension
+    timeout: 300
+    type: stdio
+  EOT
+}
+```
+
+This will add your custom extension to Aider's configuration, allowing it to interact with external tools or services. The extension configuration follows the YAML format and is appended to Aider's configuration.
+
+Note: The indentation in the heredoc is preserved, so you can write the YAML naturally.
+
 ## Using Aider in Your Workspace
 
 After the workspace starts, Aider will be installed and configured according to your parameters. A persistent session will automatically be started during workspace creation.
@@ -233,11 +280,10 @@ When enabled, the task reporting feature allows you to:
 - Monitor task progress in the Coder UI
 - Use the `coder_parameter` resource to collect prompts from users
 
-To enable task reporting:
+Task reporting is **enabled by default** in this module. To use it effectively:
 
-1. Set `experiment_report_tasks = true` in the module configuration
-2. Add the Coder Login module to your template
-3. Configure environment variables using `coder_env`:
+1. Add the Coder Login module to your template
+2. Configure environment variables using `coder_env`:
 
    ```tf
    resource "coder_env" "task_prompt" {
@@ -252,6 +298,18 @@ To enable task reporting:
      value    = "aider"
    }
    ```
+
+If you want to disable task reporting, set `experiment_report_tasks = false` in your module configuration.
+
+The module integrates Aider with Coder's MCP by:
+
+1. Creating a config file at `~/.config/aider/config.yml` with MCP extensions
+2. Configuring the Coder extension to communicate with the Coder MCP server
+3. Setting up appropriate parameters like app status slug and timeout values
+
+This enables Aider to report task progress and statuses to the Coder UI without requiring manual command execution. The extension communicates with Coder's activity endpoints to provide real-time task status updates.
+
+You can also add custom extensions by using the `experiment_additional_extensions` parameter in your module configuration. These will be automatically added to the Aider configuration.
 
 See the "With task reporting and initial prompt" example above for a complete configuration.
 
