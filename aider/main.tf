@@ -248,10 +248,10 @@ EOL
       tmux new-session -d -s ${var.session_name} -c ${var.folder} "aider"
       
       # Send the prompt to the tmux session if needed
-      if [ -n "$CODER_MCP_CLAUDE_TASK_PROMPT" ]; then
+      if [ -n "$CODER_MCP_AIDER_TASK_PROMPT" ]; then
         echo "Sending initial prompt to Aider tmux session..."
         sleep 5 # Wait for Aider to initialize
-        tmux send-keys -t ${var.session_name} "$CODER_MCP_CLAUDE_TASK_PROMPT"
+        tmux send-keys -t ${var.session_name} "$CODER_MCP_AIDER_TASK_PROMPT"
         sleep 2
         tmux send-keys -t ${var.session_name} Enter
       fi
@@ -262,10 +262,10 @@ EOL
       screen -dmS ${var.session_name} bash -c "cd ${var.folder} && aider | tee -a \"$HOME/.aider.log\"; exec bash"
       
       # Send the prompt to the screen session if needed
-      if [ -n "$CODER_MCP_CLAUDE_TASK_PROMPT" ]; then
+      if [ -n "$CODER_MCP_AIDER_TASK_PROMPT" ]; then
         echo "Sending initial prompt to Aider screen session..."
         sleep 5 # Wait for Aider to initialize
-        screen -S ${var.session_name} -X stuff "$CODER_MCP_CLAUDE_TASK_PROMPT"
+        screen -S ${var.session_name} -X stuff "$CODER_MCP_AIDER_TASK_PROMPT"
         sleep 2
         screen -S ${var.session_name} -X stuff "^M"
       fi
