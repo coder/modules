@@ -301,7 +301,7 @@ EOL
       if [ -n "$CODER_MCP_AIDER_TASK_PROMPT" ]; then
         echo "Running Aider with message in tmux session..."
         # Start aider with the message flag and yes-always to avoid confirmations
-        tmux new-session -d -s ${var.session_name} -c ${var.folder} "export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; aider --yes-always --read CONVENTIONS.md --message \"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\""
+        tmux new-session -d -s ${var.session_name} -c ${var.folder} "export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; aider --verbose --yes-always --read CONVENTIONS.md --message \"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\""
         # Create a flag file to indicate this task was executed
         touch "$HOME/.aider_task_executed"
         echo "Aider task started in tmux session '${var.session_name}'. Check the logs for progress."
@@ -339,7 +339,7 @@ EOL
           cd ${var.folder}
           export PATH=\"$HOME/bin:$HOME/.local/bin:$PATH\"
           export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"
-          aider --yes-always --read CONVENTIONS.md --message \"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\"
+          aider --verbose --yes-always --read CONVENTIONS.md --message \"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\"
           /bin/bash
         "
         
