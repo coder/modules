@@ -72,6 +72,12 @@ variable "experiment_report_tasks" {
   default     = true
 }
 
+variable "experiment_system_prompt" {
+  type        = string
+  description = "System prompt to use for Aider AI."
+  default     = "You are a helpful AI pair programmer. When working on tasks, always report the status of each task to Coder before and after your steps. For each task, report when you're starting, what progress you're making, and when you're done or if you encounter any issues."
+}
+
 variable "experiment_pre_install_script" {
   type        = string
   description = "Custom script to run before installing Aider."
@@ -228,6 +234,10 @@ resource "coder_script" "aider" {
 ${trimspace(local.combined_extensions)}
 EOL
       echo "Added Coder MCP extension to Aider config.yml"
+      
+      # Create a system prompt file that instructs Aider to report tasks
+      echo "${var.experiment_system_prompt}" > "$HOME/.config/aider/system_prompt.txt"
+      echo "Created system prompt file with task reporting instructions"
     fi
 
     # Start a persistent session at workspace creation
@@ -248,13 +258,13 @@ EOL
       if [ -n "$CODER_MCP_AIDER_TASK_PROMPT" ]; then
         echo "Running Aider with message in tmux session..."
         # Start aider with the message flag and yes-always to avoid confirmations
-        tmux new-session -d -s ${var.session_name} -c ${var.folder} "aider --yes-always --message \"$CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\""
+        tmux new-session -d -s ${var.session_name} -c ${var.folder} "export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; aider --yes-always --system-prompt \"$HOME/.config/aider/system_prompt.txt\" --message \"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\""
         # Create a flag file to indicate this task was executed
         touch "$HOME/.aider_task_executed"
         echo "Aider task started in tmux session '${var.session_name}'. Check the logs for progress."
       else
         # Create a new detached tmux session for interactive use
-        tmux new-session -d -s ${var.session_name} -c ${var.folder} "aider | tee -a \"$HOME/.aider.log\""
+        tmux new-session -d -s ${var.session_name} -c ${var.folder} "export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; aider --system-prompt \"$HOME/.config/aider/system_prompt.txt\" | tee -a \"$HOME/.aider.log\""
         echo "Tmux session '${var.session_name}' started. Access it by clicking the Aider button."
       fi
     else
@@ -285,7 +295,8 @@ EOL
         screen -U -dmS ${var.session_name} bash -c "
           cd ${var.folder}
           export PATH=\"$HOME/bin:$HOME/.local/bin:$PATH\"
-          aider --yes-always --message \"$CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\"
+          export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"
+          aider --yes-always --system-prompt \"$HOME/.config/aider/system_prompt.txt\" --message \"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\"
           /bin/bash
         "
         
@@ -315,7 +326,8 @@ EOL
         screen -U -dmS ${var.session_name} bash -c "
           cd ${var.folder}
           export PATH=\"$HOME/bin:$HOME/.local/bin:$PATH\"
-          aider | tee -a \"$HOME/.aider.log\"
+          export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"
+          aider --system-prompt \"$HOME/.config/aider/system_prompt.txt\" | tee -a \"$HOME/.aider.log\"
           /bin/bash
         "
         echo "Screen session '${var.session_name}' started. Access it by clicking the Aider button."
@@ -354,7 +366,7 @@ resource "coder_app" "aider_cli" {
         tmux attach-session -t ${var.session_name}
       else
         echo "Starting new Aider tmux session..." | tee -a "$HOME/.aider.log"
-        tmux new-session -s ${var.session_name} -c ${var.folder} "aider | tee -a \"$HOME/.aider.log\"; exec bash"
+        tmux new-session -s ${var.session_name} -c ${var.folder} "export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; aider --system-prompt \"$HOME/.config/aider/system_prompt.txt\" | tee -a \"$HOME/.aider.log\"; exec bash"
       fi
     elif [ "${var.use_screen}" = "true" ]; then
       # Use screen
@@ -369,7 +381,7 @@ resource "coder_app" "aider_cli" {
       # Run directly without a multiplexer
       cd "${var.folder}"
       echo "Starting Aider directly..." | tee -a "$HOME/.aider.log"
-      aider
+      aider --system-prompt "$HOME/.config/aider/system_prompt.txt"
     fi
   EOT
   order        = var.order
