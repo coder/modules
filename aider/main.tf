@@ -248,7 +248,7 @@ EOL
       if [ -n "$CODER_MCP_AIDER_TASK_PROMPT" ]; then
         echo "Running Aider with message in tmux session..."
         # Start aider with the message flag and yes-always to avoid confirmations
-        tmux new-session -d -s ${var.session_name} -c ${var.folder} "aider --message \"$CODER_MCP_AIDER_TASK_PROMPT\" --yes-always | tee -a \"$HOME/.aider.log\""
+        tmux new-session -d -s ${var.session_name} -c ${var.folder} "aider --yes-always --message \"$CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\""
         # Create a flag file to indicate this task was executed
         touch "$HOME/.aider_task_executed"
         echo "Aider task started in tmux session '${var.session_name}'. Check the logs for progress."
@@ -262,7 +262,7 @@ EOL
       if [ -n "$CODER_MCP_AIDER_TASK_PROMPT" ]; then
         echo "Running Aider with message in screen session..."
         # Start aider with the message flag and yes-always to avoid confirmations
-        screen -dmS ${var.session_name} bash -c "cd ${var.folder} && aider --message \"$CODER_MCP_AIDER_TASK_PROMPT\" --yes-always | tee -a \"$HOME/.aider.log\"; exec bash"
+        screen -dmS ${var.session_name} bash -c "cd ${var.folder} && aider --yes-always --message \"$CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\"; exec bash"
         # Create a flag file to indicate this task was executed
         touch "$HOME/.aider_task_executed"
         echo "Aider task started in screen session '${var.session_name}'. Check the logs for progress."
