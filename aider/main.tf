@@ -84,8 +84,44 @@ variable "experiment_post_install_script" {
   default     = null
 }
 
+variable "experiment_additional_extensions" {
+  type        = string
+  description = "Additional extensions configuration in YAML format to append to the config."
+  default     = null
+}
 
 locals {
+  base_extensions = <<-EOT
+coder:
+  args:
+  - exp
+  - mcp
+  - server
+  cmd: coder
+  description: Report ALL tasks and statuses (in progress, done, failed) you are working on.
+  enabled: true
+  envs:
+    CODER_MCP_APP_STATUS_SLUG: aider
+  name: Coder
+  timeout: 3000
+  type: stdio
+developer:
+  display_name: Developer
+  enabled: true
+  name: developer
+  timeout: 300
+  type: builtin
+EOT
+
+  # Add two spaces to each line of extensions to match YAML structure
+  formatted_base        = "  ${replace(trimspace(local.base_extensions), "\n", "\n  ")}"
+  additional_extensions = var.experiment_additional_extensions != null ? "\n  ${replace(trimspace(var.experiment_additional_extensions), "\n", "\n  ")}" : ""
+
+  combined_extensions = <<-EOT
+extensions:
+${local.formatted_base}${local.additional_extensions}
+EOT
+
   encoded_pre_install_script  = var.experiment_pre_install_script != null ? base64encode(var.experiment_pre_install_script) : ""
   encoded_post_install_script = var.experiment_post_install_script != null ? base64encode(var.experiment_post_install_script) : ""
 }
@@ -183,7 +219,15 @@ resource "coder_script" "aider" {
     # Configure task reporting if enabled
     if [ "${var.experiment_report_tasks}" = "true" ]; then
       echo "Configuring Aider to report tasks via Coder MCP..."
-      coder exp mcp configure aider ${var.folder}
+      
+      # Ensure Aider config directory exists
+      mkdir -p "$HOME/.config/aider"
+      
+      # Create the config.yml file with extensions configuration
+      cat > "$HOME/.config/aider/config.yml" << EOL
+${trimspace(local.combined_extensions)}
+EOL
+      echo "Added Coder MCP extension to Aider config.yml"
     fi
 
     # Start a persistent session at workspace creation
@@ -195,6 +239,9 @@ resource "coder_script" "aider" {
     # Set up environment for UTF-8 support
     export LANG=en_US.UTF-8
     export LC_ALL=en_US.UTF-8
+    
+    # Ensure Aider binaries are in PATH
+    export PATH="$HOME/bin:$PATH"
     
     if [ "${var.use_tmux}" = "true" ]; then
       # Create a new detached tmux session
