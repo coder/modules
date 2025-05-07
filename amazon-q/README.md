@@ -35,7 +35,7 @@ module "amazon-q" {
 
 **1. Install and authenticate Amazon Q on your local machine:**
 
-- Download and install Amazon Q from the [official site](https://aws.amazon.com/q/).
+- Download and install Amazon Q from the [official site](https://aws.amazon.com/q/developer/).
 - Run `q login` and complete the authentication process in your terminal.
 
 **2. Locate your Amazon Q config directory:**
