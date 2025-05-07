@@ -147,8 +147,10 @@ describe("aider", async () => {
       true,
     );
 
-    // Verify logging to the aider log file
-    expect(instance.script.includes('| tee -a "$HOME/.aider.log"')).toBe(true);
+    // Verify the app status slug is properly set in the screen session
+    expect(
+      instance.script.includes('export CODER_MCP_APP_STATUS_SLUG=\\"aider\\"'),
+    ).toBe(true);
 
     // Verify the output shows the right message for screen session
     expect(
