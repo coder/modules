@@ -140,4 +140,4 @@ module "amazon-q" {
 - If neither is set, Amazon Q runs in the foreground.
 - For more details, see the [main.tf](./main.tf) source.
 
-<!-- RODO: Add Screenshot of Amazon-Q In Action -->
+<!-- TODO: Add Screenshot of Amazon-Q In Action -->
