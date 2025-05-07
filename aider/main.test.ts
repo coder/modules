@@ -110,7 +110,7 @@ describe("aider", async () => {
     );
   });
 
-  it("passes message with --yes-always flag when prompt is provided", async () => {
+  it("passes aider cmd with correct flags when prompt is provided", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
     });
@@ -129,26 +129,42 @@ describe("aider", async () => {
     console.log("DEBUG OUTPUT LINES:");
     output.stdout.forEach((line) => console.log(`> ${line}`));
 
-    // Check if script contains the proper command construction with --message and --yes-always flags
+    // Check if script contains the proper command construction with all required flags
     const instance = findResourceInstance(state, "coder_script");
 
-    // Verify the script uses --yes-always flag
-    expect(instance.script.includes("aider --yes-always")).toBe(true);
+    // Verify all required flags are present in the aider command
+    expect(
+      instance.script.includes(
+        "aider --architect --yes-always --read CONVENTIONS.md --message",
+      ),
+    ).toBe(true);
 
-    // Verify the script uses --message flag
-    expect(instance.script.includes("--message")).toBe(true);
+    // Verify the expected message format is correct
+    expect(
+      instance.script.includes(
+        '--message "Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT"',
+      ),
+    ).toBe(true);
 
     // Verify the script creates a flag file to prevent duplicate execution
     expect(instance.script.includes('touch "$HOME/.aider_task_executed"')).toBe(
       true,
     );
 
-    // Verify the output shows the right message
+    // Verify logging to the aider log file
+    expect(instance.script.includes('| tee -a "$HOME/.aider.log"')).toBe(true);
+
+    // Verify the output shows the right message for screen session
     expect(
       output.stdout.some((line) =>
         line.includes("Running Aider with message in screen session"),
       ),
     ).toBe(true);
+
+    // Verify the appropriate starting message is shown
+    expect(output.stdout).toContain(
+      "Aider task started in screen session 'aider'. Check the logs for progress.",
+    );
   });
 
   it("executes pre and post install scripts", async () => {
