@@ -11,7 +11,6 @@ const moduleDir = path.resolve(__dirname);
 
 const requiredVars = {
   agent_id: "dummy-agent-id",
-  experiment_auth_tarball: "dGVzdA==", // 'test' base64
 };
 
 describe("amazon-q module", async () => {
