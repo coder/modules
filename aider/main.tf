@@ -138,12 +138,6 @@ variable "experiment_additional_extensions" {
   default     = null
 }
 
-variable "app_status_slug" {
-  type        = string
-  description = "The slug to use for the app status reporting in MCP"
-  default     = "aider"
-}
-
 locals {
   base_extensions = <<-EOT
 coder:
@@ -155,7 +149,7 @@ coder:
   description: Report ALL tasks and statuses (in progress, done, failed) you are working on.
   enabled: true
   envs:
-    CODER_MCP_APP_STATUS_SLUG: ${var.app_status_slug}
+    CODER_MCP_APP_STATUS_SLUG: aider
   name: Coder
   timeout: 3000
   type: stdio
@@ -309,13 +303,13 @@ CONVENTIONS_EOF
       if [ -n "$CODER_MCP_AIDER_TASK_PROMPT" ]; then
         echo "Running Aider with message in tmux session..."
         # Start aider with the message flag and yes-always to avoid confirmations
-        tmux new-session -d -s ${var.session_name} -c ${var.folder} "export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; export CODER_MCP_APP_STATUS_SLUG=\"${var.app_status_slug}\"; aider --architect --yes-always --read CONVENTIONS.md --message \"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\""
+        tmux new-session -d -s ${var.session_name} -c ${var.folder} "echo \"Starting Aider with app status slug: aider\"; export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; export CODER_MCP_APP_STATUS_SLUG=\"aider\"; aider --architect --yes-always --read CONVENTIONS.md --message \"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\""
         # Create a flag file to indicate this task was executed
         touch "$HOME/.aider_task_executed"
-        echo "Aider task started in tmux session '${var.session_name}'. Check the logs for progress."
+        echo "Aider task started in tmux session '${var.session_name}'. Check the UI for progress."
       else
         # Create a new detached tmux session for interactive use
-        tmux new-session -d -s ${var.session_name} -c ${var.folder} "export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; export CODER_MCP_APP_STATUS_SLUG=\"${var.app_status_slug}\"; aider --read CONVENTIONS.md | tee -a \"$HOME/.aider.log\""
+        tmux new-session -d -s ${var.session_name} -c ${var.folder} "echo \"Starting Aider with app status slug: aider\"; export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; export CODER_MCP_APP_STATUS_SLUG=\"aider\"; aider --read CONVENTIONS.md"
         echo "Tmux session '${var.session_name}' started. Access it by clicking the Aider button."
       fi
     else
@@ -323,22 +317,19 @@ CONVENTIONS_EOF
       if [ -n "$CODER_MCP_AIDER_TASK_PROMPT" ]; then
         echo "Running Aider with message in screen session..."
         
-        # Create log file
-        touch "$HOME/.aider.log"
-        
         # Ensure the screenrc exists with multi-user settings
         if [ ! -f "$HOME/.screenrc" ]; then
-          echo "Creating ~/.screenrc and adding multiuser settings..." | tee -a "$HOME/.aider.log"
+          echo "Creating ~/.screenrc and adding multiuser settings..."
           echo -e "multiuser on\nacladd $(whoami)" > "$HOME/.screenrc"
         fi
         
         if ! grep -q "^multiuser on$" "$HOME/.screenrc"; then
-          echo "Adding 'multiuser on' to ~/.screenrc..." | tee -a "$HOME/.aider.log"
+          echo "Adding 'multiuser on' to ~/.screenrc..."
           echo "multiuser on" >> "$HOME/.screenrc"
         fi
 
         if ! grep -q "^acladd $(whoami)$" "$HOME/.screenrc"; then
-          echo "Adding 'acladd $(whoami)' to ~/.screenrc..." | tee -a "$HOME/.aider.log"
+          echo "Adding 'acladd $(whoami)' to ~/.screenrc..."
           echo "acladd $(whoami)" >> "$HOME/.screenrc"
         fi
         
@@ -347,31 +338,31 @@ CONVENTIONS_EOF
           cd ${var.folder}
           export PATH=\"$HOME/bin:$HOME/.local/bin:$PATH\"
           export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"
-          export CODER_MCP_APP_STATUS_SLUG=\"${var.app_status_slug}\"
-          aider --architect --yes-always --read CONVENTIONS.md --message \"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\"
+          export CODER_MCP_APP_STATUS_SLUG=\"aider\"
+          echo \"Starting Aider with app status slug: aider\"
+          aider --architect --yes-always --read CONVENTIONS.md --message \"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\"
           /bin/bash
         "
         
         # Create a flag file to indicate this task was executed
         touch "$HOME/.aider_task_executed"
-        echo "Aider task started in screen session '${var.session_name}'. Check the logs for progress."
+        echo "Aider task started in screen session '${var.session_name}'. Check the UI for progress."
       else
         # Create a new detached screen session for interactive use
-        touch "$HOME/.aider.log"
         
         # Ensure the screenrc exists with multi-user settings
         if [ ! -f "$HOME/.screenrc" ]; then
-          echo "Creating ~/.screenrc and adding multiuser settings..." | tee -a "$HOME/.aider.log"
+          echo "Creating ~/.screenrc and adding multiuser settings..."
           echo -e "multiuser on\nacladd $(whoami)" > "$HOME/.screenrc"
         fi
         
         if ! grep -q "^multiuser on$" "$HOME/.screenrc"; then
-          echo "Adding 'multiuser on' to ~/.screenrc..." | tee -a "$HOME/.aider.log"
+          echo "Adding 'multiuser on' to ~/.screenrc..."
           echo "multiuser on" >> "$HOME/.screenrc"
         fi
 
         if ! grep -q "^acladd $(whoami)$" "$HOME/.screenrc"; then
-          echo "Adding 'acladd $(whoami)' to ~/.screenrc..." | tee -a "$HOME/.aider.log"
+          echo "Adding 'acladd $(whoami)' to ~/.screenrc..."
           echo "acladd $(whoami)" >> "$HOME/.screenrc"
         fi
         
@@ -379,8 +370,9 @@ CONVENTIONS_EOF
           cd ${var.folder}
           export PATH=\"$HOME/bin:$HOME/.local/bin:$PATH\"
           export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"
-          export CODER_MCP_APP_STATUS_SLUG=\"${var.app_status_slug}\"
-          aider --read CONVENTIONS.md | tee -a \"$HOME/.aider.log\"
+          export CODER_MCP_APP_STATUS_SLUG=\"aider\"
+          echo \"Starting Aider with app status slug: aider\"
+          aider --read CONVENTIONS.md
           /bin/bash
         "
         echo "Screen session '${var.session_name}' started. Access it by clicking the Aider button."
@@ -406,6 +398,8 @@ resource "coder_app" "aider_cli" {
     export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
     
     # Environment variables are set in the agent template
+    # Explicitly export the status reporting environment variable
+    export CODER_MCP_APP_STATUS_SLUG="aider"
     
     # Set up environment for UTF-8 support
     export LANG=en_US.UTF-8
@@ -415,11 +409,13 @@ resource "coder_app" "aider_cli" {
     if [ "${var.use_tmux}" = "true" ]; then
       # Check if session exists, attach or create
       if tmux has-session -t ${var.session_name} 2>/dev/null; then
-        echo "Attaching to existing Aider tmux session..." | tee -a "$HOME/.aider.log"
+        echo "Attaching to existing Aider tmux session..."
+        # Ensure the environment variables are set when attaching
+        tmux setenv -t ${var.session_name} CODER_MCP_APP_STATUS_SLUG "aider"
         tmux attach-session -t ${var.session_name}
       else
-        echo "Starting new Aider tmux session..." | tee -a "$HOME/.aider.log"
-        tmux new-session -s ${var.session_name} -c ${var.folder} "export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; aider --read CONVENTIONS.md | tee -a \"$HOME/.aider.log\"; exec bash"
+        echo "Starting new Aider tmux session..."
+        tmux new-session -s ${var.session_name} -c ${var.folder} "export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; export CODER_MCP_APP_STATUS_SLUG=\"aider\"; aider --read CONVENTIONS.md; exec bash"
       fi
     elif [ "${var.use_screen}" = "true" ]; then
       # Use screen
@@ -428,13 +424,15 @@ resource "coder_app" "aider_cli" {
         echo "Error: No existing Aider session found. Please wait for the script to start it."
         exit 1
       fi
+      # Set the environment variable before attaching to the screen session
+      export CODER_MCP_APP_STATUS_SLUG="aider"
       # Only attach to existing session
       screen -xRR ${var.session_name}
     else
       # Run directly without a multiplexer
       cd "${var.folder}"
-      echo "Starting Aider directly..." | tee -a "$HOME/.aider.log"
-      export CODER_MCP_APP_STATUS_SLUG="${var.app_status_slug}"
+      echo "Starting Aider directly..."
+      export CODER_MCP_APP_STATUS_SLUG="aider"
       aider --read CONVENTIONS.md
     fi
   EOT
