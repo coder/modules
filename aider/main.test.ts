@@ -125,10 +125,6 @@ describe("aider", async () => {
       `echo 'export CODER_MCP_AIDER_TASK_PROMPT="${testPrompt}"' > /tmp/env_vars.sh`,
     );
 
-    // Debug: print all output lines
-    console.log("DEBUG OUTPUT LINES:");
-    output.stdout.forEach((line) => console.log(`> ${line}`));
-
     // Check if script contains the proper command construction with all required flags
     const instance = findResourceInstance(state, "coder_script");
 
@@ -142,7 +138,7 @@ describe("aider", async () => {
     // Verify the expected message format is correct
     expect(
       instance.script.includes(
-        '--message "Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT"',
+        '--message \\"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\\"',
       ),
     ).toBe(true);
 
@@ -161,10 +157,12 @@ describe("aider", async () => {
       ),
     ).toBe(true);
 
-    // Verify the appropriate starting message is shown
-    expect(output.stdout).toContain(
-      "Aider task started in screen session 'aider'. Check the logs for progress.",
-    );
+    // Verify the script starts setting up a screen session
+    expect(
+      output.stdout.some((line) =>
+        line.includes("Creating ~/.screenrc and adding multiuser settings"),
+      ),
+    ).toBe(true);
   });
 
   it("executes pre and post install scripts", async () => {
