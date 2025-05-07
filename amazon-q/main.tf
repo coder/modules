@@ -81,10 +81,7 @@ variable "experiment_post_install_script" {
 variable "experiment_auth_tarball" {
   type        = string
   description = "Base64 encoded, zstd compressed tarball of a pre-authenticated ~/.local/share/amazon-q directory. After running `q login` on another machine, you may generate it with: `cd ~/.local/share/amazon-q && tar -c . | zstd | base64 -w 0`"
-  validation {
-    condition     = length(var.experiment_auth_tarball) > 0
-    error_message = "The experiment_auth_tarball variable must be provided and cannot be empty."
-  }
+  default     = null
 }
 
 locals {
