@@ -138,6 +138,12 @@ variable "experiment_additional_extensions" {
   default     = null
 }
 
+variable "app_status_slug" {
+  type        = string
+  description = "The slug to use for the app status reporting in MCP"
+  default     = "aider"
+}
+
 locals {
   base_extensions = <<-EOT
 coder:
@@ -149,7 +155,7 @@ coder:
   description: Report ALL tasks and statuses (in progress, done, failed) you are working on.
   enabled: true
   envs:
-    CODER_MCP_APP_STATUS_SLUG: aider
+    CODER_MCP_APP_STATUS_SLUG: ${var.app_status_slug}
   name: Coder
   timeout: 3000
   type: stdio
@@ -303,13 +309,13 @@ CONVENTIONS_EOF
       if [ -n "$CODER_MCP_AIDER_TASK_PROMPT" ]; then
         echo "Running Aider with message in tmux session..."
         # Start aider with the message flag and yes-always to avoid confirmations
-        tmux new-session -d -s ${var.session_name} -c ${var.folder} "export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; aider --architect --yes-always --read CONVENTIONS.md --message \"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\""
+        tmux new-session -d -s ${var.session_name} -c ${var.folder} "export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; export CODER_MCP_APP_STATUS_SLUG=\"${var.app_status_slug}\"; aider --architect --yes-always --read CONVENTIONS.md --message \"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\""
         # Create a flag file to indicate this task was executed
         touch "$HOME/.aider_task_executed"
         echo "Aider task started in tmux session '${var.session_name}'. Check the logs for progress."
       else
         # Create a new detached tmux session for interactive use
-        tmux new-session -d -s ${var.session_name} -c ${var.folder} "export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; aider --read CONVENTIONS.md | tee -a \"$HOME/.aider.log\""
+        tmux new-session -d -s ${var.session_name} -c ${var.folder} "export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; export CODER_MCP_APP_STATUS_SLUG=\"${var.app_status_slug}\"; aider --read CONVENTIONS.md | tee -a \"$HOME/.aider.log\""
         echo "Tmux session '${var.session_name}' started. Access it by clicking the Aider button."
       fi
     else
@@ -341,6 +347,7 @@ CONVENTIONS_EOF
           cd ${var.folder}
           export PATH=\"$HOME/bin:$HOME/.local/bin:$PATH\"
           export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"
+          export CODER_MCP_APP_STATUS_SLUG=\"${var.app_status_slug}\"
           aider --architect --yes-always --read CONVENTIONS.md --message \"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\" | tee -a \"$HOME/.aider.log\"
           /bin/bash
         "
@@ -372,6 +379,7 @@ CONVENTIONS_EOF
           cd ${var.folder}
           export PATH=\"$HOME/bin:$HOME/.local/bin:$PATH\"
           export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"
+          export CODER_MCP_APP_STATUS_SLUG=\"${var.app_status_slug}\"
           aider --read CONVENTIONS.md | tee -a \"$HOME/.aider.log\"
           /bin/bash
         "
@@ -426,6 +434,7 @@ resource "coder_app" "aider_cli" {
       # Run directly without a multiplexer
       cd "${var.folder}"
       echo "Starting Aider directly..." | tee -a "$HOME/.aider.log"
+      export CODER_MCP_APP_STATUS_SLUG="${var.app_status_slug}"
       aider --read CONVENTIONS.md
     fi
   EOT
