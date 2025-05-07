@@ -279,7 +279,9 @@ EOL
       
       # Create a conventions file that instructs Aider to report tasks
       mkdir -p "${var.folder}"
-      echo "${var.experiment_task_conventions}" > "${var.folder}/CONVENTIONS.md"
+      cat > "${var.folder}/CONVENTIONS.md" << 'CONVENTIONS_EOF'
+${var.experiment_task_conventions}
+CONVENTIONS_EOF
       echo "Created CONVENTIONS.md file with task reporting instructions"
     fi
 
