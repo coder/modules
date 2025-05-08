@@ -14,7 +14,7 @@ Run the [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude
 ```tf
 module "claude-code" {
   source              = "registry.coder.com/modules/claude-code/coder"
-  version             = "1.1.0"
+  version             = "1.2.1"
   agent_id            = coder_agent.example.id
   folder              = "/home/coder"
   install_claude_code = true
@@ -71,7 +71,7 @@ data "coder_parameter" "ai_prompt" {
 resource "coder_agent" "main" {
   # ...
   env = {
-    CODER_MCP_CLAUDE_API_KEY       = var.anthropic_api_key # or use a coder_parameter 
+    CODER_MCP_CLAUDE_API_KEY       = var.anthropic_api_key # or use a coder_parameter
     CODER_MCP_CLAUDE_TASK_PROMPT   = data.coder_parameter.ai_prompt.value
     CODER_MCP_APP_STATUS_SLUG      = "claude-code"
     CODER_MCP_CLAUDE_SYSTEM_PROMPT = <<-EOT
@@ -102,7 +102,7 @@ Run Claude Code as a standalone app in your workspace. This will install Claude 
 ```tf
 module "claude-code" {
   source              = "registry.coder.com/modules/claude-code/coder"
-  version             = "1.1.0"
+  version             = "1.2.1"
   agent_id            = coder_agent.example.id
   folder              = "/home/coder"
   install_claude_code = true

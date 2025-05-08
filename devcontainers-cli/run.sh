@@ -38,7 +38,7 @@ install() {
     fi
     pnpm add -g @devcontainers/cli
   elif [ "$PACKAGE_MANAGER" = "yarn" ]; then
-    yarn global add @devcontainers/cli
+    yarn global add @devcontainers/cli --prefix "$(dirname "$CODER_SCRIPT_BIN_DIR")"
   fi
 }
 

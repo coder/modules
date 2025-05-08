@@ -40,7 +40,21 @@ const executeScriptInContainerWithPackageManager = async (
     ]);
   }
 
-  const resp = await execContainer(id, [shell, "-c", instance.script]);
+  const pathResp = await execContainer(id, [shell, "-c", "echo $PATH"]);
+  const path = pathResp.stdout.trim();
+
+  console.log(path);
+
+  const resp = await execContainer(
+    id,
+    [shell, "-c", instance.script],
+    [
+      "--env",
+      "CODER_SCRIPT_BIN_DIR=/tmp/coder-script-data/bin",
+      "--env",
+      `PATH=${path}:/tmp/coder-script-data/bin`,
+    ],
+  );
   const stdout = resp.stdout.trim().split("\n");
   const stderr = resp.stderr.trim().split("\n");
   return {
@@ -104,7 +118,7 @@ describe("devcontainers-cli", async () => {
       "Installing @devcontainers/cli using yarn...",
     );
     expect(output.stdout[output.stdout.length - 1]).toEqual(
-      "🥳 @devcontainers/cli has been installed into /usr/local/bin/devcontainer!",
+      "🥳 @devcontainers/cli has been installed into /tmp/coder-script-data/bin/devcontainer!",
     );
   }, 15000);
 
