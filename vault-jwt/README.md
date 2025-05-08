@@ -133,7 +133,7 @@ resource "jwt_signed_token" "vault" {
 module "vault" {
   count           = data.coder_workspace.me.start_count
   source          = "registry.coder.com/modules/vault-jwt/coder"
-  version         = "1.0.20"
+  version         = "1.1.0"
   agent_id        = coder_agent.example.id
   vault_addr      = "https://vault.example.com"
   vault_jwt_role  = "coder" # The Vault role to use for authentication
