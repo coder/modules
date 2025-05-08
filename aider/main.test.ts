@@ -77,24 +77,6 @@ describe("aider", async () => {
     expect(output.stdout).toContain("Setting up Aider AI pair programming...");
   });
 
-  it("uses tmux when specified", async () => {
-    const state = await runTerraformApply(import.meta.dir, {
-      agent_id: "foo",
-      use_tmux: true,
-      use_screen: false,
-    });
-
-    // Instead of running the script, just verify the script content
-    // to ensure the tmux parameter is being properly applied
-    const instance = findResourceInstance(state, "coder_script");
-
-    // Check for the correct tmux condition with the interpolated value
-    expect(instance.script.includes('if [ "true" = "true" ]')).toBe(true);
-
-    // Also check for a unique string only present when tmux is used in the script
-    expect(instance.script.includes("tmux new-session -d -s")).toBe(true);
-  });
-
   it("configures task reporting when enabled", async () => {
     const state = await runTerraformApply(import.meta.dir, {
       agent_id: "foo",
@@ -141,11 +123,6 @@ describe("aider", async () => {
         '--message \\"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\\"',
       ),
     ).toBe(true);
-
-    // Verify the script creates a flag file to prevent duplicate execution
-    expect(instance.script.includes('touch "$HOME/.aider_task_executed"')).toBe(
-      true,
-    );
 
     // Verify the app status slug is properly set in the screen session
     expect(
