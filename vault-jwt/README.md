@@ -109,8 +109,9 @@ resource "jwt_signed_token" "vault" {
     sub = "${data.coder_workspace.me.id}"
     aud = "https://vault.example.com"
     iat = provider::time::rfc3339_parse(plantimestamp()).unix
-    # exp = timeadd(timestamp(), 3600)
-    agent            = coder_agent.main.id
+    # Uncomment to set an expiry on the JWT token(default 3600 seconds). 
+    # workspace will need to be restarted to generate a new token if it expires
+    #exp = provider::time::rfc3339_parse(timeadd(timestamp(), 3600)).unix    agent            = coder_agent.main.id
     provisioner      = data.coder_provisioner.main.id
     provisioner_arch = data.coder_provisioner.main.arch
     provisioner_os   = data.coder_provisioner.main.os
