@@ -143,7 +143,7 @@ module "vault" {
 
 #### example vault jwt role
 
-```
+```shell
 vault write auth/<JWT_MOUNT>/role/workspace -<<EOF
 {
   "user_claim": "sub",
