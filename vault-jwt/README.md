@@ -170,7 +170,7 @@ vault write auth/<JWT_MOUNT>/role/workspace -<<EOF
 EOF
 ```
 
-#### example workspace access vault policy
+#### Example workspace access Vault policy
 
 ```tf
 path "kv/data/app/coder/{{identity.entity.aliases.<MOUNT_ACCESSOR>.metadata.owner_name}}/{{identity.entity.aliases.<MOUNT_ACCESSOR>.metadata.workspace_name}}" {
