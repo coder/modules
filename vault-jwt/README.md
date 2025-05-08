@@ -141,7 +141,7 @@ module "vault" {
 }
 ```
 
-#### example vault jwt role
+#### Example Vault JWT role
 
 ```shell
 vault write auth/<JWT_MOUNT>/role/workspace -<<EOF
