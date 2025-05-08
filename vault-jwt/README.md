@@ -145,7 +145,7 @@ module "vault" {
 #### Example Vault JWT role
 
 ```shell
-vault write auth/JWT_MOUNT/role/workspace -<<EOF
+vault write auth/JWT_MOUNT/role/workspace - << EOF
 {
   "user_claim": "sub",
   "bound_audiences": "https://vault.example.com",
