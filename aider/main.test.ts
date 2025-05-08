@@ -33,7 +33,6 @@ const executeScriptInContainerWithBash = async (
   `,
   ]);
 
-
   const resp = await execContainer(id, [
     "bash",
     "-c",
