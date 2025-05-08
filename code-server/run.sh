@@ -55,6 +55,11 @@ fi
 if [ ! -f "$CODE_SERVER" ] || [ "${USE_CACHED}" != true ]; then
   printf "$${BOLD}Installing code-server!\n"
 
+  # Clean up from other install (in case install prefix changed).
+  if [ -n "$CODER_SCRIPT_BIN_DIR" ] && [ -e "$CODER_SCRIPT_BIN_DIR/code-server" ]; then
+    rm "$CODER_SCRIPT_BIN_DIR/code-server"
+  fi
+
   ARGS=(
     "--method=standalone"
     "--prefix=${INSTALL_PREFIX}"
@@ -69,6 +74,11 @@ if [ ! -f "$CODE_SERVER" ] || [ "${USE_CACHED}" != true ]; then
     exit 1
   fi
   printf "🥳 code-server has been installed in ${INSTALL_PREFIX}\n\n"
+fi
+
+# Make the code-server available in PATH.
+if [ -n "$CODER_SCRIPT_BIN_DIR" ] && [ ! -e "$CODER_SCRIPT_BIN_DIR/code-server" ]; then
+  ln -s "$CODE_SERVER" "$CODER_SCRIPT_BIN_DIR/code-server"
 fi
 
 # Get the list of installed extensions...
@@ -117,7 +127,8 @@ if [ "${AUTO_INSTALL_EXTENSIONS}" = true ]; then
 
   if [ -f "$WORKSPACE_DIR/.vscode/extensions.json" ]; then
     printf "🧩 Installing extensions from %s/.vscode/extensions.json...\n" "$WORKSPACE_DIR"
-    extensions=$(jq -r '.recommendations[]' "$WORKSPACE_DIR"/.vscode/extensions.json)
+    # Use sed to remove single-line comments before parsing with jq
+    extensions=$(sed 's|//.*||g' "$WORKSPACE_DIR"/.vscode/extensions.json | jq -r '.recommendations[]')
     for extension in $extensions; do
       if extension_installed "$extension"; then
         continue
