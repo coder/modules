@@ -81,7 +81,7 @@ module "vault" {
 }
 ```
 
-### use a custom jwt token
+### Use a custom JWT token
 
 ```tf
 
