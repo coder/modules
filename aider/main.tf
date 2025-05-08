@@ -161,7 +161,6 @@ developer:
   type: builtin
 EOT
 
-  # Add two spaces to each line of extensions to match YAML structure
   formatted_base        = "  ${replace(trimspace(local.base_extensions), "\n", "\n  ")}"
   additional_extensions = var.experiment_additional_extensions != null ? "\n  ${replace(trimspace(var.experiment_additional_extensions), "\n", "\n  ")}" : ""
 
@@ -183,21 +182,17 @@ resource "coder_script" "aider" {
     #!/bin/bash
     set -e
 
-    # Function to check if a command exists
     command_exists() {
       command -v "$1" >/dev/null 2>&1
     }
 
     echo "Setting up Aider AI pair programming..."
     
-    # Create the workspace folder
     mkdir -p "${var.folder}"
 
-    # Install essential dependencies
     if [ "$(uname)" = "Linux" ]; then
       echo "Checking dependencies for Linux..."
       
-      # Check and install tmux/screen only if needed and requested
       if [ "${var.use_tmux}" = "true" ]; then
         if ! command_exists tmux; then
           echo "Installing tmux for persistent sessions..."
@@ -232,7 +227,6 @@ resource "coder_script" "aider" {
       exit 1
     fi
 
-    # Run pre-install script if provided
     if [ -n "${local.encoded_pre_install_script}" ]; then
       echo "Running pre-install script..."
       echo "${local.encoded_pre_install_script}" | base64 -d > /tmp/pre_install.sh
@@ -240,11 +234,9 @@ resource "coder_script" "aider" {
       /tmp/pre_install.sh
     fi
 
-    # Install Aider using the official installation script
     if [ "${var.install_aider}" = "true" ]; then
       echo "Installing Aider..."
       
-      # Check if python3 and pip/venv are installed
       if ! command_exists python3 || ! command_exists pip3; then
         echo "Installing Python dependencies required for Aider..."
         if command -v apt-get >/dev/null 2>&1; then
@@ -259,12 +251,10 @@ resource "coder_script" "aider" {
         echo "Python is already installed, skipping installation."
       fi
       
-      # Use official installation script
       if ! command_exists aider; then
         curl -LsSf https://aider.chat/install.sh | sh
       fi
       
-      # Add required paths to shell configuration
       if [ -f "$HOME/.bashrc" ]; then
         if ! grep -q 'export PATH="$HOME/bin:$PATH"' "$HOME/.bashrc"; then
           echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
@@ -277,11 +267,8 @@ resource "coder_script" "aider" {
         fi
       fi
       
-      # Aider configuration is handled through environment variables
-      # or external dotenv module
     fi
     
-    # Run post-install script if provided
     if [ -n "${local.encoded_post_install_script}" ]; then
       echo "Running post-install script..."
       echo "${local.encoded_post_install_script}" | base64 -d > /tmp/post_install.sh
@@ -289,20 +276,16 @@ resource "coder_script" "aider" {
       /tmp/post_install.sh
     fi
     
-    # Configure task reporting if enabled
     if [ "${var.experiment_report_tasks}" = "true" ]; then
       echo "Configuring Aider to report tasks via Coder MCP..."
       
-      # Ensure Aider config directory exists
       mkdir -p "$HOME/.config/aider"
       
-      # Create the config.yml file with extensions configuration
       cat > "$HOME/.config/aider/config.yml" << EOL
 ${trimspace(local.combined_extensions)}
 EOL
       echo "Added Coder MCP extension to Aider config.yml"
       
-      # Create a conventions file that instructs Aider to report tasks
       mkdir -p "${var.folder}"
       cat > "${var.folder}/CONVENTIONS.md" << 'CONVENTIONS_EOF'
 ${var.experiment_task_conventions}
@@ -310,37 +293,28 @@ CONVENTIONS_EOF
       echo "Created CONVENTIONS.md file with task reporting instructions"
     fi
 
-    # Start a persistent session at workspace creation
     echo "Starting persistent Aider session..."
     
-    # Create a log file to store session output
     touch "$HOME/.aider.log"
     
-    # Set up environment for UTF-8 support
     export LANG=en_US.UTF-8
     export LC_ALL=en_US.UTF-8
     
-    # Ensure Aider binaries are in PATH
     export PATH="$HOME/bin:$PATH"
     
     if [ "${var.use_tmux}" = "true" ]; then
-      # Check if we have a task prompt
       if [ -n "$CODER_MCP_AIDER_TASK_PROMPT" ]; then
         echo "Running Aider with message in tmux session..."
-        # Start aider with the message flag and yes-always to avoid confirmations
         tmux new-session -d -s ${var.session_name} -c ${var.folder} "echo \"Starting Aider with app status slug: aider\"; export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; export CODER_MCP_APP_STATUS_SLUG=\"aider\"; aider --architect --yes-always --read CONVENTIONS.md --message \"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\""
         echo "Aider task started in tmux session '${var.session_name}'. Check the UI for progress."
       else
-        # Create a new detached tmux session for interactive use
         tmux new-session -d -s ${var.session_name} -c ${var.folder} "echo \"Starting Aider with app status slug: aider\"; export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; export CODER_MCP_APP_STATUS_SLUG=\"aider\"; aider --read CONVENTIONS.md"
         echo "Tmux session '${var.session_name}' started. Access it by clicking the Aider button."
       fi
     else
-      # Check if we have a task prompt
       if [ -n "$CODER_MCP_AIDER_TASK_PROMPT" ]; then
         echo "Running Aider with message in screen session..."
         
-        # Ensure the screenrc exists with multi-user settings
         if [ ! -f "$HOME/.screenrc" ]; then
           echo "Creating ~/.screenrc and adding multiuser settings..."
           echo -e "multiuser on\nacladd $(whoami)" > "$HOME/.screenrc"
@@ -356,7 +330,6 @@ CONVENTIONS_EOF
           echo "acladd $(whoami)" >> "$HOME/.screenrc"
         fi
         
-        # Start aider with the message flag and yes-always to avoid confirmations
         screen -U -dmS ${var.session_name} bash -c "
           cd ${var.folder}
           export PATH=\"$HOME/bin:$HOME/.local/bin:$PATH\"
@@ -369,9 +342,7 @@ CONVENTIONS_EOF
         
         echo "Aider task started in screen session '${var.session_name}'. Check the UI for progress."
       else
-        # Create a new detached screen session for interactive use
         
-        # Ensure the screenrc exists with multi-user settings
         if [ ! -f "$HOME/.screenrc" ]; then
           echo "Creating ~/.screenrc and adding multiuser settings..."
           echo -e "multiuser on\nacladd $(whoami)" > "$HOME/.screenrc"
@@ -415,23 +386,16 @@ resource "coder_app" "aider_cli" {
     #!/bin/bash
     set -e
     
-    # Ensure binaries are in path
     export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
     
-    # Environment variables are set in the agent template
-    # Explicitly export the status reporting environment variable
     export CODER_MCP_APP_STATUS_SLUG="aider"
     
-    # Set up environment for UTF-8 support
     export LANG=en_US.UTF-8
     export LC_ALL=en_US.UTF-8
     
-    # Check if we should use tmux
     if [ "${var.use_tmux}" = "true" ]; then
-      # Check if session exists, attach or create
       if tmux has-session -t ${var.session_name} 2>/dev/null; then
         echo "Attaching to existing Aider tmux session..."
-        # Ensure the environment variables are set when attaching
         tmux setenv -t ${var.session_name} CODER_MCP_APP_STATUS_SLUG "aider"
         tmux attach-session -t ${var.session_name}
       else
@@ -439,18 +403,13 @@ resource "coder_app" "aider_cli" {
         tmux new-session -s ${var.session_name} -c ${var.folder} "export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; export CODER_MCP_APP_STATUS_SLUG=\"aider\"; aider --read CONVENTIONS.md; exec bash"
       fi
     elif [ "${var.use_screen}" = "true" ]; then
-      # Use screen
-      # Check if session exists first
       if ! screen -list | grep -q "${var.session_name}"; then
         echo "Error: No existing Aider session found. Please wait for the script to start it."
         exit 1
       fi
-      # Set the environment variable before attaching to the screen session
       export CODER_MCP_APP_STATUS_SLUG="aider"
-      # Only attach to existing session
       screen -xRR ${var.session_name}
     else
-      # Run directly without a multiplexer
       cd "${var.folder}"
       echo "Starting Aider directly..."
       export CODER_MCP_APP_STATUS_SLUG="aider"
