@@ -165,7 +165,7 @@ vault write auth/<JWT_MOUNT>/role/workspace -<<EOF
     "workspace": "workspace",
     "workspace_name": "workspace_name",
     "workspace_id": "workspace_id"
-}
+  }
 }
 EOF
 ```
