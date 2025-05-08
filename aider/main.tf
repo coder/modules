@@ -195,26 +195,36 @@ resource "coder_script" "aider" {
 
     # Install essential dependencies
     if [ "$(uname)" = "Linux" ]; then
-      echo "Installing dependencies on Linux..."
-      if command -v apt-get >/dev/null 2>&1; then
-        sudo apt-get update -qq
-        
-        # Install terminal multiplexers for persistent sessions
-        if [ "${var.use_tmux}" = "true" ]; then
+      echo "Checking dependencies for Linux..."
+      
+      # Check and install tmux/screen only if needed and requested
+      if [ "${var.use_tmux}" = "true" ]; then
+        if ! command_exists tmux; then
           echo "Installing tmux for persistent sessions..."
-          sudo apt-get install -y -qq python3-pip python3-venv tmux
+          if command -v apt-get >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq tmux
+          elif command -v dnf >/dev/null 2>&1; then
+            sudo dnf install -y -q tmux
+          else
+            echo "Warning: Unable to install tmux on this system."
+          fi
         else
-          echo "Installing screen for persistent sessions..."
-          sudo apt-get install -y -qq python3-pip python3-venv screen
+          echo "tmux is already installed, skipping installation."
         fi
-      elif command -v dnf >/dev/null 2>&1; then
-        # For Red Hat-based distros
-        if [ "${var.use_tmux}" = "true" ]; then
-          echo "Installing tmux for persistent sessions..."
-          sudo dnf install -y -q python3-pip python3-virtualenv tmux
-        else
+      elif [ "${var.use_screen}" = "true" ]; then
+        if ! command_exists screen; then
           echo "Installing screen for persistent sessions..."
-          sudo dnf install -y -q python3-pip python3-virtualenv screen
+          if command -v apt-get >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq screen
+          elif command -v dnf >/dev/null 2>&1; then
+            sudo dnf install -y -q screen
+          else
+            echo "Warning: Unable to install screen on this system."
+          fi
+        else
+          echo "screen is already installed, skipping installation."
         fi
       fi
     else
@@ -234,8 +244,23 @@ resource "coder_script" "aider" {
     if [ "${var.install_aider}" = "true" ]; then
       echo "Installing Aider..."
       
+      # Check if python3 and pip/venv are installed
+      if ! command_exists python3 || ! command_exists pip3; then
+        echo "Installing Python dependencies required for Aider..."
+        if command -v apt-get >/dev/null 2>&1; then
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq python3-pip python3-venv
+        elif command -v dnf >/dev/null 2>&1; then
+          sudo dnf install -y -q python3-pip python3-virtualenv
+        else
+          echo "Warning: Unable to install Python on this system."
+        fi
+      else
+        echo "Python is already installed, skipping installation."
+      fi
+      
       # Use official installation script
-      if ! command -v aider &> /dev/null; then
+      if ! command_exists aider; then
         curl -LsSf https://aider.chat/install.sh | sh
       fi
       
@@ -304,8 +329,6 @@ CONVENTIONS_EOF
         echo "Running Aider with message in tmux session..."
         # Start aider with the message flag and yes-always to avoid confirmations
         tmux new-session -d -s ${var.session_name} -c ${var.folder} "echo \"Starting Aider with app status slug: aider\"; export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"; export CODER_MCP_APP_STATUS_SLUG=\"aider\"; aider --architect --yes-always --read CONVENTIONS.md --message \"Report each step to Coder. Your task: $CODER_MCP_AIDER_TASK_PROMPT\""
-        # Create a flag file to indicate this task was executed
-        touch "$HOME/.aider_task_executed"
         echo "Aider task started in tmux session '${var.session_name}'. Check the UI for progress."
       else
         # Create a new detached tmux session for interactive use
@@ -344,8 +367,6 @@ CONVENTIONS_EOF
           /bin/bash
         "
         
-        # Create a flag file to indicate this task was executed
-        touch "$HOME/.aider_task_executed"
         echo "Aider task started in screen session '${var.session_name}'. Check the UI for progress."
       else
         # Create a new detached screen session for interactive use
