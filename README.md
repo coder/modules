@@ -1,3 +1,6 @@
+> [!CAUTION]
+> We are no more accepting new contributions to this repo. We have moved all modules to https://github.com/coder/registry repo. Please see https://github.com/coder/modules/discussions/469 for more details.
+
 <div align="center">
   <h1>
   Modules
