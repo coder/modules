@@ -101,7 +101,7 @@ variable "system_prompt" {
   EOT
 }
 
-variable "task_prompt" {
+variable "ai_prompt" {
   type        = string
   description = "The initial task prompt to send to Amazon Q."
   default     = "Please help me with my coding tasks. I'll provide specific instructions as needed."
