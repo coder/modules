@@ -115,6 +115,10 @@ resource "coder_script" "claude_code" {
       npm install -g @anthropic-ai/claude-code@${var.claude_code_version}
     fi
 
+    wget https://github.com/coder/agentapi/releases/download/preview/agentapi-linux-amd64
+    chmod +x agentapi-linux-amd64
+    sudo mv agentapi-linux-amd64 /usr/local/bin/agentapi
+
     # Run post-install script if provided
     if [ -n "${local.encoded_post_install_script}" ]; then
       echo "Running post-install script..."
@@ -151,7 +155,21 @@ resource "coder_script" "claude_code" {
       export LC_ALL=en_US.UTF-8
       
       # Create a new tmux session in detached mode
-      tmux new-session -d -s claude-code -c ${var.folder} "claude --dangerously-skip-permissions"
+      tmux new-session -d -s claude-code-agentapi -c ${var.folder} 'agentapi server -- bash -c "claude --dangerously-skip-permissions | tee -a \"$HOME/.claude-code.log\""; exec bash'
+      echo "Waiting for agentapi server to start on port 3284..."
+      for i in $(seq 1 15); do
+        if lsof -i :3284 | grep -q 'LISTEN'; then
+          echo "agentapi server started on port 3284."
+          break
+        fi
+        echo "Waiting... ($i/15)"
+        sleep 1
+      done
+      if ! lsof -i :3284 | grep -q 'LISTEN'; then
+        echo "Error: agentapi server did not start on port 3284 after 15 seconds."
+        exit 1
+      fi
+      tmux new-session -d -s claude-code -c ${var.folder} "agentapi attach"
       
       # Send the prompt to the tmux session if needed
       if [ -n "$CODER_MCP_CLAUDE_TASK_PROMPT" ]; then
@@ -191,9 +209,27 @@ resource "coder_script" "claude_code" {
       export LANG=en_US.UTF-8
       export LC_ALL=en_US.UTF-8
       
+      screen -U -dmS claude-code-agentapi bash -c '
+        cd ${var.folder}
+        agentapi server -- bash -c "claude --dangerously-skip-permissions | tee -a \"$HOME/.claude-code.log\""
+        exec bash
+      '
+      echo "Waiting for agentapi server to start on port 3284..."
+      for i in $(seq 1 15); do
+        if lsof -i :3284 | grep -q 'LISTEN'; then
+          echo "agentapi server started on port 3284."
+          break
+        fi
+        echo "Waiting... ($i/15)"
+        sleep 1
+      done
+      if ! lsof -i :3284 | grep -q 'LISTEN'; then
+        echo "Error: agentapi server did not start on port 3284 after 15 seconds."
+        exit 1
+      fi
       screen -U -dmS claude-code bash -c '
         cd ${var.folder}
-        claude --dangerously-skip-permissions | tee -a "$HOME/.claude-code.log"
+        agentapi attach
         exec bash
       '
       # Extremely hacky way to send the prompt to the screen session
@@ -215,7 +251,7 @@ resource "coder_script" "claude_code" {
 
 resource "coder_app" "claude_code" {
   slug         = "claude-code"
-  display_name = "Claude Code"
+  display_name = "Claude Code CLI"
   agent_id     = var.agent_id
   command      = <<-EOT
     #!/bin/bash
@@ -225,20 +261,28 @@ resource "coder_app" "claude_code" {
     export LC_ALL=en_US.UTF-8
 
     if [ "${var.experiment_use_tmux}" = "true" ]; then
+      if ! tmux has-session -t claude-code-agentapi 2>/dev/null; then
+        echo "Starting a new Claude Code agentapi tmux session." | tee -a "$HOME/.claude-code.log"
+        tmux new-session -d -s claude-code-agentapi -c ${var.folder} 'agentapi server -- bash -c "claude --dangerously-skip-permissions | tee -a \"$HOME/.claude-code.log\""; exec bash'
+      fi
       if tmux has-session -t claude-code 2>/dev/null; then
         echo "Attaching to existing Claude Code tmux session." | tee -a "$HOME/.claude-code.log"
         tmux attach-session -t claude-code
       else
         echo "Starting a new Claude Code tmux session." | tee -a "$HOME/.claude-code.log"
-        tmux new-session -s claude-code -c ${var.folder} "claude --dangerously-skip-permissions | tee -a \"$HOME/.claude-code.log\"; exec bash"
+        tmux new-session -s claude-code 'agentapi attach; exec bash'
       fi
     elif [ "${var.experiment_use_screen}" = "true" ]; then
+      if ! screen -list | grep -q "claude-code-agentapi"; then
+        echo "Starting a new Claude Code agentapi screen session." | tee -a "$HOME/.claude-code.log"
+        screen -d -m -S claude-code-agentapi bash -c 'agentapi server -- bash -c "claude --dangerously-skip-permissions | tee -a \"$HOME/.claude-code.log\""; exec bash'
+      fi
       if screen -list | grep -q "claude-code"; then
         echo "Attaching to existing Claude Code screen session." | tee -a "$HOME/.claude-code.log"
         screen -xRR claude-code
       else
         echo "Starting a new Claude Code screen session." | tee -a "$HOME/.claude-code.log"
-        screen -S claude-code bash -c 'claude --dangerously-skip-permissions | tee -a "$HOME/.claude-code.log"; exec bash'
+        screen -S claude-code bash -c "agentapi attach; exec bash"
       fi
     else
       cd ${var.folder}
@@ -246,4 +290,13 @@ resource "coder_app" "claude_code" {
     fi
     EOT
   icon         = var.icon
+}
+
+resource "coder_app" "claude_code_web" {
+  slug         = "claude-code-web"
+  display_name = "Claude Code Web"
+  agent_id     = var.agent_id
+  url          = "http://localhost:3284/"
+  icon         = var.icon
+  subdomain    = true
 }
