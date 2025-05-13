@@ -84,6 +84,29 @@ variable "experiment_auth_tarball" {
   default     = "tarball"
 }
 
+variable "system_prompt" {
+  type        = string
+  description = "The system prompt to use for Amazon Q. This should instruct the agent how to do task reporting."
+  default     = <<-EOT
+    You are an AI coding assistant powered by Amazon Q. Your primary goal is to help users with their coding tasks.
+    
+    When reporting tasks to Coder:
+    1. Use clear, concise language
+    2. Include relevant code snippets when appropriate
+    3. Provide step-by-step instructions for complex tasks
+    4. Report progress and completion status
+    5. Include any error messages or warnings encountered
+    
+    Always maintain a professional and helpful tone.
+  EOT
+}
+
+variable "task_prompt" {
+  type        = string
+  description = "The initial task prompt to send to Amazon Q."
+  default     = "Please help me with my coding tasks. I'll provide specific instructions as needed."
+}
+
 locals {
   encoded_pre_install_script  = var.experiment_pre_install_script != null ? base64encode(var.experiment_pre_install_script) : ""
   encoded_post_install_script = var.experiment_post_install_script != null ? base64encode(var.experiment_post_install_script) : ""
@@ -104,9 +127,14 @@ locals {
     }
   EOT
   encoded_mcp_json = base64encode(local.mcp_json)
+  full_prompt      = <<-EOT
+    ${var.system_prompt}
+
+    Your first task is:
+
+    ${var.task_prompt}
+  EOT
 }
-
-
 
 # Install and Initialize Amazon Q
 resource "coder_script" "amazon_q" {
@@ -137,7 +165,24 @@ resource "coder_script" "amazon_q" {
       PREV_DIR="$PWD"
       TMP_DIR="$(mktemp -d)"
       cd "$TMP_DIR"
-      curl --proto '=https' --tlsv1.2 -sSf "https://desktop-release.q.us-east-1.amazonaws.com/${var.amazon_q_version}/q-x86_64-linux.zip" -o "q.zip"
+
+      # Detect architecture
+      ARCH="$(uname -m)"
+      case "$ARCH" in
+        "x86_64")
+          Q_URL="https://desktop-release.q.us-east-1.amazonaws.com/${var.amazon_q_version}/q-x86_64-linux.zip"
+          ;;
+        "aarch64"|"arm64")
+          Q_URL="https://desktop-release.codewhisperer.us-east-1.amazonaws.com/${var.amazon_q_version}/q-aarch64-linux.zip"
+          ;;
+        *)
+          echo "Error: Unsupported architecture: $ARCH. Amazon Q only supports x86_64 and arm64."
+          exit 1
+          ;;
+      esac
+
+      echo "Downloading Amazon Q for $ARCH..."
+      curl --proto '=https' --tlsv1.2 -sSf "$Q_URL" -o "q.zip"
       unzip q.zip
       ./q/install.sh --no-confirm
       cd "$PREV_DIR"
@@ -178,8 +223,6 @@ resource "coder_script" "amazon_q" {
       exit 1
     fi
 
-    FULL_PROMPT="$(printf "%s\n\nYour first task is:\n\n%s" "$CODER_MCP_AMAZON_Q_SYSTEM_PROMPT" "$CODER_MCP_AMAZON_Q_TASK_PROMPT")"
-
     # Run with tmux if enabled
     if [ "${var.experiment_use_tmux}" = "true" ]; then
       echo "Running Amazon Q in the background with tmux..."
@@ -198,12 +241,10 @@ resource "coder_script" "amazon_q" {
       # Create a new tmux session in detached mode
       tmux new-session -d -s amazon-q -c "${var.folder}" "q chat --trust-all-tools | tee -a "$HOME/.amazon-q.log" && exec bash"
       
-      # Send the prompt to the tmux session if needed
-      if [ -n "$FULL_PROMPT" ]; then
-        tmux send-keys -t amazon-q "$FULL_PROMPT"
-        sleep 5
-        tmux send-keys -t amazon-q Enter
-      fi
+      # Send the prompt to the tmux session
+      tmux send-keys -t amazon-q "${local.full_prompt}"
+      sleep 5
+      tmux send-keys -t amazon-q Enter
     fi
 
     # Run with screen if enabled
@@ -244,7 +285,7 @@ resource "coder_script" "amazon_q" {
       # Extremely hacky way to send the prompt to the screen session
       # This will be fixed in the future, but `amazon-q` was not sending MCP
       # tasks when an initial prompt is provided.
-      screen -S amazon-q -X stuff "$FULL_PROMPT"
+      screen -S amazon-q -X stuff "${local.full_prompt}"
       sleep 5
       screen -S amazon-q -X stuff "^M"
     else
