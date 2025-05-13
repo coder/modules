@@ -131,7 +131,7 @@ module "amazon-q" {
 | `folder`                         | No       | `/home/coder`            | The folder to run Amazon Q in.                                                                  |
 | `order`                          | No       | `null`                   | The order determines the position of app in the UI presentation.                                |
 | `system_prompt`                  | No       | See [main.tf](./main.tf) | The system prompt to use for Amazon Q. This should instruct the agent how to do task reporting. |
-| `task_prompt`                    | No       | See [main.tf](./main.tf) | The initial task prompt to send to Amazon Q.                                                    |
+| `ai_prompt`                      | No       | See [main.tf](./main.tf) | The initial task prompt to send to Amazon Q.                                                    |
 
 ## Notes
 
