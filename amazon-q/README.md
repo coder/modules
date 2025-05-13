@@ -21,6 +21,8 @@ module "amazon-q" {
 }
 ```
 
+![Amazon-Q in action](../.images/amazonq.png)
+
 ## Prerequisites
 
 - You must generate an authenticated Amazon Q tarball on another machine:
@@ -44,16 +46,11 @@ module "amazon-q" {
 
 **3. Generate the tarball:**
 
-- Run the following command in your terminal (Linux/macOS):
+- Run the following command in your terminal:
   ```sh
   cd ~/.local/share/amazon-q
   tar -c . | zstd | base64 -w 0
   ```
-- If you are on macOS and do not have `zstd`, you can install it with Homebrew:
-  ```sh
-  brew install zstd
-  ```
-- If your version of `base64` does not support `-w 0`, use `| base64` instead (the output will just be wrapped).
 
 **4. Copy the output:**
 
@@ -119,25 +116,25 @@ module "amazon-q" {
 
 ## Variables
 
-| Name                             | Required | Default              | Description                                                                               |
-| -------------------------------- | -------- | -------------------- | ----------------------------------------------------------------------------------------- |
-| `agent_id`                       | Yes      | —                    | The ID of a Coder agent.                                                                  |
-| `experiment_auth_tarball`        | Yes      | —                    | Base64-encoded, zstd-compressed tarball of a pre-authenticated Amazon Q config directory. |
-| `install_amazon_q`               | No       | `true`               | Whether to install Amazon Q.                                                              |
-| `amazon_q_version`               | No       | `latest`             | Version to install.                                                                       |
-| `experiment_use_screen`          | No       | `false`              | Use GNU screen for background operation.                                                  |
-| `experiment_use_tmux`            | No       | `false`              | Use tmux for background operation.                                                        |
-| `experiment_report_tasks`        | No       | `false`              | Enable task reporting to Coder.                                                           |
-| `experiment_pre_install_script`  | No       | `null`               | Custom script to run before install.                                                      |
-| `experiment_post_install_script` | No       | `null`               | Custom script to run after install.                                                       |
-| `icon`                           | No       | `/icon/amazon-q.svg` | The icon to use for the app.                                                              |
-| `folder`                         | No       | `/home/coder`        | The folder to run Amazon Q in.                                                            |
-| `order`                          | No       | `null`               | The order determines the position of app in the UI presentation.                          |
+| Name                             | Required | Default                  | Description                                                                                     |
+| -------------------------------- | -------- | ------------------------ | ----------------------------------------------------------------------------------------------- |
+| `agent_id`                       | Yes      | —                        | The ID of a Coder agent.                                                                        |
+| `experiment_auth_tarball`        | Yes      | —                        | Base64-encoded, zstd-compressed tarball of a pre-authenticated Amazon Q config directory.       |
+| `install_amazon_q`               | No       | `true`                   | Whether to install Amazon Q.                                                                    |
+| `amazon_q_version`               | No       | `latest`                 | Version to install.                                                                             |
+| `experiment_use_screen`          | No       | `false`                  | Use GNU screen for background operation.                                                        |
+| `experiment_use_tmux`            | No       | `false`                  | Use tmux for background operation.                                                              |
+| `experiment_report_tasks`        | No       | `false`                  | Enable task reporting to Coder.                                                                 |
+| `experiment_pre_install_script`  | No       | `null`                   | Custom script to run before install.                                                            |
+| `experiment_post_install_script` | No       | `null`                   | Custom script to run after install.                                                             |
+| `icon`                           | No       | `/icon/amazon-q.svg`     | The icon to use for the app.                                                                    |
+| `folder`                         | No       | `/home/coder`            | The folder to run Amazon Q in.                                                                  |
+| `order`                          | No       | `null`                   | The order determines the position of app in the UI presentation.                                |
+| `system_prompt`                  | No       | See [main.tf](./main.tf) | The system prompt to use for Amazon Q. This should instruct the agent how to do task reporting. |
+| `task_prompt`                    | No       | See [main.tf](./main.tf) | The initial task prompt to send to Amazon Q.                                                    |
 
 ## Notes
 
 - Only one of `experiment_use_screen` or `experiment_use_tmux` can be true at a time.
 - If neither is set, Amazon Q runs in the foreground.
 - For more details, see the [main.tf](./main.tf) source.
-
-<!-- TODO: Add Screenshot of Amazon-Q In Action -->
