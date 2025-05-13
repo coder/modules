@@ -132,7 +132,7 @@ locals {
 
     Your first task is:
 
-    ${var.task_prompt}
+    ${var.ai_prompt}
   EOT
 }
 
