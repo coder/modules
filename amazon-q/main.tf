@@ -145,7 +145,6 @@ locals {
   EOT
 }
 
-# Install and Initialize Amazon Q
 resource "coder_script" "amazon_q" {
   agent_id     = var.agent_id
   display_name = "Amazon Q"
@@ -155,12 +154,10 @@ resource "coder_script" "amazon_q" {
     set -o errexit
     set -o pipefail
 
-    # Function to check if a command exists
     command_exists() {
       command -v "$1" >/dev/null 2>&1
     }
 
-    # Run pre-install script if provided
     if [ -n "${local.encoded_pre_install_script}" ]; then
       echo "Running pre-install script..."
       echo "${local.encoded_pre_install_script}" | base64 -d > /tmp/pre_install.sh
@@ -168,14 +165,12 @@ resource "coder_script" "amazon_q" {
       /tmp/pre_install.sh
     fi
 
-    # Install Amazon Q if enabled
     if [ "${var.install_amazon_q}" = "true" ]; then
       echo "Installing Amazon Q..."
       PREV_DIR="$PWD"
       TMP_DIR="$(mktemp -d)"
       cd "$TMP_DIR"
 
-      # Detect architecture
       ARCH="$(uname -m)"
       case "$ARCH" in
         "x86_64")
@@ -210,7 +205,6 @@ resource "coder_script" "amazon_q" {
     cd "$PREV_DIR"
     echo "Extracted auth tarball"
 
-    # Run post-install script if provided
     if [ -n "${local.encoded_post_install_script}" ]; then
       echo "Running post-install script..."
       echo "${local.encoded_post_install_script}" | base64 -d > /tmp/post_install.sh
@@ -225,18 +219,15 @@ resource "coder_script" "amazon_q" {
       echo "Created the ~/.aws/amazonq/mcp.json configuration file"
     fi
 
-    # Handle terminal multiplexer selection (tmux or screen)
     if [ "${var.experiment_use_tmux}" = "true" ] && [ "${var.experiment_use_screen}" = "true" ]; then
       echo "Error: Both experiment_use_tmux and experiment_use_screen cannot be true simultaneously."
       echo "Please set only one of them to true."
       exit 1
     fi
 
-    # Run with tmux if enabled
     if [ "${var.experiment_use_tmux}" = "true" ]; then
       echo "Running Amazon Q in the background with tmux..."
       
-      # Check if tmux is installed
       if ! command_exists tmux; then
         echo "Error: tmux is not installed. Please install tmux manually."
         exit 1
@@ -247,20 +238,16 @@ resource "coder_script" "amazon_q" {
       export LANG=en_US.UTF-8
       export LC_ALL=en_US.UTF-8
       
-      # Create a new tmux session in detached mode
       tmux new-session -d -s amazon-q -c "${var.folder}" "q chat --trust-all-tools | tee -a "$HOME/.amazon-q.log" && exec bash"
       
-      # Send the prompt to the tmux session
       tmux send-keys -t amazon-q "${local.full_prompt}"
       sleep 5
       tmux send-keys -t amazon-q Enter
     fi
 
-    # Run with screen if enabled
     if [ "${var.experiment_use_screen}" = "true" ]; then
       echo "Running Amazon Q in the background..."
       
-      # Check if screen is installed
       if ! command_exists screen; then
         echo "Error: screen is not installed. Please install screen manually."
         exit 1
@@ -268,7 +255,6 @@ resource "coder_script" "amazon_q" {
 
       touch "$HOME/.amazon-q.log"
 
-      # Ensure the screenrc exists
       if [ ! -f "$HOME/.screenrc" ]; then
         echo "Creating ~/.screenrc and adding multiuser settings..." | tee -a "$HOME/.amazon-q.log"
         echo -e "multiuser on\nacladd $(whoami)" > "$HOME/.screenrc"
@@ -298,7 +284,6 @@ resource "coder_script" "amazon_q" {
       sleep 5
       screen -S amazon-q -X stuff "^M"
     else
-      # Check if amazon-q is installed before running
       if ! command_exists q; then
         echo "Error: Amazon Q is not installed. Please enable install_amazon_q or install it manually."
         exit 1
